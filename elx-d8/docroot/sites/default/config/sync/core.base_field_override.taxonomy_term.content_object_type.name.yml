@@ -1,0 +1,18 @@
+uuid: ecc97630-062c-470c-b0ea-0c574e9d9b55
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.content_object_type
+id: taxonomy_term.content_object_type.name
+field_name: name
+entity_type: taxonomy_term
+bundle: content_object_type
+label: Name
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

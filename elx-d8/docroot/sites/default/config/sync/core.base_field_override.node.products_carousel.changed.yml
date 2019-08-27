@@ -1,0 +1,18 @@
+uuid: da324bc3-bb7e-4110-acbf-aa6138abb7a7
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.products_carousel
+id: node.products_carousel.changed
+field_name: changed
+entity_type: node
+bundle: products_carousel
+label: Changed
+description: 'The time that the node was last edited.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: changed

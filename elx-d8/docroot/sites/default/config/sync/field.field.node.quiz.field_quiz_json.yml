@@ -1,0 +1,29 @@
+uuid: 61ed6106-edeb-48f4-b26f-d12bafe8b502
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_quiz_json
+    - node.type.quiz
+  module:
+    - allowed_formats
+    - text
+third_party_settings:
+  allowed_formats:
+    quiz: quiz
+    full_html: '0'
+    basic_html: '0'
+    restricted_html: '0'
+    plain_text: '0'
+id: node.quiz.field_quiz_json
+field_name: field_quiz_json
+entity_type: node
+bundle: quiz
+label: 'Quiz Json'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long

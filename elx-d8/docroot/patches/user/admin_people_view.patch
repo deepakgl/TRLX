@@ -1,0 +1,14 @@
+--- modules/taxonomy/src/Plugin/views/filter/TaxonomyIndexTid.php
++++ modules/taxonomy/src/Plugin/views/filter/TaxonomyIndexTid.php
+@@ -390,8 +390,9 @@ class TaxonomyIndexTid extends ManyToOne {
+   public function calculateDependencies() {
+     $dependencies = parent::calculateDependencies();
+
+-    $vocabulary = $this->vocabularyStorage->load($this->options['vid']);
+-    $dependencies[$vocabulary->getConfigDependencyKey()][] = $vocabulary->getConfigDependencyName();
++    if ($vocabulary = $this->vocabularyStorage->load($this->options['vid'])) {
++      $dependencies[$vocabulary->getConfigDependencyKey()][] = $vocabulary->getConfigDependencyName();
++    }
+
+     foreach ($this->termStorage->loadMultiple($this->options['value']) as $term) {
+       $dependencies[$term->getConfigDependencyKey()][] = $term->getConfigDependencyName();

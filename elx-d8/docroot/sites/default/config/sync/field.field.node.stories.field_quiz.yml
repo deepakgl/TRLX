@@ -1,0 +1,28 @@
+uuid: e0d4855e-4164-4881-b83b-0c99fe8a2bee
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_quiz
+    - node.type.quiz
+    - node.type.stories
+id: node.stories.field_quiz
+field_name: field_quiz
+entity_type: node
+bundle: stories
+label: Quiz
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      quiz: quiz
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

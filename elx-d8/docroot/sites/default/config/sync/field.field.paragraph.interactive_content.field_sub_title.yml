@@ -1,0 +1,19 @@
+uuid: 2e994d22-ef67-4a13-9ff0-9158e73dc6ba
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_sub_title
+    - paragraphs.paragraphs_type.interactive_content
+id: paragraph.interactive_content.field_sub_title
+field_name: field_sub_title
+entity_type: paragraph
+bundle: interactive_content
+label: Sub-title
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

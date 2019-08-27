@@ -1,0 +1,5 @@
+name: ELX Static Translation
+type: module
+description: ELX custom module for static translation.
+core: 8.x
+package: ELX

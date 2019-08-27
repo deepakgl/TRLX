@@ -1,0 +1,43 @@
+new file mode 100644
+index 0000000..e120967
+--- /dev/null
++++ b/themes/stable/templates/views/views-view-field--title.html.twig
+@@ -0,0 +1,38 @@
++{#
++/**
++ * @file
++ * Theme override for a single field in a view.
++ *
++ * Available variables:
++ * - view: The view that the field belongs to.
++ * - field: The field handler that can process the input.
++ * - row: The raw result of the database query that generated this field.
++ * - output: The processed output that will normally be used.
++ *
++ * When fetching output from the row this construct should be used:
++ * data = row[field.field_alias]
++ *
++ * The above will guarantee that you'll always get the correct data, regardless
++ * of any changes in the aliasing that might happen if the view is modified.
++ *
++ * @see template_preprocess_views_view_field()
++ */
++#}
++{% if view.id == 'content' and view.current_display == 'page_1' or view.id == 'market_admin_dashboard' %}
++  {% set type = row._entity.type[0].value.target_id %}
++  {% set lang = row.node_field_data_langcode %}
++  {% set nid = row.nid %}
++  {% set title = row._entity.title[0].value %}
++  {% set title = output.__toString() %}
++  {% if type == "product_detail" %}
++    {{ link(title, front_end_url ~ '/' ~ 'products' ~ '/' ~ nid ~ '?lang=' ~ lang) }}
++  {% elseif type == "level_interactive_content" %}
++    {{ link(title, front_end_url ~ '/' ~ 'modules' ~ '/' ~ nid ~ '?lang=' ~ lang) }}
++  {% elseif type == "stories" %}
++    {{ link(title, front_end_url ~ '/' ~ 'trending' ~ '/' ~ nid ~ '?lang=' ~ lang) }}
++  {% else %}
++    {{ link(title, site_base_url ~ '/node/' ~ nid) }}
++  {% endif %}
++{% else %}
++  {{ title -}}
++{% endif %}

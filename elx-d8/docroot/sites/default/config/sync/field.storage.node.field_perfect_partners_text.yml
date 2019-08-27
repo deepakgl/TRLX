@@ -1,0 +1,19 @@
+uuid: 31389c80-4683-46e1-a486-4a432ec1cfe2
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - text
+id: node.field_perfect_partners_text
+field_name: field_perfect_partners_text
+entity_type: node
+type: text_with_summary
+settings: {  }
+module: text
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

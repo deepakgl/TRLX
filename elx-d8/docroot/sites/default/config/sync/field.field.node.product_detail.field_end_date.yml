@@ -1,0 +1,21 @@
+uuid: c8d455ca-3c00-46bb-9aed-0475170296b7
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_end_date
+    - node.type.product_detail
+  module:
+    - datetime
+id: node.product_detail.field_end_date
+field_name: field_end_date
+entity_type: node
+bundle: product_detail
+label: 'Sticky at top of list until'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime

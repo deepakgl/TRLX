@@ -1,0 +1,20 @@
+uuid: 4b0687ce-b5b0-438d-a112-d6c7492f88ca
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.user.field_door
+  module:
+    - user
+id: user.user.field_door
+field_name: field_door
+entity_type: user
+bundle: user
+label: Door
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

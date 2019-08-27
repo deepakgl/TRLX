@@ -1,0 +1,9 @@
+uuid: 69c996f9-4514-454e-a78a-6f12477570be
+langcode: en
+status: true
+dependencies: {  }
+name: 'Static Translation'
+vid: static_translation
+description: ''
+hierarchy: 0
+weight: 0

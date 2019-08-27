@@ -1,0 +1,7 @@
+--- a/entityqueue.routing.yml
++++ b/entityqueue.routing.yml
+@@ -63,3 +63,4 @@ entity.entity_subqueue.add_form:
+     _title: 'Add subqueue'
+   requirements:
+     _entity_create_access: 'entity_subqueue:{entity_queue}'
++    _role: 'administrator+el_nyo_global_education_system_admin'

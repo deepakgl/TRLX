@@ -1,0 +1,51 @@
+--- src/EntitySubqueueListBuilder.php
++++ src/EntitySubqueueListBuilder.php
+@@ -4,6 +4,7 @@
+
+ use Drupal\Core\Entity\EntityInterface;
+ use Drupal\Core\Entity\EntityListBuilder;
++use Drupal\elx_user\Utility\UserUtility;
+
+ /**
+  * Defines a class that builds a listing of entity subqueues.
+@@ -42,11 +43,6 @@
+     $query = $this->getStorage()->getQuery()
+       ->sort($this->entityType->getKey('id'));
+
+-    // Only add the pager if a limit is specified.
+-    if ($this->limit) {
+-      $query->pager($this->limit);
+-    }
+-
+     if ($this->queueId) {
+       $query->condition($this->entityType->getKey('bundle'), $this->queueId);
+     }
+@@ -68,12 +64,22 @@
+   /**
+    * {@inheritdoc}
+    */
+-  public function buildRow(EntityInterface $entity) {
+-    $row['label'] = $entity->label();
+-    $row['items'] = $this->t('@count items', ['@count' => count($entity->items)]);
+-
+-    return $row + parent::buildRow($entity);
+-  }
++   public function buildRow(EntityInterface $entity) {
++     $user_utility = new UserUtility();
++     $uid = \Drupal::currentUser()->id();
++     $roles = $user_utility->getUserRoles($uid);
++     // Fetch current user markets by uid.
++     $markets = $user_utility->getMarketByUserId($uid, 'all');
++     $user_markets = array_column($markets, 'field_default_market_target_id');
++     if(in_array($entity->get('field_market')->getValue()[0]['target_id'],
++      $user_markets) || (!$roles)) {
++       $row['label'] = $entity->label();
++       $row['items'] = $this->t('@count items', ['@count' =>
++        count($entity->items)]);
++
++       return $row + parent::buildRow($entity);
++     }
++   }
+
+   /**
+    * {@inheritdoc}

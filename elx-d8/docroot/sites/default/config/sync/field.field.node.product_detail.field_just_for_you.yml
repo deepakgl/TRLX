@@ -1,0 +1,27 @@
+uuid: b87a61cd-9914-453a-8aa9-1ddfc9e13ad0
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_just_for_you
+    - node.type.product_detail
+id: node.product_detail.field_just_for_you
+field_name: field_just_for_you
+entity_type: node
+bundle: product_detail
+label: 'Just for you'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      product_detail: product_detail
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

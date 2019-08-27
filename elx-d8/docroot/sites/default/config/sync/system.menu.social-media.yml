@@ -1,0 +1,8 @@
+uuid: 35f5e965-f90e-4777-a9d2-21a683714b17
+langcode: en
+status: true
+dependencies: {  }
+id: social-media
+label: 'Social Media'
+description: 'Connect to social media '
+locked: false

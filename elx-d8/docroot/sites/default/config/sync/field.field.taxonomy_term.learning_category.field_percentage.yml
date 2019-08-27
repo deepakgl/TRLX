@@ -1,0 +1,23 @@
+uuid: 7e4523e1-ce1e-4890-93a0-db8dfc2c6621
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_percentage
+    - taxonomy.vocabulary.learning_category
+id: taxonomy_term.learning_category.field_percentage
+field_name: field_percentage
+entity_type: taxonomy_term
+bundle: learning_category
+label: Percentage
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: 100
+  prefix: ''
+  suffix: ''
+field_type: integer

@@ -1,0 +1,14 @@
+{
+  "name": "drupal/dmc_mbo_migrate",
+  "type": "drupal-module",
+  "description": "DMC-MBO custom migrate module.",
+  "keywords": ["Drupal"],
+  "license": "GPL-2.0+",
+  "homepage": "https://www.drupal.org/project/dmc_mbo_migrate",
+  "minimum-stability": "dev",
+  "support": {
+    "issues": "https://www.drupal.org/project/issues/dmc_mbo_migrate",
+    "source": "http://cgit.drupalcode.org/dmc_mbo_migrate"
+  },
+  "require": { }
+}

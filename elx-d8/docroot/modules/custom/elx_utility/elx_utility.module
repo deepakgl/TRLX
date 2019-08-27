@@ -1,0 +1,870 @@
+<?php
+
+/**
+ * @file
+ * Utility file.
+ */
+
+use Drupal\node\Entity\NodeType;
+use Drupal\views\ViewExecutable;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\elx_utility\RedisClientBuilder;
+use Symfony\Component\HttpFoundation\Request;
+use Drupal\user\Entity\User;
+use Elasticsearch\ClientBuilder;
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\Url;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Drupal\elx_user\Utility\UserUtility;
+
+/**
+ * Implements hook_views_query_alter().
+ */
+function elx_utility_views_query_alter(ViewExecutable $view, $query) {
+  $view_id = [
+    'product_listings',
+    'product_detail',
+    'product_categories',
+    'products_carousel',
+    'video_listing',
+    'video_listing_mobile',
+    'video_details',
+    'stories_listing',
+    'stories_details',
+    'video_category',
+    'level_interactive_content',
+    'tools_listing',
+    'product_detail',
+    'video_listing',
+    'video_listing_mobile',
+    'video_details',
+  ];
+  $current_display = [
+    'rest_export_product_listings',
+    'rest_export_product_categories',
+    'rest_export_products_carousel',
+    'rest_export_video_listing',
+    'rest_export_stories_listing',
+    'rest_export_video_category',
+    'rest_export_level_interactive_content',
+    'rest_export_tools_listing',
+  ];
+  $access_by_role_api = [
+    'rest_export_product_listings',
+    'rest_export_product_detail',
+    'rest_export_video_listing',
+    'rest_export_video_listing_mobile',
+    'rest_export_video_details',
+    'rest_export_stories_listing',
+    'rest_export_stories_details',
+    'rest_export_tools_listing',
+  ];
+  if (in_array($view->id(), $view_id)) {
+    if (in_array($view->current_display, $current_display)) {
+      $limit = $_GET['limit'] != 0 ? (int) $_GET['limit'] : 10;
+      $offset = isset($_GET['offset']) ? (int) $_GET['offset'] : 0;
+      $view->setOffset($offset);
+      $view->setItemsPerPage($limit);
+    }
+    if (in_array($view->current_display, $access_by_role_api)) {
+      $user_utility = new UserUtility();
+      $roles = $user_utility->getUserRoles(\Drupal::currentUser()->id());
+      if ($roles  && $view->id() != 'level_interactive_content') {
+        // Add access by role table to the query.
+        $query->queueTable('node__field_access_by_role', "node_field_data",
+         NULL, 'node__field_access_by_role');
+        // Add access by role condition based on the current user role.
+        $query->addWhere('1',
+        'node__field_access_by_role.field_access_by_role_target_id', $roles,
+         'IN');
+      }
+    }
+  }
+}
+
+/**
+ * Set node id and terms id using rest resource.
+ *
+ * @param object $node
+ *   Node object.
+ *
+ * @return bool
+ *   True or false.
+ */
+function _elx_utility_http_request($node) {
+  $elx_site_url = \Drupal::config('elx_utility.settings')->get('elx_site_url');
+  $uri = $elx_site_url . '/lm/api/v1/setTermsNodeData';
+  $nid = $node->id();
+  $tid = $node->get('field_learning_category')->getValue()[0]['target_id'];
+  $client = \Drupal::httpClient();
+  try {
+    $request = $client->post($uri, [
+      'json' => ['nid' => $nid, 'tid' => $tid],
+      'headers' => ['Accept' => 'application/json'],
+    ]);
+    $response = (string) $request->getBody();
+  }
+  catch (\Exception $e) {
+    return FALSE;
+  }
+
+  return TRUE;
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function elx_utility_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $user_utility = new UserUtility();
+  // Get current user roles.
+  $roles = \Drupal::currentUser()->getRoles();
+  switch ($form_id) {
+    case 'node_best_sellers_form':
+    case 'node_product_detail_form':
+    case 'node_level_interactive_content_form':
+    case 'node_stories_form':
+    case 'node_tools_form':
+    case 'node_tools-pdf_form':
+    case 'node_best_sellers_edit_form':
+    case 'node_product_detail_edit_form':
+    case 'node_level_interactive_content_edit_form':
+    case 'node_stories_edit_form':
+    case 'node_tools_edit_form':
+    case 'node_tools-pdf_edit_form':
+      unset($form['field_access_by_role']['widget']['#options']['anonymous']);
+      unset($form['field_access_by_role']['widget']['#options']
+      ['authenticated']);
+      unset($form['field_access_by_role']['widget']['#options']
+      ['administrator']);
+      $form['field_access_by_role']['widget'] += [
+        'el_nyo_global_education_system_admin' => [
+          '#default_value' => TRUE,
+          '#disabled' => TRUE,
+        ],
+      ];
+      // Changed type of point value field.
+      $form['field_point_value']['widget'][0]['value']['#type'] = 'number';
+      // Set default value 0 of point value field.
+      $form['field_point_value']['widget'][0]['value']['#min'] = 0;
+    case 'user_register_form':
+    case 'user_form':
+      $uid = \Drupal::currentUser()->id();
+      // Get current user markets.
+      $query = $user_utility->getMarketByUserId($uid, 'all');
+      // Hide markets for market admin.
+      if (in_array('el_regional_market_admin', $roles)) {
+        foreach ($query as $key => $value) {
+          $market = $value->field_default_market_target_id;
+          $form['field_markets']['#disabled'] = TRUE;
+          $form['field_default_market']['widget']['#after_build'][] = 'elx_utility_default_market_after_build';
+          $form['field_default_market']['widget']['#default_value'][$key]['target_id'] = $market;
+        }
+      }
+    case 'node_t_c_form':
+    case 'node_t_c_edit_form':
+    case 'node_welcome_message_form':
+    case 'node_welcome_message_edit_form':
+    case 'bulk_update_fields_form':
+      if (!in_array('el_regional_market_admin', $roles)) {
+        // Attached elx_market js.
+        $form['#attached']['library'][] = 'elx_market_hierarchy/elx_market';
+      }
+      break;
+
+    case 'taxonomy_term_learning_category_form':
+      unset($form['field_access_by_role']['widget']['#options']['administrator']);
+      unset($form['field_access_by_role']['widget']['#options']['anonymous']);
+      unset($form['field_access_by_role']['widget']['#options']['authenticated']);
+      unset($form['field_access_by_role']['widget']['#options']['el_nyo_global_education_system_admin']);
+      break;
+
+    case 'views_exposed_form':
+      if ($form['#id'] == 'views-exposed-form-market-admin-dashboard-market-admin-dashboard-page' || $form['#id'] == 'views-exposed-form-market-admin-dashboard-market-admin-dashboard-page-2' || $form['#id'] == 'views-exposed-form-market-admin-dashboard-market-admin-dashboard-page-3') {
+        $form['type_1']['#type'] = 'radios';
+        $form['#attached']['library'][] = 'elx_market_hierarchy/elx_market_admin_dashboard';
+      }
+      // This is for translation content migration stats.
+      // @todo - Need to remove once migration activity complete.
+      if ($form['#id'] == 'views-exposed-form-elx-translated-content-migration-translated-content-migration') {
+        $language = \Drupal::languageManager()->getLanguages();
+        foreach ($language as $key => $value) {
+          $response[$value->getName()] = $value->getName();
+        }
+        $node_types = NodeType::loadMultiple();
+        foreach ($node_types as $node_type) {
+          $node_types_options[$node_type->id()] = $node_type->label();
+        }
+        $form['langcode'] = $form['type'] = $form['status'] = [
+          '#type' => 'select',
+          '#multiple' => FALSE,
+          '#empty_option' => 'Any',
+        ];
+        $form['langcode']['#options'] = $response;
+        $form['type']['#options'] = $node_types_options;
+        $form['status']['#options'] = [
+          'created' => 'created',
+          'translated' => 'translated',
+        ];
+      }
+      break;
+
+    case 'taxonomy_term_static_translation_form':
+      $form['name']['widget'][0]['value']['#title'] = 'Key';
+      $form['relations']['#access'] = FALSE;
+      if (!$form_state->getFormObject()->getEntity()->isNew()) {
+        $form['name']['#disabled'] = TRUE;
+      }
+      break;
+
+    case 'taxonomy_term_badges_form':
+      if (!$form_state->getFormObject()->getEntity()->isNew()) {
+        $form['name']['#disabled'] = TRUE;
+        $form['description']['#disabled'] = TRUE;
+        $form['path']['#disabled'] = TRUE;
+      }
+      break;
+
+    default:
+  }
+}
+
+/**
+ * Callback function to get default market.
+ */
+function elx_utility_default_market_after_build($form_element, &$form_state) {
+  $uid = \Drupal::currentUser()->id();
+  $user_utility = new UserUtility();
+  // Get current user markets.
+  $query = $user_utility->getMarketByUserId($uid, 'all');
+  $current_user_mkt = array_column($query, 'field_default_market_target_id');
+  $aa = 0;
+  foreach ($form_element[0] as $tid => $data) {
+    if (($tid[0] != '#') && is_numeric($tid)) {
+      foreach ($current_user_mkt as $key => $value) {
+        if (array_key_exists($value, $form_element[0][$tid]) && !isset($form_element[0][$tid][$tid . '-children'])) {
+          $form_element[0][$tid][$tid]['#attributes']['data-drupal-selector'] = 'disable_other_markets_ma';
+        }
+        elseif (isset($form_element[0][$tid][$tid . '-children'])) {
+          foreach ($form_element[0][$tid][$tid . '-children'] as $key => $children) {
+            if (($key[0] != '#') && is_numeric($key)) {
+              if (in_array($key, $current_user_mkt)) {
+                $form_element[0][$tid][$tid . '-children'][$key][$key]['#attributes']['data-drupal-selector'] = 'disable_other_markets_ma';
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  return $form_element;
+}
+
+/**
+ * Implements hook_ENTITY_insert().
+ */
+function elx_utility_entity_insert(EntityInterface $entity) {
+  if ($entity->getEntityTypeId() == 'node'
+  && $entity->gettype() != 'multiple_answer_choice'
+  && $entity->gettype() != 'multiple_choice_question'
+  && $entity->gettype() != 'quiz') {
+    switch ($entity->gettype()) {
+      case 'level_interactive_content':
+        _elx_utility_http_request($entity);
+        break;
+    }
+    // Purge Redis data.
+    elx_utility_purge_redis_data($entity);
+  }
+  elseif ($entity->getEntityTypeId() == 'taxonomy_term') {
+    $tid = $entity->id();
+    $type = elx_utility_get_term_type($tid);
+    if ($type == 'badges') {
+      migrate_badge_master();
+    }
+    // Purge Redis data.
+    elx_utility_purge_redis_terms_data($type, $tid);
+  }
+  elseif ($entity->getEntityTypeId() == 'user') {
+    global $base_url;
+    if ($_SERVER['HTTP_REFERER'] != $base_url . '/admin/people/create' && $entity->get('status')->getValue()[0]['value'] == 1) {
+      _user_mail_notify("register_admin_created", $entity);
+    }
+    $market_id = \Drupal::request()->query->get('userMarket');
+    if (!empty($market_id)) {
+      $entity->set('field_default_market', $market_id);
+      $entity->save();
+    }
+    $uid = $entity->id();
+    // Insert index in elastic_host.
+    set_user_object_elastic($uid);
+  }
+  elseif ($entity->getEntityTypeId() == 'entity_subqueue') {
+    // Purge Redis data.
+    elx_utility_purge_redis_data($entity);
+  }
+  elseif ($entity->getEntityTypeId() == 'menu_link_content') {
+    if ($entity->getMenuName() == 'privacy-menu' || $entity->getMenuName() == 'social-media' || $entity->getMenuName() == 'header-menu' || $entity->getMenuName() == 'main') {
+      // Purge Redis data.
+      elx_utility_purge_redis_data($entity);
+    }
+
+  }
+}
+
+/**
+ * Implements hook_ENTITY_update().
+ */
+function elx_utility_entity_update(EntityInterface $entity) {
+  if ($entity->getEntityTypeId() == 'node'
+  && $entity->gettype() != 'multiple_answer_choice'
+  && $entity->gettype() != 'multiple_choice_question') {
+    switch ($entity->gettype()) {
+      case 'level_interactive_content':
+        _elx_utility_http_request($entity);
+        break;
+    }
+    // Purge Redis data.
+    elx_utility_purge_redis_data($entity);
+  }
+  elseif ($entity->getEntityTypeId() == 'taxonomy_term') {
+    $tid = $entity->id();
+    $type = elx_utility_get_term_type($tid);
+    if ($type == 'badges') {
+      migrate_badge_master();
+    }
+    // Purge Redis data.
+    elx_utility_purge_redis_terms_data($type, $tid);
+  }
+  elseif ($entity->getEntityTypeId() == 'user') {
+    $uid = $entity->id();
+    // Insert index in elastic_host.
+    elx_utility_purge_redis_data($entity);
+    set_user_object_elastic($uid);
+  }
+  elseif ($entity->getEntityTypeId() == 'entity_subqueue') {
+    // Purge Redis data.
+    elx_utility_purge_redis_data($entity);
+  }
+  elseif ($entity->getEntityTypeId() == 'menu_link_content') {
+    if ($entity->getMenuName() == 'privacy-menu' || $entity->getMenuName() == 'social-media' || $entity->getMenuName() == 'header-menu' || $entity->getMenuName() == 'main') {
+      // Purge Redis data.
+      elx_utility_purge_redis_data($entity);
+    }
+  }
+}
+
+/**
+ * Implements hook_ENTITY_delete().
+ */
+function elx_utility_entity_delete(EntityInterface $entity) {
+  if ($entity->getEntityTypeId() == 'node') {
+    if ($entity->gettype() == 'quiz') {
+      // Delete quiz associated with respective stories.
+      $query = \Drupal::database()->delete('node__field_quiz');
+      $query->condition('field_quiz_target_id', $entity->id());
+      $query->execute();
+      $query = \Drupal::database()->delete('node_revision__field_quiz');
+      $query->condition('field_quiz_target_id', $entity->id());
+      $query->execute();
+      \Drupal::service('entity_field.manager')->clearCachedFieldDefinitions();
+    }
+    elseif ($entity->gettype() != 'multiple_answer_choice'
+    && $entity->gettype() != 'multiple_choice_question'
+    && $entity->gettype() != 'quiz') {
+      switch ($entity->gettype()) {
+        case 'level_interactive_content':
+          _elx_utility_http_delete_request($entity);
+          break;
+      }
+      // Purge Redis data.
+      elx_utility_purge_redis_data($entity);
+      $response = new RedirectResponse('/dashboard/published');
+      $response->send();
+      return;
+    }
+  }
+  elseif ($entity->getEntityTypeId() == 'taxonomy_term') {
+    $tid = $entity->id();
+    $type = $entity->bundle();
+    if ($type == 'badges') {
+      migrate_badge_master();
+    }
+    // Purge Redis data.
+    elx_utility_purge_redis_terms_data($type, $tid);
+  }
+  elseif ($entity->getEntityTypeId() == 'entity_subqueue') {
+    // Purge Redis data.
+    elx_utility_purge_redis_data($entity);
+  }
+  elseif ($entity->getEntityTypeId() == 'user') {
+    // Purge Elastic data.
+    elx_utility_purge_elastic_data($entity);
+  }
+  elseif ($entity->getEntityTypeId() == 'menu_link_content') {
+    if ($entity->getMenuName() == 'privacy-menu' || $entity->getMenuName() == 'social-media' || $entity->getMenuName() == 'header-menu' || $entity->getMenuName() == 'main') {
+      // Purge Redis data.
+      elx_utility_purge_redis_data($entity);
+    }
+  }
+}
+
+/**
+ * Purge user data from elastic.
+ */
+function elx_utility_purge_elastic_data(EntityInterface $entity) {
+  $uid = $entity->id();
+  try {
+    $elx_site_url = \Drupal::config('elx_utility.settings')->get('elx_site_url');
+    $response = \Drupal::httpClient()->get($elx_site_url . "/lm/api/v1/purgeElasticUser?_format=json&uid=" . $uid, ['headers' => ['Accept' => 'application/json']]);
+
+    return;
+  }
+  catch (RequestException $e) {
+    return $e->getMessage();
+  }
+}
+
+/**
+ * Check and prepare redis pattern to delete.
+ */
+function elx_utility_purge_redis_data(EntityInterface $entity) {
+  $pattern = elx_utility_get_redis_pattern($entity);
+  if (!empty($pattern)) {
+    try {
+      $redisObj = RedisClientBuilder::getRedisClientObject('check');
+      $result = $redisObj->deleteKeyPattern($pattern);
+    }
+    catch (\Exception $e) {
+      \Drupal::logger('elx_utility')->error('Redis connection failed.');
+    }
+  }
+}
+
+/**
+ * Check and prepare redis pattern to delete.
+ */
+function elx_utility_purge_redis_terms_data($type, $tid) {
+  $pattern = elx_utility_get_redis_terms_pattern($type, $tid);
+  if (!empty($pattern)) {
+    try {
+      $redisObj = RedisClientBuilder::getRedisClientObject('check');
+      $result = $redisObj->deleteKeyPattern($pattern);
+    }
+    catch (\Exception $e) {
+      \Drupal::logger('elx_utility')->error('Redis connection failed.');
+    }
+  }
+}
+
+/**
+ * Check for blog content field then returns redis pattern for deletion.
+ *
+ * @param \Drupal\Core\Entity\EntityInterface $entity
+ *   Entity.
+ *
+ * @return string
+ *   The pattern of the cached key to be deleted.
+ */
+function elx_utility_get_redis_pattern(EntityInterface $entity) {
+  $lang_code = $entity->language()->getId();
+  $pattern = [];
+  $env = \Drupal::config('elx_utility.settings')->get('elx_environment');
+  if ($entity->getEntityTypeId() == 'node' && !empty($entity->id())) {
+    $entity_type = $entity->gettype();
+    if ($entity_type == 'quiz') {
+      $pattern[] = implode(':', [$env, 'storiesDetail*']);
+
+      return $pattern;
+    }
+    elseif ($entity_type == 'products_carousel') {
+      $pattern[] = implode(':', [$env, 'productsCarousel', $lang_code . '*']);
+
+      return $pattern;
+    }
+    $entity_markets = array_column($entity->get('field_markets')->getValue(), 'target_id');
+    if (isset($entity->original)) {
+      $entity_markets_legacy = array_column($entity->original->get('field_markets')->getValue(), 'target_id');
+      $entity_markets = array_unique(array_merge($entity_markets, $entity_markets_legacy));
+    }
+    foreach ($entity_markets as $key => $market) {
+      $uid = \Drupal::currentUser()->id();
+      $entity_id = $entity->id();
+      if ($entity_type == 'product_detail') {
+        $pattern[] = implode(':', [$env, 'productDetails', $market . '*']);
+        $pattern[] = implode(':', [$env, 'productCategories', $market . '*']);
+        $pattern[] = implode(':', [$env, 'productListings', $market . '*']);
+        $pattern[] = implode(':', [$env, 'globalBrowseProducts*']);
+        $pattern[] = implode(':', [$env, 'browseProductsMarketWise*']);
+        $pattern[] = implode(':', [$env, 'spotlightSection*']);
+        $pattern[] = implode(':', [$env, 'spotlightSectionMarketWise*']);
+      }
+      elseif ($entity_type == 'level_interactive_content') {
+        $pattern[] = implode(':', [$env, 'levelInteractiveContent', $market .
+         '*']);
+        $pattern[] = implode(':', [$env, 'levelInteractiveTermsContent',
+         $market . '*']);
+        $pattern[] = implode(':', [$env, 'learningLevels', $market . '*']);
+        $pattern[] = implode(':', [$env, 'exploreLearningLevels', $market .
+         '*']);
+        $pattern[] = implode(':', [$env, 'spotlightSection*']);
+        $pattern[] = implode(':', [$env, 'spotlightSectionMarketWise*']);
+      }
+      elseif ($entity_type == 'tools') {
+        $pattern[] = implode(':', [$env, 'videoCategory', $market . '*']);
+        $pattern[] = implode(':', [$env, 'videoListings', $market . '*']);
+        $pattern[] = implode(':', [$env, 'videoListingMobile', $market . '*']);
+        $pattern[] = implode(':', [$env, 'videoDetails', $market . '*']);
+        $pattern[] = implode(':', [$env, 'spotlightSection*']);
+        $pattern[] = implode(':', [$env, 'spotlightSectionMarketWise*']);
+      }
+      elseif ($entity_type == 'stories') {
+        $pattern[] = implode(':', [$env, 'storiesListing', $market . '*']);
+        $pattern[] = implode(':', [$env, 'storiesDetail', $market . '*']);
+        $pattern[] = implode(':', [$env, 'spotlightSection*']);
+        $pattern[] = implode(':', [$env, 'spotlightSectionMarketWise*']);
+        $pattern[] = implode(':', [$env, 'storiesTrendingSection*']);
+        $pattern[] = implode(':', [$env, 'storiesTrendingSectionMarketWise*']);
+      }
+      elseif ($entity_type == 'tools-pdf') {
+        $pattern[] = implode(':', [$env, 'toolsListings', $market . '*']);
+      }
+      elseif ($entity_type == 't_c') {
+        $pattern[] = implode(':', [$env . '_t_c', 'detail', $market . '*']);
+      }
+    }
+  }
+  elseif ($entity->getEntityTypeId() == 'entity_subqueue' && !empty($entity->getQueue())) {
+    if ($entity->getQueue()->id() == 'stories' || $entity->getQueue()->id() == 'stories_market_wise') {
+      $pattern[] = implode(':', [$env, 'storiesTrendingSection*']);
+      $pattern[] = implode(':', [$env, 'storiesTrendingSectionMarketWise*']);
+    }
+    elseif ($entity->getQueue()->id() == 'spotlight' || $entity->getQueue()->id() == 'spotlight_market_wise') {
+      $pattern[] = implode(':', [$env, 'spotlightSection*']);
+      $pattern[] = implode(':', [$env, 'spotlightSectionMarketWise*']);
+    }
+    elseif ($entity->getQueue()->id() == 'explore_learning_levels') {
+      $pattern[] = implode(':', [$env, 'exploreLearningLevels*']);
+    }
+    elseif ($entity->getQueue()->id() == 'browse_products' || $entity->getQueue()->id() == 'browse_products_market_wise') {
+      $pattern[] = implode(':', [$env, 'globalBrowseProducts*']);
+      $pattern[] = implode(':', [$env, 'browseProductsMarketWise*']);
+    }
+  }
+  elseif ($entity->getEntityTypeId() == 'menu_link_content') {
+    if ($entity->getMenuName() == 'privacy-menu' || $entity->getMenuName() == 'social-media') {
+      // Purge redis data.
+      $pattern[] = implode(':', [$env, 'footerMenu*']);
+    }
+    elseif ($entity->getMenuName() == 'header-menu') {
+      // Purge redis data.
+      $pattern[] = implode(':', [$env, 'headerMenu*']);
+    }
+    elseif ($entity->getMenuName() == 'main') {
+      // Purge redis data.
+      $pattern[] = implode(':', [$env, 'navigationMenu*']);
+    }
+  }
+  elseif ($entity->getEntityTypeId() == 'user') {
+    // Purge Redis data.
+    $pattern[] = implode(':', [$env, 'headerMenu*']);
+  }
+  // For non blog related content type : return entity type as a key for redis.
+  else {
+    $pattern = $entity_type;
+  }
+
+  return $pattern;
+}
+
+/**
+ * Check for taxonomy term content then returns redis pattern for deletion.
+ *
+ * @param string $type
+ *   Type of taxonomy term.
+ *
+ * @return string
+ *   The pattern of the cached key to be deleted.
+ */
+function elx_utility_get_redis_terms_pattern($type, $tid) {
+  $uid = \Drupal::currentUser()->id();
+  $env = \Drupal::config('elx_utility.settings')->get('elx_environment');
+  $pattern = [];
+  if ($type == 'learning_category') {
+    $pattern[] = implode(':', [$env, 'levelInteractiveContent*']);
+    $pattern[] = implode(':', [$env, 'learningLevels*']);
+    $pattern[] = implode(':', [$env, 'levelInteractiveTermsContent*']);
+    $pattern[] = implode(':', [$env, 'exploreLearningLevels*']);
+  }
+  elseif ($type == 'videos') {
+    $pattern[] = implode(':', [$env, 'videoListings*']);
+    $pattern[] = implode(':', [$env, 'videoListingMobile*']);
+    $pattern[] = implode(':', [$env, 'videoDetails*']);
+    $pattern[] = implode(':', [$env, 'videoCategory*']);
+  }
+  elseif ($type == 'product_category') {
+    $pattern[] = implode(':', [$env, 'productCategories*']);
+    $pattern[] = implode(':', [$env, 'productListings*']);
+    $pattern[] = implode(':', [$env, 'productDetails*']);
+  }
+
+  return $pattern;
+}
+
+/**
+ * Get type of taxonomy term.
+ *
+ * @param int $tid
+ *   Id of taxonomy term.
+ *
+ * @return string
+ *   The type of the taxonomy term.
+ */
+function elx_utility_get_term_type($tid) {
+  $type = db_select('taxonomy_term_field_data', 'tfd')
+    ->fields('tfd', ['vid'])
+    ->condition('tfd.tid', $tid, '=')
+    ->execute()->fetchAssoc();
+  return $type['vid'];
+}
+
+/**
+ * Insert user object on user insert and update market info on user update.
+ *
+ * @param int $uid
+ *   User uid.
+ */
+function set_user_object_elastic($uid) {
+  $user = User::load($uid);
+  // Get user markets, store, account.
+  $market = $user->get('field_default_market')->getValue();
+  $store = $user->get('field_door')->getValue();
+  $account = $user->get('field_account_name')->getValue();
+  $markets = array_column($market, 'target_id');
+  $stores = array_column($store, 'value');
+  $accounts = array_column($account, 'value');
+  $email = $user->get('mail')->value;
+  $access = (int) $user->get('field_has_3_0_permission')->value;
+  // Check user is blocked.
+  $status = 1;
+  if ($user->isBlocked() == TRUE) {
+    $status = 0;
+  }
+  // Ignore if user having mailinator, srijan or test keyword in email.
+  $ignore = 0;
+  if (preg_match('/(srijan|test|mailinator|mindstix)/', $email)) {
+    $ignore = 1;
+  }
+  // Create elastic connection.
+  $hosts = [
+    [
+      'host' => \Drupal::config('elx_utility.settings')->get('elastic_host'),
+      'port' => \Drupal::config('elx_utility.settings')->get('elastic_port'),
+      'scheme' => \Drupal::config('elx_utility.settings')->get('elastic_scheme'),
+      'user' => \Drupal::config('elx_utility.settings')
+        ->get('elastic_username'),
+      'pass' => \Drupal::config('elx_utility.settings')
+        ->get('elastic_password'),
+    ],
+  ];
+  $env = \Drupal::config('elx_utility.settings')->get('elx_environment');
+  $client = ClientBuilder::create()->setHosts($hosts)->build();
+  $index_params = [
+    'index' => $env . '_user',
+    'type' => 'user',
+    'id' => 'user_' . $uid,
+  ];
+  // Check for index existence previously.
+  $exist = $client->exists($index_params);
+  // If index not exist, create new index.
+  if (!$exist) {
+    $params = [
+      'index' => $env . '_user',
+      'type' => 'user',
+      'id' => 'user_' . $uid,
+      'body' => [
+        'uid' => $uid,
+        'total_points' => 0,
+        'badge' => [],
+        'market' => $markets,
+        'store' => $stores,
+        'account' => $accounts,
+        'node_views_best_sellers' => [],
+        'node_views_level_interactive_content' => [],
+        'node_views_product_detail' => [],
+        'node_views_stories' => [],
+        'node_views_tools' => [],
+        'node_views_t_c' => [],
+        'node_views_tools-pdf' => [],
+        'favorites' => [],
+        'bookmarks' => [],
+        'downloads' => [],
+        'access_permission' => $access,
+        'ignore' => $ignore,
+        'email' => $email,
+        'status' => $status,
+      ],
+    ];
+    $response = $client->index($params);
+  }
+  else {
+    // If exist update previous index with updated point values.
+    $params = [
+      'index' => $env . '_user',
+      'type' => 'user',
+      'id' => 'user_' . $uid,
+      'body' => [
+        'doc' => [
+          'uid' => $uid,
+          'market' => $markets,
+          'store' => $stores,
+          'account' => $accounts,
+          'access_permission' => $access,
+          'ignore' => $ignore,
+          'email' => $email,
+          'status' => $status,
+        ],
+        'doc_as_upsert' => TRUE,
+      ],
+    ];
+    $response = $client->update($params);
+  }
+}
+
+/**
+ * Set node id and terms id using rest resource.
+ *
+ * @param object $node
+ *   Node object.
+ *
+ * @return json
+ *   API url to update the data in DB.
+ */
+function _elx_utility_http_delete_request($node) {
+  $elx_site_url = \Drupal::config('elx_utility.settings')->get('elx_site_url');
+  $uri = $elx_site_url . '/lm/api/v1/deleteTermsNodeData';
+  $nid = $node->id();
+  $tid = $node->get('field_learning_category')->getValue()[0]['target_id'];
+  $client = \Drupal::httpClient();
+  try {
+    $request = $client->post($uri, [
+      'json' => ['nid' => $nid, 'tid' => $tid],
+      'headers' => ['Accept' => 'application/json'],
+    ]);
+    $response = json_decode($request->getBody());
+  }
+  catch (\Exception $e) {
+    return $e->getMessage();
+  }
+
+  return TRUE;
+}
+
+/**
+ * Implements hook_mail_alter().
+ */
+function elx_utility_mail_alter(&$message) {
+  // Add html in mail header.
+  $message['headers']['content-type'] = 'text/html';
+}
+
+/**
+ * Implements hook_entity_base_field_info().
+ */
+function elx_utility_entity_base_field_info(EntityTypeInterface $entity_type) {
+  $fields = [];
+  if ($entity_type->id() == 'menu_link_content') {
+    $fields['elx_menu_content'] =
+     BaseFieldDefinition::create('entity_reference')
+       ->setLabel(t('Menu Content'))
+       ->setSetting('target_type', 'taxonomy_term')
+       ->setSetting('handler', 'default:taxonomy_term')
+       ->setSetting('handler_settings', [
+         'target_bundles' => [
+           'menu_content' => 'menu_content',
+         ],
+       ])
+       ->setDisplayOptions('form', ['type' => 'options_select', 'weight' => 0])
+       ->setDisplayConfigurable('form', TRUE)
+       ->setDisplayConfigurable('view', TRUE);
+
+    $fields['elx_menu_web'] = BaseFieldDefinition::create('boolean')
+      ->setLabel(t('Web'))
+      ->setDisplayOptions('form', [
+        'type' => 'boolean_checkbox',
+        'settings' => [
+          'display_label' => TRUE,
+        ],
+      ])
+      ->setDisplayConfigurable('form', TRUE);
+
+    $fields['elx_menu_otg'] = BaseFieldDefinition::create('boolean')
+      ->setLabel(t('OTG'))
+      ->setDisplayOptions('form', [
+        'type' => 'boolean_checkbox',
+        'settings' => [
+          'display_label' => TRUE,
+        ],
+      ])
+      ->setDisplayConfigurable('form', TRUE);
+
+    $fields['elx_menu_otg_sequence_id'] = BaseFieldDefinition::create('integer')
+      ->setLabel(t('OTG Sequence Id'))
+      ->setDisplayOptions('form', [
+        'type' => 'integer',
+        'settings' => [
+          'display_label' => TRUE,
+        ],
+      ])
+      ->setDisplayConfigurable('form', TRUE);
+  }
+
+  return $fields;
+}
+
+/**
+ * Implements hook_preprocess_views_view_field().
+ */
+function elx_utility_preprocess_views_view_field(&$variables) {
+  global $base_url;
+  $variables['front_end_url'] = \Drupal::config('elx_utility.settings')->get('elx_front_end_url');
+  $variables['site_base_url'] = $base_url;
+}
+
+/**
+ * Implements hook_entity_predelete().
+ */
+function elx_user_entity_predelete(EntityInterface $entity) {
+  // If ($entity->get('bundle')->getValue()[0]['target_id'] != 'access_token')
+  // return _elx_entity_delete_confirm($entity);
+}
+
+/**
+ * Implements hook_entity_translation_predelete().
+ */
+function elx_user_entity_translation_delete(EntityInterface $translation) {
+  // Return _entity_delete_confirm();
+}
+
+/**
+ * Alter entity delete.
+ */
+function _elx_entity_delete_confirm($entity) {
+  if (\Drupal::currentUser()->id() != 1) {
+    $url = \Drupal::request()->query->get('destination');
+    if (empty($url)) {
+      $url = Url::fromRoute('<front>', [])->toString();
+    }
+    $response = new RedirectResponse($url);
+    $response->send();
+    drupal_set_message(t('You are not authorised to delete this entity.'), 'error', TRUE);
+    exit;
+  }
+  elseif ($entity->getEntityTypeId() == 'user') {
+    $uid = $entity->get('uid')->getValue()[0]['value'];
+    $query = \Drupal::database()->delete('oauth2_token');
+    $query->condition('auth_user_id', $uid);
+    $query->execute();
+  }
+}

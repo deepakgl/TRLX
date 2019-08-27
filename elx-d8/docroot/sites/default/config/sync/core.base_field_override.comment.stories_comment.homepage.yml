@@ -1,0 +1,18 @@
+uuid: d2b69d57-dbdc-46b3-bec2-46ba29309c42
+langcode: en
+status: true
+dependencies:
+  config:
+    - comment.type.stories_comment
+id: comment.stories_comment.homepage
+field_name: homepage
+entity_type: comment
+bundle: stories_comment
+label: Homepage
+description: 'The comment author''s home page address.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: uri

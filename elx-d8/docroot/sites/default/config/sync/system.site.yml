@@ -1,0 +1,15 @@
+uuid: e6912ad1-51aa-4b4f-91c4-6ecd5e3d216b
+name: ELX-D8
+mail: arunima.shekhar@srijan.net
+slogan: ''
+page:
+  403: ''
+  404: ''
+  front: /admin/content
+admin_compact_mode: false
+weight_select_max: 100
+langcode: en
+default_langcode: en
+_core:
+  default_config_hash: yXadRE77Va-G6dxhd2kPYapAvbnSvTF6hO4oXiOEynI
+mail_notification: ''

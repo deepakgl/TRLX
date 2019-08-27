@@ -1,0 +1,18 @@
+uuid: 0518cc44-7e36-4799-9ae8-4828d8458a51
+langcode: en
+status: true
+dependencies:
+  config:
+    - comment.type.migrate_example_advanced_comment
+  module:
+    - content_translation
+third_party_settings:
+  content_translation:
+    enabled: false
+    bundle_settings:
+      untranslatable_fields_hide: '0'
+id: comment.migrate_example_advanced_comment
+target_entity_type_id: comment
+target_bundle: migrate_example_advanced_comment
+default_langcode: site_default
+language_alterable: false

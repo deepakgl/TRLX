@@ -1,0 +1,29 @@
+uuid: 20671ad5-f00a-4200-a901-3af8f17ef47e
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_learning_category
+    - node.type.level_interactive_content
+    - taxonomy.vocabulary.learning_category
+id: node.level_interactive_content.field_learning_category
+field_name: field_learning_category
+entity_type: node
+bundle: level_interactive_content
+label: 'Learning Level'
+description: ''
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      learning_category: learning_category
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

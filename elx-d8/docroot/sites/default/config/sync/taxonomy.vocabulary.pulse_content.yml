@@ -1,0 +1,9 @@
+uuid: a69f6f32-bb28-44e4-a794-9c7f5fc8552f
+langcode: en
+status: true
+dependencies: {  }
+name: 'Pulse Content'
+vid: pulse_content
+description: ''
+hierarchy: 0
+weight: 0

@@ -1,0 +1,46 @@
+uuid: 965671ee-f75e-4ddf-9ae3-921415364b9e
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_media_template_two
+    - paragraphs.paragraphs_type.best_sellers_template_two
+    - paragraphs.paragraphs_type.media_template_two
+  module:
+    - entity_reference_revisions
+id: paragraph.best_sellers_template_two.field_media_template_two
+field_name: field_media_template_two
+entity_type: paragraph
+bundle: best_sellers_template_two
+label: Media
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    negate: 0
+    target_bundles:
+      media_template_two: media_template_two
+    target_bundles_drag_drop:
+      best_sellers_template_four:
+        weight: 7
+        enabled: false
+      best_sellers_template_three:
+        weight: 8
+        enabled: false
+      best_sellers_template_two:
+        weight: 9
+        enabled: false
+      field_slides_bs_t3:
+        weight: 10
+        enabled: false
+      interactive_content:
+        weight: 11
+        enabled: false
+      media_template_two:
+        enabled: true
+        weight: 12
+field_type: entity_reference_revisions

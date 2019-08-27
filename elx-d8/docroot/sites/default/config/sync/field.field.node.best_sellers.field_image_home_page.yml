@@ -1,0 +1,28 @@
+uuid: 99db47a2-aeb4-4376-a358-898fffc98bdf
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_image_home_page
+    - media.type.image
+    - node.type.best_sellers
+id: node.best_sellers.field_image_home_page
+field_name: field_image_home_page
+entity_type: node
+bundle: best_sellers
+label: Image
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      image: image
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

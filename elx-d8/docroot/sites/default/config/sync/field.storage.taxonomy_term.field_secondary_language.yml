@@ -1,0 +1,20 @@
+uuid: b79ed697-f828-4a7a-b537-90996d2163bf
+langcode: en
+status: true
+dependencies:
+  module:
+    - language
+    - taxonomy
+id: taxonomy_term.field_secondary_language
+field_name: field_secondary_language
+entity_type: taxonomy_term
+type: entity_reference
+settings:
+  target_type: configurable_language
+module: core
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

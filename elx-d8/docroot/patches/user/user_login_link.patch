@@ -1,0 +1,20 @@
+--- modules/user/src/Form/UserLoginForm.php  2019-07-15 14:47:14.000000000
++++ modules/user/src/Form/UserLoginForm.php  2019-07-15 14:42:28.000000000
+@@ -220,7 +220,7 @@
+
+       if ($flood_control_triggered = $form_state->get('flood_control_triggered')) {
+         if ($flood_control_triggered == 'user') {
+-          $form_state->setErrorByName('name', $this->formatPlural($flood_config->get('user_limit'), 'There has been more than one failed login attempt for this account. It is temporarily blocked. Try again later or <a href=":url">request a new password</a>.', 'There have been more than @count failed login attempts for this account. It is temporarily blocked. Try again later or <a href=":url">request a new password</a>.', [':url' => $this->url('user.pass')]));
++          $form_state->setErrorByName('name', $this->formatPlural($flood_config->get('user_limit'), 'There has been more than one failed login attempt for this account. It is temporarily blocked. Try again later or request a new password.', 'There have been more than @count failed login attempts for this account. It is temporarily blocked. Try again later or request a new password.', [':url' => $this->url('user.pass')]));
+         }
+         else {
+           // We did not find a uid, so the limit is IP-based.
+@@ -234,7 +234,7 @@
+         // handlers that ran earlier than this one.
+         $user_input = $form_state->getUserInput();
+         $query = isset($user_input['name']) ? ['name' => $user_input['name']] : [];
+-        $form_state->setErrorByName('name', $this->t('Unrecognized username or password. <a href=":password">Forgot your password?</a>', [':password' => $this->url('user.pass', [], ['query' => $query])]));
++        $form_state->setErrorByName('name', $this->t('Unrecognized username or password.', [':password' => $this->url('user.pass', [], ['query' => $query])]));
+         $accounts = $this->userStorage->loadByProperties(['name' => $form_state->getValue('name')]);
+         if (!empty($accounts)) {
+           $this->logger('user')->notice('Login attempt failed for %user.', ['%user' => $form_state->getValue('name')]);

@@ -1,0 +1,20 @@
+uuid: 36713cff-139f-491e-8494-d3b20b1dd787
+langcode: en
+status: true
+dependencies:
+  module:
+    - language
+    - taxonomy
+id: taxonomy_term.field_primary_language
+field_name: field_primary_language
+entity_type: taxonomy_term
+type: entity_reference
+settings:
+  target_type: configurable_language
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

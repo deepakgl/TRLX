@@ -1,0 +1,21 @@
+uuid: 30a7e8f7-0717-4d15-b0f1-c3f118409b91
+langcode: en
+status: true
+dependencies:
+  module:
+    - user
+id: user.field_rank
+field_name: field_rank
+entity_type: user
+type: string
+settings:
+  max_length: 255
+  is_ascii: false
+  case_sensitive: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

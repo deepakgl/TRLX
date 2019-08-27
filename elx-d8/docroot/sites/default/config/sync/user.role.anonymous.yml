@@ -1,0 +1,23 @@
+uuid: 08de4756-f16b-4945-b8dd-81439b9ee8d4
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: j5zLMOdJBqC0bMvSdth5UebkprJB8g_2FXHqhfpJzow
+id: anonymous
+label: 'anonymous user'
+weight: 0
+is_admin: false
+permissions:
+  - 'access resource user'
+  - 'create field_employment_status'
+  - 'create field_first_name'
+  - 'create field_last_name'
+  - 'create og_user_node'
+  - 'diff view changes'
+  - 'display EU Cookie Compliance popup'
+  - 'restful get terms_and_condition_anonymous'
+  - 'restful get terms_and_conditions_anonymous'
+  - 'restful post stories_comments_post'
+  - 'use text format filtered_html'
+  - 'view media'

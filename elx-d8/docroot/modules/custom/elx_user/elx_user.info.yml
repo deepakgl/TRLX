@@ -1,0 +1,7 @@
+name: ELX User
+type: module
+description: Elx user custom module
+core: 8.x
+package: ELX
+dependencies:
+ - core/jquery

@@ -1,0 +1,18 @@
+uuid: 6d6a06ad-1bfe-4dbe-a21c-c18b59962a82
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.tools_by_role
+  module:
+    - content_translation
+third_party_settings:
+  content_translation:
+    enabled: true
+    bundle_settings:
+      untranslatable_fields_hide: '0'
+id: taxonomy_term.tools_by_role
+target_entity_type_id: taxonomy_term
+target_bundle: tools_by_role
+default_langcode: site_default
+language_alterable: false

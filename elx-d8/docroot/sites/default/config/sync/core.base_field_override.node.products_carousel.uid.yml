@@ -1,0 +1,20 @@
+uuid: 7594ef47-2288-4dbb-ac03-254603fc327d
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.products_carousel
+id: node.products_carousel.uid
+field_name: uid
+entity_type: node
+bundle: products_carousel
+label: 'Authored by'
+description: 'The username of the content author.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: 'Drupal\node\Entity\Node::getCurrentUserId'
+settings:
+  handler: default
+  handler_settings: {  }
+field_type: entity_reference

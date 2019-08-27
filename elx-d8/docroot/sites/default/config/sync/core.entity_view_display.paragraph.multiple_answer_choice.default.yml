@@ -1,0 +1,52 @@
+uuid: fa784fd4-f74b-4ee0-9ef4-6c4a37646c00
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.multiple_answer_choice.field_answer
+    - field.field.paragraph.multiple_answer_choice.field_correct_answer
+    - field.field.paragraph.multiple_answer_choice.field_feedback
+    - field.field.paragraph.multiple_answer_choice.field_grades
+    - paragraphs.paragraphs_type.multiple_answer_choice
+  module:
+    - options
+    - text
+_core:
+  default_config_hash: OdeRqJHPr6LI2jZDB5NpKp09M2hNTUZHD8G3-d57kKQ
+id: paragraph.multiple_answer_choice.default
+targetEntityType: paragraph
+bundle: multiple_answer_choice
+mode: default
+content:
+  field_answer:
+    weight: 1
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_correct_answer:
+    weight: 0
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
+    region: content
+  field_feedback:
+    weight: 2
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_grades:
+    weight: 3
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
+    region: content
+hidden: {  }

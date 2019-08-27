@@ -1,0 +1,18 @@
+uuid: c8719543-f250-4066-9c6a-9f8e115e8c11
+langcode: en
+status: true
+dependencies:
+  module:
+    - taxonomy
+id: taxonomy_term.field_inspiration_badge
+field_name: field_inspiration_badge
+entity_type: taxonomy_term
+type: boolean
+settings: {  }
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

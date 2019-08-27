@@ -1,0 +1,28 @@
+uuid: 8037a87c-59e9-432a-a7e1-4f314d659e3d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_image_first_bs_t4
+    - media.type.image
+    - paragraphs.paragraphs_type.field_slids_bs_t4
+id: paragraph.field_slids_bs_t4.field_image_first_bs_t4
+field_name: field_image_first_bs_t4
+entity_type: paragraph
+bundle: field_slids_bs_t4
+label: 'Image First'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      image: image
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

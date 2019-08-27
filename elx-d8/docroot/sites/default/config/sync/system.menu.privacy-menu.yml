@@ -1,0 +1,8 @@
+uuid: 188bab4c-1343-49e3-8dd1-620a49181bf9
+langcode: en
+status: true
+dependencies: {  }
+id: privacy-menu
+label: 'Privacy Menu'
+description: 'Privacy Policy and Term & conditions'
+locked: false

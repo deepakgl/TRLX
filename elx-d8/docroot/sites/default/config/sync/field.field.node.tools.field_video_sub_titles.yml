@@ -1,0 +1,27 @@
+uuid: d561f1a2-ee74-41ae-812d-f337eb37fa1c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_video_sub_titles
+    - node.type.tools
+  module:
+    - file
+id: node.tools.field_video_sub_titles
+field_name: field_video_sub_titles
+entity_type: node
+bundle: tools
+label: 'Video sub titles'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  file_directory: '[date:custom:Y]-[date:custom:m]'
+  file_extensions: vtt
+  max_filesize: ''
+  description_field: true
+  handler: 'default:file'
+  handler_settings: {  }
+field_type: file

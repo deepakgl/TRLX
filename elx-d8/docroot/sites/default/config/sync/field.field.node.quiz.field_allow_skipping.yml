@@ -1,0 +1,25 @@
+uuid: 80a96fe8-6860-4e9b-9c06-c69fba93b7bb
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_allow_skipping
+    - node.type.quiz
+_core:
+  default_config_hash: OlgegR1kKa2riwlt5aTsaKfBYfkA9pfH-hOd1aPE3YQ
+id: node.quiz.field_allow_skipping
+field_name: field_allow_skipping
+entity_type: node
+bundle: quiz
+label: 'Allow skipping'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

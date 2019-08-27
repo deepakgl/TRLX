@@ -1,0 +1,25 @@
+uuid: 7efaed5c-906e-4a59-8902-b177adf1786a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_repeat_until_correct
+    - node.type.quiz
+_core:
+  default_config_hash: egsGYT5rTsUlIa854NWxmIbBKolqFv8DKkkfD9aOqm4
+id: node.quiz.field_repeat_until_correct
+field_name: field_repeat_until_correct
+entity_type: node
+bundle: quiz
+label: 'Repeat until correct'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

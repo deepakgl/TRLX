@@ -1,0 +1,18 @@
+uuid: 81e18b3b-75dc-40a0-853c-91ab5d6f9bda
+langcode: en
+status: true
+dependencies:
+  module:
+    - elx_tools
+    - serialization
+    - simple_oauth
+id: tools_listings
+plugin_id: tools_listings
+granularity: resource
+configuration:
+  methods:
+    - GET
+  formats:
+    - json
+  authentication:
+    - oauth2

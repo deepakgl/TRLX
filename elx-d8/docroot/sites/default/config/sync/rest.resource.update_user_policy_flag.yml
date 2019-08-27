@@ -1,0 +1,18 @@
+uuid: f2910d3c-a870-4ae7-999e-90f056b6a6ee
+langcode: en
+status: true
+dependencies:
+  module:
+    - elx_user
+    - serialization
+    - simple_oauth
+id: update_user_policy_flag
+plugin_id: update_user_policy_flag
+granularity: resource
+configuration:
+  methods:
+    - POST
+  formats:
+    - json
+  authentication:
+    - oauth2

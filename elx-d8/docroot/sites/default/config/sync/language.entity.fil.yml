@@ -1,0 +1,9 @@
+uuid: 63a2896c-2b22-4854-919a-af940c60d130
+langcode: fil
+status: true
+dependencies: {  }
+id: fil
+label: Filipino
+direction: ltr
+weight: -8
+locked: false

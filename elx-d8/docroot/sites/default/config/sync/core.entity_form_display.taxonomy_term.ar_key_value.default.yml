@@ -1,0 +1,32 @@
+uuid: 653c9904-8006-4228-9b3a-f7b03648f6ee
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.ar_key_value
+  module:
+    - text
+id: taxonomy_term.ar_key_value.default
+targetEntityType: taxonomy_term
+bundle: ar_key_value
+mode: default
+content:
+  description:
+    type: text_textarea
+    weight: 1
+    region: content
+    settings:
+      rows: 2
+      placeholder: ''
+    third_party_settings: {  }
+  name:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  langcode: true
+  path: true

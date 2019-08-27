@@ -1,0 +1,47 @@
+--- a/src/BulkUpdateFieldsCopy.php
++++ b/src/BulkUpdateFields.php
+@@ -17,31 +17,25 @@ class BulkUpdateFields {
+     $update = FALSE;
+     foreach ($entities as $entity) {
+       foreach ($fields as $field_name => $field_value) {
++        $mid = explode("media:", $field_value['target_id']);
+         if ($entity->hasField($field_name)) {
+-          if ($field_value == $field_name ) { continue; } // this is the case for field images for some reason
+-          // not sure if this is still valid but leaving in case
+-          if (isset($field_value['target_id'][0])) {
+-            $field_value = $field_value['target_id'];
++          if (!empty(array_filter($mid))) {
++            $entity->set($field_name, $mid[1], $notify = true);
+           }
+-          // this caused a failure in core/entity/plugin/datatype/entityreference. removing.
+-          if (isset($field_value[0]['target_id']) && isset($field_value['add_more'])) {
+-            unset($field_value['add_more']);
++          elseif (isset($field_value['target_id'])) {
++            $entity->get($field_name)->setValue($field_value['target_id']);
+           }
+-          // this occurs in fields like office hours.
+-          if (isset($field_value['value'])) {
+-            $field_value = $field_value['value'];
++          else {
++            $field_value = array_filter(array_filter($field_value, "is_numeric", ARRAY_FILTER_USE_KEY));
++            $entity->get($field_name)->setValue($field_value);
+           }
+-          $entity->get($field_name)->setValue($field_value);
+           $update = TRUE;
+-          if (!in_array($field_name, $results_fields)) {
+-            $results_fields[] = $field_name;
+-          }
+         }
+-      }
+-      if ($update) {
+-        $entity->setNewRevision();
+-        $entity->save();
+-        $results_entities[] = $entity->id();
++        if ($update) {
++          $entity->setNewRevision();
++          $entity->save();
++          $results_entities[] = $entity->id();
++        }
+       }
+     }
+     $context['message'] = $message;

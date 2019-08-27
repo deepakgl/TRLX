@@ -1,0 +1,44 @@
+uuid: 24fecf35-f4d8-479f-81c4-b5c714f13137
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: 4oaiJdBfuc3e1S4CJmPOFI7PM6nMaYquW2KH65sH348
+id: custom_best_sellers
+class: null
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags: null
+migration_group: custom
+label: 'Best Sellers'
+source:
+  plugin: custom_best_sellers
+  key: migrate
+  target: elx_d7
+process:
+  nid: nid
+  vid: vid
+  langcode: language
+  title: title
+  uid: uid
+  status: status
+  created: created
+  changed: changed
+  field_best_seller_title: field_best_seller_title_value
+  field_sub_title: field_sub_title_value
+  field_point_value: field_point_value_value
+  field_product_categories: field_product_categories_tid
+  field_markets: best_sellers_market
+  field_best_sellers_three:
+    source: paragraphs
+    plugin: best_sellers_paragraphs_migrate
+  field_paragraph_templates:
+    source: paragraphs
+    plugin: best_sellers_paragraphs_migrate_tiles
+  field_best_sellers_four:
+    source: paragraphs
+    plugin: best_sellers_paragraphs_migrate_try_with_it
+destination:
+  plugin: 'entity:node'
+  default_bundle: best_sellers
+migration_dependencies: null

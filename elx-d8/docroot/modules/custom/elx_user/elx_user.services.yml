@@ -1,0 +1,5 @@
+services:
+  elx_user.response_header:
+    class: '\Drupal\elx_user\HttpResponseHeader\HeaderResponseSubscriber'
+    tags:
+      - { name: event_subscriber }

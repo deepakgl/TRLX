@@ -1,0 +1,21 @@
+uuid: 3d09e41f-a8e0-4748-84ed-1554b3e990d8
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_range_title
+    - node.type.quiz
+_core:
+  default_config_hash: 2BipNwj7e_FBI3q5BMTQZ9VGTDeceJP9hv-81K8a_bg
+id: node.quiz.field_range_title
+field_name: field_range_title
+entity_type: node
+bundle: quiz
+label: 'Range title'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

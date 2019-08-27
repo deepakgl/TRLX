@@ -1,0 +1,20 @@
+uuid: 4ff33de9-3799-41f6-857b-c9f826ab1284
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.products_carousel
+  module:
+    - path
+id: node.products_carousel.path
+field_name: path
+entity_type: node
+bundle: products_carousel
+label: 'URL alias'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: path

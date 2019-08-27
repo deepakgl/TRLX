@@ -1,0 +1,35 @@
+uuid: 2fd4b8a0-1322-4b82-a5d9-cf52d9fbd895
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.best_sellers_template_four.field_slids_bs_t4
+    - paragraphs.paragraphs_type.best_sellers_template_four
+  module:
+    - paragraphs
+id: paragraph.best_sellers_template_four.default
+targetEntityType: paragraph
+bundle: best_sellers_template_four
+mode: default
+content:
+  field_slids_bs_t4:
+    type: entity_reference_paragraphs
+    weight: 2
+    settings:
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: open
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: ''
+    third_party_settings: {  }
+    region: content
+  translation:
+    weight: 10
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden:
+  created: true
+  status: true
+  uid: true

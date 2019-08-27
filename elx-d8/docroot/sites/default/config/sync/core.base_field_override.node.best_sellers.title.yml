@@ -1,0 +1,18 @@
+uuid: b931d616-dc8b-4d9b-b442-ee78bb8c8a85
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.best_sellers
+id: node.best_sellers.title
+field_name: title
+entity_type: node
+bundle: best_sellers
+label: 'Admin Title'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

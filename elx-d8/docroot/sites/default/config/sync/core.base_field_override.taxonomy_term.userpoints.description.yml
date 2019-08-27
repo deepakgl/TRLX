@@ -1,0 +1,20 @@
+uuid: ce17b830-059e-408c-aac4-917d6db818aa
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.userpoints
+  module:
+    - text
+id: taxonomy_term.userpoints.description
+field_name: description
+entity_type: taxonomy_term
+bundle: userpoints
+label: Description
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long

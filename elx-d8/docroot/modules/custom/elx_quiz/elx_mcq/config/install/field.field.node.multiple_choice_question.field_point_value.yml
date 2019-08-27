@@ -1,0 +1,19 @@
+uuid: 4c565d58-8e3f-4aa4-be82-f85c6a5f9618
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_point_value
+    - node.type.multiple_choice_question
+id: node.multiple_choice_question.field_point_value
+field_name: field_point_value
+entity_type: node
+bundle: multiple_choice_question
+label: 'Point Value'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

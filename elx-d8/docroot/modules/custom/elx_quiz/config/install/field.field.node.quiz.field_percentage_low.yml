@@ -1,0 +1,19 @@
+uuid: 160e2aa6-554b-4d3c-83f9-00a191610188
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_percentage_low
+    - node.type.quiz
+id: node.quiz.field_percentage_low
+field_name: field_percentage_low
+entity_type: node
+bundle: quiz
+label: 'Percentage low'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

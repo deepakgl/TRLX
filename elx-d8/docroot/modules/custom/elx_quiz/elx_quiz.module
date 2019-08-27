@@ -1,0 +1,106 @@
+<?php
+
+/**
+ * @file
+ * ELX Quiz module file.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Component\Serialization\Json;
+
+/**
+ * Implements hook_form_alter().
+ */
+function elx_quiz_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if ($form_id == 'node_quiz_form' || $form_id == 'node_quiz_edit_form') {
+    $form['field_questions']['widget']['actions']['ief_add']['#value'] =
+    t('Add Another Question');
+    $form['actions']['preview']['#access'] =
+    $form['field_quiz_json_data']['#access'] =
+    $form['field_display_description_on_cou']['#access'] =
+    $form['field_markets']['#access'] =
+    $form['field_access_by_role']['#access'] =
+    $form['field_quiz_json']['#access'] = FALSE;
+    $form['actions']['submit']['#submit'][] = '_elx_quiz_submit';
+  }
+}
+
+/**
+ * Perform alterations before an entity form is included in the IEF widget.
+ *
+ * @param $entity_form
+ *   Nested array of form elements that comprise the entity form.
+ * @param $form_state
+ *   The form state of the parent form.
+ */
+function elx_quiz_inline_entity_form_entity_form_alter(&$entity_form, &$form_state) {
+  if ($entity_form['#entity_type'] == 'node'
+  && $entity_form['#bundle'] == 'multiple_choice_question'
+  && $entity_form['#translating']) {
+    foreach ($entity_form['field_answer_choices']['widget'] as $key => $value) {
+      if (is_numeric($key)) {
+        $entity_form['field_answer_choices']['widget'][$key]['subform']['field_correct_answer']['#disabled'] = TRUE;
+      }
+    }
+  }
+}
+
+/**
+ * Prepare quiz and question data and set in a hidden field.
+ *
+ * @param mixed $form
+ *   Form object.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   Form state object.
+ */
+function _elx_quiz_submit($form, $form_state) {
+  $entity = $form_state->getFormObject()->getEntity();
+  $entity = \Drupal::entityTypeManager()->getStorage('node')
+    ->load($entity->id());
+  $node_obj = \Drupal::entityManager()->getTranslationFromContext($entity);
+  $question_id = array_column($node_obj->get('field_questions')->getValue(),
+  'target_id');
+  if (!empty($question_id)) {
+    foreach ($question_id as $ques_key => $ques_value) {
+      $ques_entity = \Drupal::entityTypeManager()->getStorage('node')
+        ->load($ques_value);
+      $ques_obj = \Drupal::entityManager()
+        ->getTranslationFromContext($ques_entity);
+      $paragraph_obj = $ques_obj->get('field_answer_choices')->getValue();
+      foreach ($paragraph_obj as $para_key => $para_value) {
+        $para_id = $para_value['target_id'];
+        $para_entity = \Drupal::entityTypeManager()->getStorage('paragraph')
+          ->load($para_id);
+        $paragraph = \Drupal::entityManager()
+          ->getTranslationFromContext($para_entity);
+        $field_answer = $paragraph->get('field_answer')->getValue()[0]['value'];
+        $field_correct_answer = $paragraph->get('field_correct_answer')
+          ->getValue()[0]['value'];
+        $options[$ques_obj->id()][] = [
+          'id' => (int) $paragraph->id(),
+          'option' => trim(preg_replace('/\s\s+/', ' ', $field_answer)),
+          'isCorrectAnswer' => (int) $field_correct_answer,
+        ];
+      }
+      $question_title = $ques_obj->get('body')->getValue()[0]['value'];
+      $field_multiple_answers = $ques_obj->get('field_multiple_answers')
+        ->getValue()[0]['value'];
+      $questions[$ques_obj->id()] = [
+        'qid' => (int) $ques_obj->id(),
+        'title' => $ques_obj->getTitle(),
+        'question' => trim(preg_replace('/\s\s+/', ' ', $question_title)),
+        'type' => 'mcq',
+        'isMultipleAnswer' => (int) $field_multiple_answers,
+        'options' => $options[$ques_obj->id()],
+      ];
+    }
+  }
+  $output['results'] = [
+    'id' => (int) $node_obj->id(),
+    'title' => $node_obj->getTitle(),
+    'questions' => !(empty($questions)) ? array_values($questions) : '',
+  ];
+  $quiz_json = JSON::encode($output);
+  $node_obj->set('field_quiz_json', $quiz_json);
+  $node_obj->save();
+}

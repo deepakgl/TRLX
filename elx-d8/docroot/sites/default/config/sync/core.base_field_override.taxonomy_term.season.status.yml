@@ -1,0 +1,22 @@
+uuid: bad83f49-59ef-4bf2-9412-b0da05ed2f17
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.season
+id: taxonomy_term.season.status
+field_name: status
+entity_type: taxonomy_term
+bundle: season
+label: Published
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 1
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

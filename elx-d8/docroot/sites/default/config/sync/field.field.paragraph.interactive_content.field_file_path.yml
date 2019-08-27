@@ -1,0 +1,19 @@
+uuid: e20f2c64-b43a-4e28-9139-90228dd9ba62
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_file_path
+    - paragraphs.paragraphs_type.interactive_content
+id: paragraph.interactive_content.field_file_path
+field_name: field_file_path
+entity_type: paragraph
+bundle: interactive_content
+label: 'File Path'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

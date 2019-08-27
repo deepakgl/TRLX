@@ -1,0 +1,5 @@
+name: ELX Search
+type: module
+description: ELX custom module for Search.
+core: 8.x
+package: ELX

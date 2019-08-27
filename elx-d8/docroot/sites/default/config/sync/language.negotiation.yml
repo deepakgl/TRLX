@@ -1,0 +1,53 @@
+session:
+  parameter: language
+url:
+  source: path_prefix
+  prefixes:
+    en: ''
+    zh-hans: zh-hans
+    el: el
+    th: th
+    ko: ko
+    ja: ja
+    ru: ru
+    vi: vi
+    zh-hant: zh-hant
+    ar: ar
+    bg: bg
+    hr: hr
+    cs: cs
+    da: da
+    nl: nl
+    et: et
+    fil: fil
+    fi: fi
+    fr: fr
+    frca: frca
+    de: de
+    he: he
+    hu: hu
+    is: is
+    id: id
+    it: it
+    lv: lv
+    lt: lt
+    nb: nb
+    pl: pl
+    pt: pt
+    ro: ro
+    es: es
+    essp: essp
+    sv: sv
+    tr: tr
+    zh-Hant-trhk: zh-Hant-trhk
+    zh-Hant-tw: zh-Hant-tw
+    ja-trjp: ja-trjp
+  domains:
+    en: ''
+    zh-hans: ''
+    zh-Hant-trhk: ''
+    zh-Hant-tw: ''
+    ja-trjp: ''
+selected_langcode: site_default
+_core:
+  default_config_hash: uEePITI9tV6WqzmsTb7MfPCi5yPWXSxAN1xeLcYFQbM

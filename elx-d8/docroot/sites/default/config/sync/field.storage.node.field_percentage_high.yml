@@ -1,0 +1,23 @@
+uuid: 192583cd-e782-4c7b-9686-38b4794f3fef
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+_core:
+  default_config_hash: fbq7UFHlYG-9j5iauXM5W0ZoEzBnL4Qc3Q7GTcHgYUE
+id: node.field_percentage_high
+field_name: field_percentage_high
+entity_type: node
+type: string
+settings:
+  max_length: 3
+  is_ascii: false
+  case_sensitive: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

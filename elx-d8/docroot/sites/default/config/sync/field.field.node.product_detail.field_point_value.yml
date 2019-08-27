@@ -1,0 +1,21 @@
+uuid: d763fce1-073b-4e9f-8aa0-e951bdc75d0f
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_point_value
+    - node.type.product_detail
+id: node.product_detail.field_point_value
+field_name: field_point_value
+entity_type: node
+bundle: product_detail
+label: 'Point Value'
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: '25'
+default_value_callback: ''
+settings: {  }
+field_type: string

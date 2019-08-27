@@ -1,0 +1,9 @@
+uuid: 9a940c2f-4dee-43b1-bb20-2c003e013b3a
+langcode: en
+status: true
+dependencies: {  }
+id: media_template_two
+label: 'Media Template Two'
+icon_uuid: null
+description: ''
+behavior_plugins: {  }

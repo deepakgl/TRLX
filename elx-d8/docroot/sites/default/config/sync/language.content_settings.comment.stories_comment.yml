@@ -1,0 +1,18 @@
+uuid: 3d04a4b9-7344-4bf7-be0a-d12020a16afd
+langcode: en
+status: true
+dependencies:
+  config:
+    - comment.type.stories_comment
+  module:
+    - content_translation
+third_party_settings:
+  content_translation:
+    enabled: false
+    bundle_settings:
+      untranslatable_fields_hide: '0'
+id: comment.stories_comment
+target_entity_type_id: comment
+target_bundle: stories_comment
+default_langcode: site_default
+language_alterable: false

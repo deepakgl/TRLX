@@ -1,0 +1,17 @@
+elx_bulk_mail.menu:
+  title: 'Send Bulk Mail'
+  description: 'Send Bulk Mail To User via CSV.'
+  route_name: elx_bulk_mail.send_bulk_mail
+  parent: user.admin_index
+
+elx_bulk_mail.user_unblock_menu:
+  title: 'User Operation'
+  description: 'Unblock user via CSV.'
+  route_name: elx_bulk_mail.user_unblock
+  parent: user.admin_index
+
+elx_bulk_mail.market_map:
+  title: 'Contet Market Mapping'
+  description: 'Map content to market with nid.'
+  route_name: elx_bulk_mail.bulk_content_market_map
+  parent: user.admin_index

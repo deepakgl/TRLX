@@ -1,0 +1,28 @@
+--- modules/user/src/UserAuth.php
++++ modules/user/src/UserAuth.php
+@@ -49,14 +49,18 @@ class UserAuth implements UserAuthInterface {
+         $account_search = $this->entityManager->getStorage('user')->loadByProperties(['mail' => $username]);
+       }
+       if ($account = reset($account_search)) {
+-        if ($this->passwordChecker->check($password, $account->getPassword())) {
+-          // Successful authentication.
+-          $uid = $account->id();
++        $status = $account->get('status')->getValue()[0]['value'];
++        $has_permision = $account->get('field_has_3_0_permission')->getValue();
++        if ($status == 1 && $has_permision[0]['value'] == 1) {
++          if ($this->passwordChecker->check($password, $account->getPassword())) {
++            // Successful authentication.
++            $uid = $account->id();
+
+-          // Update user to new password scheme if needed.
+-          if ($this->passwordChecker->needsRehash($account->getPassword())) {
+-            $account->setPassword($password);
+-            $account->save();
++            // Update user to new password scheme if needed.
++            if ($this->passwordChecker->needsRehash($account->getPassword())) {
++              $account->setPassword($password);
++              $account->save();
++            }
+           }
+         }
+       }

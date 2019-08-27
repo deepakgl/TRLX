@@ -1,0 +1,31 @@
+uuid: 7ba33e66-4fdc-497d-9d54-244eed5c9780
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.multiple_choice_question.body
+    - node.type.multiple_choice_question
+  module:
+    - text
+    - user
+id: node.multiple_choice_question.teaser
+targetEntityType: node
+bundle: multiple_choice_question
+mode: teaser
+content:
+  body:
+    label: hidden
+    type: text_summary_or_trimmed
+    weight: 101
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+    region: content
+  links:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden:
+  langcode: true

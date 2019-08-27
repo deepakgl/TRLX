@@ -1,0 +1,25 @@
+uuid: d214a8d8-4aea-434b-92a0-4073b51c8531
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.welcome_message.field_component
+    - field.field.node.welcome_message.field_markets
+    - field.field.node.welcome_message.field_message
+    - node.type.welcome_message
+  module:
+    - user
+id: node.welcome_message.teaser
+targetEntityType: node
+bundle: welcome_message
+mode: teaser
+content:
+  links:
+    weight: 100
+    region: content
+hidden:
+  field_component: true
+  field_markets: true
+  field_message: true
+  langcode: true

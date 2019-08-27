@@ -1,0 +1,15 @@
+uuid: a2295a44-9e23-4e13-8bdd-d6b0fe3de222
+langcode: en
+status: true
+dependencies: {  }
+name: user
+label: 'User Dashboard(200×200)'
+effects:
+  0ee74ca7-b24f-4ec7-ad90-c84df8d05ee6:
+    uuid: 0ee74ca7-b24f-4ec7-ad90-c84df8d05ee6
+    id: image_scale_and_crop
+    weight: 2
+    data:
+      width: 200
+      height: 200
+      anchor: center-center

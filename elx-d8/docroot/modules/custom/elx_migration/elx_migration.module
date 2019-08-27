@@ -1,0 +1,99 @@
+<?php
+
+function getMigratedDestinationId($table_name, $sourceid) {
+  $query = \Drupal::database()->select($table_name, 'mp');
+  $query->fields('mp', ['destid1']);
+  $query->condition('sourceid1', $sourceid, '=');
+  $result = $query->execute()->fetchAssoc()['destid1'];
+
+  return $result;
+}
+
+function getFields($table_name, $field_name, $nid, $type) {
+  $fields[$field_name] = '';
+  // Connect with migration database.
+  $ext_db = \Drupal\Core\Database\Database::getConnection('default','migrate');
+  $query = $ext_db->select($table_name, 'tn')
+    ->fields('tn', [ $field_name ])
+    ->condition('tn.entity_id', $nid, '=')
+    ->condition('tn.bundle', $type, '=');
+  $result = $query->execute()->fetchAll();
+  if (!empty($result)) {
+    foreach ($result as $record) {
+      $fields[$field_name] = $record->$field_name;
+    }
+  }
+
+  return $fields[$field_name];
+}
+
+function getTermFields($table_name, $field_name, $nid, $type) {
+  // Connect with migration database.
+  $ext_db = \Drupal\Core\Database\Database::getConnection('default','migrate');
+  $query = $ext_db->select($table_name, 'tn')
+    ->fields('tn', [ $field_name ])
+    ->condition('tn.entity_id', $nid, '=')
+    ->condition('tn.bundle', $type, '=');
+  $result = $query->execute()->fetchAll();
+  foreach ($result as $record) {
+    $fields[] = $record->$field_name;
+  }
+
+  return $fields;
+}
+
+function getMarketFields($table_name, $field_name, $type, $nid) {
+  // Connect with migration database.
+  $ext_db = \Drupal\Core\Database\Database::getConnection('default','migrate');
+  $query = $ext_db->select($table_name, 'tn')
+    ->fields('tn', [ $field_name ])
+    ->condition('tn.etid', $nid, '=')
+    ->condition('tn.entity_type', $type, '=');
+  $result = $query->execute()->fetchAll();
+  foreach ($result as $record) {
+    $markets[] = $record->$field_name;
+  }
+
+  return $markets;
+}
+
+function setTranslatedContentMapping($src, $dest, $lang, $status, $type) {
+  db_merge('elx_translated_migration_mapping')
+  ->key(['sourceid1' => $src, 'langcode' => $lang])
+  ->fields([
+    'sourceid1' => $src,
+    'destid1' => $dest,
+    'type' => $type,
+    'status' => $status,
+  ])
+  ->execute();
+
+  return;
+}
+
+function getTranslatedContentMapping($src, $lang) {
+  $query = \Drupal::database()->select('elx_translated_migration_mapping', 'tmm');
+  $query->fields('tmm', ['destid1']);
+  $query->condition('sourceid1', $src, '=');
+  $query->condition('langcode', $lang, '=');
+  $result = $query->execute()->fetchAssoc()['destid1'];
+
+  return $result;
+}
+
+function getFileType($table_name, $field_name, $fid, $cl_name = 'fid') {
+  $fields[$field_name] = '';
+  // Connect with migration database.
+  $ext_db = \Drupal\Core\Database\Database::getConnection('default','migrate');
+  $query = $ext_db->select($table_name, 'tn')
+    ->fields('tn', [ $field_name ])
+    ->condition('tn.' . $cl_name, $fid, '=');
+  $result = $query->execute()->fetchAll();
+  if (!empty($result)) {
+    foreach ($result as $record) {
+      $fields[$field_name] = $record->$field_name;
+    }
+  }
+
+  return $fields[$field_name];
+}

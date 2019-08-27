@@ -1,0 +1,20 @@
+uuid: 5c33abbf-63df-42a8-8a20-f7be013a57fa
+langcode: en
+status: false
+dependencies:
+  module:
+    - migrate_example_advanced_setup
+    - serialization
+    - user
+_core:
+  default_config_hash: GT5F3BdBY5PWDc3gGih9T0yBUx9nIdHwvNw72PAErdI
+id: migrate_example_advanced_variety_items
+plugin_id: migrate_example_advanced_variety_items
+granularity: method
+configuration:
+  GET:
+    supported_formats:
+      - json
+      - xml
+    supported_auth:
+      - cookie

@@ -1,0 +1,18 @@
+uuid: 4a472ce7-4e91-47bb-93c5-6f00e0e22204
+langcode: en
+status: true
+dependencies:
+  module:
+    - elx_user
+    - serialization
+    - simple_oauth
+id: change_user_picture
+plugin_id: change_user_picture
+granularity: resource
+configuration:
+  methods:
+    - POST
+  formats:
+    - json
+  authentication:
+    - oauth2

@@ -1,0 +1,32 @@
+uuid: 6e7fd5b3-7206-4ee8-a276-b23c7cf85a7e
+langcode: en
+status: true
+dependencies:
+  config:
+    - entityqueue.entity_queue.explore_learning_levels
+    - field.field.entity_subqueue.explore_learning_levels.field_queue_override_flag
+id: entity_subqueue.explore_learning_levels.default
+targetEntityType: entity_subqueue
+bundle: explore_learning_levels
+mode: default
+content:
+  field_queue_override_flag:
+    weight: 1
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
+    region: content
+  items:
+    label: hidden
+    type: entity_reference_label
+    weight: 0
+    region: content
+    settings:
+      link: true
+    third_party_settings: {  }
+hidden:
+  langcode: true

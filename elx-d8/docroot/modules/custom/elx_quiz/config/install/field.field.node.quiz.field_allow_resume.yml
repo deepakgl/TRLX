@@ -1,0 +1,23 @@
+uuid: fd5cd816-5266-47e8-a482-cb61fbddf120
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_allow_resume
+    - node.type.quiz
+id: node.quiz.field_allow_resume
+field_name: field_allow_resume
+entity_type: node
+bundle: quiz
+label: 'Allow resume'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

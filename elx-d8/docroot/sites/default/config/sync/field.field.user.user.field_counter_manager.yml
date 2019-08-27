@@ -1,0 +1,20 @@
+uuid: de4a38cf-8258-445e-aade-fda28cc1bc0e
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.user.field_counter_manager
+  module:
+    - user
+id: user.user.field_counter_manager
+field_name: field_counter_manager
+entity_type: user
+bundle: user
+label: 'Counter manager'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

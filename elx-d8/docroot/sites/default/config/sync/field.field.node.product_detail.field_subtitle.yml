@@ -1,0 +1,19 @@
+uuid: f6db9366-3654-461f-bd17-fe98ad0c4285
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_subtitle
+    - node.type.product_detail
+id: node.product_detail.field_subtitle
+field_name: field_subtitle
+entity_type: node
+bundle: product_detail
+label: Subtitle
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

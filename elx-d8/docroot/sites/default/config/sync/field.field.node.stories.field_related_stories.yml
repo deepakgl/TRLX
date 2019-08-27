@@ -1,0 +1,27 @@
+uuid: 8f78b104-3f86-442e-a2b6-f28d8e3440cf
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_related_stories
+    - node.type.stories
+id: node.stories.field_related_stories
+field_name: field_related_stories
+entity_type: node
+bundle: stories
+label: 'Related Stories'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      stories: stories
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

@@ -1,0 +1,28 @@
+uuid: 5c1cebe6-6eaa-4fb3-a5bd-ff577c7a089d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_fun_fact_sheet
+    - media.type.file
+    - node.type.product_detail
+id: node.product_detail.field_fun_fact_sheet
+field_name: field_fun_fact_sheet
+entity_type: node
+bundle: product_detail
+label: 'Fun Fact Sheet'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      file: file
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: audio
+field_type: entity_reference

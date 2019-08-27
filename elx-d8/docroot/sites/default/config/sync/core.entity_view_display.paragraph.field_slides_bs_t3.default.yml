@@ -1,0 +1,32 @@
+uuid: afa2769d-6a94-4a16-8fa8-ad0e7cdf2acc
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.field_slides_bs_t3.field_image_bs_t3
+    - field.field.paragraph.field_slides_bs_t3.field_product_family_descr
+    - paragraphs.paragraphs_type.field_slides_bs_t3
+  module:
+    - text
+id: paragraph.field_slides_bs_t3.default
+targetEntityType: paragraph
+bundle: field_slides_bs_t3
+mode: default
+content:
+  field_image_bs_t3:
+    type: entity_reference_entity_view
+    weight: 2
+    label: above
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    region: content
+  field_product_family_descr:
+    weight: 1
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+hidden: {  }

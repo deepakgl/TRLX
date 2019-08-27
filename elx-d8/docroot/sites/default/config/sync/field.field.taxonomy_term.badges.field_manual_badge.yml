@@ -1,0 +1,23 @@
+uuid: a050da57-44ec-4b2b-8f4b-41713a5cf9d3
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_manual_badge
+    - taxonomy.vocabulary.badges
+id: taxonomy_term.badges.field_manual_badge
+field_name: field_manual_badge
+entity_type: taxonomy_term
+bundle: badges
+label: 'Manual Badge'
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'Yes'
+  off_label: 'No'
+field_type: boolean

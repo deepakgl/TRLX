@@ -1,0 +1,23 @@
+--- a/vendor/symfony/http-foundation/Request.php
++++ b/vendor/symfony/http-foundation/Request.php
+@@ -14,6 +14,7 @@ namespace Symfony\Component\HttpFoundation;
+ use Symfony\Component\HttpFoundation\Exception\ConflictingHeadersException;
+ use Symfony\Component\HttpFoundation\Exception\SuspiciousOperationException;
+ use Symfony\Component\HttpFoundation\Session\SessionInterface;
++use Drupal\Core\Site\Settings;
+
+ /**
+  * Request represents an HTTP request.
+@@ -1246,6 +1247,12 @@ class Request
+         }
+
+         $https = $this->server->get('HTTPS');
++        // Custom Patch to make drupal save secure cookie as drupal is not able to set https
++        $is_elc_secure = Settings::get('is_elc_secure', FALSE);
++        if($is_elc_secure) {
++          return TRUE;
++        }
++        // Custom Code Ends
+
+         return !empty($https) && 'off' !== strtolower($https);
+     }

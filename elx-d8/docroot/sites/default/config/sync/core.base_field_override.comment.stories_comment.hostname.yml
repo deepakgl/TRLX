@@ -1,0 +1,18 @@
+uuid: df38ecc3-4469-4b03-850d-7e230ea19cd0
+langcode: en
+status: true
+dependencies:
+  config:
+    - comment.type.stories_comment
+id: comment.stories_comment.hostname
+field_name: hostname
+entity_type: comment
+bundle: stories_comment
+label: Hostname
+description: 'The comment author''s hostname.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

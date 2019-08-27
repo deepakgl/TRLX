@@ -1,0 +1,79 @@
+--- a/src/EntityQueueListBuilder.php
++++ b/src//EntityQueueListBuilder.php
+@@ -8,6 +8,7 @@ use Drupal\Core\Entity\EntityTypeInterface;
+ use Drupal\Core\Entity\EntityTypeManagerInterface;
+ use Drupal\entityqueue\Entity\EntitySubqueue;
+ use Symfony\Component\DependencyInjection\ContainerInterface;
++use Drupal\elx_user\Utility\UserUtility;
+
+ /**
+  * Defines a class that builds a listing of entity queues.
+@@ -80,17 +81,22 @@ class EntityQueueListBuilder extends ConfigEntityListBuilder {
+    * {@inheritdoc}
+    */
+   public function buildRow(EntityInterface $entity) {
+-    $row = [
+-      'data' => [
+-        'label' => $entity->label(),
+-        'target_type' => $this->entityTypeManager->getDefinition($entity->getTargetEntityTypeId())->getLabel(),
+-        'handler' => $entity->getHandlerPlugin()->getPluginDefinition()['title'],
+-        'items' => $this->getQueueItemsStatus($entity),
+-      ] + parent::buildRow($entity),
+-      'title' => $this->t('Machine name: @name', array('@name' => $entity->id())),
+-    ];
+-
+-    return $row;
++    $user_utility = new UserUtility();
++    $uid = \Drupal::currentUser()->id();
++    $roles = $user_utility->getUserRoles($uid);
++    if (strpos($entity->id(), '_market_wise') !== false || (!$roles)) {
++      $row = [
++        'data' => [
++          'label' => $entity->label(),
++          'target_type' => $this->entityTypeManager->getDefinition($entity->getTargetEntityTypeId())->getLabel(),
++          'handler' => $entity->getHandlerPlugin()->getPluginDefinition()['title'],
++          'items' => $this->getQueueItemsStatus($entity),
++          ] + parent::buildRow($entity),
++          'title' => $this->t('Machine name: @name', array('@name' => $entity->id())),
++        ];
++
++        return $row;
++    }
+   }
+
+   /**
+
+--- a/src/EntityQueueListBuilder.php
++++ b/src/EntityQueueListBuilderNew.php
+@@ -175,9 +175,11 @@ class EntityQueueListBuilder extends ConfigEntityListBuilder {
+    */
+   protected function getQueueItemsStatus(EntityQueueInterface $queue) {
+     $handler = $queue->getHandlerPlugin();
+-
++    $user_utility = new UserUtility();
++    $uid = \Drupal::currentUser()->id();
++    $roles = $user_utility->getUserRoles($uid);
+     $items = NULL;
+-    if ($handler->supportsMultipleSubqueues()) {
++    if ($handler->supportsMultipleSubqueues() && !$roles) {
+       $subqueues_count = $this->entityTypeManager->getStorage('entity_subqueue')->getQuery()
+         ->condition('queue', $queue->id(), '=')
+         ->count()
+@@ -185,6 +187,18 @@ class EntityQueueListBuilder extends ConfigEntityListBuilder {
+
+       $items = $this->t('@count subqueues', ['@count' => $subqueues_count]);
+     }
++    elseif ($roles) {
++      $markets = $user_utility->getMarketByUserId($uid, 'all');
++      $user_markets = array_column($markets, 'field_default_market_target_id');
++      $subqueues_count = db_select('entity_subqueue__field_market', 'fm')
++       ->condition('fm.bundle', $queue->id(), '=')
++       ->condition('fm.field_market_target_id', $user_markets, 'IN')
++       ->fields('fm', [])
++       ->execute();
++      $subqueues_count->allowRowCount = TRUE;
++      $items = $this->t('@count subqueues', ['@count' => $subqueues_count
++      ->rowCount()]);
++    }
+     else {
+       $subqueue = EntitySubqueue::load($queue->id());

@@ -1,0 +1,12 @@
+diff --git a/core/lib/Drupal/Core/StringTranslation/TranslatableMarkup.php b/core/lib/Drupal/Core/StringTranslation/TranslatableMarkup.php
+index 8016212..db00125 100644
+--- a/core/lib/Drupal/Core/StringTranslation/TranslatableMarkup.php
++++ b/core/lib/Drupal/Core/StringTranslation/TranslatableMarkup.php
+@@ -128,6 +128,7 @@
+    * @ingroup sanitization
+    */
+   public function __construct($string, array $arguments = [], array $options = [], TranslationInterface $string_translation = NULL) {
++    $string = (string) $string;
+     if (!is_string($string)) {
+       $message = $string instanceof TranslatableMarkup ? '$string ("' . $string->getUntranslatedString() . '") must be a string.' : '$string ("' . (string) $string . '") must be a string.';
+       throw new \InvalidArgumentException($message);

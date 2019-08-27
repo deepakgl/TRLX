@@ -1,0 +1,50 @@
+uuid: 65e34a2c-e3f8-491f-be63-b36efa7e8bcf
+langcode: en
+status: true
+dependencies:
+  config:
+    - filter.format.quiz
+  module:
+    - ckeditor
+    - editor_file
+third_party_settings:
+  editor_file:
+    status: true
+    scheme: public
+    directory: inline-files
+    extensions: txt
+    max_size: ''
+format: quiz
+editor: ckeditor
+settings:
+  toolbar:
+    rows:
+      -
+        -
+          name: Formatting
+          items:
+            - Bold
+            - Italic
+            - Underline
+  plugins:
+    stylescombo:
+      styles: ''
+    language:
+      language_list: un
+    wordcount:
+      enable: 0
+      show_paragraphs: 0
+      show_word_count: 0
+      show_char_count: 0
+      count_spaces: 0
+      count_html: 0
+      max_words: '-1'
+      max_chars: '-1'
+image_upload:
+  status: false
+  scheme: public
+  directory: inline-images
+  max_size: ''
+  max_dimensions:
+    width: null
+    height: null

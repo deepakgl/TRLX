@@ -1,0 +1,7 @@
+name: Views Filter Autosubmit
+type: module
+description: Recreates the autosubmit option for Views exposed filters.
+core: 8.x
+package: Views
+dependencies:
+  - views

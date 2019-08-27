@@ -1,0 +1,18 @@
+uuid: 9dc6082b-ca7f-46a6-8762-ee2d8f337379
+langcode: en
+status: true
+dependencies:
+  config:
+    - comment.type.migrate_example_advanced_comment
+id: comment.migrate_example_advanced_comment.created
+field_name: created
+entity_type: comment
+bundle: migrate_example_advanced_comment
+label: Created
+description: 'The time that the comment was created.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: created

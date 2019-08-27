@@ -1,0 +1,18 @@
+uuid: 5a6d89f4-5c4a-4943-b75a-2330dd76a8e8
+langcode: en
+status: true
+dependencies:
+  module:
+    - elx_dashboard
+    - serialization
+    - simple_oauth
+id: welcome_message
+plugin_id: welcome_message
+granularity: resource
+configuration:
+  methods:
+    - GET
+  formats:
+    - json
+  authentication:
+    - oauth2

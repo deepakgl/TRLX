@@ -1,0 +1,9 @@
+uuid: ddff326f-91e4-4331-a3f7-37f75024aca0
+langcode: en
+status: true
+dependencies: {  }
+id: zh-Hant-tw
+label: 'Chinese, Traditional (Taiwan)'
+direction: ltr
+weight: -14
+locked: false

@@ -1,0 +1,18 @@
+uuid: a4fa5d1d-7b4d-40cb-acf8-5f3748d539b7
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.season
+id: taxonomy_term.season.name
+field_name: name
+entity_type: taxonomy_term
+bundle: season
+label: Name
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

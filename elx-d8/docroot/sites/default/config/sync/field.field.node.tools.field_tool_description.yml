@@ -1,0 +1,22 @@
+uuid: ae5b2ce8-3b9d-458d-857f-11f9dc57413a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_tool_description
+    - node.type.tools
+  module:
+    - text
+id: node.tools.field_tool_description
+field_name: field_tool_description
+entity_type: node
+bundle: tools
+label: Description
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  display_summary: false
+field_type: text_with_summary

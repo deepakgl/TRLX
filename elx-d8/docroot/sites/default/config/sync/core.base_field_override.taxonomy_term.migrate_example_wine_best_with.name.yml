@@ -1,0 +1,18 @@
+uuid: 2d26c985-7b5e-4b26-964d-0ae48f5493d9
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.migrate_example_wine_best_with
+id: taxonomy_term.migrate_example_wine_best_with.name
+field_name: name
+entity_type: taxonomy_term
+bundle: migrate_example_wine_best_with
+label: Name
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

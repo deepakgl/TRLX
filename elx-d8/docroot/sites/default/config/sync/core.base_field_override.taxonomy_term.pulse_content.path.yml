@@ -1,0 +1,20 @@
+uuid: 1ecfa9ff-44fe-4696-bde1-a9d7d3e5eff7
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.pulse_content
+  module:
+    - path
+id: taxonomy_term.pulse_content.path
+field_name: path
+entity_type: taxonomy_term
+bundle: pulse_content
+label: 'URL alias'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: path

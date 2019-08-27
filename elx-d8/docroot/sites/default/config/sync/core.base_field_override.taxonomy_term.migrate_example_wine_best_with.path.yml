@@ -1,0 +1,20 @@
+uuid: 5182b24d-acbb-4b2d-8f7f-2583e924802f
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.migrate_example_wine_best_with
+  module:
+    - path
+id: taxonomy_term.migrate_example_wine_best_with.path
+field_name: path
+entity_type: taxonomy_term
+bundle: migrate_example_wine_best_with
+label: 'URL alias'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: path

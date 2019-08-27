@@ -1,0 +1,9 @@
+uuid: d74af209-a96b-4001-a4e4-1a2eccbced07
+langcode: en
+status: true
+dependencies: {  }
+name: 'Content Object Type'
+vid: content_object_type
+description: ''
+hierarchy: 0
+weight: 0

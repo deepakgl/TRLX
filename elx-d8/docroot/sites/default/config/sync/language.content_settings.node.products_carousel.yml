@@ -1,0 +1,18 @@
+uuid: db926b7b-be66-4c4f-b125-c808ba7c05cb
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.products_carousel
+  module:
+    - content_translation
+third_party_settings:
+  content_translation:
+    enabled: false
+    bundle_settings:
+      untranslatable_fields_hide: '0'
+id: node.products_carousel
+target_entity_type_id: node
+target_bundle: products_carousel
+default_langcode: site_default
+language_alterable: false

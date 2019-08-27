@@ -1,0 +1,20 @@
+uuid: d171a9e4-c6ac-4805-8701-258eb0b20e60
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.products_carousel
+id: node.products_carousel.menu_link
+field_name: menu_link
+entity_type: node
+bundle: products_carousel
+label: 'Menu link'
+description: 'Computed menu link for the node (only available during node saving).'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: default
+  handler_settings: {  }
+field_type: entity_reference

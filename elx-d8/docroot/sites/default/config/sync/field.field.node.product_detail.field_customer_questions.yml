@@ -1,0 +1,22 @@
+uuid: c50d9406-365d-4d03-a5a1-0f1b86475226
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_customer_questions
+    - node.type.product_detail
+  module:
+    - text
+id: node.product_detail.field_customer_questions
+field_name: field_customer_questions
+entity_type: node
+bundle: product_detail
+label: 'Customer questions'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  display_summary: false
+field_type: text_with_summary

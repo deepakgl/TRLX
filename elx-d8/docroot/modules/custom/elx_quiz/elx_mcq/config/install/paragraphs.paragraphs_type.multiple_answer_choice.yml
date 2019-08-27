@@ -1,0 +1,9 @@
+uuid: a75311da-f614-4647-897f-a45c9bbfe89e
+langcode: en
+status: true
+dependencies: {  }
+id: multiple_answer_choice
+label: 'Multiple Answer Choice'
+icon_uuid: null
+description: ''
+behavior_plugins: {  }

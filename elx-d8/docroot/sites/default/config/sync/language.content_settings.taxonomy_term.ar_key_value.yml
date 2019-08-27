@@ -1,0 +1,11 @@
+uuid: 057c7dcd-f511-4130-81f3-2324f17b817f
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.ar_key_value
+id: taxonomy_term.ar_key_value
+target_entity_type_id: taxonomy_term
+target_bundle: ar_key_value
+default_langcode: site_default
+language_alterable: false

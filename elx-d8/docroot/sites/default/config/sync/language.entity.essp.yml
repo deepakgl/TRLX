@@ -1,0 +1,9 @@
+uuid: c4ecf512-1268-421a-8398-4c9150192fba
+langcode: essp
+status: true
+dependencies: {  }
+id: essp
+label: 'Spanish (Spain)'
+direction: ltr
+weight: 14
+locked: false

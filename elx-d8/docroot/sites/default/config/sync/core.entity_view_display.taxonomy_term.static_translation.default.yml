@@ -1,0 +1,41 @@
+uuid: 7317fab3-6bcb-47a8-a00f-701a62ebe964
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.static_translation.field_flag
+    - field.field.taxonomy_term.static_translation.field_translation_key
+    - taxonomy.vocabulary.static_translation
+  module:
+    - text
+id: taxonomy_term.static_translation.default
+targetEntityType: taxonomy_term
+bundle: static_translation
+mode: default
+content:
+  description:
+    label: hidden
+    type: text_default
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_flag:
+    weight: 2
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
+    region: content
+  field_translation_key:
+    weight: 1
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+    region: content
+hidden:
+  langcode: true

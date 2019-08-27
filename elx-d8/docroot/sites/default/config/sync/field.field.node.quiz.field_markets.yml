@@ -1,0 +1,31 @@
+uuid: 421fcc8b-8e37-46f5-a202-c071bc719a41
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_markets
+    - node.type.quiz
+    - taxonomy.vocabulary.markets
+_core:
+  default_config_hash: Xb67xeoKnkxX-DdknrRoyifZt-BDfJjr3vzNgIj97ds
+id: node.quiz.field_markets
+field_name: field_markets
+entity_type: node
+bundle: quiz
+label: Market
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      markets: markets
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

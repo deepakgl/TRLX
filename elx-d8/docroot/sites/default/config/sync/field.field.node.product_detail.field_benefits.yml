@@ -1,0 +1,22 @@
+uuid: e781b21d-32a3-4716-9140-02c13e9ccc47
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_benefits
+    - node.type.product_detail
+  module:
+    - text
+id: node.product_detail.field_benefits
+field_name: field_benefits
+entity_type: node
+bundle: product_detail
+label: Benefits
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  display_summary: false
+field_type: text_with_summary

@@ -1,0 +1,27 @@
+uuid: 7b459867-899c-4f5c-8ec5-97bd514b3e85
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_articulate_file_upload
+    - paragraphs.paragraphs_type.interactive_content
+  module:
+    - file
+id: paragraph.interactive_content.field_articulate_file_upload
+field_name: field_articulate_file_upload
+entity_type: paragraph
+bundle: interactive_content
+label: 'Articulate File Upload'
+description: ''
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  file_directory: '[date:custom:Y]-[date:custom:m]'
+  file_extensions: zip
+  max_filesize: '1000 MB'
+  description_field: false
+  handler: 'default:file'
+  handler_settings: {  }
+field_type: file

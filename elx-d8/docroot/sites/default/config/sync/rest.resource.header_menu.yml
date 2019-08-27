@@ -1,0 +1,18 @@
+uuid: 690c2d19-a3d3-4dae-8200-ad5a640b1472
+langcode: en
+status: true
+dependencies:
+  module:
+    - elx_dashboard
+    - serialization
+    - simple_oauth
+id: header_menu
+plugin_id: header_menu
+granularity: resource
+configuration:
+  methods:
+    - GET
+  formats:
+    - json
+  authentication:
+    - oauth2

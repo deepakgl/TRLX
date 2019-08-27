@@ -1,0 +1,23 @@
+uuid: fdcbaf66-cf58-4bfd-8b5f-0fc8727d99a4
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+_core:
+  default_config_hash: djejP1G7j7ESuUL6NR8hxgDqCfWfeW1cOPJMWYdLtYM
+id: node.field_range_title
+field_name: field_range_title
+entity_type: node
+type: string
+settings:
+  max_length: 6
+  is_ascii: false
+  case_sensitive: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

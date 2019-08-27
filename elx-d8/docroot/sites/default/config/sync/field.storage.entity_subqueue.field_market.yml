@@ -1,0 +1,20 @@
+uuid: 6aaa2413-4345-4061-b960-d8f4f48b6229
+langcode: en
+status: true
+dependencies:
+  module:
+    - entityqueue
+    - taxonomy
+id: entity_subqueue.field_market
+field_name: field_market
+entity_type: entity_subqueue
+type: entity_reference
+settings:
+  target_type: taxonomy_term
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

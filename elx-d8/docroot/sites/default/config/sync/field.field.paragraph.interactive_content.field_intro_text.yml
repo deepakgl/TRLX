@@ -1,0 +1,22 @@
+uuid: 2c8c40dc-546f-4b7e-8395-c51fe2d195b0
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_intro_text
+    - paragraphs.paragraphs_type.interactive_content
+  module:
+    - text
+id: paragraph.interactive_content.field_intro_text
+field_name: field_intro_text
+entity_type: paragraph
+bundle: interactive_content
+label: 'Intro text'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  display_summary: false
+field_type: text_with_summary

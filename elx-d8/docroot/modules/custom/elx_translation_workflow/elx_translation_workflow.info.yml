@@ -1,0 +1,5 @@
+name: ELX Translation Workflow Module
+type: module
+description: The module creates the custom translation workflow.
+core: 8.x
+package: ELX

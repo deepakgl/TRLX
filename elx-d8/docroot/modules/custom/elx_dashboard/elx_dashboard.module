@@ -1,0 +1,396 @@
+<?php
+
+/**
+ * @file
+ * Dashboard module file.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
+use Drupal\Core\Link;
+use Drupal\Core\Entity\ContentEntityForm;
+use Drupal\views\ViewExecutable;
+use Drupal\elx_user\Utility\UserUtility;
+use Drupal\elx_lang_translation\Utility\LangUtility;
+use Drupal\elx_utility\Utility\CommonUtility;
+
+/**
+ * Implements hook_link_alter().
+ */
+function elx_dashboard_link_alter(&$variables) {
+  if ($variables['options']['entity_type'] == 'node') {
+    if (strpos(\Drupal::request()->getRequestUri(), 'dashboard') == TRUE) {
+      unset($variables['options']['query']['destination']);
+    }
+  }
+  elseif ($variables['text'] == 'Entityqueues') {
+    $variables['text'] = 'Homepage Content';
+  }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function elx_dashboard_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $user_utility = new UserUtility();
+  switch ($form_id) {
+    case 'views_form_user_admin_people_page_1':
+      $roles = $user_utility->getUserRoles(\Drupal::currentUser()->id(), 'all');
+      if (in_array('el_regional_market_admin', $roles)) {
+        unset($form['header']['user_bulk_form']['action']['#options']
+        ['user_cancel_user_action']);
+      }
+      break;
+
+    case 'node_stories_form':
+    case 'node_stories_edit_form':
+    case 'node_product_detail_form':
+    case 'node_product_detail_edit_form':
+    case 'node_level_interactive_content_form':
+    case 'node_level_interactive_content_edit_form':
+    case 'node_tools_form':
+    case 'node_tools_edit_form':
+    case 'node_tools-pdf_form':
+    case 'node_tools-pdf_edit_form':
+      // Access false for archive and unarchive field.
+      $form['field_archive_and_unarchive']['#access'] = FALSE;
+    case 'node_article_form':
+    case 'node_article_edit_form':
+    case 'node_best_sellers_form':
+    case 'node_best_sellers_edit_form':
+    case 'node_products_carousel_form':
+    case 'node_products_carousel_edit_form':
+    case 'node_t_c_form':
+    case 'node_t_c_edit_form':
+    case 'node_type_edit_form':
+    case 'node_welcome_message_form':
+    case 'node_welcome_message_edit_form':
+    case 'node_best_sellers_form':
+    case 'node_page_edit_form':
+    case 'node_quiz_form':
+    case 'node_quiz_edit_form';
+      // Custom submit form handler.
+      $destination = \Drupal::request()->query->get('destination');
+      if (!$destination) {
+        $form['actions']['submit']['#submit'][] =
+        '_elx_dashboard_form_redirect';
+      }
+      break;
+
+    case 'views_form_level_interactive_order_level_interactive_order':
+      // Custom submit to display status message.
+      $form['actions']['save_order']['#submit'][] = '_elx_dashboard_module_order_form_submit';
+      break;
+
+    case 'views_exposed_form':
+      if ($form['#id'] ==
+      'views-exposed-form-dashboard-dashboard-available-for-a-translation' ||
+      $form['#id'] == 'views-exposed-form-dashboard-dashboard-published' ||
+      $form['#id'] == 'views-exposed-form-dashboard-dashboard-unpublished' ||
+      $form['#id'] == 'views-exposed-form-dashboard-dashboard-archive') {
+        $uid = \Drupal::currentUser()->id();
+        $roles = $user_utility->getUserRoles($uid, 'all',
+         ['el_regional_market_admin']);
+        if ($roles) {
+          $lang_utility = new LangUtility();
+          $markets = $user_utility->getMarketByUserId($uid, 'all');
+          $market = array_column($markets, 'field_default_market_target_id');
+          $all_lang =
+          $lang_utility->getMarketPrimaryAndSecondaryLanguage($market);
+          $all_lang['All'] = 'All';
+          // Set user market languages in language filter.
+          $form['langcode']['#options'] = array_reverse($all_lang);
+          // Set user market in market filter.
+          $term_name['All'] = 'All';
+          $common_utility = new CommonUtility();
+          foreach ($market as $value) {
+            $term_name[$value] = $common_utility->getTermName($value);
+          }
+          $form['field_markets_target_id']['#options'] = $term_name;
+        }
+      }
+  }
+}
+
+/**
+ * Implements hook_form_submit().
+ */
+function _elx_dashboard_module_order_form_submit(array &$form, FormStateInterface $form_state) {
+  // Display status message.
+  \Drupal::messenger()->addMessage(t('Module order has been saved.'), 'status');
+}
+
+/**
+ * Custom submit handler for node form.
+ *
+ * @param array $form
+ *   Form object.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   Form state object.
+ */
+function _elx_dashboard_form_redirect(array $form, FormStateInterface
+$form_state) {
+  $bundle = FALSE;
+  // Get form object.
+  $form_object = $form_state->getFormObject();
+  // Check if form object is instance of content entity form.
+  if ($form_object instanceof ContentEntityForm) {
+    // Get the bundle of the content.
+    $bundle = $form_object->getEntity()->bundle();
+  }
+  // Remove the query destination if any.
+  \Drupal::request()->query->remove('destination');
+  // Get the nid.
+  $nid = $form_state->getValue('nid');
+  // Destination respective of the content type.
+  if ($form_object->getBaseFormId() == 'node_form') {
+    $entity = $form_state->getFormObject()->getEntity();
+    $url = Url::fromRoute('view.dashboard.dashboard_unpublished');
+    if ($bundle == 'quiz') {
+      $url = Url::fromRoute('view.dashboard.dashboard_quiz');
+    }
+    elseif ($entity->get('status')->getValue()[0]['value'] == 1) {
+      $url = Url::fromRoute('view.dashboard.dashboard_published');
+    }
+    $form_state->setRedirectUrl($url);
+  }
+}
+
+/**
+ * Creating url and redirect to required page.
+ *
+ * @param array $form
+ *   Form object.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   Form state object.
+ * @param string $route_name
+ *   Route name.
+ * @param int $nid
+ *   Node id.
+ */
+function _create_url_from_route(array &$form, FormStateInterface $form_state, $route_name, $nid) {
+  // Create url from route.
+  $url = Url::fromRoute($route_name)->setRouteParameters(['nid' => $nid]);
+  // Redirect form after submit to the required url.
+  $form_state->setRedirectUrl($url);
+}
+
+/**
+ * Implements hook_preprocess_html().
+ */
+function elx_dashboard_preprocess_page(&$variables) {
+  $variables['#attached']['library'][] = 'elx_dashboard/elx_admin';
+  $variables['#attached']['drupalSettings']['lrs_statement_id'] = \Drupal::config('elx_utility.settings')->get('lrs_statement_id');
+}
+
+/**
+ * Implements hook_views_pre_render().
+ */
+function elx_dashboard_views_pre_render(ViewExecutable $view) {
+  if ($view->id() == 'dashboard') {
+    $user_utility = new UserUtility();
+    $roles = $user_utility->getUserRoles(\Drupal::currentUser()->id(), 'all', ['el_regional_market_admin']);
+    if ($roles) {
+      $lang_utility = new LangUtility();
+      $primary_lang = getMarketPrimaryLanguage();
+      $uid = \Drupal::currentUser()->id();
+      $markets = $user_utility->getMarketByUserId($uid, 'all');
+      $market = array_column($markets, 'field_default_market_target_id');
+      foreach ($view->result as $key => $result) {
+        $entity = $result->_entity;
+        $nid = $entity->id();
+        $archive = array_column($entity->get('field_archive_and_unarchive')
+          ->getValue(), 'target_id');
+        switch ($view->current_display) {
+          case 'dashboard_available_for_a_translation':
+            $node_lang = $lang_utility->getTranslationLanguageByNid($nid);
+            $intersect = array_intersect($primary_lang, $node_lang);
+            $diff = array_diff($primary_lang, $intersect);
+            // Unset translated content.
+            if (empty(array_filter($diff))) {
+              // Delete a row.
+              unset($view->result[$key]);
+            }
+
+          case 'dashboard_published':
+          case 'dashboard_unpublished':
+            $diff = array_diff($market, $archive);
+            // Unset archive content.
+            if (empty(array_filter($diff)) && !empty($archive)) {
+              // Delete a row.
+              unset($view->result[$key]);
+            }
+            break;
+
+          case 'dashboard_archive':
+            $diff = array_intersect($market, $archive);
+            if (!empty($diff)) {
+              // Set archived market.
+              $entity->set('field_archive_and_unarchive', $diff);
+            }
+            break;
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Create link for front end redirect.
+ */
+function getFrontEndUrl($keyword, $nid, $title, $tid = NULL) {
+  if ($tid != NULL) {
+    $keyword = $keyword . '/' . $tid;
+  }
+  $front_end_url =
+  \Drupal::config('elx_utility.settings')->get('elx_front_end_url');
+  $url = Url::fromUri($front_end_url . '/' . $keyword . '/' . $nid);
+  $option = ['html' => TRUE, 'attributes' => ['target' => '_blank']];
+  $external_link = \Drupal::l($title, $url, $option);
+  return $external_link;
+}
+
+/**
+ * Alter link of the node title.
+ *
+ * @param object $entity
+ *   View result object.
+ * @param string $title
+ *   Node title.
+ * @param mixed $path
+ *   Redirected path of the node.
+ */
+function _nodeRedirectUrl($entity, $title, $path) {
+  global $base_url;
+  $url = Url::fromUri("$base_url/$path");
+  $link = Link::fromTextAndUrl($title, $url)->toString();
+  $entity->set('title', $link);
+}
+
+/**
+ * Implements hook_menu_links_discovered_alter().
+ */
+function elx_dashboard_menu_links_discovered_alter(&$links) {
+  // Remove a "node add" pages for basic page & article from admin menu.
+  $types_to_remove = [
+    'page',
+    'article',
+  ];
+  foreach ($types_to_remove as $type) {
+    unset($links['node.add.' . $type]);
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function elx_dashboard_form_user_login_form_alter(&$form, FormStateInterface
+$form_state) {
+  $form['#submit'][] = '_elx_dashboard_user_login_form_submit';
+}
+
+/**
+ * Custom submit handler for login form.
+ */
+function _elx_dashboard_user_login_form_submit($form, FormStateInterface $form_state) {
+  \Drupal::request()->query->remove('destination');
+  /* $uid = \Drupal::currentUser()->id();
+  $user_utility = new UserUtility();
+  $roles = $user_utility->getUserRoles(\Drupal::currentUser()->id(), 'all',
+   ['el_regional_market_admin']);
+  $url = Url::fromRoute('view.dashboard.dashboard_published');
+  if ($roles) {
+    $url =
+     Url::fromRoute('view.dashboard.dashboard_available_for_a_translation');
+  }
+  $form_state->setRedirectUrl($url); */
+}
+
+/**
+ * Implements hook_views_pre_view().
+ */
+function elx_dashboard_views_pre_view(ViewExecutable $view, $display_id, array
+&$args) {
+  if ($view->id() == 'dashboard') {
+    $user_utility = new UserUtility();
+    if (!$user_utility->getUserRoles(\Drupal::currentUser()->id(), 'all',
+     ['el_regional_market_admin'])) {
+      $view->removeHandler($view->current_display, 'field', 'node_bulk_form');
+    }
+  }
+}
+
+/**
+ * Implements hook_views_post_render().
+ */
+function elx_dashboard_views_post_render(ViewExecutable $view) {
+  if ($view->id() == 'dashboard') {
+    $user_utility = new UserUtility();
+    $roles = $user_utility->getUserRoles(\Drupal::currentUser()->id());
+    // Set the view title.
+    $view->setTitle('Welcome GA User !!');
+    if ($roles) {
+      $view->setTitle('Welcome MA User !!');
+    }
+  }
+}
+
+/**
+ * Implements hook_views_query_alter().
+ */
+function elx_dashboard_views_query_alter(ViewExecutable $view, $query) {
+  if ($view->id() == 'dashboard') {
+    $user_utility = new UserUtility();
+    $lang_utility = new LangUtility();
+    $uid = \Drupal::currentUser()->id();
+    $markets = $user_utility->getMarketByUserId($uid,
+    'all');
+    $market = array_column($markets, 'field_default_market_target_id');
+    if ($view->current_display == 'dashboard_published' ||
+      $view->current_display == 'dashboard_unpublished') {
+      $roles = $user_utility->getUserRoles($uid);
+      if ($roles) {
+        $all_lang = array_keys(
+        $lang_utility->getMarketPrimaryAndSecondaryLanguage($market));
+        // Add langcode condition based on the user market lang.
+        $query->addWhere(1, 'node_field_data.langcode', $all_lang, 'IN');
+        // Add translation table to the query.
+        $query->queueTable('node__field_translation',
+        "node_field_data", NULL, 'node__field_translation');
+        // Add translation condition based on the translation status.
+        $query->addWhere(1,
+        'node__field_translation.field_translation_value', 'draft', 'NOT IN');
+      }
+    }
+    if ($view->current_display == 'dashboard_archive') {
+      // Add archive and unarchive table to the query.
+      $query->queueTable('node__field_archive_and_unarchive',
+      "node_field_data", NULL, 'node__field_archive_and_unarchive');
+      // Add archive and unarchive condition based on the current user market.
+      $query->addWhere(1,
+      'node__field_archive_and_unarchive.field_archive_and_unarchive_target_id',
+       $market, 'IN');
+    }
+  }
+}
+
+/**
+ * Fetch primary language.
+ *
+ * @return array
+ *   Market primary language.
+ */
+function getMarketPrimaryLanguage() {
+  $lang_utility = new LangUtility();
+  $user_utility = new UserUtility();
+  // Fetch market by user id.
+  $market = $user_utility->getMarketByUserId(\Drupal::currentUser()->id(),
+  'all');
+  $lang = $lang_utility->getMarketPrimaryAndSecondaryLanguage(
+  array_column($market, 'field_default_market_target_id'), 'lang');
+  // Fetch user primary language.
+  $primary_lang = array_values(array_unique(array_column(
+  $lang, 'field_primary_language_target_id')));
+
+  return $primary_lang;
+}

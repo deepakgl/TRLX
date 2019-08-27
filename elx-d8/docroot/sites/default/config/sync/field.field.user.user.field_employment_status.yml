@@ -1,0 +1,21 @@
+uuid: a77ded7b-2183-4e66-bc8a-876e1d08a4d8
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.user.field_employment_status
+  module:
+    - options
+    - user
+id: user.user.field_employment_status
+field_name: field_employment_status
+entity_type: user
+bundle: user
+label: 'Employment Status'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

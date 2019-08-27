@@ -1,0 +1,22 @@
+uuid: a53df69b-ac74-4005-baaa-44f321d488f9
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_story
+    - node.type.product_detail
+  module:
+    - text
+id: node.product_detail.field_story
+field_name: field_story
+entity_type: node
+bundle: product_detail
+label: Story
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  display_summary: false
+field_type: text_with_summary

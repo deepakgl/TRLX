@@ -1,0 +1,24 @@
+uuid: 33f07340-cfd8-497c-b31b-95cc93cef481
+langcode: en
+status: true
+dependencies:
+  config:
+    - comment.type.stories_comment
+    - field.field.comment.stories_comment.field_stories_comment
+id: comment.stories_comment.default
+targetEntityType: comment
+bundle: stories_comment
+mode: default
+content:
+  field_stories_comment:
+    weight: 101
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+    region: content
+  links:
+    weight: 100
+    region: content
+hidden:
+  langcode: true

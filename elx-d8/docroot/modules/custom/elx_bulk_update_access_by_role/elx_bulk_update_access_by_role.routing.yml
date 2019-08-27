@@ -1,0 +1,7 @@
+elx_bulk_update_access_by_role.bulk_update_access:
+  path: '/admin/config/bulk_update_access'
+  defaults:
+    _form: 'Drupal\elx_bulk_update_access_by_role\Form\OperationsForm'
+    _title: 'Bulk Update Field'
+  requirements:
+    _permission: 'administer elx bulk update access by role'

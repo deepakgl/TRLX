@@ -1,0 +1,18 @@
+uuid: 775918f9-c59e-49db-82e4-408f47318ee4
+langcode: en
+status: true
+dependencies:
+  module:
+    - elx_learning_levels
+    - serialization
+    - simple_oauth
+id: learning_levels
+plugin_id: learning_levels
+granularity: resource
+configuration:
+  methods:
+    - GET
+  formats:
+    - json
+  authentication:
+    - oauth2

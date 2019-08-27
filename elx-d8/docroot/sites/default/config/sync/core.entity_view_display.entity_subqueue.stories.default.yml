@@ -1,0 +1,32 @@
+uuid: 9eb4f38e-f015-41da-bb94-c014bbf97c8d
+langcode: en
+status: true
+dependencies:
+  config:
+    - entityqueue.entity_queue.stories
+    - field.field.entity_subqueue.stories.field_queue_override_flag
+id: entity_subqueue.stories.default
+targetEntityType: entity_subqueue
+bundle: stories
+mode: default
+content:
+  field_queue_override_flag:
+    weight: 1
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
+    region: content
+  items:
+    label: hidden
+    type: entity_reference_label
+    weight: 0
+    region: content
+    settings:
+      link: true
+    third_party_settings: {  }
+hidden:
+  langcode: true

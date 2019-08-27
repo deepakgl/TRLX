@@ -1,0 +1,13 @@
+--- modules/user/src/UserAuth.php
++++ modules/user/src/UserAuth.php
+@@ -45,7 +45,9 @@ class UserAuth implements UserAuthInterface {
+
+     if (!empty($username) && strlen($password) > 0) {
+       $account_search = $this->entityManager->getStorage('user')->loadByProperties(['name' => $username]);
+-
++      if (empty($account_search)) {
++        $account_search = $this->entityManager->getStorage('user')->loadByProperties(['mail' => $username]);
++      }
+       if ($account = reset($account_search)) {
+         if ($this->passwordChecker->check($password, $account->getPassword())) {
+           // Successful authentication.

@@ -1,0 +1,38 @@
+uuid: 6a679792-e33c-4980-8244-841f81120645
+langcode: en
+status: true
+dependencies:
+  config:
+    - entityqueue.entity_queue.explore_learning_levels
+    - field.field.entity_subqueue.explore_learning_levels.field_queue_override_flag
+id: entity_subqueue.explore_learning_levels.default
+targetEntityType: entity_subqueue
+bundle: explore_learning_levels
+mode: default
+content:
+  field_queue_override_flag:
+    weight: 0
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
+  items:
+    type: entity_reference_autocomplete
+    weight: 2
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    region: content
+    third_party_settings: {  }
+  title:
+    type: string_textfield
+    weight: 1
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  langcode: true

@@ -1,0 +1,21 @@
+uuid: 492d6c71-c738-453f-a13f-a236021fbeaa
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_grades
+    - paragraphs.paragraphs_type.multiple_answer_choice
+  module:
+    - options
+id: paragraph.multiple_answer_choice.field_grades
+field_name: field_grades
+entity_type: paragraph
+bundle: multiple_answer_choice
+label: Grade
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

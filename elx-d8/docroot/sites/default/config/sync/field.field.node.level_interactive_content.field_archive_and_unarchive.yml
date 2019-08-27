@@ -1,0 +1,29 @@
+uuid: 1e972b4a-ca52-4ee9-9ce8-d3555e7c571c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_archive_and_unarchive
+    - node.type.level_interactive_content
+    - taxonomy.vocabulary.markets
+id: node.level_interactive_content.field_archive_and_unarchive
+field_name: field_archive_and_unarchive
+entity_type: node
+bundle: level_interactive_content
+label: 'Archive and unarchive'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      markets: markets
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

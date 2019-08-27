@@ -1,0 +1,20 @@
+uuid: 2d43f08b-c19d-4765-b078-ff83b3bc6cc0
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.user.field_market_administrator
+  module:
+    - user
+id: user.user.field_market_administrator
+field_name: field_market_administrator
+entity_type: user
+bundle: user
+label: 'Market Administrator'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

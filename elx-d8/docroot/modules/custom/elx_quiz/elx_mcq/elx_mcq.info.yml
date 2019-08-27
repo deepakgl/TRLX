@@ -1,0 +1,7 @@
+name: ELX Multiple Choice Question Module
+type: module
+description: The module creates the multiple choice questions.
+core: 8.x
+package: ELX
+dependencies:
+  - elx_quiz

@@ -1,0 +1,222 @@
+uuid: a3be0410-3c44-4868-8156-f963426d1f0c
+langcode: en
+status: true
+dependencies:
+  config:
+    - entity_browser.browser.media_entity_browser
+    - field.field.node.tools.field_access_by_role
+    - field.field.node.tools.field_archive_and_unarchive
+    - field.field.node.tools.field_display_title
+    - field.field.node.tools.field_featured
+    - field.field.node.tools.field_featured_image
+    - field.field.node.tools.field_featured_on_elx_specialty
+    - field.field.node.tools.field_headline
+    - field.field.node.tools.field_how_to_sell_flag
+    - field.field.node.tools.field_make_this_welcome_video
+    - field.field.node.tools.field_markets
+    - field.field.node.tools.field_point_value
+    - field.field.node.tools.field_product_categories
+    - field.field.node.tools.field_product_family
+    - field.field.node.tools.field_related_products_videos
+    - field.field.node.tools.field_tool_description
+    - field.field.node.tools.field_tool_pdf
+    - field.field.node.tools.field_tool_thumbnail
+    - field.field.node.tools.field_translation
+    - field.field.node.tools.field_video_category
+    - field.field.node.tools.field_video_sub_titles
+    - node.type.tools
+  module:
+    - entity_browser
+    - file
+    - path
+    - term_reference_tree
+    - text
+id: node.tools.default
+targetEntityType: node
+bundle: tools
+mode: default
+content:
+  created:
+    type: datetime_timestamp
+    weight: 3
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_access_by_role:
+    weight: 8
+    settings: {  }
+    third_party_settings: {  }
+    type: options_buttons
+    region: content
+  field_archive_and_unarchive:
+    weight: 26
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_display_title:
+    weight: 6
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_featured_image:
+    weight: 12
+    settings:
+      entity_browser: media_entity_browser
+      field_widget_display: rendered_entity
+      field_widget_edit: true
+      field_widget_remove: true
+      selection_mode: selection_append
+      field_widget_display_settings:
+        view_mode: default
+      open: false
+      field_widget_replace: false
+    third_party_settings: {  }
+    type: entity_browser_entity_reference
+    region: content
+  field_featured_on_elx_specialty:
+    type: boolean_checkbox
+    weight: 14
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  field_make_this_welcome_video:
+    weight: 16
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
+  field_markets:
+    weight: 18
+    settings: {  }
+    third_party_settings: {  }
+    type: term_reference_tree
+    region: content
+  field_point_value:
+    weight: 9
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_tool_description:
+    weight: 7
+    settings:
+      rows: 9
+      summary_rows: 3
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea_with_summary
+    region: content
+  field_tool_pdf:
+    weight: 13
+    settings:
+      entity_browser: video_entity_browser
+      field_widget_display: rendered_entity
+      field_widget_edit: true
+      field_widget_remove: true
+      selection_mode: selection_append
+      field_widget_display_settings:
+        view_mode: default
+      open: false
+      field_widget_replace: false
+    third_party_settings: {  }
+    type: entity_browser_entity_reference
+    region: content
+  field_tool_thumbnail:
+    weight: 10
+    settings:
+      entity_browser: media_entity_browser
+      field_widget_display: rendered_entity
+      field_widget_edit: true
+      field_widget_remove: true
+      selection_mode: selection_append
+      field_widget_display_settings:
+        view_mode: default
+      open: false
+      field_widget_replace: false
+    third_party_settings: {  }
+    type: entity_browser_entity_reference
+    region: content
+  field_translation:
+    type: options_buttons
+    weight: 19
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_video_category:
+    weight: 17
+    settings: {  }
+    third_party_settings: {  }
+    type: options_buttons
+    region: content
+  field_video_sub_titles:
+    weight: 15
+    settings:
+      progress_indicator: throbber
+    third_party_settings: {  }
+    type: file_generic
+    region: content
+  langcode:
+    type: language_select
+    weight: 2
+    region: content
+    settings:
+      include_locked: true
+    third_party_settings: {  }
+  path:
+    type: path
+    weight: 5
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  promote:
+    type: boolean_checkbox
+    settings:
+      display_label: true
+    weight: 4
+    region: content
+    third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    weight: 20
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  title:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  translation:
+    weight: 11
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  uid:
+    type: entity_reference_autocomplete
+    weight: 1
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    region: content
+    third_party_settings: {  }
+hidden:
+  field_featured: true
+  field_headline: true
+  field_how_to_sell_flag: true
+  field_product_categories: true
+  field_product_family: true
+  field_related_products_videos: true
+  sticky: true

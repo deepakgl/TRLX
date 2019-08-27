@@ -1,0 +1,15 @@
+uuid: 182e6e4b-cf30-4736-acfa-b3726ca2714e
+langcode: en
+status: true
+dependencies: {  }
+name: levels_tablet_module_209_129_
+label: 'Levels Tablet Module (209×129)'
+effects:
+  55b5af01-b70a-4b32-9ec0-d0ae375c3e89:
+    uuid: 55b5af01-b70a-4b32-9ec0-d0ae375c3e89
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 209
+      height: 129
+      anchor: center-center

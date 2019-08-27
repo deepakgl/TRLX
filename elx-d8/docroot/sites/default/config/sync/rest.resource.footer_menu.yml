@@ -1,0 +1,18 @@
+uuid: 4042806f-0e5c-46d8-9a0f-2c5fe36eb5c9
+langcode: en
+status: true
+dependencies:
+  module:
+    - elx_user
+    - serialization
+    - simple_oauth
+id: footer_menu
+plugin_id: footer_menu
+granularity: resource
+configuration:
+  methods:
+    - GET
+  formats:
+    - json
+  authentication:
+    - oauth2

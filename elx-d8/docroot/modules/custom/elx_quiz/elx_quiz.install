@@ -1,0 +1,49 @@
+<?php
+
+use Drupal\Core\Database\Database;
+
+/**
+ * @file
+ * Create and update table.
+ */
+
+/**
+ * Create new quiz_attempt_summary table in the database.
+ *
+ * @return array
+ *   Create table quiz_attempt_summary.
+ */
+function elx_quiz_update_8601() {
+  $spec = [
+    'fields' => [
+      'id' => [
+        'type' => 'serial',
+        'not null' => TRUE,
+      ],
+      'uid' => [
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => FALSE,
+        'default' => NULL,
+      ],
+      'quiz_id' => [
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => FALSE,
+        'default' => NULL,
+      ],
+      'no_of_attempts' => [
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => FALSE,
+        'default' => NULL,
+      ],
+    ],
+    'primary key' => ['id'],
+  ];
+ $schema = Database::getConnection()->schema();
+ $schema->createTable('quiz_attempt_summary', $spec);
+ $fields = ['quiz_id', 'uid'];
+ // A unique key.
+ $schema->addUniqueKey('quiz_attempt_summary', 'quiz_unique_key', $fields);
+}

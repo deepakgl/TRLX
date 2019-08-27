@@ -1,0 +1,50 @@
+uuid: b05bd7f8-87e5-43e6-8c4f-be74d5df2327
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.level_interactive_content.field_content_object_type
+    - field.field.node.level_interactive_content.field_featured
+    - field.field.node.level_interactive_content.field_featured_image
+    - field.field.node.level_interactive_content.field_headline
+    - field.field.node.level_interactive_content.field_hero_image
+    - field.field.node.level_interactive_content.field_interactive_content
+    - field.field.node.level_interactive_content.field_learning_category
+    - field.field.node.level_interactive_content.field_markets
+    - field.field.node.level_interactive_content.field_order_weight
+    - field.field.node.level_interactive_content.field_point_value
+    - field.field.node.level_interactive_content.field_tags_keywords
+    - node.type.level_interactive_content
+  module:
+    - user
+id: node.level_interactive_content.teaser
+targetEntityType: node
+bundle: level_interactive_content
+mode: teaser
+content:
+  links:
+    weight: 100
+    region: content
+hidden:
+  field_access_by_role: true
+  field_background_image: true
+  field_content_object_type: true
+  field_featured: true
+  field_featured_image: true
+  field_headline: true
+  field_hero_image: true
+  field_interactive_content: true
+  field_intro_text: true
+  field_learning_category: true
+  field_markets: true
+  field_order_weight: true
+  field_point_value: true
+  field_product_categories: true
+  field_product_family: true
+  field_pulsed_content: true
+  field_story_type: true
+  field_tags_keywords: true
+  field_tool_by_role: true
+  field_translation: true
+  langcode: true

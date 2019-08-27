@@ -1,0 +1,15 @@
+ignored_config_entities:
+  0: google_analytics.settings
+  2: elx_utility.settings
+  4: sendgrid_integration.settings
+  6: mailsystem.settings
+  8: key.key.sendgrid
+  10: system.site
+  12: system.theme
+  14: 'search_api.*'
+  16: user.mail
+  18: simple_oauth.settings
+  20: 'elasticsearch_connector.*'
+  22: system.file
+_core:
+  default_config_hash: UVH1aJ4b44UM-VdPVN7hNNuuVqfReJxwfVeDQH1Hvsk

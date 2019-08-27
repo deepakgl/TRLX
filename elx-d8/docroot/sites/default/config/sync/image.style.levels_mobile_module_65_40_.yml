@@ -1,0 +1,15 @@
+uuid: ae356aa1-2aff-4ab0-b5fd-b32db47e9b57
+langcode: en
+status: true
+dependencies: {  }
+name: levels_mobile_module_65_40_
+label: 'Levels Mobile Module (65×40)'
+effects:
+  fbb03688-b2d5-498b-ac9b-f925ad7bc83d:
+    uuid: fbb03688-b2d5-498b-ac9b-f925ad7bc83d
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 65
+      height: 40
+      anchor: center-center

@@ -1,0 +1,30 @@
+uuid: 7f9fc7bd-4564-49cc-80c8-92b1b744ca98
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.body
+    - node.type.multiple_choice_question
+  module:
+    - allowed_formats
+    - text
+third_party_settings:
+  allowed_formats:
+    quiz: quiz
+    full_html: '0'
+    basic_html: '0'
+    restricted_html: '0'
+    plain_text: '0'
+id: node.multiple_choice_question.body
+field_name: body
+entity_type: node
+bundle: multiple_choice_question
+label: Description
+description: ''
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  display_summary: false
+field_type: text_with_summary

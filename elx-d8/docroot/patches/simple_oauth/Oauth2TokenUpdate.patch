@@ -1,0 +1,21 @@
+--- a/src/Controller/Oauth2Token.php	2019-07-13 19:39:47.000000000 +0530
++++ a/src/Controller/Oauth2Token.php	2019-07-13 19:44:51.000000000 +0530
+@@ -9,6 +9,7 @@
+ use League\OAuth2\Server\Exception\OAuthServerException;
+ use Psr\Http\Message\ServerRequestInterface;
+ use Symfony\Component\DependencyInjection\ContainerInterface;
++use Symfony\Component\HttpFoundation\JsonResponse;
+
+ class Oauth2Token extends ControllerBase {
+
+@@ -45,6 +46,10 @@
+     // Get the auth server object from that uses the League library.
+     try {
+       // Respond to the incoming request and fill in the response.
++      $message = elx_is_password_expired($body['username']);
++      if (!empty($message)) {
++        return new JsonResponse(['message' => $message], 406, [], FALSE);
++      }
+       $auth_server = $this->grantManager->getAuthorizationServer($grant_type_id);
+       $response = $this->handleToken($request, $auth_server);
+     }

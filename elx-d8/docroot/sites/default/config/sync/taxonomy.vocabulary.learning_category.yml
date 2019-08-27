@@ -1,0 +1,9 @@
+uuid: 8bf94364-feac-48dd-8805-a62b9a57f4b3
+langcode: en
+status: true
+dependencies: {  }
+name: 'Learning Level'
+vid: learning_category
+description: ''
+hierarchy: 0
+weight: 0

@@ -1,0 +1,23 @@
+uuid: b615e71e-cec7-461c-8820-8d0ea050d79c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_featured
+    - node.type.tools-pdf
+id: node.tools-pdf.field_featured
+field_name: field_featured
+entity_type: node
+bundle: tools-pdf
+label: Featured
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: '1'
+  off_label: '0'
+field_type: boolean

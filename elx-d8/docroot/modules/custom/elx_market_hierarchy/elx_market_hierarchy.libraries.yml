@@ -1,0 +1,17 @@
+elx_market:
+  js:
+    js/elx_market.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupal
+elx_market_admin:
+  js:
+    js/elx_market_admin.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupal
+
+elx_market_admin_dashboard:
+  css:
+    theme:
+      css/elx_market_admin_dashboard.css: {}

@@ -1,0 +1,8 @@
+uuid: 14529111-cd47-43c7-92b8-7ba44c1cc7ff
+langcode: en
+status: true
+dependencies: {  }
+id: user-dashboard
+label: 'User Dashboard'
+description: 'User Related Information'
+locked: false

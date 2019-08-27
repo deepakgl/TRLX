@@ -1,0 +1,123 @@
+diff --git a/src/Element/CheckboxTree.php b/src/Element/CheckboxTree.php
+index bfa7034..bb7373f 100644
+--- a/src/Element/CheckboxTree.php
++++ b/src/Element/CheckboxTree.php
+@@ -79,7 +79,9 @@ class CheckboxTree extends FormElement {
+     $value = [];
+     $element += ['#default_value' => []];
+     foreach ($element['#default_value'] as $key) {
+-      $value[$key['target_id']] = $key['target_id'];
++      if(isset($key['target_id'])) {
++        $value[$key['target_id']] = $key['target_id'];
++      }
+     }
+     return $value;
+   }
+diff --git a/term_reference_tree.info.yml b/term_reference_tree.info.yml
+index b711cee..9f27dbe 100644
+--- a/term_reference_tree.info.yml
++++ b/term_reference_tree.info.yml
+@@ -3,5 +3,6 @@ description: 'An expanding/collapsing tree widget for selecting terms in a taxon
+ package: Fields
+ core: 8.x
+ dependencies:
+-  - taxonomy
++- drupal:taxonomy
++- drupal:system (>= 8.6.x)
+ type: module
+diff --git a/term_reference_tree.module b/term_reference_tree.module
+index 49b7570..a25f216 100644
+--- a/term_reference_tree.module
++++ b/term_reference_tree.module
+@@ -182,13 +182,13 @@ function _term_reference_tree_get_term_hierarchy($tid, $vid, &$allowed, $filter,
+ /**
+  * This function is like taxonomy_get_children, except it doesn't load the entire term.
+  *
+- * @param $tid
++ * @param int $tid
+  *   The ID of the term whose children you want to get.
+- * @param $vid
++ * @param int $vid
+  *   The vocabulary ID.
+  *
+- * @return
+- *   An array of taxonomy terms, each in the form array('tid' => $tid, 'name' => $name)
++ * @return array
++ *   Taxonomy terms, each in the form ['tid' => $tid, 'name' => $name].
+  */
+ function _term_reference_tree_get_children($tid, $vid) {
+   // DO NOT LOAD TAXONOMY TERMS HERE
+@@ -196,22 +196,29 @@ function _term_reference_tree_get_children($tid, $vid) {
+   // very bad on large vocabularies.  Instead, we load the term as necessary
+   // in cases where it's needed (such as using tokens or when the locale
+   // module is enabled).
+-  $query = db_select('taxonomy_term_field_data', 't');
+-  $query->join('taxonomy_term_hierarchy', 'h', 't.tid = h.tid');
+-  $query->fields('t', array('tid', 'name'));
++
++  $table = 'taxonomy_term_field_data';
++  $alias = 't';
++
++  $query = \Drupal::database()
++    ->select($table, $alias);
++  $query->join('taxonomy_term__parent', 'p', 't.tid = p.entity_id');
++  $query->fields('t', ['tid', 'name']);
+   $query->addField('t', 'vid', 'vocabulary_machine_name');
+-  $query->condition('t.vid', $vid);
+-  $query->condition('h.parent', $tid);
+-  $query->addTag('term_access');
+-  $query->addTag('translatable');
+-  $query->orderBy('t.weight');
+-  $query->orderBy('t.name');
+-  $results = $query->execute();
+-
+-  $terms = array();
+-  while ($term = $results->fetchObject()) {
++  $query
++    ->condition('t.vid', $vid)
++    ->condition('p.parent_target_id', $tid)
++    ->addTag('term_access')
++    ->addTag('translatable')
++    ->orderBy('t.weight')
++    ->orderBy('t.name');
++  $result = $query->execute();
++
++  $terms = [];
++  while ($term = $result->fetchObject()) {
+     $terms[$term->tid] = $term;
+   }
++
+   return $terms;
+ }
+ 
+@@ -403,14 +410,25 @@ function theme_term_tree_list($variables) {
+ 
+ /**
+  * Helper function to get the parent of tid.
++ *
++ * @param int $tid
++ *   The term id.
++ *
++ * @return int
++ *   Parent term id or 0.
+  */
+ function _term_reference_tree_get_parent($tid) {
+-  $q = db_query_range("SELECT h.parent FROM {taxonomy_term_hierarchy} h WHERE h.tid = :tid", 0, 1, [':tid' => $tid]);
+-  $t = 0;
+-  foreach ($q as $term) {
+-    $t = $term->parent;
++  $query = "SELECT p.parent_target_id FROM {taxonomy_term__parent} p WHERE p.entity_id = :tid";
++  $from = 0;
++  $count = 1;
++  $args = [':tid' => $tid];
++  $database = \Drupal::database();
++  $result = $database->queryRange($query, $from, $count, $args);
++  $parent_tid = 0;
++  foreach ($result as $term) {
++    $parent_tid = $term->parent_target_id;
+   }
+-  return $t;
++  return $parent_tid;
+ }
+ 
+ /**

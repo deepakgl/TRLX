@@ -1,0 +1,18 @@
+uuid: ce50bacb-6a9b-465e-9a1e-9c844d0189d1
+langcode: en
+status: true
+dependencies:
+  module:
+    - elx_products
+    - serialization
+    - simple_oauth
+id: product_details
+plugin_id: product_details
+granularity: resource
+configuration:
+  methods:
+    - GET
+  formats:
+    - json
+  authentication:
+    - oauth2

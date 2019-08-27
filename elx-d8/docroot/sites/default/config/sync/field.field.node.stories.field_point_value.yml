@@ -1,0 +1,21 @@
+uuid: 3b2f4729-ba55-4ad0-ada2-df786e620308
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_point_value
+    - node.type.stories
+id: node.stories.field_point_value
+field_name: field_point_value
+entity_type: node
+bundle: stories
+label: 'Point Value'
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: '25'
+default_value_callback: ''
+settings: {  }
+field_type: string

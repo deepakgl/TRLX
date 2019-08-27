@@ -1,0 +1,9 @@
+uuid: 4e8f8ee7-a086-41e4-8a38-8888200a3b97
+langcode: en
+status: true
+dependencies: {  }
+name: 'Menu Content'
+vid: menu_content
+description: ''
+hierarchy: 0
+weight: 0

@@ -1,0 +1,7 @@
+name: ELX Quiz Module
+type: module
+description: The module creates the custom quiz.
+core: 8.x
+package: ELX
+dependencies:
+  - drupal:allowed_formats (8.x-1.1)

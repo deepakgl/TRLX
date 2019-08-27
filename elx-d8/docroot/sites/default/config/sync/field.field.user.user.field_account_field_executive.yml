@@ -1,0 +1,20 @@
+uuid: 508d82d1-4840-44dd-a5da-d0c815098cc8
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.user.field_account_field_executive
+  module:
+    - user
+id: user.user.field_account_field_executive
+field_name: field_account_field_executive
+entity_type: user
+bundle: user
+label: 'Sales/Sales Education Executive'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

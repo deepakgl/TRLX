@@ -1,0 +1,10 @@
+uuid: f8768543-f0a4-4f3d-b78a-5f657c0dfdb3
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: gd9Ebpb0tF9LX-pWNKDJksLcdWaKsVwnqhF2z5JWFhY
+name: Quiz
+format: quiz
+weight: 0
+filters: {  }

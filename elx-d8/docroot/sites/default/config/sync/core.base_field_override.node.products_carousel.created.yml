@@ -1,0 +1,18 @@
+uuid: dbc953af-19ed-4558-8111-793f4dfd257b
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.products_carousel
+id: node.products_carousel.created
+field_name: created
+entity_type: node
+bundle: products_carousel
+label: 'Authored on'
+description: 'The time that the node was created.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: created

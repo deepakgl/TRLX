@@ -1,0 +1,9 @@
+uuid: e6238a6a-4ec2-4592-ba62-b4d2eec656a8
+langcode: en
+status: true
+dependencies: {  }
+name: 'AR Key Value'
+vid: ar_key_value
+description: ''
+hierarchy: 0
+weight: 0

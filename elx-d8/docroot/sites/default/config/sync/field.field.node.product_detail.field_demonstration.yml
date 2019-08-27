@@ -1,0 +1,22 @@
+uuid: 6b86c607-5cb7-42c4-a42b-822e14f08c98
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_demonstration
+    - node.type.product_detail
+  module:
+    - text
+id: node.product_detail.field_demonstration
+field_name: field_demonstration
+entity_type: node
+bundle: product_detail
+label: Demonstration
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  display_summary: false
+field_type: text_with_summary

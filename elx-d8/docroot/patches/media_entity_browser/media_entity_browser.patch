@@ -1,0 +1,13 @@
+--- media_entity_browser.info.yml	2018-05-29 17:03:06.946860000 +0530
++++ media_entity_browser.info.yml	2018-05-29 17:03:44.986603009 +0530
+@@ -6,11 +6,9 @@
+
+ dependencies:
+   - entity_browser
+-  - media_entity
+
+ test_dependencies:
+   - entity_browser
+-  - media_entity
+   - video_embed_field
+   - ctools

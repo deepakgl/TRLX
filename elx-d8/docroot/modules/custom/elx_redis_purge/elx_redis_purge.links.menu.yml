@@ -1,0 +1,4 @@
+elx_redis_purge.redis_purge_menu:
+  title: 'Purge Redis Cache'
+  route_name: elx_redis_purge.redis_purge
+  parent: system.admin_structure

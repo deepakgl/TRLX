@@ -1,0 +1,22 @@
+uuid: 5f788134-5407-456f-bdf4-e8ded7b4a757
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_if_she_asks_share
+    - node.type.product_detail
+  module:
+    - text
+id: node.product_detail.field_if_she_asks_share
+field_name: field_if_she_asks_share
+entity_type: node
+bundle: product_detail
+label: 'If she asks, share'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  display_summary: false
+field_type: text_with_summary

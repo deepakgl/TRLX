@@ -1,0 +1,20 @@
+uuid: c6d026fb-38ef-4e16-9ee0-4d75b6be5d8f
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - taxonomy
+id: node.field_archive_and_unarchive
+field_name: field_archive_and_unarchive
+entity_type: node
+type: entity_reference
+settings:
+  target_type: taxonomy_term
+module: core
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

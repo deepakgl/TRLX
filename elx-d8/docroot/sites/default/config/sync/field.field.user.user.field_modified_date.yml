@@ -1,0 +1,20 @@
+uuid: 80118be8-f492-4017-8ad3-495527c0f252
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.user.field_modified_date
+  module:
+    - user
+id: user.user.field_modified_date
+field_name: field_modified_date
+entity_type: user
+bundle: user
+label: 'Modified date'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

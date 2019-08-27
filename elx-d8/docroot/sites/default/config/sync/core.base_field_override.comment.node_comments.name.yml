@@ -1,0 +1,20 @@
+uuid: 2927ee7e-0e01-46f9-a77b-89ad92ad39fd
+langcode: en
+status: true
+dependencies:
+  config:
+    - comment.type.node_comments
+id: comment.node_comments.name
+field_name: name
+entity_type: comment
+bundle: node_comments
+label: Name
+description: 'The comment author''s name.'
+required: false
+translatable: false
+default_value:
+  -
+    value: ''
+default_value_callback: ''
+settings: {  }
+field_type: string

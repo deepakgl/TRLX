@@ -1,0 +1,28 @@
+uuid: 140c8a62-1ec1-400b-bb7f-c4e6c1f26744
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_related_products_tools
+    - node.type.product_detail
+    - node.type.tools-pdf
+id: node.product_detail.field_related_products_tools
+field_name: field_related_products_tools
+entity_type: node
+bundle: product_detail
+label: 'Related Products Tools'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      tools-pdf: tools-pdf
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

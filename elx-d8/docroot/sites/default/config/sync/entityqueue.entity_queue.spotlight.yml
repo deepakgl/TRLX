@@ -1,0 +1,28 @@
+uuid: 1ebb5d60-8e5e-4fed-9581-ffab44201026
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: spotlight
+label: 'Global Spotlight'
+handler: simple
+handler_configuration: {  }
+entity_settings:
+  target_type: node
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      level_interactive_content: level_interactive_content
+      product_detail: product_detail
+      stories: stories
+      tools: tools
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: level_interactive_content
+queue_settings:
+  min_size: 0
+  max_size: 4
+  act_as_queue: false
+  reverse_in_admin: false

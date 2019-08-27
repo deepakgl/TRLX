@@ -1,0 +1,24 @@
+uuid: 1e8097d5-a080-4bf4-a9db-072ca3540ebb
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.user.field_t_c_flag
+  module:
+    - user
+id: user.user.field_t_c_flag
+field_name: field_t_c_flag
+entity_type: user
+bundle: user
+label: 'T&C Flag'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'True'
+  off_label: 'False'
+field_type: boolean

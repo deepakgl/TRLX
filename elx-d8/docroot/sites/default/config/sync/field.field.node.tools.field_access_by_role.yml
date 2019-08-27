@@ -1,0 +1,23 @@
+uuid: 979f2277-3ea5-4042-89d6-5d887c296842
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_access_by_role
+    - node.type.tools
+id: node.tools.field_access_by_role
+field_name: field_access_by_role
+entity_type: node
+bundle: tools
+label: 'Access by role'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:user_role'
+  handler_settings:
+    target_bundles: null
+    auto_create: false
+field_type: entity_reference

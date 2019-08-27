@@ -1,0 +1,11 @@
+--- /lib/Drupal/Core/Access/CsrfRequestHeaderAccessCheck.php
++++ /lib/Drupal/Core/Access/CsrfRequestHeaderAccessCheck.php
+@@ -93,7 +93,7 @@ class CsrfRequestHeaderAccessCheck implements AccessCheckInterface {
+     // 1. this is a write operation
+     // 2. the user was successfully authenticated and
+     // 3. the request comes with a session cookie.
+-    if (!in_array($method, ['GET', 'HEAD', 'OPTIONS', 'TRACE'])
++    if (!in_array($method, ['GET', 'HEAD', 'OPTIONS', 'TRACE', 'POST'])
+       && $account->isAuthenticated()
+       && $this->sessionConfiguration->hasSession($request)
+     ) {

@@ -1,0 +1,40 @@
+uuid: 49bdf776-5272-4890-9940-05ea46e30d9e
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.static_translation.field_flag
+    - field.field.taxonomy_term.static_translation.field_translation_key
+    - taxonomy.vocabulary.static_translation
+id: taxonomy_term.static_translation.default
+targetEntityType: taxonomy_term
+bundle: static_translation
+mode: default
+content:
+  field_flag:
+    weight: 32
+    settings: {  }
+    third_party_settings: {  }
+    type: options_buttons
+    region: content
+  field_translation_key:
+    weight: 31
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textarea
+    region: content
+  name:
+    type: string_textfield
+    weight: -5
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  description: true
+  langcode: true
+  path: true
+  translation: true

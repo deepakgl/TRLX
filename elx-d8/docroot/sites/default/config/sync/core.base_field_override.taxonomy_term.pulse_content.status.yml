@@ -1,0 +1,22 @@
+uuid: 7686de38-4d4b-4c92-931c-63bb0c66c518
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.pulse_content
+id: taxonomy_term.pulse_content.status
+field_name: status
+entity_type: taxonomy_term
+bundle: pulse_content
+label: Published
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 1
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

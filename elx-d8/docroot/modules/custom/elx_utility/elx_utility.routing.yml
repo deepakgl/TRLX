@@ -1,0 +1,7 @@
+elx_utility.external_config:
+  path: '/admin/config/system/external_config'
+  defaults:
+    _form: '\Drupal\elx_utility\Form\ExternalIntegrationConfigForm'
+    _title: 'External integration config'
+  requirements:
+    _permission: 'administer site configuration'

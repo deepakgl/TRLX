@@ -1,0 +1,11 @@
+uuid: 44aacfb4-9f01-4b06-91fb-e9b70648734c
+langcode: en
+status: true
+dependencies:
+  config:
+    - entityqueue.entity_queue.product_of_the_month
+id: entity_subqueue.product_of_the_month
+target_entity_type_id: entity_subqueue
+target_bundle: product_of_the_month
+default_langcode: site_default
+language_alterable: false

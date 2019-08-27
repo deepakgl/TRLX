@@ -1,0 +1,23 @@
+uuid: eca274ca-a7f8-4bcc-af8b-4014cda51928
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_inspiration_badge
+    - taxonomy.vocabulary.badges
+id: taxonomy_term.badges.field_inspiration_badge
+field_name: field_inspiration_badge
+entity_type: taxonomy_term
+bundle: badges
+label: 'Inspiration Badge'
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'Yes'
+  off_label: 'No'
+field_type: boolean

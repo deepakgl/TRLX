@@ -1,0 +1,13 @@
+uuid: 28724b8a-0fd5-4198-aab0-9561b9172de4
+langcode: en
+status: true
+dependencies: {  }
+id: related_products_videos
+label: 'Related Products Videos'
+enabled: true
+first_field: field_related_products_videos
+second_field: field_related_products_videos
+bundles:
+  node:
+    - product_detail
+    - tools

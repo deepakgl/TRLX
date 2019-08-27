@@ -1,0 +1,5 @@
+elx_utility.external_config_menu:
+  title: 'External Integration Config'
+  description: 'Set external integration config variables.'
+  route_name: elx_utility.external_config
+  parent: system.admin_config_system

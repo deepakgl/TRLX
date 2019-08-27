@@ -1,0 +1,9 @@
+uuid: aa59d242-02c8-43b2-aab5-017b3886dcb0
+langcode: he
+status: true
+dependencies: {  }
+id: he
+label: Hebrew
+direction: rtl
+weight: -2
+locked: false

@@ -1,0 +1,15 @@
+uuid: 040a35b9-b788-4605-a3e5-e6b2eb3162e1
+langcode: en
+status: true
+dependencies: {  }
+name: product_details_mobile_128_188_
+label: 'Product Details Mobile (128×188)'
+effects:
+  7bf0fe3a-2809-44b1-9b1f-1412d873ae9f:
+    uuid: 7bf0fe3a-2809-44b1-9b1f-1412d873ae9f
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 128
+      height: 188
+      anchor: center-center

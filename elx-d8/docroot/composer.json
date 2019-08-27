@@ -1,0 +1,181 @@
+{
+    "name": "drupal/drupal",
+    "description": "Drupal is an open source content management platform powering millions of websites and applications.",
+    "type": "project",
+    "license": "GPL-2.0-or-later",
+    "require": {
+        "drupal/core": "8.6.17",
+        "composer/installers": "^1.0.24",
+        "wikimedia/composer-merge-plugin": "^1.4",
+        "cweagans/composer-patches": "~1.0",
+        "drupal/migrate_upgrade": "3.0-rc4",
+        "drupal/migrate_tools": "4.0-rc1",
+        "drupal/migrate_plus": "4.0-beta3",
+        "drupal/jwt": "1.0-alpha6",
+        "drupal/key": "1.7",
+        "drupal/restui": "1.15",
+        "drupal/field_group": "3.0-beta1",
+        "drush/drush": "9.2",
+        "drupal/persistent_login": "1.0",
+        "drupal/admin_toolbar": "1.23",
+        "drupal/paragraphs": "1.2",
+        "drupal/field_collection": "1.0-alpha1",
+        "drupal/multiselect": "1.0",
+        "drupal/entityqueue": "1.0-alpha7",
+        "drupal/media_entity": "^1.7",
+        "drupal/media_entity_image": "^1.3",
+        "drupal/entity_browser": "2.1",
+        "drupal/embed": "^1.0",
+        "drupal/ctools": "^3.0",
+        "drupal/entity_embed": "^1.0@beta",
+        "drupal/inline_entity_form": "^1.0@RC",
+        "drupal/media_entity_browser": "^1.0@beta",
+        "drupal/dropzonejs": "^2.0@alpha",
+        "drupal/delete_all": "^1.0",
+        "drupal/video_embed_field": "^2.0",
+        "drupal/draggableviews": "1.0",
+        "drupal/image_raw_formatter": "1.x-dev",
+        "drupal/image_url_formatter": "^1.0@beta",
+        "drupal/svg_image": "^1.8",
+        "drupal/term_reference_tree": "1.x-dev",
+        "drupal/sendgrid_integration": "^1.2",
+        "drupal/login_emailusername": "^1.1",
+        "drupal/google_analytics": "^2.2",
+        "drupal/config_ignore": "^2.1",
+        "drupal/menu_link_attributes": "^1.0",
+        "drupal/taxonomy_delete": "^1.0",
+        "drupal/ckeditor_video": "^1.0@beta",
+        "drupal/fakeobjects": "^1.0",
+        "drupal/field_tokens": "^1.0@beta",
+        "drupal/editor_file": "^1.2",
+        "predis/predis": "^1.1",
+        "drupal/simple_oauth": "^3.8",
+        "drupal/material_admin": "^1.0",
+        "drupal/tac_lite": "^1.4",
+        "drupal/ckwordcount": "^1.0",
+        "drupal/search_api": "^1.3",
+        "nodespark/des-connector": "5.x-dev",
+        "makinacorpus/php-lucene": "^1.0.2",
+        "drupal/elasticsearch_connector": "5.x-dev",
+        "drupal/elastic_search": "^1.2@beta",
+        "drupal/bulk_update_fields": "^1.0@alpha",
+        "drupal/simple_menu_icons": "^2.1",
+        "drupal/view_unpublished": "^1.0@alpha",
+        "drupal/feeds": "^3.0",
+        "drupal/devel": "^1.2",
+        "drupal/mass_contact": "^1.0",
+        "drupal/views_data_export": "1.x-dev",
+        "drupal/translation_views": "^1.0@alpha",
+        "drupal/migrate_ui": "^1.1",
+        "drupal/view_custom_table": "^1.0",
+        "drupal/image_style_warmer": "1.x-dev",
+        "drupal/cer": "^4.0@alpha",
+        "drupal/superfish": "^1.3",
+        "drupal/menu_item_role_access": "^1.0",
+        "drupal/allowed_formats": "^1.1",
+        "drupal/menu_export": "^1.2",
+        "drupal/menu_per_role":"^1.0",
+        "drupal/password_encrypt": "^1.0"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "config": {
+        "preferred-install": "dist",
+        "autoloader-suffix": "Drupal8"
+    },
+    "extra": {
+        "_readme": [
+            "By default Drupal loads the autoloader from ./vendor/autoload.php.",
+            "To change the autoloader you can edit ./autoload.php.",
+            "This file specifies the packages.drupal.org repository.",
+            "You can read more about this composer repository at:",
+            "https://www.drupal.org/node/2718229"
+        ],
+        "merge-plugin": {
+            "include": [
+                "core/composer.json"
+            ],
+            "recurse": true,
+            "replace": false,
+            "merge-extra": false
+        },
+        "patches": {
+            "drupal/media_entity_browser": {
+                "media entity browser custom patch": "patches/media_entity_browser/media_entity_browser.patch"
+            },
+            "drupal/draggableviews": {
+                "duplicate entities": "patches/draggableviews/duplicate_entities.patch",
+                "group by draggableviews": "patches/draggableviews/group_by_draggableviews.patch",
+                "argument count error": "patches/draggableviews/argument_count_error.patch"
+            },
+            "drupal/entityqueue": {
+                "entityqueue title": "patches/entityqueue/entityqueue_title.patch",
+                "entityqueue subqueue list alter": "patches/entityqueue/entity_subqueue_list_builders.patch",
+                "entityqueue queue list alter": "patches/entityqueue/entity_queue_list_builder.patch",
+                "entityqueue queue actions alter": "patches/entityqueue/entityqueue_links_action.patch",
+                "entityqueue queue routing alter": "patches/entityqueue/entityqueue_routing.patch"
+            },
+            "drupal/simple_oauth": {
+                "simple oauth": "patches/simple_oauth/simple_oauth_auth_provider.patch",
+                "oauth revoke": "patches/simple_oauth/simple_oauth-auth-revoke.patch",
+                "oauth login" : "patches/simple_oauth/Oauth2TokenUpdate.patch"
+            },
+            "drupal/bulk_update_fields": {
+                "show labels": "patches/bulk_update_fields/show_labels.patch",
+                "bulk fields": "patches/bulk_update_fields/update_media_field.patch"
+            },
+            "drupal/feeds": {
+                "add user role": "patches/feeds/feeds-config-entityreference.patch",
+                "add user lang": "patches/feeds/feeds-language-target-2829283-9.patch"
+            },
+            "drupal/core": {
+                "login with mail": "patches/user/login_with_mail.patch",
+                "status check": "patches/user/user_status_access.patch",
+                "string translation": "patches/translation/drupal_core_translatablemarkup.patch",
+                "admin people view": "patches/user/admin_people_view.patch",
+                "content translation": "patches/translation/content_translation.patch",
+                "content translation temp": "patches/translation/content_translation_temp.patch",
+                "Update user validation messages": "patches/user/user_login_link.patch"
+            },
+            "drupal/consumers": {
+                "Consumers Column not found base_owner_id": "patches/consumers/unknown_column_base_owner_id.patch"
+            },
+            "drupal/inline_entity_form": {
+                "Alter paragraph fields": "patches/inline_entity_form/paragraph_fields_translation.patch"
+            },
+            "drupal/password_encrypt": {
+                "Password decryption": "patches/password_encrypt/password_decryption.patch"
+            }
+        },
+        "installer-paths": {
+            "core": ["type:drupal-core"],
+            "modules/contrib/{$name}": ["type:drupal-module"],
+            "profiles/contrib/{$name}": ["type:drupal-profile"],
+            "themes/contrib/{$name}": ["type:drupal-theme"],
+            "drush/contrib/{$name}": ["type:drupal-drush"],
+            "modules/custom/{$name}": ["type:drupal-custom-module"],
+            "themes/custom/{$name}": ["type:drupal-custom-theme"]
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Drupal\\Core\\Composer\\": "core/lib/Drupal/Core/Composer"
+        }
+    },
+    "scripts": {
+        "pre-autoload-dump": "Drupal\\Core\\Composer\\Composer::preAutoloadDump",
+        "post-autoload-dump": "Drupal\\Core\\Composer\\Composer::ensureHtaccess",
+        "post-package-install": "Drupal\\Core\\Composer\\Composer::vendorTestCodeCleanup",
+        "post-package-update": "Drupal\\Core\\Composer\\Composer::vendorTestCodeCleanup",
+        "drupal-phpunit-upgrade-check": "Drupal\\Core\\Composer\\Composer::upgradePHPUnit",
+        "drupal-phpunit-upgrade": "@composer update phpunit/phpunit --with-dependencies --no-progress",
+        "phpcs": "phpcs --standard=core/phpcs.xml.dist --runtime-set installed_paths $($COMPOSER_BINARY config vendor-dir)/drupal/coder/coder_sniffer --",
+        "phpcbf": "phpcbf --standard=core/phpcs.xml.dist --runtime-set installed_paths $($COMPOSER_BINARY config vendor-dir)/drupal/coder/coder_sniffer --"
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://packages.drupal.org/8"
+        }
+    ]
+}

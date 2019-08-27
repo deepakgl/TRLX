@@ -1,0 +1,71 @@
+uuid: 3703be02-f0c0-4c44-8f71-bc5abcac4b60
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.quiz.body
+    - field.field.node.quiz.field_access_by_role
+    - field.field.node.quiz.field_allow_changing_answers
+    - field.field.node.quiz.field_allow_changing_blank_answe
+    - field.field.node.quiz.field_allow_jumping
+    - field.field.node.quiz.field_allow_resume
+    - field.field.node.quiz.field_allow_skipping
+    - field.field.node.quiz.field_backwards_navigation
+    - field.field.node.quiz.field_display_description_on_cou
+    - field.field.node.quiz.field_each_attempt_builds_on_the
+    - field.field.node.quiz.field_feedback
+    - field.field.node.quiz.field_markets
+    - field.field.node.quiz.field_passing_rate
+    - field.field.node.quiz.field_percentage_high
+    - field.field.node.quiz.field_percentage_low
+    - field.field.node.quiz.field_question_points
+    - field.field.node.quiz.field_quiz_json_data
+    - field.field.node.quiz.field_range_title
+    - field.field.node.quiz.field_repeat_until_correct
+    - node.type.quiz
+  module:
+    - text
+    - user
+_core:
+  default_config_hash: 5BLJ0aFMMGIVMmJsz9rtGRpK9KD2-DOxKAW1jBe3sOs
+id: node.quiz.teaser
+targetEntityType: node
+bundle: quiz
+mode: teaser
+content:
+  body:
+    label: hidden
+    type: text_summary_or_trimmed
+    weight: 101
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+    region: content
+  links:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden:
+  field_access_by_role: true
+  field_allow_changing_answers: true
+  field_allow_changing_blank_answe: true
+  field_allow_jumping: true
+  field_allow_resume: true
+  field_allow_skipping: true
+  field_backwards_navigation: true
+  field_display_description_on_cou: true
+  field_each_attempt_builds_on_the: true
+  field_feedback: true
+  field_markets: true
+  field_passing_rate: true
+  field_percentage_high: true
+  field_percentage_low: true
+  field_question_points: true
+  field_questions: true
+  field_quiz_json: true
+  field_quiz_json_data: true
+  field_range_title: true
+  field_repeat_until_correct: true
+  langcode: true

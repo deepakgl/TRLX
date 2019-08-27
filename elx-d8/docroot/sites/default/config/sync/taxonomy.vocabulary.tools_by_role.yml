@@ -1,0 +1,9 @@
+uuid: 9b86f41a-00df-42d1-8ebd-f340c3dfc4df
+langcode: en
+status: true
+dependencies: {  }
+name: 'Tools by role'
+vid: tools_by_role
+description: 'Restrict access to content by role.'
+hierarchy: 0
+weight: 0

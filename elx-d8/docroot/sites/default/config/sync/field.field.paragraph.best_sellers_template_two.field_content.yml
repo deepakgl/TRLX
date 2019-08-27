@@ -1,0 +1,21 @@
+uuid: d68fcfb4-5657-4903-8abf-171565d58189
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_content
+    - paragraphs.paragraphs_type.best_sellers_template_two
+  module:
+    - text
+id: paragraph.best_sellers_template_two.field_content
+field_name: field_content
+entity_type: paragraph
+bundle: best_sellers_template_two
+label: Description
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long

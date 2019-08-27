@@ -1,0 +1,25 @@
+--- a/src/Form/BulkUpdateFieldsFormCopy.php
++++ b/src/Form/BulkUpdateFieldsForm.php
+@@ -183,7 +183,7 @@ class BulkUpdateFieldsForm extends FormBase implements FormInterface {
+           $fields = $entity->getFieldDefinitions();
+           foreach ($fields as $field) {
+             if (!in_array($field->getName(), $excluded_base_fields) && !isset($options[$field->getName()])) {
+-              $options[$field->getName()]['field_name'] = $field->getName();
++              $options[$field->getName()]['field_name'] = $field->getLabel();
+             }
+           }
+         }
+@@ -219,7 +219,12 @@ class BulkUpdateFieldsForm extends FormBase implements FormInterface {
+               // Maybe someone else can.
+               // TODO Doing it this way does not allow for feild labels on
+               // textarea widgets.
+-              $form[$field_name] = $entity->get($field_name)->defaultValuesForm($temp_form_element, $temp_form_state);
++              if ($field->getType() == 'entity_reference' && $field->getItemDefinition()->getSettings()['target_type'] == 'media') {
++                $form[$field_name] = $entity->get($field_name)->defaultValuesForm($form, $form_state);
++              }
++              else {
++                $form[$field_name] = $entity->get($field_name)->defaultValuesForm($temp_form_element, $temp_form_state);
++              }
+             }
+           }
+         }

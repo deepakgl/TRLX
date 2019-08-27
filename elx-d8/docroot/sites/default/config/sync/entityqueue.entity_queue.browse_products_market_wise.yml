@@ -1,0 +1,25 @@
+uuid: f7fe98f7-51ad-46b1-9b07-529cbbca6034
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: browse_products_market_wise
+label: 'Browse Products (Market Wise)'
+handler: multiple
+handler_configuration: {  }
+entity_settings:
+  target_type: node
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      product_detail: product_detail
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: product_detail
+queue_settings:
+  min_size: 0
+  max_size: 6
+  act_as_queue: false
+  reverse_in_admin: false

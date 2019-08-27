@@ -1,0 +1,28 @@
+uuid: 4b946215-e404-4ae9-9820-a1111a9de1b1
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_featured_image
+    - media.type.image
+    - node.type.stories
+id: node.stories.field_featured_image
+field_name: field_featured_image
+entity_type: node
+bundle: stories
+label: 'Featured Image'
+description: 'Allowed file types:<b> png, gif, jpg, jpeg.</b><br>Image Resolution:<b> 1440 x 665px</b>'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      image: image
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

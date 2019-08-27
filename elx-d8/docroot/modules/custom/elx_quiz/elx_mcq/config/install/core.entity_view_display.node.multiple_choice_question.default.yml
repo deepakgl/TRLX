@@ -1,0 +1,78 @@
+uuid: 0b4442ef-ae2c-4322-8ee9-b07f8661c4dc
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.multiple_choice_question.body
+    - field.field.node.multiple_choice_question.field_answer_choices
+    - field.field.node.multiple_choice_question.field_default_mark
+    - field.field.node.multiple_choice_question.field_multiple_answers
+    - field.field.node.multiple_choice_question.field_penalty
+    - field.field.node.multiple_choice_question.field_point_value
+    - node.type.multiple_choice_question
+  module:
+    - entity_reference_revisions
+    - options
+    - text
+    - user
+id: node.multiple_choice_question.default
+targetEntityType: node
+bundle: multiple_choice_question
+mode: default
+content:
+  body:
+    label: hidden
+    type: text_default
+    weight: 101
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  field_answer_choices:
+    type: entity_reference_revisions_entity_view
+    weight: 102
+    label: above
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    region: content
+  field_default_mark:
+    weight: 103
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_multiple_answers:
+    weight: 104
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
+    region: content
+  field_penalty:
+    weight: 105
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
+    region: content
+  field_point_value:
+    weight: 106
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  links:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden:
+  langcode: true

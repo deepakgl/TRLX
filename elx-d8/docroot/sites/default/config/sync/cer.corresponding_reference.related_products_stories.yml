@@ -1,0 +1,13 @@
+uuid: 8ef6cacd-6b0a-4bd8-ae27-71eb8bb5d43d
+langcode: en
+status: true
+dependencies: {  }
+id: related_products_stories
+label: 'Related Products Stories'
+enabled: true
+first_field: field_related_products_stories
+second_field: field_related_products_stories
+bundles:
+  node:
+    - product_detail
+    - stories

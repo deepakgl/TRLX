@@ -1,0 +1,18 @@
+--- a/src/Authentication/Provider/SimpleOauthAuthenticationProvider.php
++++ b/src/Authentication/Provider/SimpleOauthAuthenticationProvider.php	
+@@ -9,6 +9,7 @@ use Drupal\simple_oauth\PageCache\SimpleOauthRequestPolicyInterface;
+ use Drupal\simple_oauth\Server\ResourceServerInterface;
+ use League\OAuth2\Server\Exception\OAuthServerException;
+ use Symfony\Component\HttpFoundation\Request;
++use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
+
+ /**
+  * @internal
+@@ -74,6 +75,8 @@ class SimpleOauthAuthenticationProvider implements AuthenticationProviderInterfa
+       $auth_request = $this->resourceServer->validateAuthenticatedRequest($request);
+     }
+     catch (OAuthServerException $exception) {
++      // Throws 401 error code on Unauthorized access by the User in system.
++      throw new UnauthorizedHttpException('', 'Invalid');
+       // Procedural code here is hard to avoid.
+       watchdog_exception('simple_oauth', $exception);

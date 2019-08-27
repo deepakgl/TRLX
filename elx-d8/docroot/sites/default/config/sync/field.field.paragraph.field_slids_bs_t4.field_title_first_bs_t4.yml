@@ -1,0 +1,19 @@
+uuid: c13b5d97-424d-460d-bcd6-f11ef20db489
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_title_first_bs_t4
+    - paragraphs.paragraphs_type.field_slids_bs_t4
+id: paragraph.field_slids_bs_t4.field_title_first_bs_t4
+field_name: field_title_first_bs_t4
+entity_type: paragraph
+bundle: field_slids_bs_t4
+label: 'Title First'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

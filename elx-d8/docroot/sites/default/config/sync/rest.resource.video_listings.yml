@@ -1,0 +1,18 @@
+uuid: 98a35af2-6936-4a0c-9958-df0453af3e8c
+langcode: en
+status: true
+dependencies:
+  module:
+    - elx_video
+    - serialization
+    - simple_oauth
+id: video_listings
+plugin_id: video_listings
+granularity: resource
+configuration:
+  methods:
+    - GET
+  formats:
+    - json
+  authentication:
+    - oauth2

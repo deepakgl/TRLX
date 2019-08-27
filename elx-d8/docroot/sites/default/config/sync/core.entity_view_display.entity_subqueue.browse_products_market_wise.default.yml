@@ -1,0 +1,30 @@
+uuid: b25c7f53-40ac-41a1-823a-8cc665c9ceab
+langcode: en
+status: true
+dependencies:
+  config:
+    - entityqueue.entity_queue.browse_products_market_wise
+    - field.field.entity_subqueue.browse_products_market_wise.field_market
+id: entity_subqueue.browse_products_market_wise.default
+targetEntityType: entity_subqueue
+bundle: browse_products_market_wise
+mode: default
+content:
+  field_market:
+    weight: 1
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  items:
+    label: hidden
+    type: entity_reference_label
+    weight: 0
+    region: content
+    settings:
+      link: true
+    third_party_settings: {  }
+hidden:
+  langcode: true

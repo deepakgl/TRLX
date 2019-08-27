@@ -1,0 +1,83 @@
+uuid: 2996da4a-2378-4427-b8b9-678cf00bad99
+langcode: en
+status: true
+dependencies:
+  config:
+    - filter.format.full_html
+  module:
+    - ckeditor
+    - editor_file
+third_party_settings:
+  editor_file:
+    status: true
+    scheme: public
+    directory: inline-files
+    extensions: 'txt mp4 m4v ogg ogv webm mov'
+_core:
+  default_config_hash: 967ijj7p6i7rwrYl7r08WQFeCY_c23YAh0h8u-w_CXM
+format: full_html
+editor: ckeditor
+settings:
+  toolbar:
+    rows:
+      -
+        -
+          name: Formatting
+          items:
+            - Bold
+            - Italic
+            - Strike
+            - Superscript
+            - Subscript
+            - '-'
+            - RemoveFormat
+        -
+          name: Linking
+          items:
+            - DrupalLink
+            - DrupalUnlink
+        -
+          name: Lists
+          items:
+            - BulletedList
+            - NumberedList
+        -
+          name: Media
+          items:
+            - Blockquote
+            - DrupalImage
+            - Table
+            - Video
+            - HorizontalRule
+        -
+          name: 'Block Formatting'
+          items:
+            - Format
+            - DrupalFile
+        -
+          name: Tools
+          items:
+            - ShowBlocks
+            - Source
+  plugins:
+    stylescombo:
+      styles: ''
+    language:
+      language_list: un
+    wordcount:
+      enable: 1
+      show_paragraphs: 0
+      show_word_count: 0
+      show_char_count: 1
+      count_spaces: 1
+      count_html: 0
+      max_words: '-1'
+      max_chars: '-1'
+image_upload:
+  status: true
+  scheme: public
+  directory: inline-images
+  max_size: ''
+  max_dimensions:
+    width: null
+    height: null

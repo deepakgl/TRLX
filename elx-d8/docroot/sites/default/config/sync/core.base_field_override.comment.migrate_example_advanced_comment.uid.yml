@@ -1,0 +1,22 @@
+uuid: 075a9c59-f310-4993-b461-6d595e215376
+langcode: en
+status: true
+dependencies:
+  config:
+    - comment.type.migrate_example_advanced_comment
+id: comment.migrate_example_advanced_comment.uid
+field_name: uid
+entity_type: comment
+bundle: migrate_example_advanced_comment
+label: 'User ID'
+description: 'The user ID of the comment author.'
+required: false
+translatable: false
+default_value:
+  -
+    target_id: '0'
+default_value_callback: ''
+settings:
+  handler: default
+  handler_settings: {  }
+field_type: entity_reference

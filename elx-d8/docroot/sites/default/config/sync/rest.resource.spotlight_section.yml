@@ -1,0 +1,18 @@
+uuid: f9dcb04b-2ed2-4cc7-9686-7765fef03acc
+langcode: en
+status: true
+dependencies:
+  module:
+    - elx_products
+    - serialization
+    - simple_oauth
+id: spotlight_section
+plugin_id: spotlight_section
+granularity: resource
+configuration:
+  methods:
+    - GET
+  formats:
+    - json
+  authentication:
+    - oauth2

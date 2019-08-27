@@ -1,0 +1,21 @@
+uuid: 79cf1c18-de72-4e16-bb39-9480c0610aee
+langcode: en
+status: true
+dependencies:
+  module:
+    - user
+id: user.field_counter_manager
+field_name: field_counter_manager
+entity_type: user
+type: string
+settings:
+  max_length: 255
+  is_ascii: false
+  case_sensitive: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

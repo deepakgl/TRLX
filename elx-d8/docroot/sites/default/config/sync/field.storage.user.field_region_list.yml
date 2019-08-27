@@ -1,0 +1,45 @@
+uuid: d33772ec-7522-46d4-839a-09287f758d9c
+langcode: en
+status: true
+dependencies:
+  module:
+    - options
+    - user
+id: user.field_region_list
+field_name: field_region_list
+entity_type: user
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: APAC
+      label: APAC
+    -
+      value: NOAM
+      label: NOAM
+    -
+      value: EMEA
+      label: EMEA
+    -
+      value: LATAM
+      label: LATAM
+    -
+      value: TRA
+      label: TRA
+    -
+      value: TRAPAC
+      label: TRAPAC
+    -
+      value: TREMEA
+      label: TREMEA
+    -
+      value: UK
+      label: UK
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

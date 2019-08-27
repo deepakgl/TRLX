@@ -1,0 +1,29 @@
+uuid: 10a53fbd-506d-407d-a86d-ad89eb619142
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_product_family
+    - node.type.level_interactive_content
+    - taxonomy.vocabulary.product_family
+id: node.level_interactive_content.field_product_family
+field_name: field_product_family
+entity_type: node
+bundle: level_interactive_content
+label: 'Product Family'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      product_family: product_family
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

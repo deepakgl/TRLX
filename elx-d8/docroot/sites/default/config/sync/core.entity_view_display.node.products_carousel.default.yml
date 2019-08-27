@@ -1,0 +1,28 @@
+uuid: 4b5c8e6f-56ee-4be0-8b1d-48cea19e9e6f
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.products_carousel.field_products_carousel_image
+    - node.type.products_carousel
+  module:
+    - user
+id: node.products_carousel.default
+targetEntityType: node
+bundle: products_carousel
+mode: default
+content:
+  field_products_carousel_image:
+    type: entity_reference_entity_view
+    weight: 101
+    label: above
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    region: content
+  links:
+    weight: 100
+    region: content
+hidden:
+  langcode: true

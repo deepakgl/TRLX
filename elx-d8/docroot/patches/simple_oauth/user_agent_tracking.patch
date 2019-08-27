@@ -1,0 +1,23 @@
+--- src/Controller/Oauth2Token.php
++++ src/Controller/Oauth2Token.php
+@@ -41,6 +41,20 @@ class Oauth2Token extends ControllerBase {
+   public function token(ServerRequestInterface $request) {
+     // Extract the grant type from the request body.
+     $body = $request->getParsedBody();
++    $browser_name = (!empty($request->getHeaders()['x-browser-name'])) ? $request->getHeaders()['x-browser-name'][0] : '';
++    $browser_version = (!empty($request->getHeaders()['x-browser-version'])) ? $request->getHeaders()['x-browser-version'][0] : '';
++    $os_name = (!empty($request->getHeaders()['x-os-name'])) ? $request->getHeaders()['x-os-name'][0] : '';
++    $system_ip = (!empty($request->getHeaders()['x-system-ip'])) ? $request->getHeaders()['x-system-ip'][0] : '';
++    $email = $body['username'];
++    $query = db_insert('elx_user_agent_tracking')->fields(
++      [
++        'host_ip' => $system_ip,
++        'user' => $email,
++        'os' => $os_name,
++        'browser_name' => $browser_name,
++        'browser_version' => $browser_version,
++        'created_on' => time(),
++      ])->execute();
+     $grant_type_id = !empty($body['grant_type']) ? $body['grant_type'] : 'implicit';
+     // Get the auth server object from that uses the League library.
+     try {

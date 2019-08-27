@@ -1,0 +1,21 @@
+uuid: b0d0c5a6-d5e1-46dc-addf-dd0cfbfcc3ae
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.products_carousel.field_products_carousel_image
+    - node.type.products_carousel
+  module:
+    - user
+id: node.products_carousel.teaser
+targetEntityType: node
+bundle: products_carousel
+mode: teaser
+content:
+  links:
+    weight: 100
+    region: content
+hidden:
+  field_products_carousel_image: true
+  langcode: true

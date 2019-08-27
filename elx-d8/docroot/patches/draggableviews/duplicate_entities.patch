@@ -1,0 +1,34 @@
+--- draggableviews.module
++++ draggableviews.module
+@@ -53,11 +53,13 @@ function draggableviews_views_data_alter(&$data) {
+       );
+       // Explain to every entity how to join with draggableviews structure table.
+       $data['draggableviews_structure']['table']['join'][$base_table] = array(
+-        'handler' => 'draggableviews_join_handler',
+         // Because this is a direct link it could be left out.
+         'left_table' => $base_table,
+         'left_field' => $entity_keys['id'],
+         'field' => 'entity_id',
++        'extra' => array(
++          array('field' => 'view_name', 'value' => '***VIEW_ID***'),
++        ),
+       );
+     }
+   }
+ }
+
+--- draggableviews.module
++++ draggableviews.module
+@@ -194,3 +194,12 @@ function draggableviews_views_submit(&$form, \Drupal\Core\Form\FormStateInterfac
+     drupal_set_message(t('There was an error while saving the data. Please, try gain.'), 'warning');
+   }
+ }
++
++/**
++* Implements hook_views_query_substitutions().
++*
++* Allow replacement of current userid so we can cache these queries.
++*/
++function draggableviews_views_query_substitutions(\Drupal\views\ViewExecutable $view) {
++ return array('***VIEW_ID***' => $view->id());
++}

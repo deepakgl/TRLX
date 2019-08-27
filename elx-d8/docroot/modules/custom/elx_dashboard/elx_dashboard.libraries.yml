@@ -1,0 +1,5 @@
+elx_admin:
+  version: 1.x
+  css:
+    theme:
+      css/elx_admin.css: {}

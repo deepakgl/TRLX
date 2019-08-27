@@ -1,0 +1,5 @@
+name: ELX Reports
+type: module
+description: Elx reports
+core: 8.x
+package: ELX

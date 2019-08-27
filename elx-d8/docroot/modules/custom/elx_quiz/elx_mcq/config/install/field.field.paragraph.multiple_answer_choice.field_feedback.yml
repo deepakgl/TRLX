@@ -1,0 +1,29 @@
+uuid: 24b94db1-6289-4eea-bde0-4d6337643779
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_feedback
+    - paragraphs.paragraphs_type.multiple_answer_choice
+  module:
+    - allowed_formats
+    - text
+third_party_settings:
+  allowed_formats:
+    quiz: quiz
+    full_html: '0'
+    basic_html: '0'
+    restricted_html: '0'
+    plain_text: '0'
+id: paragraph.multiple_answer_choice.field_feedback
+field_name: field_feedback
+entity_type: paragraph
+bundle: multiple_answer_choice
+label: Feedback
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long

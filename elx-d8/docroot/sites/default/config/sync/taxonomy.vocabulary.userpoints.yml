@@ -1,0 +1,9 @@
+uuid: afdd1775-bb83-475c-91f3-41f6beeddc70
+langcode: en
+status: true
+dependencies: {  }
+name: Userpoints
+vid: userpoints
+description: 'Automatically created by the userpoints module'
+hierarchy: 1
+weight: 0

@@ -1,0 +1,18 @@
+uuid: 6ad3095e-8a7d-4c93-8c0f-f76a032d3cb0
+langcode: en
+status: true
+dependencies:
+  module:
+    - elx_lang_translation
+    - serialization
+    - simple_oauth
+id: string_translation
+plugin_id: string_translation
+granularity: resource
+configuration:
+  methods:
+    - GET
+  formats:
+    - json
+  authentication:
+    - oauth2

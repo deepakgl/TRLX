@@ -1,0 +1,72 @@
+# User migration.
+id: custom_user
+label: Custom user migration
+migration_group: custom
+# define a forced module dependency. this will cause the migration definition to be reloaded
+# when you uninstall and reinstall your custom module.
+dependencies:
+  enforced:
+    module:
+      - elx_custom_user_migrate
+
+source:
+  plugin: custom_user
+  # The "target" here refers to the database connection where the source data lives.
+  # You will need to configure this database in your settings.php.
+  target: elx_d7
+
+destination:
+  plugin: entity:user
+
+  # process:
+  # Field mappings and transformations will go here. We will get to this in a minute.
+process:
+  uid: uid
+  name: name
+  pass: pass
+  mail: mail
+  status: status
+  created: created
+  changed: changed
+  access: access
+  login: login
+  timezone: timezone
+  langcode: language
+  preferred_langcode: language
+  default_langcode: default_langcode
+  preferred_admin_langcode: language
+  init: init
+  field_first_name: field_first_name_value
+  field_last_name: field_last_name_value
+  field_account_name: field_account_name_value
+  field_city: field_city_value
+  field_counter_manager: field_counter_manager_value
+  field_country: field_country_value
+  field_default_market: user_market
+  field_door: field_door_value
+  field_education_manager_executiv: field_education_manager_executiv_value
+  field_employer_number: field_employer_number_value
+  field_employment_status: field_employment_status_value
+  field_general_manager_brand_mana: field_general_manager_brand_mana_value
+  field_hire_date: field_hire_date_value
+  field_last_access_date: field_last_access_date_value
+  field_level: field_level_value
+  field_market_administrator: field_market_administrator_value
+  field_rank: field_modified_date_value
+  field_region_list: field_region_list_value
+  field_field_sales_director_regio: field_field_sales_director_regio_value
+  field_regional_vice_president: field_regional_vice_president_value
+  field_account_field_executive: field_account_field_executive_value
+  field_state: field_state_value
+  roles:
+    plugin: migration_lookup
+    migration: custom_user_role
+    source: roles
+  user_picture:
+    plugin: migration_lookup
+    migration: custom_file
+    source: picture
+migration_dependencies:
+  required:
+    - custom_file
+    - custom_user_role

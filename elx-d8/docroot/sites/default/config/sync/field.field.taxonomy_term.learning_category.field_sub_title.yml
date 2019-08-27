@@ -1,0 +1,19 @@
+uuid: 46097a5b-7170-46f9-b495-99bcd77f36d7
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_sub_title
+    - taxonomy.vocabulary.learning_category
+id: taxonomy_term.learning_category.field_sub_title
+field_name: field_sub_title
+entity_type: taxonomy_term
+bundle: learning_category
+label: 'Sub Title'
+description: ''
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

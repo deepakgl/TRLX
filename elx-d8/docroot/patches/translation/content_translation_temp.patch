@@ -1,0 +1,13 @@
+--- a/modules/content_translation/src/Controller/ContentTranslationController.php
++++ b/modules/content_translation/src/Controller/ContentTranslationController.php
+@@ -303,9 +303,9 @@ class ContentTranslationController extends ControllerBase {
+     else {
+       $header = [
+         $this->t('Language'),
+-        $this->t('Translation'),
++        $this->t('Translation available'),
+         $this->t('Status'),
+-        $this->t('Operations'),
++        $this->t('Translate'),
+       ];
+     }

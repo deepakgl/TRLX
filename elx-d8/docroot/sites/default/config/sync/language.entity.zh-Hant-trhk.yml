@@ -1,0 +1,9 @@
+uuid: 809e3e4c-ee60-4537-b47f-5f5b3829c917
+langcode: en
+status: true
+dependencies: {  }
+id: zh-Hant-trhk
+label: 'Chinese, Traditional (TR HK)'
+direction: ltr
+weight: -15
+locked: false

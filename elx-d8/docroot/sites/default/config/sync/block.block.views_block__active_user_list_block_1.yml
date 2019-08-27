@@ -1,0 +1,27 @@
+uuid: cb26fbc7-e575-4aa5-9a59-8b0e7c868de8
+langcode: en
+status: false
+dependencies:
+  module:
+    - system
+  theme:
+    - seven
+id: views_block__active_user_list_block_1
+theme: seven
+region: content
+weight: 0
+provider: null
+plugin: 'views_block:active_user_list-block_1'
+settings:
+  id: 'views_block:active_user_list-block_1'
+  label: ''
+  provider: views
+  label_display: '0'
+  views_label: ''
+  items_per_page: none
+visibility:
+  request_path:
+    id: request_path
+    pages: /admin/active-users
+    negate: false
+    context_mapping: {  }

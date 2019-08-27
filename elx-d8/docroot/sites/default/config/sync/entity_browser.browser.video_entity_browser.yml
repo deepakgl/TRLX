@@ -1,0 +1,53 @@
+uuid: 41f90970-2431-4967-a828-caf744e4b808
+langcode: en
+status: true
+dependencies:
+  config:
+    - media.type.video
+    - views.view.media_entity_browser
+  module:
+    - dropzonejs_eb_widget
+    - media
+    - views
+name: video_entity_browser
+label: 'Video Entity Browser'
+display: modal
+display_configuration:
+  width: '1070'
+  height: '840'
+  link_text: Upload
+  auto_open: false
+selection_display: no_display
+selection_display_configuration: {  }
+widget_selector: tabs
+widget_selector_configuration: {  }
+widgets:
+  5f678510-0180-497b-b67b-0ac06feab58f:
+    settings:
+      view: media_entity_browser
+      view_display: entity_browser_1
+      submit_text: Upload
+      auto_select: false
+    uuid: 5f678510-0180-497b-b67b-0ac06feab58f
+    weight: 1
+    label: view
+    id: view
+  191fda57-b290-4524-b1a4-ff75ba8c42df:
+    settings:
+      form_mode: default
+      media_type: video
+      upload_location: 'public://[date:custom:Y]-[date:custom:m]'
+      dropzone_description: 'Drop files here to upload them'
+      max_filesize: 1024M
+      extensions: 'mp4 m4v ogg ogv webm mov'
+      clientside_resize: false
+      resize_width: null
+      resize_height: null
+      resize_quality: !!float 1
+      resize_method: contain
+      thumbnail_method: contain
+      submit_text: Upload
+    uuid: 191fda57-b290-4524-b1a4-ff75ba8c42df
+    weight: 2
+    label: upload
+    id: dropzonejs_media_entity_inline_entity_form

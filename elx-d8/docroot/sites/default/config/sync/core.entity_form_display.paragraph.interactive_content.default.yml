@@ -1,0 +1,70 @@
+uuid: 899315fd-bd07-404c-ac2b-8c3649e58cd0
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.interactive_content.field_articulate_file_upload
+    - field.field.paragraph.interactive_content.field_featured_image
+    - field.field.paragraph.interactive_content.field_file_path
+    - field.field.paragraph.interactive_content.field_intro_text
+    - field.field.paragraph.interactive_content.field_sub_title
+    - field.field.paragraph.interactive_content.field_title
+    - paragraphs.paragraphs_type.interactive_content
+  module:
+    - file
+    - text
+id: paragraph.interactive_content.default
+targetEntityType: paragraph
+bundle: interactive_content
+mode: default
+content:
+  field_articulate_file_upload:
+    weight: 4
+    settings:
+      progress_indicator: throbber
+    third_party_settings: {  }
+    type: file_generic
+    region: content
+  field_file_path:
+    type: string_textfield
+    weight: 3
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_intro_text:
+    weight: 2
+    settings:
+      rows: 9
+      summary_rows: 3
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea_with_summary
+    region: content
+  field_sub_title:
+    weight: 1
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_title:
+    weight: 0
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  translation:
+    weight: 10
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden:
+  created: true
+  field_featured_image: true
+  status: true
+  uid: true

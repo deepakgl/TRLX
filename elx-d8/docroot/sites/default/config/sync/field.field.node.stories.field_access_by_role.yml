@@ -1,0 +1,23 @@
+uuid: 264dc860-41b1-416e-a9da-bbeeffa63401
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_access_by_role
+    - node.type.stories
+id: node.stories.field_access_by_role
+field_name: field_access_by_role
+entity_type: node
+bundle: stories
+label: 'Access by role'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:user_role'
+  handler_settings:
+    target_bundles: null
+    auto_create: false
+field_type: entity_reference

@@ -1,0 +1,9 @@
+uuid: e09a31ed-9541-4887-85fa-a20053a0c85f
+langcode: en
+status: true
+dependencies: {  }
+id: field_slides_bs_t3
+label: 'slides bs t3'
+icon_uuid: null
+description: ''
+behavior_plugins: {  }

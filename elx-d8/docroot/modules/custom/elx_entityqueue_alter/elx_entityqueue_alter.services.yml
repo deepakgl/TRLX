@@ -1,0 +1,10 @@
+services:
+
+  elx_entityqueue_alter.route_subscriber:
+    class: Drupal\elx_entityqueue_alter\Routing\AutocompleteRouteSubscriber
+    tags:
+      - { name: event_subscriber }
+
+  elx_entityqueue_alter.autocomplete_matcher:
+    class: Drupal\elx_entityqueue_alter\EntityAutocompleteMatcher
+    arguments: ['@plugin.manager.entity_reference_selection']

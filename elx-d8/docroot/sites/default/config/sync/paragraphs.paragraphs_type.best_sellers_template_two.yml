@@ -1,0 +1,9 @@
+uuid: 0c5311ba-7ceb-4312-8940-af8090a0d133
+langcode: en
+status: true
+dependencies: {  }
+id: best_sellers_template_two
+label: Tiles
+icon_uuid: null
+description: ''
+behavior_plugins: {  }

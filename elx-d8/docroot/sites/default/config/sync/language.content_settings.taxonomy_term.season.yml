@@ -1,0 +1,18 @@
+uuid: 006e67c7-259c-4203-b199-ac06e2a6f6b2
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.season
+  module:
+    - content_translation
+third_party_settings:
+  content_translation:
+    enabled: false
+    bundle_settings:
+      untranslatable_fields_hide: '0'
+id: taxonomy_term.season
+target_entity_type_id: taxonomy_term
+target_bundle: season
+default_langcode: site_default
+language_alterable: false

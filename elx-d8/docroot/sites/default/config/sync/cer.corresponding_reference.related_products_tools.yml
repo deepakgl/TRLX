@@ -1,0 +1,13 @@
+uuid: 00293987-f4db-47b9-b9cc-af0574da0068
+langcode: en
+status: true
+dependencies: {  }
+id: related_products_tools
+label: 'Related Products Tools'
+enabled: true
+first_field: field_related_products_tools
+second_field: field_related_products_tools
+bundles:
+  node:
+    - product_detail
+    - tools-pdf

@@ -1,0 +1,15 @@
+uuid: bc906d7d-d17c-489a-a768-8351583c118c
+langcode: en
+status: true
+dependencies: {  }
+name: product_listings_mobile_300_410
+label: 'Product Listings Mobile (300×410)'
+effects:
+  8e7ca405-f951-4841-80a9-dfe2915373ef:
+    uuid: 8e7ca405-f951-4841-80a9-dfe2915373ef
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 300
+      height: 410
+      anchor: center-center

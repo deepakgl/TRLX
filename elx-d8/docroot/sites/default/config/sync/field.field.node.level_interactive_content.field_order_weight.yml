@@ -1,0 +1,19 @@
+uuid: 0c6cf151-6218-4e12-ae65-7c67ce476671
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_order_weight
+    - node.type.level_interactive_content
+id: node.level_interactive_content.field_order_weight
+field_name: field_order_weight
+entity_type: node
+bundle: level_interactive_content
+label: 'Order weight'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

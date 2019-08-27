@@ -1,0 +1,57 @@
+uuid: f32350d9-9350-4e2d-af3b-9d580cb8cdbc
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.markets.field_primary_language
+    - field.field.taxonomy_term.markets.field_secondary_language
+    - taxonomy.vocabulary.markets
+  module:
+    - path
+    - text
+id: taxonomy_term.markets.default
+targetEntityType: taxonomy_term
+bundle: markets
+mode: default
+content:
+  description:
+    type: text_textarea
+    weight: 1
+    region: content
+    settings:
+      placeholder: ''
+      rows: 5
+    third_party_settings: {  }
+  field_primary_language:
+    weight: 2
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_secondary_language:
+    weight: 3
+    settings: {  }
+    third_party_settings: {  }
+    type: options_buttons
+    region: content
+  name:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  path:
+    type: path
+    weight: 5
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  translation:
+    weight: 4
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  langcode: true

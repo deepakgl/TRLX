@@ -1,0 +1,11 @@
+uuid: a75311da-f614-4647-897f-a45c9bbfe89e
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: LpCeTautbzQhxvg5luy5E59gHpPCkzKG17BuSYWtYnQ
+id: multiple_answer_choice
+label: 'Multiple Answer Choice'
+icon_uuid: null
+description: ''
+behavior_plugins: {  }

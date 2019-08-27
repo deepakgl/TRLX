@@ -1,0 +1,9 @@
+uuid: 375203c6-4af8-4d18-8b33-5cb79c70f924
+langcode: en
+status: true
+dependencies: {  }
+id: ja-trjp
+label: 'Japanese (TR Japan)'
+direction: ltr
+weight: 4
+locked: false

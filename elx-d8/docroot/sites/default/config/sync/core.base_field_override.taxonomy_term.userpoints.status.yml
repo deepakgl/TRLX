@@ -1,0 +1,22 @@
+uuid: 73692f7f-e8ef-4651-b616-61b242179153
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.userpoints
+id: taxonomy_term.userpoints.status
+field_name: status
+entity_type: taxonomy_term
+bundle: userpoints
+label: Published
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 1
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

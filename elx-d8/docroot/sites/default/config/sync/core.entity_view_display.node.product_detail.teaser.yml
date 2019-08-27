@@ -1,0 +1,77 @@
+uuid: f180fa71-5377-483c-9106-ddecd166ad32
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.product_detail.field_access_by_role
+    - field.field.node.product_detail.field_ar_search
+    - field.field.node.product_detail.field_benefits
+    - field.field.node.product_detail.field_customer_questions
+    - field.field.node.product_detail.field_demonstration
+    - field.field.node.product_detail.field_display_title
+    - field.field.node.product_detail.field_end_date
+    - field.field.node.product_detail.field_featured_image
+    - field.field.node.product_detail.field_field_product_image
+    - field.field.node.product_detail.field_fun_fact_sheet
+    - field.field.node.product_detail.field_if_she_asks_share
+    - field.field.node.product_detail.field_just_for_you
+    - field.field.node.product_detail.field_markets
+    - field.field.node.product_detail.field_perfect_partners
+    - field.field.node.product_detail.field_perfect_partners_text
+    - field.field.node.product_detail.field_point_value
+    - field.field.node.product_detail.field_price
+    - field.field.node.product_detail.field_product_categories
+    - field.field.node.product_detail.field_product_video
+    - field.field.node.product_detail.field_product_video_thumbnail
+    - field.field.node.product_detail.field_related_products
+    - field.field.node.product_detail.field_season
+    - field.field.node.product_detail.field_story
+    - field.field.node.product_detail.field_subtitle
+    - field.field.node.product_detail.field_tags_keywords
+    - field.field.node.product_detail.field_why_there_s_only_one
+    - node.type.product_detail
+  module:
+    - user
+id: node.product_detail.teaser
+targetEntityType: node
+bundle: product_detail
+mode: teaser
+content:
+  links:
+    weight: 100
+    region: content
+hidden:
+  field_access_by_role: true
+  field_ar_search: true
+  field_benefits: true
+  field_customer_questions: true
+  field_demonstration: true
+  field_display_title: true
+  field_end_date: true
+  field_featured_image: true
+  field_field_product_image: true
+  field_fun_fact_sheet: true
+  field_if_she_asks_share: true
+  field_just_for_you: true
+  field_markets: true
+  field_perfect_partners: true
+  field_perfect_partners_text: true
+  field_point_value: true
+  field_price: true
+  field_product_categories: true
+  field_product_family: true
+  field_product_image: true
+  field_product_video: true
+  field_product_video_thumbnail: true
+  field_related_products: true
+  field_related_products_stories: true
+  field_related_products_tools: true
+  field_related_products_videos: true
+  field_season: true
+  field_story: true
+  field_subtitle: true
+  field_tags_keywords: true
+  field_translation: true
+  field_why_there_s_only_one: true
+  langcode: true

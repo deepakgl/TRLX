@@ -1,0 +1,25 @@
+uuid: 4a78ff48-2e40-47ae-800b-14c641e0dc12
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_display_description_on_cou
+    - node.type.quiz
+_core:
+  default_config_hash: g8Bo4qouFzV60Qghui00WoBxN0_TgyuN_Sf6ZdUnOQQ
+id: node.quiz.field_display_description_on_cou
+field_name: field_display_description_on_cou
+entity_type: node
+bundle: quiz
+label: 'Display description on course page'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

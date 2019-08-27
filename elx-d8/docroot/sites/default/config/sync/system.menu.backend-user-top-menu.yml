@@ -1,0 +1,8 @@
+uuid: 17619f80-f54b-4a9a-95a8-2acff53b4d7e
+langcode: en
+status: true
+dependencies: {  }
+id: backend-user-top-menu
+label: 'Backend User Top Menu'
+description: 'Menu for GA and MA users'
+locked: false

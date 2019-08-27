@@ -1,0 +1,9 @@
+uuid: dcd490b6-0613-4bc4-a89b-3b00f326dceb
+langcode: th
+status: true
+dependencies: {  }
+id: th
+label: Thai
+direction: ltr
+weight: 16
+locked: false

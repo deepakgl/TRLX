@@ -1,0 +1,14 @@
+<?php
+
+/**
+ * @file
+ * Update table.
+ */
+
+/**
+ * Implements hook_update_N().
+ */
+function elx_dashboard_update_8502() {
+  $config_installer = \Drupal::service('config.installer');
+  $config_installer->installDefaultConfig('module', 'elx_dashboard');
+}

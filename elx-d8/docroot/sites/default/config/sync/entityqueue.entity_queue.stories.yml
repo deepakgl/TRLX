@@ -1,0 +1,25 @@
+uuid: ef6d7a78-ed0f-444c-a5ea-598a52e2695e
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: stories
+label: 'Global Stories'
+handler: simple
+handler_configuration: {  }
+entity_settings:
+  target_type: node
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      stories: stories
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+queue_settings:
+  min_size: 0
+  max_size: 4
+  act_as_queue: false
+  reverse_in_admin: false

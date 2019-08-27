@@ -1,0 +1,15 @@
+uuid: 06b1ff51-c656-44aa-a9c4-03c6aa488e7d
+langcode: en
+status: true
+dependencies: {  }
+name: stories_details_1440_398
+label: 'Stories details(1440×398)'
+effects:
+  7d333d59-9fe1-4bb4-b653-4f514c89d3a2:
+    uuid: 7d333d59-9fe1-4bb4-b653-4f514c89d3a2
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 1440
+      height: 398
+      anchor: center-center

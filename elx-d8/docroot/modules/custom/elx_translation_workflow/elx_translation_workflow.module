@@ -1,0 +1,132 @@
+<?php
+
+/**
+ * @file
+ * ELX Translation Workflow module file.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
+use Drupal\elx_user\Utility\UserUtility;
+
+/**
+ * Implements hook_form_alter().
+ */
+function elx_translation_workflow_form_alter(&$form,
+ FormStateInterface $form_state,
+ $form_id) {
+  switch ($form_id) {
+    case 'node_product_detail_form':
+    case 'node_stories_form':
+    case 'node_tools-pdf_form':
+    case 'node_tools_form':
+    case 'node_level_interactive_content_form':
+      $form['status']['widget']['value']['#default_value'] = FALSE;
+      $translation_state =
+      $form['field_translation']['widget']['#default_value'];
+      _prepare_content_states($form, $translation_state);
+      break;
+
+    case 'node_product_detail_edit_form':
+    case 'node_stories_edit_form':
+    case 'node_tools-pdf_edit_form':
+    case 'node_tools_edit_form':
+    case 'node_level_interactive_content_edit_form':
+       $translation_state =
+       $form['field_translation']['widget']['#default_value'];
+       _prepare_content_states($form, $translation_state);
+      break;
+  }
+}
+
+/**
+ * Prepare the workflow states.
+ *
+ * @param array $form
+ *   Form Object.
+ * @param string $translation_state
+ *   Current State of the entity.
+ *
+ * @return array
+ *   Form Object.
+ */
+function _prepare_content_states(array &$form, $translation_state) {
+  // Workflow draft access
+  $save_access = ($translation_state == 'draft' || empty($translation_state)) ? TRUE : FALSE;
+  // Workflow ready for translation access
+  $ready_access = ($translation_state == 'draft' || empty($translation_state)) ? TRUE : FALSE;
+  // Workflow published access
+  $pub_access = ($translation_state == 'draft' || empty($translation_state)) ? TRUE : TRUE;
+  // Workflow unpublished access
+  $unpub_access = ($translation_state == 'draft' || empty($translation_state)) ? FALSE : TRUE;
+  // Hide published and translation field.
+  $form['status']['#access'] = FALSE;
+  $form['field_translation']['#access'] = FALSE;
+  $worklow_btns = [
+    'submit' => [
+      'Save' => $save_access,
+    ],
+    'ready_for_translation' => [
+      'Ready For Translation' => $ready_access,
+    ],
+    'published' => [
+      'Save as published' => $pub_access,
+    ],
+    'unpublished' => [
+      'Save as unpublished' => $unpub_access,
+    ],
+  ];
+  $i = 5;
+  foreach ($worklow_btns as $key => $value) {
+    // Create the custom submit handlers to handle workflow translation.
+    $form['actions'][$key] = [
+      '#type' => 'submit',
+      '#value' => array_keys($value)[0],
+      '#submit' => ['::submitForm', '_translation_workflow_submit'],
+      '#button_type' => 'primary',
+      '#weight' => $i,
+      '#access' => array_values($value)[0],
+    ];
+    $i++;
+  }
+
+  return $form;
+}
+
+/**
+ * Custom submit handler to handle translation.
+ *
+ * @param array $form
+ *   Form Object.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   Form state object.
+ */
+function _translation_workflow_submit(array &$form,
+FormStateInterface &$form_state) {
+  $entity = $form_state->getFormObject()->getEntity();
+  $entity->set('status', 0);
+  $entity->set('field_translation', 'ready_for_translation');
+  // Handle the workflow based on the states.
+  switch ($form_state->getUserInput()['op']) {
+    case 'Save':
+    case 'Save (this translation)':
+      $entity->set('field_translation', 'draft');
+      break;
+
+    case 'Save as published':
+      $entity->set('status', 1);
+      break;
+  }
+  $entity->save();
+  // Remove the query destination if any.
+  \Drupal::request()->query->remove('destination');
+  // Redirect to the dashboard page, after entity creation/updation.
+  $url = Url::fromRoute('view.dashboard.dashboard_unpublished');
+  if ($bundle == 'quiz') {
+    $url = Url::fromRoute('view.dashboard.dashboard_quiz');
+  }
+  elseif ($entity->get('status')->getValue()[0]['value'] == 1) {
+    $url = Url::fromRoute('view.dashboard.dashboard_published');
+  }
+  $form_state->setRedirectUrl($url);
+}

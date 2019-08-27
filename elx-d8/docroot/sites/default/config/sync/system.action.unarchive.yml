@@ -1,0 +1,13 @@
+uuid: d0274288-b6e5-4f6c-8c92-6deb4dbf43c3
+langcode: en
+status: true
+dependencies:
+  module:
+    - elx_dashboard
+_core:
+  default_config_hash: wmW-2bdjKzqt9eJ-eggPoXDzNYUKxYuwSGol8DlaRB4
+id: unarchive
+label: Unarchive
+type: node
+plugin: unarchive
+configuration: {  }

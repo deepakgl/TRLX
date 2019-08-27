@@ -1,0 +1,21 @@
+uuid: 746e5ac2-fc03-4583-8610-3bf12924a217
+langcode: en
+status: true
+dependencies:
+  module:
+    - serialization
+    - simple_oauth
+    - user
+id: entity.user
+plugin_id: 'entity:user'
+granularity: resource
+configuration:
+  methods:
+    - GET
+    - POST
+    - DELETE
+    - PATCH
+  formats:
+    - json
+  authentication:
+    - oauth2

@@ -1,0 +1,28 @@
+uuid: 3a42b773-eb1e-41bd-a7da-1c958d55abf3
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_featured_image
+    - media.type.image
+    - paragraphs.paragraphs_type.interactive_content
+id: paragraph.interactive_content.field_featured_image
+field_name: field_featured_image
+entity_type: paragraph
+bundle: interactive_content
+label: 'Featured Image'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      image: image
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

@@ -1,0 +1,13 @@
+uuid: 5e146767-5b66-4316-98b9-c0b9836b95ec
+langcode: en
+status: true
+dependencies: {  }
+id: beauty_advisor
+label: 'Beauty Advisor'
+weight: 3
+is_admin: null
+permissions:
+  - 'access comments'
+  - 'access content'
+  - 'access user profiles'
+  - 'post comments'

@@ -1,0 +1,22 @@
+uuid: d6f8434e-f50f-483a-a972-9c0fe8aff301
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_product_family_descr
+    - paragraphs.paragraphs_type.field_slides_bs_t3
+  module:
+    - text
+id: paragraph.field_slides_bs_t3.field_product_family_descr
+field_name: field_product_family_descr
+entity_type: paragraph
+bundle: field_slides_bs_t3
+label: Description
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  display_summary: false
+field_type: text_with_summary

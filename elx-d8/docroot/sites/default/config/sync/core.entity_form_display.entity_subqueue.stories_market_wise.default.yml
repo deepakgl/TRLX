@@ -1,0 +1,40 @@
+uuid: 55dd70fd-101e-4d3d-ba7a-1c28c069d553
+langcode: en
+status: true
+dependencies:
+  config:
+    - entityqueue.entity_queue.stories_market_wise
+    - field.field.entity_subqueue.stories_market_wise.field_market
+id: entity_subqueue.stories_market_wise.default
+targetEntityType: entity_subqueue
+bundle: stories_market_wise
+mode: default
+content:
+  field_market:
+    weight: 1
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  items:
+    type: entity_reference_autocomplete
+    weight: 2
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    region: content
+    third_party_settings: {  }
+  title:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  langcode: true

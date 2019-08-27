@@ -1,0 +1,29 @@
+uuid: db187522-9a6f-40ac-af0f-e385501aa5a5
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_pulsed_content
+    - node.type.stories
+    - taxonomy.vocabulary.pulse_content
+id: node.stories.field_pulsed_content
+field_name: field_pulsed_content
+entity_type: node
+bundle: stories
+label: 'Pulsed Content'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      pulse_content: pulse_content
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

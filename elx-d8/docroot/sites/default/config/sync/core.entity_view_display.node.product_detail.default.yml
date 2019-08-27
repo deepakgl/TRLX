@@ -1,0 +1,339 @@
+uuid: 58928241-820f-4543-80c9-e22055a39083
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.product_detail.field_access_by_role
+    - field.field.node.product_detail.field_ar_search
+    - field.field.node.product_detail.field_archive_and_unarchive
+    - field.field.node.product_detail.field_benefits
+    - field.field.node.product_detail.field_customer_questions
+    - field.field.node.product_detail.field_demonstration
+    - field.field.node.product_detail.field_display_title
+    - field.field.node.product_detail.field_end_date
+    - field.field.node.product_detail.field_featured_image
+    - field.field.node.product_detail.field_field_product_image
+    - field.field.node.product_detail.field_fun_fact_sheet
+    - field.field.node.product_detail.field_how_to_sell_this_product
+    - field.field.node.product_detail.field_if_she_asks_share
+    - field.field.node.product_detail.field_just_for_you
+    - field.field.node.product_detail.field_learning_category
+    - field.field.node.product_detail.field_markets
+    - field.field.node.product_detail.field_perfect_partners
+    - field.field.node.product_detail.field_perfect_partners_text
+    - field.field.node.product_detail.field_point_value
+    - field.field.node.product_detail.field_price
+    - field.field.node.product_detail.field_product_categories
+    - field.field.node.product_detail.field_product_family
+    - field.field.node.product_detail.field_product_video
+    - field.field.node.product_detail.field_product_video_thumbnail
+    - field.field.node.product_detail.field_related_products
+    - field.field.node.product_detail.field_related_products_stories
+    - field.field.node.product_detail.field_related_products_tools
+    - field.field.node.product_detail.field_related_products_videos
+    - field.field.node.product_detail.field_season
+    - field.field.node.product_detail.field_story
+    - field.field.node.product_detail.field_subtitle
+    - field.field.node.product_detail.field_tags_keywords
+    - field.field.node.product_detail.field_translation
+    - field.field.node.product_detail.field_why_there_s_only_one
+    - node.type.product_detail
+  module:
+    - datetime
+    - options
+    - text
+    - user
+id: node.product_detail.default
+targetEntityType: node
+bundle: product_detail
+mode: default
+content:
+  field_access_by_role:
+    weight: 25
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_ar_search:
+    weight: 34
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
+    region: content
+  field_archive_and_unarchive:
+    weight: 31
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_benefits:
+    weight: 10
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_customer_questions:
+    weight: 15
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_demonstration:
+    weight: 9
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_display_title:
+    weight: 1
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_end_date:
+    weight: 18
+    label: above
+    settings:
+      format_type: medium
+      timezone_override: ''
+    third_party_settings: {  }
+    type: datetime_default
+    region: content
+  field_featured_image:
+    weight: 22
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_field_product_image:
+    type: entity_reference_entity_view
+    weight: 20
+    label: above
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    region: content
+  field_fun_fact_sheet:
+    type: entity_reference_entity_view
+    weight: 19
+    label: above
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    region: content
+  field_how_to_sell_this_product:
+    type: entity_reference_entity_view
+    weight: 32
+    label: above
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    region: content
+  field_if_she_asks_share:
+    weight: 11
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_just_for_you:
+    weight: 17
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_learning_category:
+    weight: 33
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_markets:
+    weight: 21
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_perfect_partners:
+    weight: 13
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_perfect_partners_text:
+    weight: 12
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_point_value:
+    weight: 6
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_price:
+    weight: 7
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_product_categories:
+    weight: 4
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_product_family:
+    weight: 27
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_product_video:
+    type: entity_reference_entity_view
+    weight: 23
+    label: above
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    region: content
+  field_product_video_thumbnail:
+    type: entity_reference_entity_view
+    weight: 24
+    label: above
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    region: content
+  field_related_products:
+    weight: 16
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_related_products_stories:
+    weight: 30
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_related_products_tools:
+    weight: 28
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_related_products_videos:
+    weight: 29
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_season:
+    weight: 5
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_story:
+    weight: 14
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_subtitle:
+    weight: 2
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_tags_keywords:
+    weight: 3
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_translation:
+    weight: 26
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
+    region: content
+  field_unarchived:
+    weight: 34
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
+    region: content
+  field_why_there_s_only_one:
+    weight: 8
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  links:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  langcode: true

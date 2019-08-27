@@ -1,0 +1,18 @@
+uuid: 2d027ead-cdd0-4c0c-86cb-7f49b62767cf
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.badges
+  module:
+    - content_translation
+third_party_settings:
+  content_translation:
+    enabled: true
+    bundle_settings:
+      untranslatable_fields_hide: '0'
+id: taxonomy_term.badges
+target_entity_type_id: taxonomy_term
+target_bundle: badges
+default_langcode: site_default
+language_alterable: false

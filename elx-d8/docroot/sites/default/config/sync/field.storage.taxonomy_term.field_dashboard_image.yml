@@ -1,0 +1,30 @@
+uuid: 371474cb-03b1-4f42-8add-71d60b3fdd7b
+langcode: en
+status: true
+dependencies:
+  module:
+    - file
+    - image
+    - taxonomy
+id: taxonomy_term.field_dashboard_image
+field_name: field_dashboard_image
+entity_type: taxonomy_term
+type: image
+settings:
+  uri_scheme: public
+  default_image:
+    uuid: ''
+    alt: ''
+    title: ''
+    width: null
+    height: null
+  target_type: file
+  display_field: false
+  display_default: false
+module: image
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

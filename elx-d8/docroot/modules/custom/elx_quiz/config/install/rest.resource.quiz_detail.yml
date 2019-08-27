@@ -1,0 +1,18 @@
+uuid: a71b6a8d-6b78-4680-b6bb-c687abb736d4
+langcode: en
+status: true
+dependencies:
+  module:
+    - elx_quiz
+    - serialization
+    - simple_oauth
+id: quiz_detail
+plugin_id: quiz_detail
+granularity: resource
+configuration:
+  methods:
+    - GET
+  formats:
+    - json
+  authentication:
+    - oauth2

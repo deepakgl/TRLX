@@ -1,0 +1,20 @@
+uuid: 6e2f89e3-a23b-48e5-9e24-4243082c59a6
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.multiple_choice_question
+  module:
+    - content_translation
+third_party_settings:
+  content_translation:
+    enabled: true
+    bundle_settings:
+      untranslatable_fields_hide: '0'
+_core:
+  default_config_hash: 52ckLSIx0N1oeTfpVb1ruTiM4ug2CJs08NXir4LnZpE
+id: node.multiple_choice_question
+target_entity_type_id: node
+target_bundle: multiple_choice_question
+default_langcode: site_default
+language_alterable: false

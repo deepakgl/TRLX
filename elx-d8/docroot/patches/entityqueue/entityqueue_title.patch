@@ -1,0 +1,10 @@
+--- entityqueue.routing.yml
++++ entityqueue.routing.yml
+@@ -2,7 +2,7 @@ entity.entity_queue.collection:
+   path: '/admin/structure/entityqueue'
+   defaults:
+     _entity_list: 'entity_queue'
+-    _title: 'Entityqueues'
++    _title: 'Homepage Content'
+   requirements:
+     _permission: 'administer entityqueue+manipulate entityqueues+manipulate all entityqueues'

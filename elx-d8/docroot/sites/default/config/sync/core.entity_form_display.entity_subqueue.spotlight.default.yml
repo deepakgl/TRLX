@@ -1,0 +1,44 @@
+uuid: fe52795e-9fdf-45d7-9fcb-87e138b2065b
+langcode: en
+status: true
+dependencies:
+  config:
+    - entityqueue.entity_queue.spotlight
+    - field.field.entity_subqueue.spotlight.field_queue_override_flag
+id: entity_subqueue.spotlight.default
+targetEntityType: entity_subqueue
+bundle: spotlight
+mode: default
+content:
+  field_queue_override_flag:
+    weight: 0
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
+  items:
+    type: entity_reference_autocomplete
+    weight: 3
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    region: content
+    third_party_settings: {  }
+  langcode:
+    type: language_select
+    weight: 2
+    region: content
+    settings:
+      include_locked: true
+    third_party_settings: {  }
+  title:
+    type: string_textfield
+    weight: 1
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden: {  }

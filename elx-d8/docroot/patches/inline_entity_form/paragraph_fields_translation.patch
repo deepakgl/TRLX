@@ -1,0 +1,17 @@
+--- a/src/Form/EntityInlineForm.php
++++ b/src/Form/EntityInlineForm.php
+@@ -174,14 +174,6 @@ class EntityInlineForm implements InlineFormInterface {
+     if ($langcode_key && isset($entity_form[$langcode_key])) {
+       $entity_form[$langcode_key]['#access'] = FALSE;
+     }
+-    if (!empty($entity_form['#translating'])) {
+-      // Hide the non-translatable fields.
+-      foreach ($entity->getFieldDefinitions() as $field_name => $definition) {
+-        if (isset($entity_form[$field_name]) && $field_name != $langcode_key) {
+-          $entity_form[$field_name]['#access'] = $definition->isTranslatable();
+-        }
+-      }
+-    }
+
+     // Determine the children of the entity form before it has been altered.
+     $children_before = Element::children($entity_form);

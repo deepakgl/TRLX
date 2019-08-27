@@ -1,0 +1,168 @@
+uuid: d949c5af-c65c-4332-8726-040bb8c297a2
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.level_interactive_content.field_access_by_role
+    - field.field.node.level_interactive_content.field_archive_and_unarchive
+    - field.field.node.level_interactive_content.field_content_object_type
+    - field.field.node.level_interactive_content.field_featured
+    - field.field.node.level_interactive_content.field_featured_image
+    - field.field.node.level_interactive_content.field_headline
+    - field.field.node.level_interactive_content.field_hero_image
+    - field.field.node.level_interactive_content.field_interactive_content
+    - field.field.node.level_interactive_content.field_learning_category
+    - field.field.node.level_interactive_content.field_markets
+    - field.field.node.level_interactive_content.field_order_weight
+    - field.field.node.level_interactive_content.field_point_value
+    - field.field.node.level_interactive_content.field_product_categories
+    - field.field.node.level_interactive_content.field_product_family
+    - field.field.node.level_interactive_content.field_tags_keywords
+    - field.field.node.level_interactive_content.field_translation
+    - node.type.level_interactive_content
+  module:
+    - entity_reference_revisions
+    - options
+    - user
+id: node.level_interactive_content.default
+targetEntityType: node
+bundle: level_interactive_content
+mode: default
+content:
+  field_access_by_role:
+    weight: 121
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_archive_and_unarchive:
+    weight: 125
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_content_object_type:
+    weight: 103
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_featured:
+    weight: 101
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
+    region: content
+  field_featured_image:
+    type: entity_reference_entity_view
+    weight: 118
+    label: above
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    region: content
+  field_headline:
+    weight: 111
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_hero_image:
+    type: entity_reference_entity_view
+    weight: 119
+    label: above
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    region: content
+  field_interactive_content:
+    type: entity_reference_revisions_entity_view
+    weight: 117
+    label: above
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    region: content
+  field_learning_category:
+    weight: 109
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_markets:
+    weight: 120
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_order_weight:
+    weight: 105
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_point_value:
+    weight: 115
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_product_categories:
+    weight: 123
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_product_family:
+    weight: 122
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_tags_keywords:
+    weight: 110
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_translation:
+    weight: 124
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
+    region: content
+  links:
+    weight: 100
+    region: content
+hidden:
+  langcode: true

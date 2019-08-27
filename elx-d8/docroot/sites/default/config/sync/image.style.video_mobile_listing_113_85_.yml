@@ -1,0 +1,15 @@
+uuid: 524c1c6e-658d-4f47-ac8d-1505022aed08
+langcode: en
+status: true
+dependencies: {  }
+name: video_mobile_listing_113_85_
+label: 'Video mobile Listing (113×85)'
+effects:
+  bb89f19f-aaf0-432f-b956-fabef892bc30:
+    uuid: bb89f19f-aaf0-432f-b956-fabef892bc30
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 113
+      height: 85
+      anchor: center-center

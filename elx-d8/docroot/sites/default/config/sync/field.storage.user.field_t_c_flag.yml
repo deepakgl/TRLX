@@ -1,0 +1,18 @@
+uuid: b796afdb-7b03-4523-9422-78efa8d5cd00
+langcode: en
+status: true
+dependencies:
+  module:
+    - user
+id: user.field_t_c_flag
+field_name: field_t_c_flag
+entity_type: user
+type: boolean
+settings: {  }
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

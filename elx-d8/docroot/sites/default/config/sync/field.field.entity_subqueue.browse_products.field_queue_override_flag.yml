@@ -1,0 +1,23 @@
+uuid: 2fd641fd-f1bc-4422-b9c5-73a342760a7a
+langcode: en
+status: true
+dependencies:
+  config:
+    - entityqueue.entity_queue.browse_products
+    - field.storage.entity_subqueue.field_queue_override_flag
+id: entity_subqueue.browse_products.field_queue_override_flag
+field_name: field_queue_override_flag
+entity_type: entity_subqueue
+bundle: browse_products
+label: 'Override browse product library queue'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: '1'
+  off_label: '0'
+field_type: boolean

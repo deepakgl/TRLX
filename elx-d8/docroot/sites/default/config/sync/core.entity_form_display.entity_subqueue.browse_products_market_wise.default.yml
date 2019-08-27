@@ -1,0 +1,40 @@
+uuid: 64583022-37cd-4837-befd-6ada70e492aa
+langcode: en
+status: true
+dependencies:
+  config:
+    - entityqueue.entity_queue.browse_products_market_wise
+    - field.field.entity_subqueue.browse_products_market_wise.field_market
+id: entity_subqueue.browse_products_market_wise.default
+targetEntityType: entity_subqueue
+bundle: browse_products_market_wise
+mode: default
+content:
+  field_market:
+    weight: 1
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  items:
+    type: entity_reference_autocomplete
+    weight: 2
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    region: content
+    third_party_settings: {  }
+  title:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  langcode: true

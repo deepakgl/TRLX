@@ -1,0 +1,2500 @@
+{
+	"variables": [],
+	"info": {
+		"name": "ELX 3.0_Updated",
+		"_postman_id": "79b1090f-061a-42bb-83eb-2ec111d2fcd9",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Oauth 2 Login API",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonResponse = JSON.parse(responseBody);",
+							"var token = jsonResponse.access_token;",
+							"var refresh_token = jsonResponse.refresh_token;",
+							"//below function is to get the object of response ",
+							"var result = Object.keys(jsonResponse).map(function(key) {",
+							" return [Number(key), jsonResponse[key]];",
+							"});",
+							" ",
+							"//print token",
+							"console.log (\"this is token's value \" + token);",
+							"//below code will set the dynamically generated access token in the envrionment variable",
+							"postman.setEnvironmentVariable(\"access_token\", token);",
+							"//below code will set the dynamically generated refresh token in the envrionment variable",
+							"postman.setEnvironmentVariable(\"refresh_token\", refresh_token);",
+							"",
+							"console.log(\"Length of response body is: \" + responseBody.length);",
+							"",
+							"tests[\"Body is not empty\"] = responseBody.length!==0;",
+							"",
+							"//below code will verify if the response contains 5 parameters ",
+							"tests[\"Number of parameters in response is as expected\"] = result.length === 4;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": {
+					"raw": "{{protocol}}{{hostname}}/oauth/token?_format=json",
+					"host": [
+						"{{protocol}}{{hostname}}"
+					],
+					"path": [
+						"oauth",
+						"token"
+					],
+					"query": [
+						{
+							"key": "_format",
+							"value": "json",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Cache-Control",
+						"value": "no-cache",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"description": "",
+							"key": "grant_type",
+							"type": "text",
+							"value": "password"
+						},
+						{
+							"description": "",
+							"key": "client_id",
+							"type": "text",
+							"value": "{{client_id}}"
+						},
+						{
+							"description": "",
+							"key": "client_secret",
+							"type": "text",
+							"value": "{{client_secret}}"
+						},
+						{
+							"description": "",
+							"key": "username",
+							"type": "text",
+							"value": "ankit.garg@srijan.net"
+						},
+						{
+							"description": "",
+							"key": "password",
+							"type": "text",
+							"value": "c45NS\"]w8{Kq8b8"
+						}
+					]
+				},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "Videos Listing API",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"console.log(\"Length of response body is: \" + responseBody.length);",
+							"",
+							"tests[\"Body is empty\"] = responseBody.length!==0;"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearerAuth",
+					"bearerAuth": {}
+				},
+				"url": {
+					"raw": "{{protocol}}{{hostname}}/api/v1/videoListings?_format=json",
+					"host": [
+						"{{protocol}}{{hostname}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"videoListings"
+					],
+					"query": [
+						{
+							"description": "",
+							"equals": true,
+							"key": "_format",
+							"value": "json"
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "Video Category",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200 and status message is OK\", function () {",
+							"    pm.response.to.have.status(200);",
+							"     pm.response.to.have.status(\"OK\");",
+							"});",
+							"",
+							"pm.test(\"Response time is less than 1000ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(1000);",
+							"});",
+							"",
+							"console.log(\"Length of response body is: \" + responseBody.length);",
+							"",
+							"tests[\"Body is empty\"] = responseBody.length!==0;"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearerAuth",
+					"bearerAuth": {}
+				},
+				"url": {
+					"raw": "{{protocol}}{{hostname}}/api/v1/videoCategory?_format=json&limit=2&offset=2",
+					"host": [
+						"{{protocol}}{{hostname}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"videoCategory"
+					],
+					"query": [
+						{
+							"equals": true,
+							"key": "_format",
+							"value": "json"
+						},
+						{
+							"equals": true,
+							"key": "limit",
+							"value": "2"
+						},
+						{
+							"equals": true,
+							"key": "offset",
+							"value": "2"
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"body": {},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "Menu - Top Header API",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"console.log(\"Length of response body is: \" + responseBody.length);",
+							"",
+							"tests[\"Body is empty\"] = responseBody.length!==0;"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearerAuth",
+					"bearerAuth": {}
+				},
+				"url": {
+					"raw": "{{protocol}}{{hostname}}/api/v1/headerMenu?_format=json",
+					"host": [
+						"{{protocol}}{{hostname}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"headerMenu"
+					],
+					"query": [
+						{
+							"equals": true,
+							"key": "_format",
+							"value": "json"
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"body": {},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "Menu-Footer Nav API",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200 and status message is OK\", function () {",
+							"    pm.response.to.have.status(200);",
+							"     pm.response.to.have.status(\"OK\");",
+							"});",
+							"",
+							"pm.test(\"Response time is less than 1000ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(1000);",
+							"});",
+							"console.log(\"Length of response body is: \" + responseBody.length);",
+							"",
+							"tests[\"Body is empty\"] = responseBody.length!==0;"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearerAuth",
+					"bearerAuth": {}
+				},
+				"url": {
+					"raw": "{{protocol}}{{hostname}}/api/v1/footerMenu?_format=json",
+					"host": [
+						"{{protocol}}{{hostname}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"footerMenu"
+					],
+					"query": [
+						{
+							"equals": true,
+							"key": "_format",
+							"value": "json"
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"body": {},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "Menu - Primary Nav API",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"console.log(\"Length of response body is: \" + responseBody.length);",
+							"",
+							"tests[\"Body is empty\"] = responseBody.length!==0;"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearerAuth",
+					"bearerAuth": {}
+				},
+				"url": {
+					"raw": "{{protocol}}{{hostname}}/api/v1/primaryNavigationMenu?_format=json",
+					"host": [
+						"{{protocol}}{{hostname}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"primaryNavigationMenu"
+					],
+					"query": [
+						{
+							"equals": true,
+							"key": "_format",
+							"value": "json"
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"body": {},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "Product Categories",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"console.log(\"Length of response body is: \" + responseBody.length);",
+							"",
+							"tests[\"Body is empty\"] = responseBody.length!==0;"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearerAuth",
+					"bearerAuth": {}
+				},
+				"url": {
+					"raw": "{{protocol}}{{hostname}}/api/v1/productCategories?_format=json&limit=4&offset=0",
+					"host": [
+						"{{protocol}}{{hostname}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"productCategories"
+					],
+					"query": [
+						{
+							"equals": true,
+							"key": "_format",
+							"value": "json"
+						},
+						{
+							"equals": true,
+							"key": "categoryId",
+							"value": "256",
+							"disabled": true
+						},
+						{
+							"equals": true,
+							"key": "limit",
+							"value": "4"
+						},
+						{
+							"equals": true,
+							"key": "offset",
+							"value": "0"
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"body": {},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "Products Carousel",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"console.log(\"Length of response body is: \" + responseBody.length);",
+							"",
+							"tests[\"Body is empty\"] = responseBody.length!==0;"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearerAuth",
+					"bearerAuth": {}
+				},
+				"url": {
+					"raw": "{{protocol}}{{hostname}}/api/v1/productsCarousel?_format=json",
+					"host": [
+						"{{protocol}}{{hostname}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"productsCarousel"
+					],
+					"query": [
+						{
+							"equals": true,
+							"key": "_format",
+							"value": "json"
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"body": {},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "Product Details",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"console.log(\"Length of response body is: \" + responseBody.length);",
+							"",
+							"tests[\"Body is empty\"] = responseBody.length!==0;"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearerAuth",
+					"bearerAuth": {}
+				},
+				"url": {
+					"raw": "{{protocol}}{{hostname}}/api/v1/productDetails?_format=json&nid=976",
+					"host": [
+						"{{protocol}}{{hostname}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"productDetails"
+					],
+					"query": [
+						{
+							"description": "",
+							"equals": true,
+							"key": "_format",
+							"value": "json"
+						},
+						{
+							"description": "",
+							"equals": true,
+							"key": "nid",
+							"value": "976"
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [
+					{
+						"description": "",
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}"
+					},
+					{
+						"description": "",
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "Product Listing",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"console.log(\"Length of response body is: \" + responseBody.length);",
+							"",
+							"tests[\"Body is empty\"] = responseBody.length!==0;"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearerAuth",
+					"bearerAuth": {}
+				},
+				"url": {
+					"raw": "{{protocol}}{{hostname}}/api/v1/productListings?_format=json",
+					"host": [
+						"{{protocol}}{{hostname}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"productListings"
+					],
+					"query": [
+						{
+							"description": "",
+							"equals": true,
+							"key": "_format",
+							"value": "json"
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [
+					{
+						"description": "",
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}"
+					},
+					{
+						"description": "",
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"body": {},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "Stories Listing",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"console.log(\"Length of response body is: \" + responseBody.length);",
+							"",
+							"tests[\"Body is empty\"] = responseBody.length!==0;"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearerAuth",
+					"bearerAuth": {}
+				},
+				"url": {
+					"raw": "{{protocol}}{{hostname}}/api/v1/storiesListing?_format=json",
+					"host": [
+						"{{protocol}}{{hostname}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"storiesListing"
+					],
+					"query": [
+						{
+							"equals": true,
+							"key": "_format",
+							"value": "json"
+						},
+						{
+							"equals": true,
+							"key": "limit",
+							"value": "3",
+							"disabled": true
+						},
+						{
+							"equals": true,
+							"key": "offset",
+							"value": "2",
+							"disabled": true
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"body": {},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "Stories Details",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"console.log(\"Length of response body is: \" + responseBody.length);",
+							"",
+							"tests[\"Body is empty\"] = responseBody.length!==0;"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearerAuth",
+					"bearerAuth": {}
+				},
+				"url": {
+					"raw": "{{protocol}}{{hostname}}/api/v1/storiesDetails?_format=json&nid=86536",
+					"host": [
+						"{{protocol}}{{hostname}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"storiesDetails"
+					],
+					"query": [
+						{
+							"description": "",
+							"equals": true,
+							"key": "_format",
+							"value": "json"
+						},
+						{
+							"description": "",
+							"equals": true,
+							"key": "nid",
+							"value": "86536"
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [
+					{
+						"description": "",
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}"
+					},
+					{
+						"description": "",
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "Home Page - Spotlight section",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"console.log(\"Length of response body is: \" + responseBody.length);",
+							"",
+							"tests[\"Body is empty\"] = responseBody.length!==0;"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearerAuth",
+					"bearerAuth": {}
+				},
+				"url": {
+					"raw": "{{protocol}}{{hostname}}/api/v1/spotlightSection?_format=json",
+					"host": [
+						"{{protocol}}{{hostname}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"spotlightSection"
+					],
+					"query": [
+						{
+							"equals": true,
+							"key": "_format",
+							"value": "json"
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"body": {},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "Home Page - Explore Browse Product",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"console.log(\"Length of response body is: \" + responseBody.length);",
+							"",
+							"tests[\"Body is empty\"] = responseBody.length!==0;"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearerAuth",
+					"bearerAuth": {}
+				},
+				"url": {
+					"raw": "{{protocol}}{{hostname}}/api/v1/browseProducts?_format=json",
+					"host": [
+						"{{protocol}}{{hostname}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"browseProducts"
+					],
+					"query": [
+						{
+							"equals": true,
+							"key": "_format",
+							"value": "json"
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"body": {},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "Home Page - Explore Learning Levels",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"console.log(\"Length of response body is: \" + responseBody.length);",
+							"",
+							"tests[\"Body is empty\"] = responseBody.length!==0;"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearerAuth",
+					"bearerAuth": {}
+				},
+				"url": {
+					"raw": "{{protocol}}{{hostname}}/api/v1/exploreLearningLevels?_format=json",
+					"host": [
+						"{{protocol}}{{hostname}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"exploreLearningLevels"
+					],
+					"query": [
+						{
+							"equals": true,
+							"key": "_format",
+							"value": "json"
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"body": {},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "Home Page - Trending Section",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"console.log(\"Length of response body is: \" + responseBody.length);",
+							"",
+							"tests[\"Body is empty\"] = responseBody.length!==0;"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearerAuth",
+					"bearerAuth": {}
+				},
+				"url": {
+					"raw": "{{protocol}}{{hostname}}/api/v1/storiesTrendingSection?_format=json",
+					"host": [
+						"{{protocol}}{{hostname}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"storiesTrendingSection"
+					],
+					"query": [
+						{
+							"equals": true,
+							"key": "_format",
+							"value": "json"
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"body": {},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "Learning Level -Level Interactive Module Detail Page API",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"console.log(\"Length of response body is: \" + responseBody.length);",
+							"",
+							"tests[\"Body is empty\"] = responseBody.length!==0;"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearerAuth",
+					"bearerAuth": {}
+				},
+				"url": {
+					"raw": "{{protocol}}{{hostname}}/api/v1/levelInteractiveContent?_format=json&nid=86429",
+					"host": [
+						"{{protocol}}{{hostname}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"levelInteractiveContent"
+					],
+					"query": [
+						{
+							"description": "",
+							"equals": true,
+							"key": "_format",
+							"value": "json"
+						},
+						{
+							"description": "",
+							"equals": true,
+							"key": "nid",
+							"value": "86429"
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "Video Details",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200 and status message is OK\", function () {",
+							"    pm.response.to.have.status(200);",
+							"     pm.response.to.have.status(\"OK\");",
+							"});",
+							"",
+							"pm.test(\"Response time is less than 1000ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(1000);",
+							"});",
+							"",
+							"console.log(\"Length of response body is: \" + responseBody.length);",
+							"",
+							"tests[\"Body is empty\"] = responseBody.length!==0;"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearerAuth",
+					"bearerAuth": {}
+				},
+				"url": {
+					"raw": "{{protocol}}{{hostname}}/api/v1/videoDetails?_format=json&nid=86324",
+					"host": [
+						"{{protocol}}{{hostname}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"videoDetails"
+					],
+					"query": [
+						{
+							"description": "",
+							"equals": true,
+							"key": "_format",
+							"value": "json"
+						},
+						{
+							"description": "",
+							"equals": true,
+							"key": "nid",
+							"value": "86324"
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "Tools Listing API",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"console.log(\"Length of response body is: \" + responseBody.length);",
+							"",
+							"tests[\"Body is empty\"] = responseBody.length!==0;"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearerAuth",
+					"bearerAuth": {}
+				},
+				"url": {
+					"raw": "{{protocol}}{{hostname}}/api/v1/toolsListings?_format=json",
+					"host": [
+						"{{protocol}}{{hostname}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"toolsListings"
+					],
+					"query": [
+						{
+							"description": "",
+							"equals": true,
+							"key": "_format",
+							"value": "json"
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "Learning Level - Term List(Module listing)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"console.log(\"Length of response body is: \" + responseBody.length);",
+							"",
+							"tests[\"Body is empty\"] = responseBody.length!==0;"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearerAuth",
+					"bearerAuth": {}
+				},
+				"url": {
+					"raw": "{{protocol}}{{hostname}}/api/v1/levelInteractiveTermsContent?_format=json&categoryId=85837",
+					"host": [
+						"{{protocol}}{{hostname}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"levelInteractiveTermsContent"
+					],
+					"query": [
+						{
+							"description": "",
+							"equals": true,
+							"key": "_format",
+							"value": "json"
+						},
+						{
+							"description": "",
+							"equals": true,
+							"key": "categoryId",
+							"value": "85837"
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [
+					{
+						"description": "",
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}"
+					},
+					{
+						"description": "",
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "User Profile Information",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"console.log(\"Length of response body is: \" + responseBody.length);",
+							"",
+							"tests[\"Body is empty\"] = responseBody.length!==0;"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearerAuth",
+					"bearerAuth": {}
+				},
+				"url": {
+					"raw": "{{protocol}}{{hostname}}/api/v1/userDashboard?_format=json",
+					"host": [
+						"{{protocol}}{{hostname}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"userDashboard"
+					],
+					"query": [
+						{
+							"equals": true,
+							"key": "_format",
+							"value": "json"
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"body": {},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "Set fav/bookmark API",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"console.log(\"Length of response body is: \" + responseBody.length);",
+							"",
+							"tests[\"Body is empty\"] = responseBody.length!==0;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": {
+					"raw": "{{protocol}}{{hostname}}/lm/api/v1/flag?_format=json",
+					"host": [
+						"{{protocol}}{{hostname}}"
+					],
+					"path": [
+						"lm",
+						"api",
+						"v1",
+						"flag"
+					],
+					"query": [
+						{
+							"key": "_format",
+							"value": "json",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"equals": true,
+							"key": "nid",
+							"value": "2134",
+							"disabled": true
+						},
+						{
+							"equals": true,
+							"key": "flag",
+							"value": "bookmarks",
+							"disabled": true
+						},
+						{
+							"equals": true,
+							"key": "status",
+							"value": "1",
+							"disabled": true
+						}
+					],
+					"variable": []
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"nid\":1207,\r\n\"flag\":\"bookmarks\",\r\n\"status\":1\r\n}"
+				},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "User Badge API",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"console.log(\"Length of response body is: \" + responseBody.length);",
+							"",
+							"tests[\"Body is empty\"] = responseBody.length!==0;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": {
+					"raw": "{{protocol}}{{hostname}}/lm/api/v1/getUserBadges?_format=json",
+					"host": [
+						"{{protocol}}{{hostname}}"
+					],
+					"path": [
+						"lm",
+						"api",
+						"v1",
+						"getUserBadges"
+					],
+					"query": [
+						{
+							"key": "_format",
+							"value": "json",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"description": ""
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "Add User Points",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"console.log(\"Length of response body is: \" + responseBody.length);",
+							"",
+							"tests[\"Body is empty\"] = responseBody.length!==0;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": {
+					"raw": "{{protocol}}{{hostname}}/lm/api/v1/contentViewFlag?_format=json&nid=86003",
+					"host": [
+						"{{protocol}}{{hostname}}"
+					],
+					"path": [
+						"lm",
+						"api",
+						"v1",
+						"contentViewFlag"
+					],
+					"query": [
+						{
+							"key": "_format",
+							"value": "json",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "nid",
+							"value": "86003",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"description": ""
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "User Profile Rank",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"console.log(\"Length of response body is: \" + responseBody.length);",
+							"",
+							"tests[\"Body is empty\"] = responseBody.length!==0;"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearerAuth",
+					"bearerAuth": {}
+				},
+				"url": {
+					"raw": "{{protocol}}{{hostname}}/lm/api/v1/userProfileRank?_format=json",
+					"host": [
+						"{{protocol}}{{hostname}}"
+					],
+					"path": [
+						"lm",
+						"api",
+						"v1",
+						"userProfileRank"
+					],
+					"query": [
+						{
+							"equals": true,
+							"key": "_format",
+							"value": "json"
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"body": {},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "User Leaderboard",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"console.log(\"Length of response body is: \" + responseBody.length);",
+							"",
+							"tests[\"Body is empty\"] = responseBody.length!==0;"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearerAuth",
+					"bearerAuth": {}
+				},
+				"url": {
+					"raw": "{{protocol}}{{hostname}}/lm/api/v1/userLeaderBoard?_format=json",
+					"host": [
+						"{{protocol}}{{hostname}}"
+					],
+					"path": [
+						"lm",
+						"api",
+						"v1",
+						"userLeaderBoard"
+					],
+					"query": [
+						{
+							"equals": true,
+							"key": "_format",
+							"value": "json"
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"body": {},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "My Bookmarks/favorites",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"console.log(\"Length of response body is: \" + responseBody.length);",
+							"",
+							"tests[\"Body is empty\"] = responseBody.length!==0;"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearerAuth",
+					"bearerAuth": {}
+				},
+				"url": {
+					"raw": "{{protocol}}{{hostname}}/lm/api/v1/myFlags?_format=json",
+					"host": [
+						"{{protocol}}{{hostname}}"
+					],
+					"path": [
+						"lm",
+						"api",
+						"v1",
+						"myFlags"
+					],
+					"query": [
+						{
+							"equals": true,
+							"key": "_format",
+							"value": "json"
+						},
+						{
+							"equals": true,
+							"key": "limit",
+							"value": "6",
+							"disabled": true
+						},
+						{
+							"equals": true,
+							"key": "offset",
+							"value": "3",
+							"disabled": true
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"body": {},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "User Interest Update",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"console.log(\"Length of response body is: \" + responseBody.length);",
+							"",
+							"tests[\"Body is empty\"] = responseBody.length!==0;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": {
+					"raw": "{{protocol}}{{hostname}}/api/v1/userInterest?_format=json",
+					"host": [
+						"{{protocol}}{{hostname}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"userInterest"
+					],
+					"query": [
+						{
+							"key": "_format",
+							"value": "json",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"description": ""
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "\r\n{\r\n\"categoryId\" : [259,256,258]\r\n}"
+				},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "User Profile Pic Update",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200 and status message is OK\", function () {",
+							"    pm.response.to.have.status(200 || 201);",
+							"     pm.response.to.have.status(\"OK\");",
+							"});",
+							"",
+							"pm.test(\"Response time is less than 1000ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(1000);",
+							"});",
+							"",
+							"console.log(\"Length of response body is: \" + responseBody.length);",
+							"",
+							"tests[\"Body is empty\"] = responseBody.length!==0;"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearerAuth",
+					"bearerAuth": {}
+				},
+				"url": {
+					"raw": "{{protocol}}{{hostname}}/api/v1/user/profile/picture?_format=json",
+					"host": [
+						"{{protocol}}{{hostname}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"user",
+						"profile",
+						"picture"
+					],
+					"query": [
+						{
+							"description": "",
+							"equals": true,
+							"key": "_format",
+							"value": "json"
+						}
+					],
+					"variable": []
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"filename\": \"video.jpeg\",\r\n\"image\":\"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\"\r\n}"
+				},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "Search API",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"console.log(\"Length of response body is: \" + responseBody.length);",
+							"",
+							"tests[\"Body is empty\"] = responseBody.length!==0;"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearerAuth",
+					"bearerAuth": {}
+				},
+				"url": {
+					"raw": "{{protocol}}{{hostname}}/lm/api/v1/search?_format=json&searchTerm=aerin",
+					"host": [
+						"{{protocol}}{{hostname}}"
+					],
+					"path": [
+						"lm",
+						"api",
+						"v1",
+						"search"
+					],
+					"query": [
+						{
+							"description": "",
+							"equals": true,
+							"key": "_format",
+							"value": "json"
+						},
+						{
+							"description": "",
+							"equals": true,
+							"key": "searchTerm",
+							"value": "aerin"
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [
+					{
+						"description": "",
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}"
+					},
+					{
+						"description": "",
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"body": {},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "My Bookmarks/favorites_Type",
+			"request": {
+				"auth": {
+					"type": "bearerAuth",
+					"bearerAuth": {}
+				},
+				"url": {
+					"raw": "{{protocol}}{{hostname}}/lm/api/v1/myFlags?_format=json&contentType=stories",
+					"host": [
+						"{{protocol}}{{hostname}}"
+					],
+					"path": [
+						"lm",
+						"api",
+						"v1",
+						"myFlags"
+					],
+					"query": [
+						{
+							"equals": true,
+							"key": "_format",
+							"value": "json"
+						},
+						{
+							"equals": true,
+							"key": "contentType",
+							"value": "stories"
+						},
+						{
+							"equals": true,
+							"key": "limit",
+							"value": "2",
+							"disabled": true
+						},
+						{
+							"equals": true,
+							"key": "offset",
+							"value": "2",
+							"disabled": true
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"body": {},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "Refresh Token",
+			"request": {
+				"url": {
+					"raw": "{{protocol}}{{hostname}}/oauth/token?_format=json",
+					"host": [
+						"{{protocol}}{{hostname}}"
+					],
+					"path": [
+						"oauth",
+						"token"
+					],
+					"query": [
+						{
+							"key": "_format",
+							"value": "json",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"description": "",
+							"key": "grant_type",
+							"type": "text",
+							"value": "refresh_token"
+						},
+						{
+							"description": "",
+							"key": "refresh_token",
+							"type": "text",
+							"value": "{{refresh_token}}"
+						},
+						{
+							"description": "",
+							"key": "client_id",
+							"type": "text",
+							"value": "{{client_id}}"
+						},
+						{
+							"description": "",
+							"key": "client_secret",
+							"type": "text",
+							"value": "{{client_secret}}"
+						}
+					]
+				},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "User Leaderboard Comparison",
+			"request": {
+				"auth": {
+					"type": "bearerAuth",
+					"bearerAuth": {}
+				},
+				"url": {
+					"raw": "{{protocol}}{{hostname}}/api/v1/LeaderboardCompareType?_format=json",
+					"host": [
+						"{{protocol}}{{hostname}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"LeaderboardCompareType"
+					],
+					"query": [
+						{
+							"equals": true,
+							"key": "_format",
+							"value": "json"
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"body": {},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "User leaderBoard [profile-page] API",
+			"request": {
+				"auth": {
+					"type": "bearerAuth",
+					"bearerAuth": {}
+				},
+				"url": {
+					"raw": "{{protocol}}{{hostname}}/lm/api/v1/userLeaderBoard?_format=json&compare=85810",
+					"host": [
+						"{{protocol}}{{hostname}}"
+					],
+					"path": [
+						"lm",
+						"api",
+						"v1",
+						"userLeaderBoard"
+					],
+					"query": [
+						{
+							"description": "",
+							"equals": true,
+							"key": "_format",
+							"value": "json"
+						},
+						{
+							"description": "",
+							"equals": true,
+							"key": "compare",
+							"value": "85810"
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "Welcome Message",
+			"request": {
+				"auth": {
+					"type": "bearerAuth",
+					"bearerAuth": {}
+				},
+				"url": {
+					"raw": "{{protocol}}{{hostname}}/api/v1/welcomeMessage?_format=json",
+					"host": [
+						"{{protocol}}{{hostname}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"welcomeMessage"
+					],
+					"query": [
+						{
+							"description": "",
+							"equals": true,
+							"key": "_format",
+							"value": "json"
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [
+					{
+						"description": "",
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}"
+					},
+					{
+						"description": "",
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"body": {},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "Video Listing API[Mobile]",
+			"request": {
+				"auth": {
+					"type": "bearerAuth",
+					"bearerAuth": {}
+				},
+				"url": {
+					"raw": "{{protocol}}{{hostname}}/api/v1/videoListingMobile?_format=json",
+					"host": [
+						"{{protocol}}{{hostname}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"videoListingMobile"
+					],
+					"query": [
+						{
+							"equals": true,
+							"key": "_format",
+							"value": "json"
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"body": {},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "Tools Category",
+			"request": {
+				"url": {
+					"raw": "{{protocol}}{{hostname}}/api/v1/toolsCategory?_format=json",
+					"host": [
+						"{{protocol}}{{hostname}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"toolsCategory"
+					],
+					"query": [
+						{
+							"key": "_format",
+							"value": "json",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "Get String Translation",
+			"request": {
+				"url": {
+					"raw": "{{protocol}}{{hostname}}/api/v1/translationKey?_format=json&languageCode=en",
+					"host": [
+						"{{protocol}}{{hostname}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"translationKey"
+					],
+					"query": [
+						{
+							"key": "_format",
+							"value": "json",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "languageCode",
+							"value": "en",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"description": "",
+							"key": "languageCode",
+							"type": "text",
+							"value": "en"
+						}
+					]
+				},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "Get Language List",
+			"request": {
+				"url": {
+					"raw": "{{protocol}}{{hostname}}/api/v1/languageList?_format=json",
+					"host": [
+						"{{protocol}}{{hostname}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"languageList"
+					],
+					"query": [
+						{
+							"key": "_format",
+							"value": "json",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "User Activities API",
+			"request": {
+				"url": "",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "User Activities GDD",
+			"request": {
+				"url": {
+					"raw": "{{protocol}}{{hostname}}/lm/api/v2/globalActivity?_format=json&nid[]=85909&nid[]=86416",
+					"host": [
+						"{{protocol}}{{hostname}}"
+					],
+					"path": [
+						"lm",
+						"api",
+						"v2",
+						"globalActivity"
+					],
+					"query": [
+						{
+							"key": "_format",
+							"value": "json",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "nid[]",
+							"value": "85909",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "nid[]",
+							"value": "86416",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "User Activities UDD",
+			"request": {
+				"url": {
+					"raw": "{{protocol}}{{hostname}}/lm/api/v2/userActivity?_format=json&nid[]=85909&nid[]=86416",
+					"host": [
+						"{{protocol}}{{hostname}}"
+					],
+					"path": [
+						"lm",
+						"api",
+						"v2",
+						"userActivity"
+					],
+					"query": [
+						{
+							"key": "_format",
+							"value": "json",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "nid[]",
+							"value": "85909",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "nid[]",
+							"value": "86416",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "T&C",
+			"request": {
+				"url": "{{protocol}}{{hostname}}/api/v1/termsAndConditions",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"description": ""
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": null
+			},
+			"response": []
+		}
+	]
+}

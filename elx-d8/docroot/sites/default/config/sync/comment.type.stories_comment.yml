@@ -1,0 +1,8 @@
+uuid: ca4fc37d-943d-4157-886b-605762731b08
+langcode: en
+status: true
+dependencies: {  }
+id: stories_comment
+label: 'Stories Comment'
+target_entity_type_id: node
+description: ''

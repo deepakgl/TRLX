@@ -1,0 +1,25 @@
+uuid: 8f01dfde-ffcf-44d2-a4f9-9e5022bb1fc9
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_allow_jumping
+    - node.type.quiz
+_core:
+  default_config_hash: WfepIuYZim-1W6v5asAz3LOU64_Y25OCHbeNIFbrcGs
+id: node.quiz.field_allow_jumping
+field_name: field_allow_jumping
+entity_type: node
+bundle: quiz
+label: 'Allow jumping'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

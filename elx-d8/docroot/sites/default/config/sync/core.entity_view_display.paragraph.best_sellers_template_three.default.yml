@@ -1,0 +1,24 @@
+uuid: b9558dea-faf0-4725-8718-7511076dfebf
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.best_sellers_template_three.field_slides_bs_t3
+    - paragraphs.paragraphs_type.best_sellers_template_three
+  module:
+    - entity_reference_revisions
+id: paragraph.best_sellers_template_three.default
+targetEntityType: paragraph
+bundle: best_sellers_template_three
+mode: default
+content:
+  field_slides_bs_t3:
+    type: entity_reference_revisions_entity_view
+    weight: 0
+    label: above
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    region: content
+hidden: {  }

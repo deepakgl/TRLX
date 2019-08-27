@@ -1,0 +1,161 @@
+uuid: ec9a76b2-a051-409b-b8d4-fcec657413db
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.tools-pdf.field_access_by_role
+    - field.field.node.tools-pdf.field_archive_and_unarchive
+    - field.field.node.tools-pdf.field_display_title
+    - field.field.node.tools-pdf.field_featured
+    - field.field.node.tools-pdf.field_featured_image
+    - field.field.node.tools-pdf.field_featured_on_elx_specialty
+    - field.field.node.tools-pdf.field_headline
+    - field.field.node.tools-pdf.field_markets
+    - field.field.node.tools-pdf.field_point_value
+    - field.field.node.tools-pdf.field_product_categories
+    - field.field.node.tools-pdf.field_product_family
+    - field.field.node.tools-pdf.field_related_products_tools
+    - field.field.node.tools-pdf.field_tool_description
+    - field.field.node.tools-pdf.field_tool_media_pdf
+    - field.field.node.tools-pdf.field_tool_thumbnail
+    - field.field.node.tools-pdf.field_translation
+    - node.type.tools-pdf
+  module:
+    - text
+    - user
+id: node.tools-pdf.default
+targetEntityType: node
+bundle: tools-pdf
+mode: default
+content:
+  field_access_by_role:
+    weight: 120
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_archive_and_unarchive:
+    weight: 125
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_display_title:
+    weight: 101
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_featured:
+    weight: 108
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
+    region: content
+  field_featured_image:
+    weight: 117
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_featured_on_elx_specialty:
+    weight: 109
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
+    region: content
+  field_headline:
+    weight: 111
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_markets:
+    weight: 118
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_point_value:
+    weight: 107
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_product_categories:
+    weight: 123
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_product_family:
+    weight: 122
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_related_products_tools:
+    weight: 124
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_tool_description:
+    weight: 105
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_tool_media_pdf:
+    type: entity_reference_entity_view
+    weight: 119
+    label: above
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    region: content
+  field_tool_thumbnail:
+    type: entity_reference_entity_view
+    weight: 112
+    label: above
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    region: content
+  links:
+    weight: 100
+    region: content
+hidden:
+  field_translation: true
+  langcode: true

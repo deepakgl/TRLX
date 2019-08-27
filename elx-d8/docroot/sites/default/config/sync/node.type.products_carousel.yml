@@ -1,0 +1,17 @@
+uuid: 1231aabb-757e-46ce-b6ce-1773eb11da12
+langcode: en
+status: true
+dependencies:
+  module:
+    - menu_ui
+third_party_settings:
+  menu_ui:
+    available_menus: {  }
+    parent: ''
+name: 'Products Carousel'
+type: products_carousel
+description: ''
+help: ''
+new_revision: false
+preview_mode: 0
+display_submitted: false

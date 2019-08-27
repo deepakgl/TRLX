@@ -1,0 +1,37 @@
+uuid: 930fe903-ec56-49d4-bcf2-b5d47c970df0
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_paragraph_templates
+    - node.type.best_sellers
+    - paragraphs.paragraphs_type.best_sellers_template_two
+  module:
+    - entity_reference_revisions
+id: node.best_sellers.field_paragraph_templates
+field_name: field_paragraph_templates
+entity_type: node
+bundle: best_sellers
+label: Tiles
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    negate: 0
+    target_bundles:
+      best_sellers_template_two: best_sellers_template_two
+    target_bundles_drag_drop:
+      best_sellers_template_four:
+        weight: 4
+        enabled: false
+      best_sellers_template_three:
+        weight: 5
+        enabled: false
+      best_sellers_template_two:
+        enabled: true
+        weight: 6
+field_type: entity_reference_revisions

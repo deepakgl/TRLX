@@ -1,0 +1,11 @@
+uuid: 18dd8d06-d2d7-4bfb-b5c5-875515d2d656
+langcode: en
+status: true
+dependencies:
+  config:
+    - entityqueue.entity_queue.spotlight
+id: entity_subqueue.spotlight
+target_entity_type_id: entity_subqueue
+target_bundle: spotlight
+default_langcode: site_default
+language_alterable: false

@@ -1,0 +1,11 @@
+enable_redis_cache: 1
+redis_host: ''
+redis_port: ''
+redis_password: ''
+redis_base: ''
+submit: 'Save configuration'
+form_build_id: form-zJkDzI-afvwM21iyMfO4IOfjVwzEINvSbsNQOgiGS1s
+form_token: yjOX1hlDiVMm0WP1Gw-IRuDRi7EYPGB4GFJbt87SzyY
+form_id: elx_quiz_configurations
+op: 'Save configuration'
+environment: ankit

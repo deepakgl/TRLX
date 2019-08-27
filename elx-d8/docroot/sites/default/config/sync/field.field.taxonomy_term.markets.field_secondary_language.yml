@@ -1,0 +1,23 @@
+uuid: 23bb99fd-99df-47a3-8fab-fa75bf630b7d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_secondary_language
+    - taxonomy.vocabulary.markets
+id: taxonomy_term.markets.field_secondary_language
+field_name: field_secondary_language
+entity_type: taxonomy_term
+bundle: markets
+label: 'Secondary Language'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:configurable_language'
+  handler_settings:
+    target_bundles: null
+    auto_create: false
+field_type: entity_reference

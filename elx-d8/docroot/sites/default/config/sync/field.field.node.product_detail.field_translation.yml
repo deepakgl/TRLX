@@ -1,0 +1,21 @@
+uuid: 040e52ca-3af8-48fb-b305-a9a9a66d97ba
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_translation
+    - node.type.product_detail
+  module:
+    - options
+id: node.product_detail.field_translation
+field_name: field_translation
+entity_type: node
+bundle: product_detail
+label: Translation
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

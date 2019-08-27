@@ -1,0 +1,32 @@
+uuid: 3bbccbbc-dbc3-4848-b67c-e48e75ee8bdf
+langcode: en
+status: true
+dependencies:
+  config:
+    - entityqueue.entity_queue.browse_products
+    - field.field.entity_subqueue.browse_products.field_queue_override_flag
+id: entity_subqueue.browse_products.default
+targetEntityType: entity_subqueue
+bundle: browse_products
+mode: default
+content:
+  field_queue_override_flag:
+    weight: 1
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
+    region: content
+  items:
+    label: hidden
+    type: entity_reference_label
+    weight: 0
+    region: content
+    settings:
+      link: true
+    third_party_settings: {  }
+hidden:
+  langcode: true

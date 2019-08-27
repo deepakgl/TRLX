@@ -1,0 +1,15 @@
+elx_dashboard.archive_confirm:
+  path: '/admin/archive_confirm'
+  defaults:
+    _form: '\Drupal\elx_dashboard\Form\ArchiveConfirm'
+    _title: 'Archive Content'
+  requirements:
+    _permission: 'administer select market'
+
+elx_dashboard.unarchive_confirm:
+  path: '/admin/unarchive_confirm'
+  defaults:
+    _form: '\Drupal\elx_dashboard\Form\UnarchiveConfirm'
+    _title: 'Unarchive Content'
+  requirements:
+    _permission: 'administer select market'

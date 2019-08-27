@@ -1,0 +1,9 @@
+uuid: 0386aca7-202f-4e57-bd37-364e3cf96fd1
+langcode: en
+status: true
+dependencies: {  }
+id: field_slids_bs_t4
+label: Slids
+icon_uuid: null
+description: ''
+behavior_plugins: {  }

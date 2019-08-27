@@ -1,0 +1,18 @@
+uuid: 9d916a78-a8e9-4d37-9836-f9a60aa67de3
+langcode: en
+status: true
+dependencies:
+  module:
+    - menu_ui
+third_party_settings:
+  menu_ui:
+    available_menus:
+      - main
+    parent: 'main:'
+name: 'Product Detail'
+type: product_detail
+description: ''
+help: ''
+new_revision: false
+preview_mode: 0
+display_submitted: true

@@ -1,0 +1,53 @@
+uuid: 35b1f796-5b4c-4b7b-8b0e-41ebfccc8d3c
+langcode: en
+status: true
+dependencies:
+  config:
+    - media.type.file
+    - views.view.media_entity_browser
+  module:
+    - dropzonejs_eb_widget
+    - media
+    - views
+name: file_entity_browser
+label: 'File Entity Browser'
+display: modal
+display_configuration:
+  width: '1070'
+  height: '840'
+  link_text: Upload
+  auto_open: false
+selection_display: no_display
+selection_display_configuration: {  }
+widget_selector: tabs
+widget_selector_configuration: {  }
+widgets:
+  e58fa848-ee93-46b6-ac6e-683245b373d8:
+    settings:
+      view: media_entity_browser
+      view_display: entity_browser_1
+      submit_text: Upload
+      auto_select: false
+    uuid: e58fa848-ee93-46b6-ac6e-683245b373d8
+    weight: 1
+    label: view
+    id: view
+  a69923ca-f62e-4cb1-8a9c-1d0e87eeee2e:
+    settings:
+      form_mode: default
+      media_type: file
+      upload_location: 'public://[date:custom:Y]-[date:custom:m]'
+      dropzone_description: 'Drop files here to upload them'
+      max_filesize: 1024M
+      extensions: 'txt doc xls pdf ppt pps odt ods odp'
+      clientside_resize: false
+      resize_width: null
+      resize_height: null
+      resize_quality: !!float 1
+      resize_method: contain
+      thumbnail_method: contain
+      submit_text: Upload
+    uuid: a69923ca-f62e-4cb1-8a9c-1d0e87eeee2e
+    weight: 2
+    label: upload
+    id: dropzonejs_media_entity_inline_entity_form

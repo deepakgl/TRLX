@@ -1,0 +1,19 @@
+uuid: 155bacc7-2fd1-4074-8dd6-908c7b57c6c8
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_message
+    - node.type.welcome_message
+id: node.welcome_message.field_message
+field_name: field_message
+entity_type: node
+bundle: welcome_message
+label: Message
+description: ''
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

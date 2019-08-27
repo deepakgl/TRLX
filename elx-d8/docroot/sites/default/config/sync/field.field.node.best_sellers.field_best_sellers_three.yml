@@ -1,0 +1,37 @@
+uuid: 9d8be3b7-deaf-4073-982a-0fee04487e13
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_best_sellers_three
+    - node.type.best_sellers
+    - paragraphs.paragraphs_type.best_sellers_template_three
+  module:
+    - entity_reference_revisions
+id: node.best_sellers.field_best_sellers_three
+field_name: field_best_sellers_three
+entity_type: node
+bundle: best_sellers
+label: 'Product Family'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    negate: 0
+    target_bundles:
+      best_sellers_template_three: best_sellers_template_three
+    target_bundles_drag_drop:
+      best_sellers_template_four:
+        weight: 4
+        enabled: false
+      best_sellers_template_three:
+        enabled: true
+        weight: 5
+      best_sellers_template_two:
+        weight: 6
+        enabled: false
+field_type: entity_reference_revisions

@@ -1,0 +1,9 @@
+name: ELX Migrate
+type: module
+description: ELX custom migrate module.
+core: 8.x
+package: ELX
+dependencies:
+  - migrate
+  - migrate_plus
+  - migrate_tools

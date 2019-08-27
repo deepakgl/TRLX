@@ -1,0 +1,25 @@
+uuid: d3cecdc0-16a4-4f4c-8093-2a3e127f4c3f
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_backwards_navigation
+    - node.type.quiz
+_core:
+  default_config_hash: aF16ZZdOs3tNJ0HznJF0JsR_-vlbIMm96VpIdwJd96U
+id: node.quiz.field_backwards_navigation
+field_name: field_backwards_navigation
+entity_type: node
+bundle: quiz
+label: 'Backwards navigation'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

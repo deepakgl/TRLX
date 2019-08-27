@@ -1,0 +1,41 @@
+uuid: acfbd993-018f-4519-9d78-6f4c4ed9da5f
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.media_template_two.field_image_bs_t2
+    - field.field.paragraph.media_template_two.field_title_bs_t2
+    - field.field.paragraph.media_template_two.field_video_bs_t2
+    - paragraphs.paragraphs_type.media_template_two
+id: paragraph.media_template_two.default
+targetEntityType: paragraph
+bundle: media_template_two
+mode: default
+content:
+  field_image_bs_t2:
+    type: entity_reference_entity_view
+    weight: 3
+    label: above
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    region: content
+  field_title_bs_t2:
+    weight: 1
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_video_bs_t2:
+    type: entity_reference_entity_view
+    weight: 4
+    label: above
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    region: content
+hidden: {  }

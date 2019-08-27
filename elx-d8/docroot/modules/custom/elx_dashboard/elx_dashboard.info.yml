@@ -1,0 +1,5 @@
+name: ELX Dashboard
+type: module
+description: Dashboard header footer
+core: 8.x
+package: ELX

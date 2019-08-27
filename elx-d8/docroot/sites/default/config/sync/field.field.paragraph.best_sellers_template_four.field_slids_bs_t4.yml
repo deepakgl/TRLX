@@ -1,0 +1,49 @@
+uuid: f925fa1d-3f77-4952-8972-e30862f3a50f
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_slids_bs_t4
+    - paragraphs.paragraphs_type.best_sellers_template_four
+    - paragraphs.paragraphs_type.field_slids_bs_t4
+  module:
+    - entity_reference_revisions
+id: paragraph.best_sellers_template_four.field_slids_bs_t4
+field_name: field_slids_bs_t4
+entity_type: paragraph
+bundle: best_sellers_template_four
+label: Slids
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    negate: 0
+    target_bundles:
+      field_slids_bs_t4: field_slids_bs_t4
+    target_bundles_drag_drop:
+      best_sellers_template_four:
+        weight: 8
+        enabled: false
+      best_sellers_template_three:
+        weight: 9
+        enabled: false
+      best_sellers_template_two:
+        weight: 10
+        enabled: false
+      field_slides_bs_t3:
+        weight: 11
+        enabled: false
+      field_slids_bs_t4:
+        enabled: true
+        weight: 12
+      interactive_content:
+        weight: 13
+        enabled: false
+      media_template_two:
+        weight: 14
+        enabled: false
+field_type: entity_reference_revisions

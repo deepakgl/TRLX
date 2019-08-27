@@ -1,0 +1,9 @@
+uuid: c0625569-126d-49a5-96e6-9e87611110d4
+langcode: frca
+status: true
+dependencies: {  }
+id: frca
+label: 'French (Canada)'
+direction: ltr
+weight: -5
+locked: false

@@ -1,0 +1,18 @@
+uuid: ab43c08a-1bc7-46c8-ba52-c0bae0efd6e4
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.pulse_content
+id: taxonomy_term.pulse_content.changed
+field_name: changed
+entity_type: taxonomy_term
+bundle: pulse_content
+label: Changed
+description: 'The time that the term was last edited.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: changed

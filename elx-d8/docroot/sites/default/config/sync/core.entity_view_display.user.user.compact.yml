@@ -1,0 +1,80 @@
+uuid: c9e18ddc-594a-4d57-a16b-b8babee71d07
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.user.compact
+    - field.field.user.user.field_account_field_executive
+    - field.field.user.user.field_account_name
+    - field.field.user.user.field_badges
+    - field.field.user.user.field_city
+    - field.field.user.user.field_counter_manager
+    - field.field.user.user.field_country
+    - field.field.user.user.field_default_market
+    - field.field.user.user.field_door
+    - field.field.user.user.field_education_manager_executiv
+    - field.field.user.user.field_employer_number
+    - field.field.user.user.field_employment_status
+    - field.field.user.user.field_field_sales_director_regio
+    - field.field.user.user.field_first_name
+    - field.field.user.user.field_general_manager_brand_mana
+    - field.field.user.user.field_hire_date
+    - field.field.user.user.field_last_access_date
+    - field.field.user.user.field_last_name
+    - field.field.user.user.field_level
+    - field.field.user.user.field_market_administrator
+    - field.field.user.user.field_modified_date
+    - field.field.user.user.field_rank
+    - field.field.user.user.field_region_list
+    - field.field.user.user.field_regional_vice_president
+    - field.field.user.user.field_state
+    - field.field.user.user.field_user_interest
+    - field.field.user.user.user_picture
+    - image.style.thumbnail
+  module:
+    - svg_image
+    - user
+_core:
+  default_config_hash: '-cLsS3M3JycipXQt9rEb81_HxKneReoGuRh8ijcOPXs'
+id: user.user.compact
+targetEntityType: user
+bundle: user
+mode: compact
+content:
+  user_picture:
+    type: image
+    weight: 0
+    region: content
+    settings:
+      image_style: thumbnail
+      image_link: content
+    third_party_settings: {  }
+    label: hidden
+hidden:
+  field_account_field_executive: true
+  field_account_name: true
+  field_badges: true
+  field_city: true
+  field_counter_manager: true
+  field_country: true
+  field_default_market: true
+  field_door: true
+  field_education_manager_executiv: true
+  field_employer_number: true
+  field_employment_status: true
+  field_field_sales_director_regio: true
+  field_first_name: true
+  field_general_manager_brand_mana: true
+  field_hire_date: true
+  field_last_access_date: true
+  field_last_name: true
+  field_level: true
+  field_market_administrator: true
+  field_modified_date: true
+  field_rank: true
+  field_region_list: true
+  field_regional_vice_president: true
+  field_state: true
+  field_user_interest: true
+  langcode: true
+  member_for: true

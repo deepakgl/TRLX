@@ -1,0 +1,11 @@
+uuid: 46eddc45-6f7c-4911-9105-d5f281efec20
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: gDVMNhIaN-Ev0gqPyZU5Y7yUCwRfMlA-cv2gHC01hl4
+name: 'Migrate Example Beer Styles'
+vid: migrate_example_beer_styles
+description: 'Use tags to group beers on similar topics into categories.'
+hierarchy: 0
+weight: 0

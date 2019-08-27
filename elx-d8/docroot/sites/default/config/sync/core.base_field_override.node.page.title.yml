@@ -1,0 +1,18 @@
+uuid: 9709028c-c483-4a0c-a157-41e51000be15
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.page
+id: node.page.title
+field_name: title
+entity_type: node
+bundle: page
+label: Title
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

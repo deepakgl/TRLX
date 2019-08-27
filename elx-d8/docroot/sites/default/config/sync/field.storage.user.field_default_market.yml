@@ -1,0 +1,20 @@
+uuid: e209a82f-7410-414f-b63c-c9990f92f1e0
+langcode: en
+status: true
+dependencies:
+  module:
+    - taxonomy
+    - user
+id: user.field_default_market
+field_name: field_default_market
+entity_type: user
+type: entity_reference
+settings:
+  target_type: taxonomy_term
+module: core
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

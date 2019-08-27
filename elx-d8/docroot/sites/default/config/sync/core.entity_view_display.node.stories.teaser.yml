@@ -1,0 +1,42 @@
+uuid: 6016661e-9665-401f-9a42-7052194f7133
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.stories.body
+    - node.type.stories
+  module:
+    - text
+    - user
+id: node.stories.teaser
+targetEntityType: node
+bundle: stories
+mode: teaser
+content:
+  body:
+    label: hidden
+    type: text_summary_or_trimmed
+    weight: 101
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+    region: content
+  links:
+    weight: 100
+    region: content
+hidden:
+  field_access_by_role: true
+  field_comment: true
+  field_display_title: true
+  field_featured_image: true
+  field_featured_on_elx_specialty: true
+  field_hero_image: true
+  field_markets: true
+  field_point_value: true
+  field_pulsed_content: true
+  field_related_stories: true
+  field_sub_title: true
+  field_tags: true
+  field_tool_by_role: true
+  langcode: true

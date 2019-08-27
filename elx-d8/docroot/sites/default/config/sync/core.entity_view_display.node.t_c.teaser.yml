@@ -1,0 +1,31 @@
+uuid: 417d069d-7fa4-4ddd-be22-859c8b272da1
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.t_c.body
+    - field.field.node.t_c.field_markets
+    - node.type.t_c
+  module:
+    - text
+    - user
+id: node.t_c.teaser
+targetEntityType: node
+bundle: t_c
+mode: teaser
+content:
+  body:
+    label: hidden
+    type: text_summary_or_trimmed
+    weight: 101
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+    region: content
+  links:
+    weight: 100
+    region: content
+hidden:
+  field_markets: true
+  langcode: true

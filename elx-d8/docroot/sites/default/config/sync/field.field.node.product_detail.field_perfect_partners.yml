@@ -1,0 +1,27 @@
+uuid: 2cb22e81-5a86-44f7-9848-fc43e2397f38
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_perfect_partners
+    - node.type.product_detail
+id: node.product_detail.field_perfect_partners
+field_name: field_perfect_partners
+entity_type: node
+bundle: product_detail
+label: 'Perfect partners'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      product_detail: product_detail
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

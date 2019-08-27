@@ -1,0 +1,307 @@
+uuid: a2385e7d-fa41-4581-af24-b15c565b1c7d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.user.user.feeds_item
+    - field.field.user.user.field_account_field_executive
+    - field.field.user.user.field_account_name
+    - field.field.user.user.field_ar_search_access
+    - field.field.user.user.field_badges
+    - field.field.user.user.field_city
+    - field.field.user.user.field_counter_manager
+    - field.field.user.user.field_country
+    - field.field.user.user.field_default_market
+    - field.field.user.user.field_door
+    - field.field.user.user.field_education_manager_executiv
+    - field.field.user.user.field_employer_number
+    - field.field.user.user.field_employment_status
+    - field.field.user.user.field_field_sales_director_regio
+    - field.field.user.user.field_first_name
+    - field.field.user.user.field_general_manager_brand_mana
+    - field.field.user.user.field_has_3_0_permission
+    - field.field.user.user.field_hire_date
+    - field.field.user.user.field_inspiration_badge
+    - field.field.user.user.field_last_access_date
+    - field.field.user.user.field_last_name
+    - field.field.user.user.field_level
+    - field.field.user.user.field_market_administrator
+    - field.field.user.user.field_modified_date
+    - field.field.user.user.field_rank
+    - field.field.user.user.field_region_list
+    - field.field.user.user.field_regional_vice_president
+    - field.field.user.user.field_state
+    - field.field.user.user.field_t_c_flag
+    - field.field.user.user.field_user_interest
+    - field.field.user.user.user_picture
+    - image.style.user_avatar
+  module:
+    - datetime
+    - options
+    - svg_image
+    - user
+_core:
+  default_config_hash: V51QPCKkgNREKtSmB9Iu2wmAMEpktVpnzklWaZV8UYo
+id: user.user.default
+targetEntityType: user
+bundle: user
+mode: default
+content:
+  field_account_field_executive:
+    weight: 14
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_account_name:
+    weight: 28
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_ar_search_access:
+    weight: 37
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
+    region: content
+  field_badges:
+    weight: 33
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_city:
+    weight: 20
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_counter_manager:
+    weight: 12
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_country:
+    weight: 8
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
+    region: content
+  field_default_market:
+    weight: 31
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_door:
+    weight: 10
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_education_manager_executiv:
+    weight: 13
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_employer_number:
+    weight: 9
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_employment_status:
+    weight: 19
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
+    region: content
+  field_field_sales_director_regio:
+    weight: 15
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_first_name:
+    weight: 6
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_general_manager_brand_mana:
+    weight: 17
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_has_3_0_permission:
+    weight: 35
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
+    region: content
+  field_hire_date:
+    weight: 30
+    label: above
+    settings:
+      format_type: medium
+      timezone_override: ''
+    third_party_settings: {  }
+    type: datetime_default
+    region: content
+  field_inspiration_badge:
+    weight: 34
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_last_access_date:
+    weight: 27
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_last_name:
+    weight: 7
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_level:
+    weight: 24
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_market_administrator:
+    weight: 18
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_modified_date:
+    weight: 26
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_rank:
+    weight: 25
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_region_list:
+    weight: 22
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
+    region: content
+  field_regional_vice_president:
+    weight: 16
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_state:
+    weight: 21
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_t_c_flag:
+    weight: 36
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
+    region: content
+  field_user_interest:
+    weight: 32
+    label: above
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    type: entity_reference_entity_view
+    region: content
+  member_for:
+    weight: 5
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  user_picture:
+    type: image
+    weight: 0
+    region: content
+    settings:
+      image_style: user_avatar
+      image_link: content
+      svg_attributes:
+        width: ''
+        height: ''
+      svg_render_as_image: true
+    third_party_settings: {  }
+    label: hidden
+hidden:
+  feeds_item: true
+  langcode: true

@@ -1,0 +1,23 @@
+uuid: 7eb23e26-4c69-48c6-a72b-2e10a313d270
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_access_by_role
+    - taxonomy.vocabulary.learning_category
+id: taxonomy_term.learning_category.field_access_by_role
+field_name: field_access_by_role
+entity_type: taxonomy_term
+bundle: learning_category
+label: 'Access By Role'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:user_role'
+  handler_settings:
+    target_bundles: null
+    auto_create: false
+field_type: entity_reference

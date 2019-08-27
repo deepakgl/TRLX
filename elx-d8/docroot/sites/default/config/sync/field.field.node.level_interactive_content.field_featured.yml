@@ -1,0 +1,23 @@
+uuid: 575ece11-3de4-4ef1-aeee-44ed207d8074
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_featured
+    - node.type.level_interactive_content
+id: node.level_interactive_content.field_featured
+field_name: field_featured
+entity_type: node
+bundle: level_interactive_content
+label: 'Featured on ELX'
+description: 'Is this content featured on the home page?'
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: '1'
+  off_label: '0'
+field_type: boolean

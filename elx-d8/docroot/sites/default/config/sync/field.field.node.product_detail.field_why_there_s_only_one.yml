@@ -1,0 +1,22 @@
+uuid: 279fc6c5-e5ca-4f4a-905c-87bb6119b3ee
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_why_there_s_only_one
+    - node.type.product_detail
+  module:
+    - text
+id: node.product_detail.field_why_there_s_only_one
+field_name: field_why_there_s_only_one
+entity_type: node
+bundle: product_detail
+label: 'Why there''s only 1'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  display_summary: false
+field_type: text_with_summary

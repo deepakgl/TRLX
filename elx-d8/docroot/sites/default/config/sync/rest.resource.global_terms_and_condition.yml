@@ -1,0 +1,18 @@
+uuid: bed530a6-bcab-49d3-b237-c38e8e59b72c
+langcode: en
+status: true
+dependencies:
+  module:
+    - elx_tnc
+    - serialization
+    - user
+id: global_terms_and_condition
+plugin_id: global_terms_and_condition
+granularity: resource
+configuration:
+  methods:
+    - GET
+  formats:
+    - json
+  authentication:
+    - cookie

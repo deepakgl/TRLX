@@ -1,0 +1,18 @@
+uuid: b978f928-0884-48b1-af74-82b5fa3a866b
+langcode: en
+status: true
+dependencies:
+  module:
+    - elx_products
+    - serialization
+    - simple_oauth
+id: browse_products
+plugin_id: browse_products
+granularity: resource
+configuration:
+  methods:
+    - GET
+  formats:
+    - json
+  authentication:
+    - oauth2

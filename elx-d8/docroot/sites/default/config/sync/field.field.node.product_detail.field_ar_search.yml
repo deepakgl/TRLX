@@ -1,0 +1,23 @@
+uuid: de369a8c-bdd3-4549-9a6e-abc38c649a0b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_ar_search
+    - node.type.product_detail
+id: node.product_detail.field_ar_search
+field_name: field_ar_search
+entity_type: node
+bundle: product_detail
+label: 'AR search'
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: '1'
+  off_label: '0'
+field_type: boolean

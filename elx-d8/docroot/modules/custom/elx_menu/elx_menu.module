@@ -1,0 +1,51 @@
+<?php
+
+/**
+ * @file
+ * ELX menu module file.
+ */
+
+use Drupal\elx_user\Utility\UserUtility;
+
+/**
+ * Implements hook_link_alter().
+ */
+function elx_menu_link_alter(&$variables) {
+  if ($variables['text'] == 'Entityqueues') {
+    $variables['text'] = 'Homepage Content';
+  }
+}
+
+/**
+ * Implements hook_preprocess_menu().
+ */
+function elx_menu_preprocess_menu(&$variables) {
+  $user_utility = new UserUtility();
+  $roles = $user_utility->getUserRoles(\Drupal::currentUser()->id());
+  // Alter the entity queue menu items for the user other than Administrator &.
+  // Global Admin.
+  if ($variables['menu_name'] == 'admin' &&
+   isset($variables['items']['system.admin_structure']) && $roles) {
+    $queue_menus = [
+      'explore_learning_levels',
+      'browse_products',
+      'spotlight',
+      'stories',
+      'product_of_the_month',
+    ];
+    // Disable menu is_expanded for MA.
+    unset($variables['items']['system.admin_structure']['below']
+    ['entity.entity_queue.collection']['is_expanded']);
+    foreach ($queue_menus as $queue_menu) {
+      // Disable global menus for MA.
+      unset($variables['items']['system.admin_structure']['below']
+      ['entity.entity_queue.collection']['below']
+      ['entity.entity_queue.edit_form.' . $queue_menu]);
+      // Disable menu is_expanded for MA.
+      unset($variables['items']['system.admin_structure']['below']
+      ['entity.entity_queue.collection']['below']
+      ['entity.entity_queue.edit_form.' . $queue_menu .
+       '_market_wise']['is_expanded']);
+    }
+  }
+}

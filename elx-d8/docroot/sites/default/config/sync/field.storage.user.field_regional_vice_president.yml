@@ -1,0 +1,21 @@
+uuid: d0db6df9-0f3e-46e0-bdec-322458a988b2
+langcode: en
+status: true
+dependencies:
+  module:
+    - user
+id: user.field_regional_vice_president
+field_name: field_regional_vice_president
+entity_type: user
+type: string
+settings:
+  max_length: 255
+  is_ascii: false
+  case_sensitive: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

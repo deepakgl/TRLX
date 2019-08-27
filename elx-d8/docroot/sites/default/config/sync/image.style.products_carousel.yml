@@ -1,0 +1,15 @@
+uuid: 03a5f33e-d0eb-4510-a700-6e49b66c0224
+langcode: en
+status: true
+dependencies: {  }
+name: products_carousel
+label: 'Products Carousel(1440×528)'
+effects:
+  a915e2b1-6f88-40f7-b9e2-65c19f1bbea4:
+    uuid: a915e2b1-6f88-40f7-b9e2-65c19f1bbea4
+    id: image_scale_and_crop
+    weight: 2
+    data:
+      width: 1440
+      height: 528
+      anchor: center-center

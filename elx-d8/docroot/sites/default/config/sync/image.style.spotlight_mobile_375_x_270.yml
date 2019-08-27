@@ -1,0 +1,15 @@
+uuid: 962bc816-2e7e-4bb3-82ac-9dd4d90098f6
+langcode: en
+status: true
+dependencies: {  }
+name: spotlight_mobile_375_x_270
+label: 'Spotlight Mobile (375 X 270)'
+effects:
+  5871cb83-c48d-4e37-bddb-b47cd896dce7:
+    uuid: 5871cb83-c48d-4e37-bddb-b47cd896dce7
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 375
+      height: 270
+      anchor: center-center

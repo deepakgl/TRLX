@@ -1,0 +1,61 @@
+<?php
+
+/**
+ * @file
+ * User login install file.
+ */
+
+/**
+ * Create new table in the database.
+ *
+ * @return array
+ *   New tables.
+ */
+function elx_user_schema() {
+  $schema['elx_user_agent_tracking'] = [
+    'fields' => [
+      'id' => [
+        'type' => 'serial',
+        'not null' => TRUE,
+      ],
+      'user' => [
+        'type' => 'varchar',
+        'length' => 40,
+        'not null' => FALSE,
+        'default' => NULL,
+      ],
+      'host_ip' => [
+        'type' => 'varchar',
+        'length' => 40,
+        'not null' => FALSE,
+        'default' => NULL,
+      ],
+      'os' => [
+        'type' => 'varchar',
+        'length' => 40,
+        'not null' => FALSE,
+        'default' => NULL,
+      ],
+      'browser_name' => [
+        'type' => 'varchar',
+        'length' => 40,
+        'not null' => FALSE,
+        'default' => NULL,
+      ],
+      'browser_version' => [
+        'type' => 'varchar',
+        'length' => 40,
+        'not null' => FALSE,
+        'default' => NULL,
+      ],
+      'created_on' => [
+        'type' => 'int',
+        'not null' => TRUE,
+      ],
+    ],
+    'primary key' => ['id'],
+  ];
+
+  return $schema;
+
+}

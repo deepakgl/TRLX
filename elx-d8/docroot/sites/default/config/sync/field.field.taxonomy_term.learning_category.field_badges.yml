@@ -1,0 +1,29 @@
+uuid: e241e840-f50c-4343-b15e-877d06c68bd9
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_badges
+    - taxonomy.vocabulary.badges
+    - taxonomy.vocabulary.learning_category
+id: taxonomy_term.learning_category.field_badges
+field_name: field_badges
+entity_type: taxonomy_term
+bundle: learning_category
+label: Badges
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      badges: badges
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

@@ -1,0 +1,15 @@
+uuid: 94fdc285-ebbe-4a5f-a33a-a5099da7caaf
+langcode: en
+status: true
+dependencies: {  }
+name: homepage_banner_1440_665_
+label: "Homepage Banner(1440×665)\t"
+effects:
+  c41eded7-c994-4b5d-ad6e-a8ea351556ea:
+    uuid: c41eded7-c994-4b5d-ad6e-a8ea351556ea
+    id: image_scale_and_crop
+    weight: 2
+    data:
+      width: 1440
+      height: 665
+      anchor: center-center

@@ -1,0 +1,33 @@
+diff --git a/src/Feeds/Target/Language.php b/src/Feeds/Target/Language.php
+new file mode 100644
+index 0000000..308ccc0
+--- /dev/null
++++ b/src/Feeds/Target/Language.php
+@@ -0,0 +1,27 @@
++<?php
++
++namespace Drupal\feeds\Feeds\Target;
++
++use Drupal\feeds\Plugin\Type\Target\FieldTargetBase;
++
++
++/**
++ * Defines a language field mapper.
++ *
++ * @FeedsTarget(
++ *   id = "langcode",
++ *   field_types = {
++ *     "language"
++ *   }
++ * )
++ */
++class Language extends FieldTargetBase {
++
++  /**
++   * {@inheritdoc}
++   */
++  protected function prepareValue($delta, array &$values) {
++    // TODO: validate and format if neccessary
++  }
++
++}

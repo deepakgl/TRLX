@@ -1,0 +1,19 @@
+diff --git a/consumers.install b/consumers.install
+index 4a7b17cd3e06f30b750f3595d31d58a2642d4802..fca1fed1230224df097bf04b4347e3416130022e 100644
+--- a/consumers.install
++++ b/consumers.install
+@@ -52,6 +52,14 @@ function consumers_update_8103() {
+   $entity_type = $entity_definition_update_manager->getEntityType('consumer');
+   $last_installed_field_storage_definitions = \Drupal::service('entity.last_installed_schema.repository')->getLastInstalledFieldStorageDefinitions('consumer');
+
++  // Update consumer entity type
++  if (!\Drupal::database()->schema()->tableExists('consumer_field_data')) {
++      \Drupal::entityTypeManager()->clearCachedDefinitions();
++      \Drupal::entityDefinitionUpdateManager()->installEntityType(\Drupal::entityTypeManager()->getDefinition('consumer'));
++  } else {
++      return 'The \'consumer_field_data\' table already exists.';
++  }
++
+   /** @var \Drupal\Core\Entity\Sql\SqlContentEntityStorage $storage */
+
+   // Initialize the storage with the currently installed entity type and field storage definitions.

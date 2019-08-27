@@ -1,0 +1,28 @@
+uuid: cd7b3dee-0402-49ae-ba57-4d2e721cb14b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_featured_image
+    - media.type.image
+    - node.type.product_detail
+id: node.product_detail.field_featured_image
+field_name: field_featured_image
+entity_type: node
+bundle: product_detail
+label: 'Featured Image'
+description: 'Allowed file types:<b> png, gif, jpg, jpeg.</b><br>Image Resolution:<b> 1440 x 665px</b>'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      image: image
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

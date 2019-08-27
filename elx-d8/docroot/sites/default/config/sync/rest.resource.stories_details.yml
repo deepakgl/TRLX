@@ -1,0 +1,18 @@
+uuid: 71f29082-31f0-4758-a4ee-db61befe0901
+langcode: en
+status: true
+dependencies:
+  module:
+    - elx_stories
+    - serialization
+    - simple_oauth
+id: stories_details
+plugin_id: stories_details
+granularity: resource
+configuration:
+  methods:
+    - GET
+  formats:
+    - json
+  authentication:
+    - oauth2

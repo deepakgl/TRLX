@@ -1,0 +1,32 @@
+uuid: ae2f122e-5458-4aea-b8e9-91fe8350c056
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_component
+    - node.type.level_interactive_content
+    - node.type.product_detail
+    - node.type.tools
+    - node.type.welcome_message
+id: node.welcome_message.field_component
+field_name: field_component
+entity_type: node
+bundle: welcome_message
+label: Component
+description: ''
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      level_interactive_content: level_interactive_content
+      product_detail: product_detail
+      tools: tools
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: product_detail
+field_type: entity_reference

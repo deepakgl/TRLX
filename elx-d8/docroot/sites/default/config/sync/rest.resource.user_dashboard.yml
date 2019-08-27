@@ -1,0 +1,18 @@
+uuid: 119e0f3b-f310-40b5-9c09-1584121147d3
+langcode: en
+status: true
+dependencies:
+  module:
+    - elx_user
+    - serialization
+    - simple_oauth
+id: user_dashboard
+plugin_id: user_dashboard
+granularity: resource
+configuration:
+  methods:
+    - GET
+  formats:
+    - json
+  authentication:
+    - oauth2

@@ -1,0 +1,93 @@
+<?php
+
+/**
+ * @file
+ * Create and update table.
+ */
+
+/**
+ * Create new table in the database.
+ *
+ * @return array
+ *   Create table.
+ */
+function elx_utility_schema() {
+  $schema['lm_lrs_records'] = [
+    'fields' => [
+      'id' => [
+        'type' => 'serial',
+        'not null' => TRUE,
+      ],
+      'uid' => [
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => FALSE,
+        'default' => NULL,
+      ],
+      'nid' => [
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => FALSE,
+        'default' => NULL,
+      ],
+      'tid' => [
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => FALSE,
+        'default' => NULL,
+      ],
+      'statement_status' => [
+        'type' => 'varchar',
+        'length' => 40,
+        'not null' => FALSE,
+        'default' => NULL,
+      ],
+      'statement_id' => [
+        'type' => 'varchar',
+        'length' => 128,
+        'not null' => FALSE,
+        'default' => NULL,
+      ],
+      'created_on' => [
+        'type' => 'int',
+        'not null' => TRUE,
+      ],
+    ],
+    'primary key' => ['id'],
+  ];
+
+  $schema['lm_terms_node'] = [
+    'fields' => [
+      'id' => [
+        'type' => 'serial',
+        'not null' => TRUE,
+      ],
+      'nid' => [
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => FALSE,
+        'default' => NULL,
+      ],
+      'tid' => [
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => FALSE,
+        'default' => NULL,
+      ],
+    ],
+    'primary key' => ['id'],
+  ];
+
+  return $schema;
+
+}
+
+/**
+ * Implements hook_update_N().
+ */
+function elx_utility_update_8501() {
+  // Create field storage for the 'Highlight' base field.
+  $entity_manager = \Drupal::entityManager();
+  $definition = $entity_manager->getFieldStorageDefinitions('menu_link_content')['elx_menu_content'];
+  $entity_manager->onFieldStorageDefinitionCreate($definition);
+}

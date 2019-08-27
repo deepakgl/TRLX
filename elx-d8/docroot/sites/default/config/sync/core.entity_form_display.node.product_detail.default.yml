@@ -1,0 +1,345 @@
+uuid: 2a04236c-0291-42d9-bdd0-2d9d2f070d84
+langcode: en
+status: true
+dependencies:
+  config:
+    - entity_browser.browser.media_entity_browser
+    - field.field.node.product_detail.field_access_by_role
+    - field.field.node.product_detail.field_ar_search
+    - field.field.node.product_detail.field_archive_and_unarchive
+    - field.field.node.product_detail.field_benefits
+    - field.field.node.product_detail.field_customer_questions
+    - field.field.node.product_detail.field_demonstration
+    - field.field.node.product_detail.field_display_title
+    - field.field.node.product_detail.field_end_date
+    - field.field.node.product_detail.field_featured_image
+    - field.field.node.product_detail.field_field_product_image
+    - field.field.node.product_detail.field_fun_fact_sheet
+    - field.field.node.product_detail.field_how_to_sell_this_product
+    - field.field.node.product_detail.field_if_she_asks_share
+    - field.field.node.product_detail.field_just_for_you
+    - field.field.node.product_detail.field_learning_category
+    - field.field.node.product_detail.field_markets
+    - field.field.node.product_detail.field_perfect_partners
+    - field.field.node.product_detail.field_perfect_partners_text
+    - field.field.node.product_detail.field_point_value
+    - field.field.node.product_detail.field_price
+    - field.field.node.product_detail.field_product_categories
+    - field.field.node.product_detail.field_product_family
+    - field.field.node.product_detail.field_product_video
+    - field.field.node.product_detail.field_product_video_thumbnail
+    - field.field.node.product_detail.field_related_products
+    - field.field.node.product_detail.field_related_products_stories
+    - field.field.node.product_detail.field_related_products_tools
+    - field.field.node.product_detail.field_related_products_videos
+    - field.field.node.product_detail.field_season
+    - field.field.node.product_detail.field_story
+    - field.field.node.product_detail.field_subtitle
+    - field.field.node.product_detail.field_tags_keywords
+    - field.field.node.product_detail.field_translation
+    - field.field.node.product_detail.field_why_there_s_only_one
+    - node.type.product_detail
+  module:
+    - datetime
+    - entity_browser
+    - field_group
+    - path
+    - term_reference_tree
+    - text
+third_party_settings:
+  field_group:
+    group_perfect_partners:
+      children: {  }
+      parent_name: ''
+      weight: 43
+      format_type: fieldset
+      format_settings:
+        id: ''
+        classes: 'group-partners field-group-fieldset'
+        description: ''
+        required_fields: true
+      label: 'Perfect partners'
+      region: hidden
+id: node.product_detail.default
+targetEntityType: node
+bundle: product_detail
+mode: default
+content:
+  field_access_by_role:
+    weight: 2
+    settings: {  }
+    third_party_settings: {  }
+    type: options_buttons
+    region: content
+  field_ar_search:
+    weight: 29
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
+  field_archive_and_unarchive:
+    weight: 26
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_benefits:
+    weight: 15
+    settings:
+      rows: 9
+      summary_rows: 3
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea_with_summary
+    region: content
+  field_customer_questions:
+    weight: 17
+    settings:
+      rows: 9
+      summary_rows: 3
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea_with_summary
+    region: content
+  field_demonstration:
+    weight: 14
+    settings:
+      rows: 9
+      summary_rows: 3
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea_with_summary
+    region: content
+  field_display_title:
+    weight: 1
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_end_date:
+    weight: 18
+    settings: {  }
+    third_party_settings: {  }
+    type: datetime_default
+    region: content
+  field_featured_image:
+    weight: 21
+    settings:
+      entity_browser: media_entity_browser
+      field_widget_display: rendered_entity
+      field_widget_edit: true
+      field_widget_remove: true
+      selection_mode: selection_append
+      field_widget_display_settings:
+        view_mode: default
+      field_widget_replace: false
+      open: false
+    third_party_settings: {  }
+    type: entity_browser_entity_reference
+    region: content
+  field_field_product_image:
+    weight: 19
+    settings:
+      entity_browser: media_entity_browser
+      field_widget_display: rendered_entity
+      field_widget_edit: true
+      field_widget_remove: true
+      selection_mode: selection_append
+      field_widget_display_settings:
+        view_mode: default
+      open: false
+      field_widget_replace: false
+    third_party_settings: {  }
+    type: entity_browser_entity_reference
+    region: content
+  field_how_to_sell_this_product:
+    weight: 27
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  field_if_she_asks_share:
+    weight: 16
+    settings:
+      rows: 9
+      summary_rows: 3
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea_with_summary
+    region: content
+  field_learning_category:
+    weight: 28
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  field_markets:
+    weight: 20
+    settings:
+      start_minimized: true
+      leaves_only: false
+      select_parents: false
+      cascading_selection: 0
+      max_depth: 0
+    third_party_settings: {  }
+    type: term_reference_tree
+    region: content
+  field_point_value:
+    weight: 11
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_product_categories:
+    weight: 8
+    settings: {  }
+    third_party_settings: {  }
+    type: options_buttons
+    region: content
+  field_product_video:
+    weight: 22
+    settings:
+      entity_browser: video_entity_browser
+      field_widget_display: rendered_entity
+      field_widget_edit: true
+      field_widget_remove: true
+      selection_mode: selection_append
+      field_widget_display_settings:
+        view_mode: default
+      field_widget_replace: false
+      open: false
+    third_party_settings: {  }
+    type: entity_browser_entity_reference
+    region: content
+  field_product_video_thumbnail:
+    weight: 23
+    settings:
+      entity_browser: media_entity_browser
+      field_widget_display: rendered_entity
+      field_widget_edit: true
+      field_widget_remove: true
+      selection_mode: selection_append
+      field_widget_display_settings:
+        view_mode: default
+      field_widget_replace: false
+      open: false
+    third_party_settings: {  }
+    type: entity_browser_entity_reference
+    region: content
+  field_season:
+    weight: 10
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_subtitle:
+    weight: 4
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_tags_keywords:
+    weight: 5
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete_tags
+    region: content
+  field_translation:
+    type: options_buttons
+    weight: 24
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_unarchived:
+    weight: 32
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
+  field_why_there_s_only_one:
+    weight: 13
+    settings:
+      rows: 9
+      summary_rows: 3
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea_with_summary
+    region: content
+  langcode:
+    type: language_select
+    weight: 3
+    region: content
+    settings:
+      include_locked: true
+    third_party_settings: {  }
+  path:
+    type: path
+    weight: 9
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  promote:
+    type: boolean_checkbox
+    settings:
+      display_label: true
+    weight: 6
+    region: content
+    third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    weight: 25
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  sticky:
+    type: boolean_checkbox
+    settings:
+      display_label: true
+    weight: 7
+    region: content
+    third_party_settings: {  }
+  title:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  translation:
+    weight: 12
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  created: true
+  field_fun_fact_sheet: true
+  field_just_for_you: true
+  field_perfect_partners: true
+  field_perfect_partners_text: true
+  field_price: true
+  field_product_family: true
+  field_related_products: true
+  field_related_products_stories: true
+  field_related_products_tools: true
+  field_related_products_videos: true
+  field_story: true
+  uid: true

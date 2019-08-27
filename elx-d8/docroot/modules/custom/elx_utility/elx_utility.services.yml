@@ -1,0 +1,6 @@
+services:
+  logger.stdout:
+    class: Drupal\elx_utility\Logger\ElxLogger
+    arguments: ['@logger.log_message_parser', '@request_stack']
+    tags:
+      - { name: logger }

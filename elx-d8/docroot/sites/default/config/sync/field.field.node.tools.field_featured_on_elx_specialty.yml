@@ -1,0 +1,23 @@
+uuid: dafee125-9f10-4be9-9abf-1d9a492e8c82
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_featured_on_elx_specialty
+    - node.type.tools
+id: node.tools.field_featured_on_elx_specialty
+field_name: field_featured_on_elx_specialty
+entity_type: node
+bundle: tools
+label: 'Featured on ELX Specialty'
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: '1'
+  off_label: '0'
+field_type: boolean

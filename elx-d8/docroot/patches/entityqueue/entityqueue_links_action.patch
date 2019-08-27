@@ -1,0 +1,10 @@
+--- a/entityqueue.links.action.yml
++++ b/entityqueue.links.action.yml
+@@ -7,5 +7,7 @@ entity.entity_queue.add_form:
+ entity.entity_subqueue.add_form:
+   route_name: 'entity.entity_subqueue.add_form'
+   title: 'Add subqueue'
++  requirements:
++    _role: 'administrator+el_nyo_global_education_system_admin'
+   appears_on:
+     - entity.entity_queue.subqueue_list

@@ -1,0 +1,9 @@
+uuid: 175deb2d-405c-490e-beb7-0bcb31bfa586
+langcode: id
+status: true
+dependencies: {  }
+id: id
+label: Indonesian
+direction: ltr
+weight: 1
+locked: false

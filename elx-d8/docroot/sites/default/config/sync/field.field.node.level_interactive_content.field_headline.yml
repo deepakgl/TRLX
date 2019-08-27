@@ -1,0 +1,19 @@
+uuid: 1063a1a9-0e4c-400d-9ea8-726872ebd715
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_headline
+    - node.type.level_interactive_content
+id: node.level_interactive_content.field_headline
+field_name: field_headline
+entity_type: node
+bundle: level_interactive_content
+label: 'Display Title'
+description: ''
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

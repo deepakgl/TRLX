@@ -1,0 +1,16 @@
+elx_reports.participation_rate_report:
+  path: /admin/report/participation-rate-report/{market_id}
+  defaults:
+    _form: '\Drupal\elx_reports\Form\ParticipationRateReportForm'
+    _title: 'Participation rate report'
+    market_id: ''
+  requirements:
+   _permission: 'administer elx reports'
+
+elx_reports.learner_summary_report:
+  path: /admin/report/learner-summary-report
+  defaults:
+    _form: '\Drupal\elx_reports\Form\LearnerSummaryReportForm'
+    _title: 'Learner Summary report'
+  requirements:
+   _permission: 'administer elx reports'

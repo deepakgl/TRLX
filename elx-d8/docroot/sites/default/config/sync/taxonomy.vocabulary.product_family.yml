@@ -1,0 +1,9 @@
+uuid: 218795e0-c75f-4dca-97ee-420d02bf94f8
+langcode: en
+status: true
+dependencies: {  }
+name: 'Product Family'
+vid: product_family
+description: ''
+hierarchy: 0
+weight: 0

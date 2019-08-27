@@ -1,0 +1,23 @@
+elx_bulk_mail.send_bulk_mail:
+  path: '/admin/config/people/elx_bulk_mail'
+  defaults:
+    _form: 'Drupal\elx_bulk_mail\Form\OperationsForm'
+    _title: 'CSV Import'
+  requirements:
+    _permission: 'administer content'
+
+elx_bulk_mail.user_unblock:
+  path: '/admin/config/people/elx_user_unblock'
+  defaults:
+    _form: 'Drupal\elx_bulk_mail\Form\OperationsForm'
+    _title: 'CSV Import'
+  requirements:
+    _permission: 'administer elx user unblock'
+
+elx_bulk_mail.bulk_content_market_map:
+  path: '/admin/config/people/elx_bulk_map_market'
+  defaults:
+    _form: 'Drupal\elx_bulk_mail\Form\OperationsForm'
+    _title: 'Content Market Mapping'
+  requirements:
+    _permission: 'administer content'

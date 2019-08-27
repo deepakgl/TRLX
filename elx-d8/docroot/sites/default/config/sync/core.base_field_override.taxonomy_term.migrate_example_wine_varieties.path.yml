@@ -1,0 +1,20 @@
+uuid: b9d087cd-9703-429b-8bb7-21952eae76f2
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.migrate_example_wine_varieties
+  module:
+    - path
+id: taxonomy_term.migrate_example_wine_varieties.path
+field_name: path
+entity_type: taxonomy_term
+bundle: migrate_example_wine_varieties
+label: 'URL alias'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: path

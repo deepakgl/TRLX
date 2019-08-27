@@ -1,0 +1,18 @@
+uuid: 90580620-525d-4a74-9f98-0bfc9422a32a
+langcode: en
+status: true
+dependencies:
+  module:
+    - elx_user
+    - serialization
+    - simple_oauth
+id: user_logout
+plugin_id: user_logout
+granularity: resource
+configuration:
+  methods:
+    - POST
+  formats:
+    - json
+  authentication:
+    - oauth2

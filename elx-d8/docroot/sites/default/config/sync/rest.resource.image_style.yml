@@ -1,0 +1,18 @@
+uuid: b16e76dc-a5e5-4fed-9eae-cf5c9dafa8d2
+langcode: en
+status: true
+dependencies:
+  module:
+    - elx_products
+    - serialization
+    - simple_oauth
+id: image_style
+plugin_id: image_style
+granularity: resource
+configuration:
+  methods:
+    - GET
+  formats:
+    - json
+  authentication:
+    - oauth2

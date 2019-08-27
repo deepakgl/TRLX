@@ -1,0 +1,18 @@
+uuid: e6688597-1bd8-4b4c-a937-9364ad966f7d
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.best_sellers
+id: node.best_sellers.changed
+field_name: changed
+entity_type: node
+bundle: best_sellers
+label: Changed
+description: 'The time that the node was last edited.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: changed

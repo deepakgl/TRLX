@@ -1,0 +1,20 @@
+uuid: d209d6c8-9279-437f-bd50-b10b6426e855
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.user.field_regional_vice_president
+  module:
+    - user
+id: user.user.field_regional_vice_president
+field_name: field_regional_vice_president
+entity_type: user
+bundle: user
+label: 'Regional Vice President'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string
