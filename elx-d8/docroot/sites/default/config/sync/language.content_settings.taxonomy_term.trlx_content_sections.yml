@@ -1,0 +1,11 @@
+uuid: 7132d5b8-05af-4a47-ae59-6aac00fe9c42
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.trlx_content_sections
+id: taxonomy_term.trlx_content_sections
+target_entity_type_id: taxonomy_term
+target_bundle: trlx_content_sections
+default_langcode: site_default
+language_alterable: false

@@ -1,0 +1,9 @@
+uuid: 4340847e-7691-4113-8144-3de96e14ba83
+langcode: en
+status: true
+dependencies: {  }
+name: 'TRLX Content Sections'
+vid: trlx_content_sections
+description: ''
+hierarchy: 0
+weight: 0

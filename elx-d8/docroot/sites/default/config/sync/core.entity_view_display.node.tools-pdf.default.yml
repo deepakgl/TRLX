@@ -5,6 +5,8 @@ dependencies:
   config:
     - field.field.node.tools-pdf.field_access_by_role
     - field.field.node.tools-pdf.field_archive_and_unarchive
+    - field.field.node.tools-pdf.field_brands
+    - field.field.node.tools-pdf.field_content_section
     - field.field.node.tools-pdf.field_display_title
     - field.field.node.tools-pdf.field_featured
     - field.field.node.tools-pdf.field_featured_image
@@ -38,6 +40,22 @@ content:
     region: content
   field_archive_and_unarchive:
     weight: 125
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_brands:
+    weight: 126
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_content_section:
+    weight: 127
     label: above
     settings:
       link: true
@@ -159,3 +177,4 @@ content:
 hidden:
   field_translation: true
   langcode: true
+  search_api_excerpt: true
