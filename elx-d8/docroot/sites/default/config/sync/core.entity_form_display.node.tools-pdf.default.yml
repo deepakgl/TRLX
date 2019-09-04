@@ -6,6 +6,8 @@ dependencies:
     - entity_browser.browser.media_entity_browser
     - field.field.node.tools-pdf.field_access_by_role
     - field.field.node.tools-pdf.field_archive_and_unarchive
+    - field.field.node.tools-pdf.field_brands
+    - field.field.node.tools-pdf.field_content_section
     - field.field.node.tools-pdf.field_display_title
     - field.field.node.tools-pdf.field_featured
     - field.field.node.tools-pdf.field_featured_image
@@ -49,6 +51,18 @@ content:
     third_party_settings: {  }
     type: options_select
     region: content
+  field_brands:
+    weight: 27
+    settings: {  }
+    third_party_settings: {  }
+    type: options_buttons
+    region: content
+  field_content_section:
+    weight: 28
+    settings: {  }
+    third_party_settings: {  }
+    type: options_buttons
+    region: content
   field_display_title:
     type: string_textfield
     weight: 1
@@ -76,7 +90,12 @@ content:
     type: term_reference_tree
     weight: 9
     region: content
-    settings: {  }
+    settings:
+      start_minimized: true
+      leaves_only: false
+      select_parents: false
+      cascading_selection: 0
+      max_depth: 0
     third_party_settings: {  }
   field_point_value:
     type: string_textfield
