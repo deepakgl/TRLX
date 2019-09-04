@@ -8,6 +8,7 @@ dependencies:
     - field.field.node.product_detail.field_ar_search
     - field.field.node.product_detail.field_archive_and_unarchive
     - field.field.node.product_detail.field_benefits
+    - field.field.node.product_detail.field_brands
     - field.field.node.product_detail.field_customer_questions
     - field.field.node.product_detail.field_demonstration
     - field.field.node.product_detail.field_display_title
@@ -92,6 +93,12 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: text_textarea_with_summary
+    region: content
+  field_brands:
+    weight: 44
+    settings: {  }
+    third_party_settings: {  }
+    type: options_buttons
     region: content
   field_customer_questions:
     weight: 17
