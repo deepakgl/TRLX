@@ -772,56 +772,56 @@ function elx_utility_mail_alter(&$message) {
 /**
  * Implements hook_entity_base_field_info().
  */
-function elx_utility_entity_base_field_info(EntityTypeInterface $entity_type) {
-  $fields = [];
-  if ($entity_type->id() == 'menu_link_content') {
-    $fields['elx_menu_content'] =
-     BaseFieldDefinition::create('entity_reference')
-       ->setLabel(t('Menu Content'))
-       ->setSetting('target_type', 'taxonomy_term')
-       ->setSetting('handler', 'default:taxonomy_term')
-       ->setSetting('handler_settings', [
-         'target_bundles' => [
-           'menu_content' => 'menu_content',
-         ],
-       ])
-       ->setDisplayOptions('form', ['type' => 'options_select', 'weight' => 0])
-       ->setDisplayConfigurable('form', TRUE)
-       ->setDisplayConfigurable('view', TRUE);
-
-    $fields['elx_menu_web'] = BaseFieldDefinition::create('boolean')
-      ->setLabel(t('Web'))
-      ->setDisplayOptions('form', [
-        'type' => 'boolean_checkbox',
-        'settings' => [
-          'display_label' => TRUE,
-        ],
-      ])
-      ->setDisplayConfigurable('form', TRUE);
-
-    $fields['elx_menu_otg'] = BaseFieldDefinition::create('boolean')
-      ->setLabel(t('OTG'))
-      ->setDisplayOptions('form', [
-        'type' => 'boolean_checkbox',
-        'settings' => [
-          'display_label' => TRUE,
-        ],
-      ])
-      ->setDisplayConfigurable('form', TRUE);
-
-    $fields['elx_menu_otg_sequence_id'] = BaseFieldDefinition::create('integer')
-      ->setLabel(t('OTG Sequence Id'))
-      ->setDisplayOptions('form', [
-        'type' => 'integer',
-        'settings' => [
-          'display_label' => TRUE,
-        ],
-      ])
-      ->setDisplayConfigurable('form', TRUE);
-  }
-
-  return $fields;
-}
+//function elx_utility_entity_base_field_info(EntityTypeInterface $entity_type) {
+//  $fields = [];
+//  if ($entity_type->id() == 'menu_link_content') {
+//    $fields['elx_menu_content'] =
+//     BaseFieldDefinition::create('entity_reference')
+//       ->setLabel(t('Menu Content'))
+//       ->setSetting('target_type', 'taxonomy_term')
+//       ->setSetting('handler', 'default:taxonomy_term')
+//       ->setSetting('handler_settings', [
+//         'target_bundles' => [
+//           'menu_content' => 'menu_content',
+//         ],
+//       ])
+//       ->setDisplayOptions('form', ['type' => 'options_select', 'weight' => 0])
+//       ->setDisplayConfigurable('form', TRUE)
+//       ->setDisplayConfigurable('view', TRUE);
+//
+//    $fields['elx_menu_web'] = BaseFieldDefinition::create('boolean')
+//      ->setLabel(t('Web'))
+//      ->setDisplayOptions('form', [
+//        'type' => 'boolean_checkbox',
+//        'settings' => [
+//          'display_label' => TRUE,
+//        ],
+//      ])
+//      ->setDisplayConfigurable('form', TRUE);
+//
+//    $fields['elx_menu_otg'] = BaseFieldDefinition::create('boolean')
+//      ->setLabel(t('OTG'))
+//      ->setDisplayOptions('form', [
+//        'type' => 'boolean_checkbox',
+//        'settings' => [
+//          'display_label' => TRUE,
+//        ],
+//      ])
+//      ->setDisplayConfigurable('form', TRUE);
+//
+//    $fields['elx_menu_otg_sequence_id'] = BaseFieldDefinition::create('integer')
+//      ->setLabel(t('OTG Sequence Id'))
+//      ->setDisplayOptions('form', [
+//        'type' => 'integer',
+//        'settings' => [
+//          'display_label' => TRUE,
+//        ],
+//      ])
+//      ->setDisplayConfigurable('form', TRUE);
+//  }
+//
+//  return $fields;
+//}
 
 /**
  * Implements hook_preprocess_views_view_field().
