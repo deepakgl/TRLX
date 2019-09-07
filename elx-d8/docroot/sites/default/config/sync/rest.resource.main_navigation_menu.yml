@@ -1,13 +1,13 @@
-uuid: 6aa94b06-6c76-4f0e-a96f-a31937cf0bc2
+uuid: 54cac4b8-9107-4b52-a868-0b811ba1eed3
 langcode: en
 status: true
 dependencies:
   module:
-    - elx_dashboard
     - serialization
+    - simple_oauth
     - user
-id: primary_navigation_menu
-plugin_id: primary_navigation_menu
+id: main_navigation_menu
+plugin_id: main_navigation_menu
 granularity: resource
 configuration:
   methods:
@@ -15,4 +15,5 @@ configuration:
   formats:
     - json
   authentication:
+    - oauth2
     - cookie
