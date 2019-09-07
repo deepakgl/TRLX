@@ -1,13 +1,13 @@
-uuid: 54cac4b8-9107-4b52-a868-0b811ba1eed3
+uuid: 45a16596-a198-4213-9cf0-686272c26c77
 langcode: en
 status: true
 dependencies:
   module:
     - serialization
-    - trlx_dashboard
+    - trlx_brand
     - user
-id: main_navigation_menu
-plugin_id: main_navigation_menu
+id: brands_category_listing
+plugin_id: brands_category_listing
 granularity: resource
 configuration:
   methods:
