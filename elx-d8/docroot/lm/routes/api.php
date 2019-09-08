@@ -34,6 +34,7 @@ $router->group(['prefix' => 'v1'], function () use ($router) {
   $router->post('setTermsNodeData', 'ContentController@setTermsNodeData');
   $router->get('getIntereactiveLevelTermStatus', 'ContentController@intereactiveLevelTermStatus');
   $router->get('purgeElasticUser', 'ContentController@purgeElasticUser');
+  $router->get('purgeElasticNode', 'ContentController@purgeElasticNodeData');
   $router->post('deleteTermsNodeData', 'ContentController@deleteTermsNodeData');
 });
 

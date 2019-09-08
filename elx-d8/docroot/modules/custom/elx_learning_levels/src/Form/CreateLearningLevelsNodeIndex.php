@@ -86,9 +86,8 @@ class CreateLearningLevelsNodeIndex extends FormBase {
     // If index not exist, create new index.
     if (!$node_exist) {
       $params['body'] = [
-        'favorites_by_user' => [],
-        'downloads_by_user' => [],
-        'bookmarks_by_user' => [],
+        'like_by_user' => [],
+        'bookmark_by_user' => [],
       ];
       $response = $client->index($params);
       $context['results']['processed'][] = $id->nid;

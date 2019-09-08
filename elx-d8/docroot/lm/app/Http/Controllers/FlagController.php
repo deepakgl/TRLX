@@ -10,12 +10,15 @@ use App\Model\Mysql\UserModel;
 use App\Model\Elastic\ElasticUserModel;
 use App\Model\Elastic\FlagModel;
 use App\Model\Elastic\BadgeModel;
+use App\Traits\ApiResponser;
 use App\Http\Controllers\UserActivitiesController;
 
 /**
  * Purpose of building this class is to set and fetch user flag.
  */
 class FlagController extends Controller {
+
+  use ApiResponser;
 
   private $elasticClient = NULL;
   private $uid = NULL;
@@ -42,43 +45,30 @@ class FlagController extends Controller {
    * @param \Illuminate\Http\Request $request
    *   Rest resource query parameters.
    *
-   * @return json
+   * @return JSON response
    *   Set user flag.
    */
   public function setFlag(Request $request) {
-    $this->uid = Helper::getJtiToken($request);
+    // $this->uid = Helper::getJtiToken($request);
+    $validatedData = $this->validate($request, [
+      'uid' => 'required|positiveinteger|exists:users_field_data,uid',
+      'nid' => 'required|positiveinteger|exists:node,nid',
+      'flag' => 'required|likebookmarkflag',
+      'status' => 'required|boolean'
+    ]);
+    $this->uid = $validatedData['uid'];
+    $nid = $validatedData['nid'];
+    $flag = $validatedData['flag'];
+    $status = $validatedData['status'];
+
     $this->elasticClient = Helper::checkElasticClient();
     if (!$this->elasticClient) {
-      return FALSE;
+      $this->errorResponse('No alive nodes found in cluster.', Response::HTTP_INTERNAL_SERVER_ERROR);
     }
-    $nid = (int) $request->input('nid');
-    $flag = $request->input('flag');
-    $status = (int) $request->input('status');
-    $flag_name = ['favorites', 'bookmarks', 'downloads'];
-    $type = ContentModel::getTypeByNid($nid);
-    if (empty($nid) && empty($flag) && empty($status)) {
-      return Helper::jsonError('Required parameter missing.', 400);
-    }
-    elseif (!in_array($flag, $flag_name) || empty($flag)) {
-      return Helper::jsonError('Invalid flag name', 400);
-    }
-    elseif ($status !== 0 && $status !== 1) {
-      return Helper::jsonError('Invalid status value', 400);
-    }
-    elseif (empty($nid) || !is_numeric($nid)) {
-      return Helper::jsonError('Invalid Node id', 400);
-    }
-    elseif (empty($type)) {
-      return Helper::jsonError('Node id not exist.', 422);
-    }
-    elseif ($status == 0 && $flag == 'downloads') {
-      return Helper::jsonError('Status value cannot be 0.', 400);
-    }
-    elseif (!$this->uid) {
-      return Helper::jsonError('Please provide user id.', 422);
-    }
-    $response = $this->updateUserIndex($nid, $flag, $status);
-    $response = $this->updateNodeIndex($nid, $flag, $status);
+
+    $this->updateUserIndex($nid, $flag, $status);
+    $this->updateNodeIndex($nid, $flag, $status);
+
     $lang = UserModel::getUserInfoByUid($this->uid, 'language');
     header('Content-language: ' . $lang[0]->language);
 
@@ -92,7 +82,7 @@ class FlagController extends Controller {
       'message' => 'Flag successfully updated',
     ];
 
-    return new Response($message, 200);
+    return $this->successResponse($message);
   }
 
   /**
@@ -118,6 +108,17 @@ class FlagController extends Controller {
     }
     else {
       $response = ElasticUserModel::fetchElasticUserData($this->uid, $this->elasticClient);
+      if (!isset($response['_source'][$flag])) {
+        $params['body'] = [
+          'doc' => [
+            'uid' => $this->uid,
+            $flag => [],
+          ],
+          'doc_as_upsert' => TRUE,
+        ];
+        ElasticUserModel::updateElasticUserData($params, $this->uid, $this->elasticClient);
+        $response = ElasticUserModel::fetchElasticUserData($this->uid, $this->elasticClient);
+      }
       if ($status == 0) {
         if (($key = array_search($nid, $response['_source'][$flag])) !== FALSE) {
           unset($response['_source'][$flag][$key]);
@@ -155,17 +156,11 @@ class FlagController extends Controller {
    */
   private function updateNodeIndex($nid, $flag, $status) {
     $exist = FlagModel::checkElasticNodeIndex($nid, $this->elasticClient);
-    if ($flag == 'bookmarks') {
-      $fv_flag = 'favorites';
-      $bm_flag = 'downloads';
+    if ($flag == 'bookmark') {
+      $other_flag = 'like';
     }
-    elseif ($flag == 'favorites') {
-      $fv_flag = 'downloads';
-      $bm_flag = 'bookmarks';
-    }
-    elseif ($flag == 'downloads') {
-      $fv_flag = 'favorites';
-      $bm_flag = 'bookmarks';
+    elseif ($flag == 'like') {
+      $other_flag = 'bookmark';
     }
     // If index not exist, create new index.
     if (!$exist) {
@@ -175,8 +170,7 @@ class FlagController extends Controller {
       }
       $params['body'] = [
         $flag . '_by_user' => $flag_uid,
-        $fv_flag . '_by_user' => [],
-        $bm_flag . '_by_user' => [],
+        $other_flag . '_by_user' => [],
       ];
       $output = FlagModel::createElasticNodeIndex($params, $nid, $this->elasticClient);
     }
