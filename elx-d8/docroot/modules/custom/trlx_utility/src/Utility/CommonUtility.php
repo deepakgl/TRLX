@@ -5,6 +5,7 @@ namespace Drupal\trlx_utility\Utility;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Drupal\Core\Logger\RfcLogLevel;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Purpose of this class is to build common object.
@@ -12,12 +13,12 @@ use Drupal\Core\Logger\RfcLogLevel;
 class CommonUtility {
 
   /**
-   * Build success response
-   * 
-   * @param  string|array $data
-   * @param  int $code
-   * @param  boolean $success
-   * 
+   * Build success response.
+   *
+   * @param string|array $data
+   * @param int $code
+   * @param bool $success
+   *
    * @return Illuminate\Http\JsonResponse
    */
   public function successResponse($data = [], $code = Response::HTTP_OK, $success = TRUE) {
@@ -25,11 +26,11 @@ class CommonUtility {
   }
 
   /**
-   * Build error responses
-   * 
-   * @param  string|array $message
-   * @param  int $code
-   * 
+   * Build error responses.
+   *
+   * @param string|array $message
+   * @param int $code
+   *
    * @return Illuminate\Http\JsonResponse
    */
   public function errorResponse($message, $code) {
@@ -37,12 +38,12 @@ class CommonUtility {
   }
 
   /**
-   * Validate language code
-   * 
+   * Validate language code.
+   *
    * @param string $langcode
-   * @param Request $request
-   * 
-   * @return JsonResponse
+   * @param \Symfony\Component\HttpFoundation\Request $request
+   *
+   * @return \Symfony\Component\HttpFoundation\JsonResponse
    */
   public function validateLanguageCode($langcode, $request) {
     if (!$request->query->has('language')) {
@@ -59,10 +60,10 @@ class CommonUtility {
   /**
    * Method to get image style based url.
    *
-   * @param  string $image_style
+   * @param string $image_style
    *   Image style machine name.
-   * 
-   * @param  string $path
+   *
+   * @param string $path
    *   Image path.
    *
    * @return string
@@ -78,12 +79,32 @@ class CommonUtility {
   }
 
   /**
+   * Set the limit and pager.
+   *
+   * @param \Symfony\Component\HttpFoundation\Request $request
+   *   Rest resource query parameters.
+   * @param int $limit_default
+   *   Limit.
+   * @param int $offset_default
+   *   Offset.
+   *
+   * @return array
+   *   Limit and offset.
+   */
+  public function getPagerParam(Request $request, $limit_default = 10, $offset_default = 0) {
+    $limit = $request->query->get('limit') ? $request->query->get('limit') : $limit_default;
+    $offset = $request->query->get('offset') ? $request->query->get('offset') : $offset_default;
+
+    return [$limit, $offset];
+  }
+
+  /**
    * Check rest resource params.
    *
    * @param mixed $param
    *   Parameter name.
    *
-   * @return JsonResponse
+   * @return json
    *   Following params required.
    */
   public function invalidData($param = []) {
@@ -97,36 +118,30 @@ class CommonUtility {
       'data' => $param,
     ]);
 
-    return $this->errorResponse(t('Following params required: ' . $param), Response::HTTP_BAD_REQUEST);
+    return new JsonResponse('Following params required: ' . $param, 400);
   }
 
   /**
-   * Check if node id exists, is published 
-   * & requested language is available for that nid.
+   * Check if node id exists.
    *
    * @param int $nid
    *   Node id.
    *
-   * @param string $langcode
-   *   Two characters long language code
-   *
    * @return bool
    *   True or false.
    */
-  public function isValidNid($nid, $langcode) {
+  public function isValidNid($nid) {
     $query = \Drupal::database();
     $query = $query->select('node_field_data', 'n');
     $query->fields('n', ['nid'])
       ->condition('n.nid', $nid, '=')
-      ->condition('n.langcode', $langcode, '=')
-      ->condition('n.status', 1, '=')
       ->range(0, 1);
     $result = $query->execute()->fetchAll();
     if (empty($result)) {
       global $base_url;
       $request_uri = $base_url . \Drupal::request()->getRequestUri();
       $logger = \Drupal::service('logger.stdout');
-      $logger->log(RfcLogLevel::ERROR, 'Node Id @nid does not exist in database or is invalid.', [
+      $logger->log(RfcLogLevel::ERROR, 'Node Id @nid does not exist in database.', [
         '@nid' => $nid,
         'user' => \Drupal::currentUser(),
         'request_uri' => $request_uri,
