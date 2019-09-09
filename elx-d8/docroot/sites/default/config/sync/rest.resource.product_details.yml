@@ -1,11 +1,11 @@
-uuid: ce50bacb-6a9b-465e-9a1e-9c844d0189d1
+uuid: d3dd8f2c-2ffc-4e61-b0dc-66f00e6ada6c
 langcode: en
 status: true
 dependencies:
   module:
-    - elx_products
     - serialization
-    - simple_oauth
+    - trlx_products
+    - user
 id: product_details
 plugin_id: product_details
 granularity: resource
@@ -15,4 +15,4 @@ configuration:
   formats:
     - json
   authentication:
-    - oauth2
+    - cookie

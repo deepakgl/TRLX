@@ -1,5 +1,6 @@
 access_token_expiration: 86400
 refresh_token_expiration: null
-public_key: ./oauth/public.key
-private_key: ./oauth/private.key
+public_key: ../oauth/public.key
+private_key: ../oauth/private.key
 remember_clients: false
+token_cron_batch_size: 0

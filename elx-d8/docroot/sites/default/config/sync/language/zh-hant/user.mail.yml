@@ -1,0 +1,17 @@
+cancel_confirm:
+  body: "[user:display-name],\r\n\r\nA request to cancel your account has been made at [site:name].\r\n\r\nYou may now cancel your account on [site:url-brief] by clicking this link or copying and pasting it into your browser:\r\n\r\n[user:cancel-url]\r\n\r\nNOTE: The cancellation of your account is not reversible.\r\n\r\nThis link expires in one day and nothing will happen if it is not used.\r\n\r\n--  [site:name] team"
+password_reset:
+  body: "[user:display-name], <br /><br />\r\n\r\n想體驗ELX 3.0 的全新版面和功能，你就必須要重新設定你的密碼。<br /><br />\r\n\r\n我們會給你一個臨時的一次性密碼 <b>[elx_rest_password:rest_temp_password]</b>  這組密碼將於7天後失去效力。<br /><br />\r\n\r\n請點擊 <a href=\"https://elx3.myelx.com/confirmpassword\">這裏</a> 在7天內更新你的帳戶密碼。<br /><br />"
+  subject: 'Replacement login information for [user:field_first_name:value] at [site:name]'
+register_admin_created:
+  body: "<p>哈囉 #EsteeBeautyAdvisor,</p>\r\n\r\n<p>歡迎來到ELX, the Estee Lauder Experience! 你只需要點撃以下連結，便可以即時體驗我們全新設計的ELX 平台，了解更多更新Estee Lauder 相關資訊。你在舊版ELX的學習進度、鑽石、排名和徽章會直接上戴到新版內容中，所以你不需要擔心從頭開始。</p>\r\n\r\n<p>登入新版ELX 前，請詳細閱讀相關内容及細則指引。</p>\r\n\r\n<p>PELX 所收集的個人內容及資訊將傳送並儲存於美國。當你首次登入時，你表示確定同意數據傳送和儲存的方式。如果你不同意當中條款，你可以選擇不使用我們的平台。如果你想刪除你的帳號，你可以傳送電郵至help-myelx@estee.com申請。</p>\r\n\r\n<p>請點擊<a href=\"https://elx3.myelx.com/confirmpassword\">連結</a>激活你的帳號，馬上登入新的ELX 平台吧！</p>\r\n<p>[elx_rest_password:rest_temp_password] </p>\r\n\r\n<p>祝大家學習旅程愉快！</p>\r\n\r\n<p>Thank you,</p>\r\n\r\n<p>Estée Lauder ELX團隊</p>\r\n"
+  subject: '<p><i>歡迎來到ELX -立即開啟你的學習大門~&nbsp;</i></p>'
+register_no_approval_required:
+  body: "[user:display-name],\r\n\r\nThank you for registering at [site:name]. You may now log in by clicking this link or copying and pasting it into your browser:\r\n\r\n[user:one-time-login-url]\r\n\r\nThis link can only be used once to log in and will lead you to a page where you can set your password.\r\n\r\nAfter setting your password, you will be able to log in at [site:login-url] in the future using:\r\n\r\nusername: [user:name]\r\npassword: Your password\r\n\r\n--  [site:name] team"
+register_pending_approval:
+  body: "[user:display-name],\r\n\r\nThank you for registering at [site:name]. Your application for an account is currently pending approval. Once it has been approved, you will receive another email containing information about how to log in, set your password, and other details.\r\n\r\n\r\n--  [site:name] team"
+register_pending_approval_admin:
+  body: "[user:display-name] has applied for an account.\r\n\r\n[user:edit-url]"
+status_activated:
+  body: "<p>哈囉 #EsteeBeautyAdvisor，</p>\r\n\r\n<p>歡迎來到ELX, the Estee Lauder Experience! 你只需要點撃以下連結，便可以即時體驗我們全新設計的ELX 平台，了解更多更新Estee Lauder 相關資訊。你在舊版ELX的學習進度、鑽石、排名和徽章會直接上戴到新版內容中，所以你不需要擔心從頭開始。</p>\r\n\r\n<p>登入新版ELX 前，請詳細閱讀相關内容及細則指引。</p>\r\n\r\n<p>ELX 所收集的個人內容及資訊將傳送並儲存於美國。當你首次登入時，你表示確定同意數據傳送和儲存的方式。如果你不同意當中條款，你可以選擇不使用我們的平台。如果你想刪除你的帳號，你可以傳送電郵至help-myelx@estee.com申請。</p>\r\n\r\n<p>請點擊<a href=\"https://elx3.myelx.com/confirmpassword\">連結</a> 激活你的帳號，馬上登入新的ELX 平台吧！:</p>\r\n<p>[elx_rest_password:rest_temp_password] </p>\r\n\r\n<p>祝大家學習旅程愉快！</p>\r\n\r\n<p>Thank you,</p>\r\n\r\n<p>Estée Lauder ELX團隊</p>\r\n"
+  subject: '<p><i>歡迎來到 elx-您的學習之旅從這裡開始!&nbsp;</i></p>'

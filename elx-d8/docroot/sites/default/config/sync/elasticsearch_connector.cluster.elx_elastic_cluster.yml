@@ -4,7 +4,7 @@ status: '1'
 dependencies: {  }
 cluster_id: elx_elastic_cluster
 name: 'ELX Elastic Cluster'
-url: 'http://elkelx3server.eastus.cloudapp.azure.com:9200'
+url: 'http://172.18.0.6:9200'
 options:
   multiple_nodes_connection: false
   use_authentication: 0

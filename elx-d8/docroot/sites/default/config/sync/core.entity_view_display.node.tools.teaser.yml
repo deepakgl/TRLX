@@ -30,6 +30,7 @@ content:
     region: content
 hidden:
   field_access_by_role: true
+  field_archive_and_unarchive: true
   field_display_title: true
   field_featured: true
   field_featured_image: true
@@ -50,3 +51,4 @@ hidden:
   field_video_category: true
   field_video_sub_titles: true
   langcode: true
+  search_api_excerpt: true

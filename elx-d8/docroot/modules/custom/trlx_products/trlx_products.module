@@ -1,0 +1,38 @@
+<?php
+
+/**
+ * @file
+ * Products file.
+ */
+
+/*function trlx_products_views_pre_render(\Drupal\views\ViewExecutable $view) {
+  // echo 'in view pre render';
+  if ($view->id() == "product_detail" && $view->current_display == 'rest_export_1') {
+    echo '<pre>in rest detail view';
+    foreach($view->result as $value){
+      // kint($value->_entity->get('field_field_product_image')->getValue());
+      $ref_id = $value->_entity->get('field_field_product_image')->getValue();
+      $media_entity = \Drupal::entityTypeManager()->getStorage('media')->load($ref_id[0]['target_id']);
+      $file_id = $media_entity->get('field_media_image')->getValue();
+      $file_entity = \Drupal::entityTypeManager()->getStorage('file')->load($file_id[0]['target_id']);
+      // print_r($file_entity->get('uri')->getValue());exit;
+      $file_path = $file_entity->get('uri')->getValue();
+      $file_path = $file_path[0]['value'];
+
+      $style = \Drupal::entityTypeManager()->getStorage('image_style')->load('product_details_desktop_340_466_');
+      $url = $style->buildUrl($file_path);
+      $style_configs = $style->getEffects()->getConfiguration();
+      foreach ($style_configs as $config) {
+        if (!empty($config['data']['height']))
+          $image_style_height = $config['data']['height'];
+        
+        if (!empty($config['data']['width']))
+          $image_style_width = $config['data']['width'];
+      }
+      print_r($url);
+
+      echo "\nHeight: " . $image_style_height . " Width: " . $image_style_width;
+      exit;
+    }
+  }
+}*/

@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - entity_browser.browser.media_entity_browser
+    - field.field.node.product_detail.body
     - field.field.node.product_detail.field_access_by_role
     - field.field.node.product_detail.field_ar_search
     - field.field.node.product_detail.field_archive_and_unarchive
@@ -52,7 +53,7 @@ third_party_settings:
     group_perfect_partners:
       children: {  }
       parent_name: ''
-      weight: 43
+      weight: 45
       format_type: fieldset
       format_settings:
         id: ''
@@ -66,27 +67,36 @@ targetEntityType: node
 bundle: product_detail
 mode: default
 content:
+  body:
+    weight: 4
+    settings:
+      rows: 9
+      summary_rows: 3
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea_with_summary
+    region: content
   field_access_by_role:
-    weight: 2
+    weight: 7
     settings: {  }
     third_party_settings: {  }
     type: options_buttons
     region: content
   field_ar_search:
-    weight: 29
+    weight: 31
     settings:
       display_label: true
     third_party_settings: {  }
     type: boolean_checkbox
     region: content
   field_archive_and_unarchive:
-    weight: 26
+    weight: 28
     settings: {  }
     third_party_settings: {  }
     type: options_select
     region: content
   field_benefits:
-    weight: 15
+    weight: 18
     settings:
       rows: 9
       summary_rows: 3
@@ -95,13 +105,13 @@ content:
     type: text_textarea_with_summary
     region: content
   field_brands:
-    weight: 44
+    weight: 6
     settings: {  }
     third_party_settings: {  }
     type: options_buttons
     region: content
   field_customer_questions:
-    weight: 17
+    weight: 20
     settings:
       rows: 9
       summary_rows: 3
@@ -110,7 +120,7 @@ content:
     type: text_textarea_with_summary
     region: content
   field_demonstration:
-    weight: 14
+    weight: 17
     settings:
       rows: 9
       summary_rows: 3
@@ -127,109 +137,12 @@ content:
     type: string_textfield
     region: content
   field_end_date:
-    weight: 18
+    weight: 21
     settings: {  }
     third_party_settings: {  }
     type: datetime_default
     region: content
   field_featured_image:
-    weight: 21
-    settings:
-      entity_browser: media_entity_browser
-      field_widget_display: rendered_entity
-      field_widget_edit: true
-      field_widget_remove: true
-      selection_mode: selection_append
-      field_widget_display_settings:
-        view_mode: default
-      field_widget_replace: false
-      open: false
-    third_party_settings: {  }
-    type: entity_browser_entity_reference
-    region: content
-  field_field_product_image:
-    weight: 19
-    settings:
-      entity_browser: media_entity_browser
-      field_widget_display: rendered_entity
-      field_widget_edit: true
-      field_widget_remove: true
-      selection_mode: selection_append
-      field_widget_display_settings:
-        view_mode: default
-      open: false
-      field_widget_replace: false
-    third_party_settings: {  }
-    type: entity_browser_entity_reference
-    region: content
-  field_how_to_sell_this_product:
-    weight: 27
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: entity_reference_autocomplete
-    region: content
-  field_if_she_asks_share:
-    weight: 16
-    settings:
-      rows: 9
-      summary_rows: 3
-      placeholder: ''
-    third_party_settings: {  }
-    type: text_textarea_with_summary
-    region: content
-  field_learning_category:
-    weight: 28
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: entity_reference_autocomplete
-    region: content
-  field_markets:
-    weight: 20
-    settings:
-      start_minimized: true
-      leaves_only: false
-      select_parents: false
-      cascading_selection: 0
-      max_depth: 0
-    third_party_settings: {  }
-    type: term_reference_tree
-    region: content
-  field_point_value:
-    weight: 11
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: string_textfield
-    region: content
-  field_product_categories:
-    weight: 8
-    settings: {  }
-    third_party_settings: {  }
-    type: options_buttons
-    region: content
-  field_product_video:
-    weight: 22
-    settings:
-      entity_browser: video_entity_browser
-      field_widget_display: rendered_entity
-      field_widget_edit: true
-      field_widget_remove: true
-      selection_mode: selection_append
-      field_widget_display_settings:
-        view_mode: default
-      field_widget_replace: false
-      open: false
-    third_party_settings: {  }
-    type: entity_browser_entity_reference
-    region: content
-  field_product_video_thumbnail:
     weight: 23
     settings:
       entity_browser: media_entity_browser
@@ -244,14 +157,111 @@ content:
     third_party_settings: {  }
     type: entity_browser_entity_reference
     region: content
+  field_field_product_image:
+    weight: 3
+    settings:
+      entity_browser: media_entity_browser
+      field_widget_display: rendered_entity
+      field_widget_edit: true
+      field_widget_remove: true
+      selection_mode: selection_append
+      field_widget_display_settings:
+        view_mode: default
+      open: false
+      field_widget_replace: false
+    third_party_settings: {  }
+    type: entity_browser_entity_reference
+    region: content
+  field_how_to_sell_this_product:
+    weight: 29
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  field_if_she_asks_share:
+    weight: 19
+    settings:
+      rows: 9
+      summary_rows: 3
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea_with_summary
+    region: content
+  field_learning_category:
+    weight: 30
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  field_markets:
+    weight: 22
+    settings:
+      start_minimized: true
+      leaves_only: false
+      select_parents: false
+      cascading_selection: 0
+      max_depth: 0
+    third_party_settings: {  }
+    type: term_reference_tree
+    region: content
+  field_point_value:
+    weight: 5
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_product_categories:
+    weight: 12
+    settings: {  }
+    third_party_settings: {  }
+    type: options_buttons
+    region: content
+  field_product_video:
+    weight: 24
+    settings:
+      entity_browser: video_entity_browser
+      field_widget_display: rendered_entity
+      field_widget_edit: true
+      field_widget_remove: true
+      selection_mode: selection_append
+      field_widget_display_settings:
+        view_mode: default
+      field_widget_replace: false
+      open: false
+    third_party_settings: {  }
+    type: entity_browser_entity_reference
+    region: content
+  field_product_video_thumbnail:
+    weight: 25
+    settings:
+      entity_browser: media_entity_browser
+      field_widget_display: rendered_entity
+      field_widget_edit: true
+      field_widget_remove: true
+      selection_mode: selection_append
+      field_widget_display_settings:
+        view_mode: default
+      field_widget_replace: false
+      open: false
+    third_party_settings: {  }
+    type: entity_browser_entity_reference
+    region: content
   field_season:
-    weight: 10
+    weight: 14
     settings: {  }
     third_party_settings: {  }
     type: options_select
     region: content
   field_subtitle:
-    weight: 4
+    weight: 2
     settings:
       size: 60
       placeholder: ''
@@ -259,7 +269,7 @@ content:
     type: string_textfield
     region: content
   field_tags_keywords:
-    weight: 5
+    weight: 9
     settings:
       match_operator: CONTAINS
       size: 60
@@ -269,7 +279,7 @@ content:
     region: content
   field_translation:
     type: options_buttons
-    weight: 24
+    weight: 26
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -281,7 +291,7 @@ content:
     type: boolean_checkbox
     region: content
   field_why_there_s_only_one:
-    weight: 13
+    weight: 16
     settings:
       rows: 9
       summary_rows: 3
@@ -291,14 +301,14 @@ content:
     region: content
   langcode:
     type: language_select
-    weight: 3
+    weight: 8
     region: content
     settings:
       include_locked: true
     third_party_settings: {  }
   path:
     type: path
-    weight: 9
+    weight: 13
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -306,12 +316,12 @@ content:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 6
+    weight: 10
     region: content
     third_party_settings: {  }
   status:
     type: boolean_checkbox
-    weight: 25
+    weight: 27
     region: content
     settings:
       display_label: true
@@ -320,7 +330,7 @@ content:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 7
+    weight: 11
     region: content
     third_party_settings: {  }
   title:
@@ -332,7 +342,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
   translation:
-    weight: 12
+    weight: 15
     region: content
     settings: {  }
     third_party_settings: {  }
