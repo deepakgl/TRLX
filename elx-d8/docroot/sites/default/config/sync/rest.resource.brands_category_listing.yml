@@ -1,13 +1,13 @@
-uuid: 84d595a4-d632-48cf-8baf-f722db8a69c2
+uuid: 45a16596-a198-4213-9cf0-686272c26c77
 langcode: en
 status: true
 dependencies:
   module:
-    - elx_video
     - serialization
-    - simple_oauth
-id: video_listing_Mobile
-plugin_id: video_listing_Mobile
+    - trlx_brand
+    - user
+id: brands_category_listing
+plugin_id: brands_category_listing
 granularity: resource
 configuration:
   methods:
@@ -15,4 +15,4 @@ configuration:
   formats:
     - json
   authentication:
-    - oauth2
+    - cookie

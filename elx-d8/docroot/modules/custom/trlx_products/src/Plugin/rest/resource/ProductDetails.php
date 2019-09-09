@@ -45,6 +45,7 @@ class ProductDetails extends ResourceBase {
 
       return $this->commonUtility->invalidData($param);
     }
+
     // Checkfor valid language code
     $response = $this->commonUtility->validateLanguageCode($language, $request);
     if (!($response->getStatusCode() === Response::HTTP_OK)) {
@@ -55,6 +56,7 @@ class ProductDetails extends ResourceBase {
       $param = ['nid'];
       return $this->commonUtility->invalidData($param);
     }
+
     if (empty($this->commonUtility->isValidNid($nid, $language))) {
       return $this->commonUtility->errorResponse($this->t('Node id does not exist or requested language data is not available.'), Response::HTTP_UNPROCESSABLE_ENTITY);
     }
