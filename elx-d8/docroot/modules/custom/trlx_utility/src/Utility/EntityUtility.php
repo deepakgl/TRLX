@@ -6,8 +6,8 @@ use Drupal\views\Views;
 use Drupal\Component\Serialization\Json;
 use Drupal\Component\Utility\Html;
 use Drupal\trlx_utility\RedisClientBuilder;
-use Drupal\trlx_utility\Utility\CommonUtility;
-use Drupal\elx_user\Utility\UserUtility; // fixMe
+// fixMe.
+use Drupal\elx_user\Utility\UserUtility;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -22,7 +22,8 @@ class EntityUtility {
   public function __construct() {
     $this->userUtility = new UserUtility();
     $this->commonUtility = new CommonUtility();
-    $this->config = \Drupal::config('elx_utility.settings'); // fixMe
+    // fixMe.
+    $this->config = \Drupal::config('elx_utility.settings');
   }
 
   /**
@@ -115,10 +116,11 @@ class EntityUtility {
     if (!is_array($filter)) {
       $filter = [$filter];
     }
-    $key = $this->config->get('elx_environment') . $key; // fixMe
+    // fixMe.
+    $key = $this->config->get('elx_environment') . $key;
     $redis_key = explode(':', $key);
     // Get current user roles.
-    // fixMe
+    // fixMe.
     $roles = $this->userUtility->getUserRoles(\Drupal::currentUser()->id());
     if ($roles && !empty($redis_key[1])) {
       try {
@@ -240,14 +242,16 @@ class EntityUtility {
    * Check if the array is associative array (keys non numeric)
    *
    * @param array $arr
-   *   Array to be checked
+   *   Array to be checked.
    *
-   * @return boolean
+   * @return bool
    *   TRUE or FALSE
    */
-  public function isAssoc(array $arr)
-  {
-    if (array() === $arr) return FALSE;
+  public function isAssoc(array $arr) {
+    if ([] === $arr) {
+      return FALSE;
+    }
     return array_keys($arr) !== range(0, count($arr) - 1);
   }
+
 }
