@@ -1,0 +1,18 @@
+uuid: 49e76d31-03b6-46eb-bdfb-0adb8d3f6a38
+langcode: en
+status: false
+dependencies:
+  module:
+    - elx_video
+    - serialization
+    - user
+id: video_category
+plugin_id: video_category
+granularity: resource
+configuration:
+  methods:
+    - GET
+  formats:
+    - json
+  authentication:
+    - cookie
