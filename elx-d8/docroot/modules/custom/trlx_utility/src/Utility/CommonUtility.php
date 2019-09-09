@@ -104,7 +104,7 @@ class CommonUtility {
    * @param mixed $param
    *   Parameter name.
    *
-   * @return json
+   * @return JsonResponse
    *   Following params required.
    */
   public function invalidData($param = []) {
@@ -118,30 +118,36 @@ class CommonUtility {
       'data' => $param,
     ]);
 
-    return new JsonResponse('Following params required: ' . $param, 400);
+    return $this->errorResponse(t('Following params required: ' . $param), Response::HTTP_BAD_REQUEST);
   }
 
   /**
-   * Check if node id exists.
+   * Check if node id exists, is published
+   * & requested language is available for that nid.
    *
    * @param int $nid
    *   Node id.
    *
+   * @param string $langcode
+   *   Two characters long language code
+   *
    * @return bool
    *   True or false.
    */
-  public function isValidNid($nid) {
+  public function isValidNid($nid, $langcode) {
     $query = \Drupal::database();
     $query = $query->select('node_field_data', 'n');
     $query->fields('n', ['nid'])
       ->condition('n.nid', $nid, '=')
+      ->condition('n.langcode', $langcode, '=')
+      ->condition('n.status', 1, '=')
       ->range(0, 1);
     $result = $query->execute()->fetchAll();
     if (empty($result)) {
       global $base_url;
       $request_uri = $base_url . \Drupal::request()->getRequestUri();
       $logger = \Drupal::service('logger.stdout');
-      $logger->log(RfcLogLevel::ERROR, 'Node Id @nid does not exist in database.', [
+      $logger->log(RfcLogLevel::ERROR, 'Node Id @nid does not exist in database or is invalid.', [
         '@nid' => $nid,
         'user' => \Drupal::currentUser(),
         'request_uri' => $request_uri,

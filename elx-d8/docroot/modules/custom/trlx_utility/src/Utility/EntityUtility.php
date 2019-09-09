@@ -21,7 +21,6 @@ class EntityUtility {
    */
   public function __construct() {
     $this->userUtility = new UserUtility();
-    $this->commonUtility = new CommonUtility();
     // fixMe.
     $this->config = \Drupal::config('elx_utility.settings');
   }
