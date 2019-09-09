@@ -48,7 +48,6 @@ module:
   elx_menu: 0
   elx_migration: 0
   elx_points_migration: 0
-  elx_products: 0
   elx_quiz: 0
   elx_redis_purge: 0
   elx_reports: 0
@@ -134,6 +133,7 @@ module:
   translation_views: 0
   trlx_brand: 0
   trlx_dashboard: 0
+  trlx_products: 0
   trlx_utility: 0
   trlx_video: 0
   user: 0

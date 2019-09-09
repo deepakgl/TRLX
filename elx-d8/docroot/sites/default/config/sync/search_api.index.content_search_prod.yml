@@ -1,0 +1,312 @@
+uuid: ce09041b-14dc-4d10-be21-9613a64f05bc
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_benefits
+    - field.storage.node.field_demonstration
+    - field.storage.node.field_display_title
+    - field.storage.node.field_featured_image
+    - field.storage.node.field_field_product_image
+    - field.storage.node.field_fun_fact_sheet
+    - field.storage.node.field_if_she_asks_share
+    - field.storage.node.field_just_for_you
+    - field.storage.node.field_markets
+    - field.storage.node.field_perfect_partners_text
+    - field.storage.node.field_point_value
+    - field.storage.node.field_price
+    - field.storage.node.field_product_categories
+    - field.storage.node.field_season
+    - field.storage.node.field_story
+    - field.storage.node.field_subtitle
+    - field.storage.node.field_tags_keywords
+    - field.storage.node.field_why_there_s_only_one
+    - search_api.server.elastic_server
+  module:
+    - taxonomy
+    - node
+    - search_api
+id: content_search_prod
+name: 'Content Search PROD'
+description: ''
+read_only: false
+field_settings:
+  field_benefits:
+    label: Benefits
+    datasource_id: 'entity:node'
+    property_path: field_benefits
+    type: text
+    dependencies:
+      config:
+        - field.storage.node.field_benefits
+  field_demonstration:
+    label: Demonstration
+    datasource_id: 'entity:node'
+    property_path: field_demonstration
+    type: text
+    dependencies:
+      config:
+        - field.storage.node.field_demonstration
+  field_display_title:
+    label: 'Display title'
+    datasource_id: 'entity:node'
+    property_path: field_display_title
+    type: text
+    dependencies:
+      config:
+        - field.storage.node.field_display_title
+  field_featured_image:
+    label: 'Featured Image'
+    datasource_id: 'entity:node'
+    property_path: field_featured_image
+    type: integer
+    dependencies:
+      config:
+        - field.storage.node.field_featured_image
+  field_field_product_image:
+    label: 'Product Image'
+    datasource_id: 'entity:node'
+    property_path: field_field_product_image
+    type: integer
+    dependencies:
+      config:
+        - field.storage.node.field_field_product_image
+  field_fun_fact_sheet:
+    label: 'Fun Fact Sheet'
+    datasource_id: 'entity:node'
+    property_path: field_fun_fact_sheet
+    type: integer
+    dependencies:
+      config:
+        - field.storage.node.field_fun_fact_sheet
+  field_if_she_asks_share:
+    label: 'If she asks, share'
+    datasource_id: 'entity:node'
+    property_path: field_if_she_asks_share
+    type: text
+    dependencies:
+      config:
+        - field.storage.node.field_if_she_asks_share
+  field_just_for_you:
+    label: 'Just for you'
+    datasource_id: 'entity:node'
+    property_path: field_just_for_you
+    type: integer
+    dependencies:
+      config:
+        - field.storage.node.field_just_for_you
+  field_markets:
+    label: Market
+    datasource_id: 'entity:node'
+    property_path: field_markets
+    type: integer
+    dependencies:
+      config:
+        - field.storage.node.field_markets
+  field_markets_name:
+    label: 'Market » Taxonomy term » Name'
+    datasource_id: 'entity:node'
+    property_path: 'field_markets:entity:name'
+    type: text
+    dependencies:
+      config:
+        - field.storage.node.field_markets
+      module:
+        - taxonomy
+        - taxonomy
+  field_perfect_partners_text:
+    label: 'Perfect partners'
+    datasource_id: 'entity:node'
+    property_path: field_perfect_partners_text
+    type: text
+    dependencies:
+      config:
+        - field.storage.node.field_perfect_partners_text
+  field_point_value:
+    label: 'Point Value'
+    datasource_id: 'entity:node'
+    property_path: field_point_value
+    type: text
+    dependencies:
+      config:
+        - field.storage.node.field_point_value
+  field_price:
+    label: Price
+    datasource_id: 'entity:node'
+    property_path: field_price
+    type: text
+    dependencies:
+      config:
+        - field.storage.node.field_price
+  field_product_categories:
+    label: 'Product categories'
+    datasource_id: 'entity:node'
+    property_path: field_product_categories
+    type: integer
+    dependencies:
+      config:
+        - field.storage.node.field_product_categories
+  field_product_categories_name:
+    label: 'Product categories » Taxonomy term » Name'
+    datasource_id: 'entity:node'
+    property_path: 'field_product_categories:entity:name'
+    type: text
+    dependencies:
+      config:
+        - field.storage.node.field_product_categories
+      module:
+        - taxonomy
+        - taxonomy
+  field_season:
+    label: Season
+    datasource_id: 'entity:node'
+    property_path: field_season
+    type: integer
+    dependencies:
+      config:
+        - field.storage.node.field_season
+  field_season_name:
+    label: 'Season » Taxonomy term » Name'
+    datasource_id: 'entity:node'
+    property_path: 'field_season:entity:name'
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_season
+      module:
+        - taxonomy
+        - taxonomy
+  field_story:
+    label: Story
+    datasource_id: 'entity:node'
+    property_path: field_story
+    type: text
+    dependencies:
+      config:
+        - field.storage.node.field_story
+  field_subtitle:
+    label: Subtitle
+    datasource_id: 'entity:node'
+    property_path: field_subtitle
+    type: text
+    dependencies:
+      config:
+        - field.storage.node.field_subtitle
+  field_tags_keywords:
+    label: Tags/keywords
+    datasource_id: 'entity:node'
+    property_path: field_tags_keywords
+    type: integer
+    dependencies:
+      config:
+        - field.storage.node.field_tags_keywords
+  field_tags_keywords_name:
+    label: 'Tags/keywords » Taxonomy term » Name'
+    datasource_id: 'entity:node'
+    property_path: 'field_tags_keywords:entity:name'
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_tags_keywords
+      module:
+        - taxonomy
+        - taxonomy
+  field_why_there_s_only_one:
+    label: 'Why there''s only 1'
+    datasource_id: 'entity:node'
+    property_path: field_why_there_s_only_one
+    type: text
+    dependencies:
+      config:
+        - field.storage.node.field_why_there_s_only_one
+  langcode:
+    label: Language
+    datasource_id: 'entity:node'
+    property_path: langcode
+    type: text
+    dependencies:
+      module:
+        - node
+  nid:
+    label: ID
+    datasource_id: 'entity:node'
+    property_path: nid
+    type: integer
+    dependencies:
+      module:
+        - node
+  status:
+    label: Published
+    datasource_id: 'entity:node'
+    property_path: status
+    type: integer
+    dependencies:
+      module:
+        - node
+  title:
+    label: Title
+    datasource_id: 'entity:node'
+    property_path: title
+    type: text
+    dependencies:
+      module:
+        - node
+  type:
+    label: 'Content type'
+    datasource_id: 'entity:node'
+    property_path: type
+    type: string
+    dependencies:
+      module:
+        - node
+  uid:
+    label: 'Authored by'
+    datasource_id: 'entity:node'
+    property_path: uid
+    type: integer
+    dependencies:
+      module:
+        - node
+datasource_settings:
+  'entity:node':
+    bundles:
+      default: false
+      selected:
+        - product_detail
+    languages:
+      default: true
+      selected: {  }
+processor_settings:
+  add_url: {  }
+  aggregated_field: {  }
+  ignorecase:
+    all_fields: true
+    fields:
+      - field_benefits
+      - field_demonstration
+      - field_display_title
+      - field_if_she_asks_share
+      - field_markets_name
+      - field_perfect_partners_text
+      - field_point_value
+      - field_price
+      - field_product_categories_name
+      - field_season_name
+      - field_story
+      - field_subtitle
+      - field_tags_keywords_name
+      - field_why_there_s_only_one
+      - langcode
+      - title
+      - type
+    weights:
+      preprocess_index: -20
+      preprocess_query: -20
+  rendered_item: {  }
+tracker_settings:
+  default:
+    indexing_order: fifo
+options:
+  index_directly: true
+  cron_limit: 200
+server: elastic_server

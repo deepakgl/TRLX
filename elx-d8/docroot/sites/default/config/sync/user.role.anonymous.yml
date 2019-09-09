@@ -20,6 +20,7 @@ permissions:
   - 'restful get brands_category_listing'
   - 'restful get main_navigation_menu'
   - 'restful get primary_navigation_menu'
+  - 'restful get product_details'
   - 'restful get terms_and_condition_anonymous'
   - 'restful get terms_and_conditions_anonymous'
   - 'restful get video_details'

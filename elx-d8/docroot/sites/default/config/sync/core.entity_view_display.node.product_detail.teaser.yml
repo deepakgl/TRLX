@@ -44,7 +44,9 @@ content:
 hidden:
   field_access_by_role: true
   field_ar_search: true
+  field_archive_and_unarchive: true
   field_benefits: true
+  field_brands: true
   field_customer_questions: true
   field_demonstration: true
   field_display_title: true
@@ -52,8 +54,10 @@ hidden:
   field_featured_image: true
   field_field_product_image: true
   field_fun_fact_sheet: true
+  field_how_to_sell_this_product: true
   field_if_she_asks_share: true
   field_just_for_you: true
+  field_learning_category: true
   field_markets: true
   field_perfect_partners: true
   field_perfect_partners_text: true
@@ -75,3 +79,4 @@ hidden:
   field_translation: true
   field_why_there_s_only_one: true
   langcode: true
+  search_api_excerpt: true

@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.node.product_detail.body
     - field.field.node.product_detail.field_access_by_role
     - field.field.node.product_detail.field_ar_search
     - field.field.node.product_detail.field_archive_and_unarchive
@@ -49,6 +50,13 @@ targetEntityType: node
 bundle: product_detail
 mode: default
 content:
+  body:
+    weight: 36
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
   field_access_by_role:
     weight: 25
     label: above
