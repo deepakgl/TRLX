@@ -3,25 +3,16 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.node.tools.field_access_by_role
-    - field.field.node.tools.field_archive_and_unarchive
     - field.field.node.tools.field_display_title
     - field.field.node.tools.field_featured
     - field.field.node.tools.field_featured_image
-    - field.field.node.tools.field_featured_on_elx_specialty
     - field.field.node.tools.field_headline
-    - field.field.node.tools.field_how_to_sell_flag
-    - field.field.node.tools.field_make_this_welcome_video
     - field.field.node.tools.field_markets
     - field.field.node.tools.field_point_value
-    - field.field.node.tools.field_product_categories
-    - field.field.node.tools.field_product_family
-    - field.field.node.tools.field_related_products_videos
     - field.field.node.tools.field_tool_description
     - field.field.node.tools.field_tool_pdf
     - field.field.node.tools.field_tool_thumbnail
     - field.field.node.tools.field_translation
-    - field.field.node.tools.field_video_category
     - field.field.node.tools.field_video_sub_titles
     - node.type.tools
   module:
