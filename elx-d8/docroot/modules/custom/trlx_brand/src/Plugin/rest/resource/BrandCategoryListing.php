@@ -14,7 +14,7 @@ use Drupal\trlx_utility\Utility\CommonUtility;
  *   id = "brands_category_listing",
  *   label = @Translation("Brands Category Listing"),
  *   uri_paths = {
- *     "canonical" = "/api/v1/content/list/brand-category"
+ *     "canonical" = "/api/v1/brandCategories"
  *   }
  * )
  */
