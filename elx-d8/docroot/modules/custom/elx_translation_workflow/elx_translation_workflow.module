@@ -21,6 +21,7 @@ function elx_translation_workflow_form_alter(&$form,
     case 'node_tools-pdf_form':
     case 'node_tools_form':
     case 'node_level_interactive_content_form':
+    case 'node_brand_story_form':
       $form['status']['widget']['value']['#default_value'] = FALSE;
       $translation_state =
       $form['field_translation']['widget']['#default_value'];
@@ -32,6 +33,7 @@ function elx_translation_workflow_form_alter(&$form,
     case 'node_tools-pdf_edit_form':
     case 'node_tools_edit_form':
     case 'node_level_interactive_content_edit_form':
+    case 'node_brand_story_edit_form':  
        $translation_state =
        $form['field_translation']['widget']['#default_value'];
        _prepare_content_states($form, $translation_state);
