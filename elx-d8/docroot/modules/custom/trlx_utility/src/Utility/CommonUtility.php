@@ -55,4 +55,25 @@ class CommonUtility {
     return $this->successResponse();
   }
 
+  /**
+   * Method to get image style based url.
+   *
+   * @param  string $image_style
+   *   Image style machine name.
+   * 
+   * @param  string $path
+   *   Image path.
+   *
+   * @return string
+   *   Image URL.
+   */
+  public function getImageStyleBasedUrl($image_style, $path) {
+    $style = \Drupal::entityTypeManager()->getStorage('image_style')->load($image_style);
+    $image_url = '';
+    if ($style != NULL) {
+      $image_url = $style->buildUrl($path);
+    }
+    return $image_url;
+  }
+
 }

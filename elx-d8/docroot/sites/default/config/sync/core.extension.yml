@@ -134,6 +134,7 @@ module:
   toolbar: 0
   tour: 0
   translation_views: 0
+  trlx_brand: 0
   trlx_dashboard: 0
   trlx_utility: 0
   user: 0

@@ -1,0 +1,15 @@
+uuid: 9a3ace4c-c9de-4ca1-afa1-299363e99696
+langcode: en
+status: true
+dependencies: {  }
+name: brands_category_listing_desktop
+label: 'Brands Category Listing Desktop (150X150)'
+effects:
+  fd11f49f-1dcb-4193-8906-4226bc1f70ce:
+    uuid: fd11f49f-1dcb-4193-8906-4226bc1f70ce
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 150
+      height: 150
+      anchor: center-center
