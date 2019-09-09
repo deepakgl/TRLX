@@ -1,0 +1,17 @@
+cancel_confirm:
+  body: "[user:display-name],\r\n\r\nA request to cancel your account has been made at [site:name].\r\n\r\nYou may now cancel your account on [site:url-brief] by clicking this link or copying and pasting it into your browser:\r\n\r\n[user:cancel-url]\r\n\r\nNOTE: The cancellation of your account is not reversible.\r\n\r\nThis link expires in one day and nothing will happen if it is not used.\r\n\r\n--  [site:name] team"
+password_reset:
+  body: "[user:display-name], <br /><br />\r\n\r\nELX3.0 계정 비밀번호를 재설정하기 위한 요청이 확인되었습니다. <br /><br />\r\n\r\n일회용 비밀번호(OTP)는 <b>[elx_rest_password:rest_temp_password]</b>  이고, 이 비밀번호는 7일 후에 만료됩니다.<br /><br />\r\n\r\n<a href=\"https://elx3.myelx.com/confirmpassword\">여기</a> 를 클릭하여 비밀번호를 재설정해주세요. <br /><br />"
+  subject: 'Replacement login information for [user:field_first_name:value] at [site:name]'
+register_admin_created:
+  body: "<p>안녕하세요 #에스티뷰티어드바이저 여러분!</p>\r\n\r\n<p>Estee Lauder Experience, ELX에 오신 것을 환영합니다! 아래 링크를 클릭하시면 가치 있는 스토리들과 이해하기 쉬운 학습과정, 그리고 여러분들이 정말 빠르게 올라갈 수 있는 순위표 등 에스티 로더에 대한 모든 것들을 확인할 수 있습니다. </p>\r\n\r\n<p>사이트에 로그인하기 전에 아래 안내사항을 꼭 확인해주세요.</p>\r\n\r\n<p>ELX를 통해 수집된 모든 개인정보는 미국으로 전송되어 보관됩니다. 처음 로그인을 하시면 이러한 여러분의 개인 정보 전송에 대해 동의하실 수 있습니다.  해당 내용에 동의하지 않으시면, 사이트를 이용하실 수 없게 됩니다. 동의하셨던 내용을 추후 취소 하시려면, ELX 헬프데스크(help-myelx@estee.com)에 언제든 연락하셔서 시스템 상의 계정 정보를 삭제 요청해주세요.</p>\r\n\r\n<p>계정을 활성화 하시려면 <a href=\"https://elx3.myelx.com/confirmpassword\">여기</a> 를 클릭 후 아래 OTP를 사용하여 사이트에 들어가주세요.</p>\r\n<p>[elx_rest_password:rest_temp_password] </p>\r\n\r\n<p>ELX에서 즐거운 학습여정 되시길 바랍니다!</p>\r\n\r\n<p>감사합니다,</p>\r\n\r\n<p>ELX팀 드림</p>\r\n"
+  subject: '<p><i>Welcome to ELX- Your Learning Journey Starts Here!&nbsp;</i></p>'
+register_no_approval_required:
+  body: "[user:display-name],\r\n\r\nThank you for registering at [site:name]. You may now log in by clicking this link or copying and pasting it into your browser:\r\n\r\n[user:one-time-login-url]\r\n\r\nThis link can only be used once to log in and will lead you to a page where you can set your password.\r\n\r\nAfter setting your password, you will be able to log in at [site:login-url] in the future using:\r\n\r\nusername: [user:name]\r\npassword: Your password\r\n\r\n--  [site:name] team"
+register_pending_approval:
+  body: "[user:display-name],\r\n\r\nThank you for registering at [site:name]. Your application for an account is currently pending approval. Once it has been approved, you will receive another email containing information about how to log in, set your password, and other details.\r\n\r\n\r\n--  [site:name] team"
+register_pending_approval_admin:
+  body: "[user:display-name] has applied for an account.\r\n\r\n[user:edit-url]"
+status_activated:
+  body: "<p>안녕하세요 #에스티뷰티어드바이저 여러분!</p>\r\n\r\n<p>Estee Lauder Experience, ELX에 오신 것을 환영합니다! 아래 링크를 클릭하시면 가치 있는 스토리들과 이해하기 쉬운 학습과정, 그리고 여러분들이 정말 빠르게 올라갈 수 있는 순위표 등 에스티 로더에 대한 모든 것들을 확인할 수 있습니다. </p>\r\n\r\n<p>사이트에 로그인하기 전에 아래 안내사항을 꼭 확인해주세요.</p>\r\n\r\n<p>ELX를 통해 수집된 모든 개인정보는 미국으로 전송되어 보관됩니다. 처음 로그인을 하시면 이러한 여러분의 개인 정보 전송에 대해 동의하실 수 있습니다.  해당 내용에 동의하지 않으시면, 사이트를 이용하실 수 없게 됩니다. 동의하셨던 내용을 추후 취소 하시려면, ELX 헬프데스크(help-myelx@estee.com)에 언제든 연락하셔서 시스템 상의 계정 정보를 삭제 요청해주세요.</p>\r\n\r\n<p>계정을 활성화 하시려면, <a href=\"https://elx3.myelx.com/confirmpassword\">여기</a>를 클릭 후 아래 OTP를 사용하여 사이트에 들어가주세요:</p>\r\n<p>[elx_rest_password:rest_temp_password] </p>\r\n\r\n<p>ELX에서 즐거운 학습여정 되시길 바랍니다!</p>\r\n\r\n<p>감사합니다,</p>\r\n\r\n<p>ELX팀 드림</p>\r\n"
+  subject: '<p><i>Welcome to ELX- Your Learning Journey Starts Here!&nbsp;</i></p>'

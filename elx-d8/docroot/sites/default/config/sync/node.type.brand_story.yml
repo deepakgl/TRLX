@@ -1,0 +1,18 @@
+uuid: 60acd193-7fca-4669-954f-66fecc84043c
+langcode: en
+status: true
+dependencies:
+  module:
+    - menu_ui
+third_party_settings:
+  menu_ui:
+    available_menus:
+      - main
+    parent: 'main:'
+name: 'Brand story'
+type: brand_story
+description: ''
+help: ''
+new_revision: false
+preview_mode: 0
+display_submitted: true

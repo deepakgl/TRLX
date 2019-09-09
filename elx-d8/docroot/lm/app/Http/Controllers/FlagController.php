@@ -82,7 +82,7 @@ class FlagController extends Controller {
       'message' => 'Flag successfully updated',
     ];
 
-    return $this->successResponse($message);
+    return $this->successResponse($message, Response::HTTP_CREATED);
   }
 
   /**
