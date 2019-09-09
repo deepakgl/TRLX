@@ -1,11 +1,11 @@
-uuid: a36cf57c-9e36-45e1-b5fb-7bd0131e4e2b
+uuid: acb66847-b926-423d-8ef2-eeab724cd201
 langcode: en
 status: true
 dependencies:
   module:
-    - elx_video
     - serialization
-    - simple_oauth
+    - trlx_video
+    - user
 id: video_details
 plugin_id: video_details
 granularity: resource
@@ -15,4 +15,4 @@ configuration:
   formats:
     - json
   authentication:
-    - oauth2
+    - cookie

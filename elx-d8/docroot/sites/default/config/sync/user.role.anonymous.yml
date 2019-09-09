@@ -22,6 +22,8 @@ permissions:
   - 'restful get primary_navigation_menu'
   - 'restful get terms_and_condition_anonymous'
   - 'restful get terms_and_conditions_anonymous'
+  - 'restful get video_details'
+  - 'restful get video_listings'
   - 'restful post stories_comments_post'
   - 'use text format filtered_html'
   - 'view media'
