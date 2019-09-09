@@ -120,6 +120,8 @@ function elx_utility_form_alter(&$form, FormStateInterface $form_state, $form_id
     case 'node_stories_edit_form':
     case 'node_tools_edit_form':
     case 'node_tools-pdf_edit_form':
+    case 'node_brand_story_form':
+    case 'node_brand_story_edit_form':
       // Changed type of point value field.
       $form['field_point_value']['widget'][0]['value']['#type'] = 'number';
       // Set default value 0 of point value field.
@@ -459,56 +461,46 @@ function elx_utility_get_redis_pattern(EntityInterface $entity) {
 
       return $pattern;
     }
-    $entity_markets = array_column($entity->get('field_markets')->getValue(), 'target_id');
-    if (isset($entity->original)) {
-      $entity_markets_legacy = array_column($entity->original->get('field_markets')->getValue(), 'target_id');
-      $entity_markets = array_unique(array_merge($entity_markets, $entity_markets_legacy));
+    $uid = \Drupal::currentUser()->id();
+    $entity_id = $entity->id();
+    if ($entity_type == 'product_detail') {
+      $pattern[] = implode(':', [$env, 'productDetails*']);
+      $pattern[] = implode(':', [$env, 'productCategories*']);
+      $pattern[] = implode(':', [$env, 'productListings*']);
+      $pattern[] = implode(':', [$env, 'globalBrowseProducts*']);
+      $pattern[] = implode(':', [$env, 'browseProductsMarketWise*']);
+      $pattern[] = implode(':', [$env, 'spotlightSection*']);
+      $pattern[] = implode(':', [$env, 'spotlightSectionMarketWise*']);
     }
-    foreach ($entity_markets as $key => $market) {
-      $uid = \Drupal::currentUser()->id();
-      $entity_id = $entity->id();
-      if ($entity_type == 'product_detail') {
-        $pattern[] = implode(':', [$env, 'productDetails', $market . '*']);
-        $pattern[] = implode(':', [$env, 'productCategories', $market . '*']);
-        $pattern[] = implode(':', [$env, 'productListings', $market . '*']);
-        $pattern[] = implode(':', [$env, 'globalBrowseProducts*']);
-        $pattern[] = implode(':', [$env, 'browseProductsMarketWise*']);
-        $pattern[] = implode(':', [$env, 'spotlightSection*']);
-        $pattern[] = implode(':', [$env, 'spotlightSectionMarketWise*']);
-      }
-      elseif ($entity_type == 'level_interactive_content') {
-        $pattern[] = implode(':', [$env, 'levelInteractiveContent', $market .
-         '*']);
-        $pattern[] = implode(':', [$env, 'levelInteractiveTermsContent',
-         $market . '*']);
-        $pattern[] = implode(':', [$env, 'learningLevels', $market . '*']);
-        $pattern[] = implode(':', [$env, 'exploreLearningLevels', $market .
-         '*']);
-        $pattern[] = implode(':', [$env, 'spotlightSection*']);
-        $pattern[] = implode(':', [$env, 'spotlightSectionMarketWise*']);
-      }
-      elseif ($entity_type == 'tools') {
-        $pattern[] = implode(':', [$env, 'videoCategory', $market . '*']);
-        $pattern[] = implode(':', [$env, 'videoListings', $market . '*']);
-        $pattern[] = implode(':', [$env, 'videoListingMobile', $market . '*']);
-        $pattern[] = implode(':', [$env, 'videoDetails', $market . '*']);
-        $pattern[] = implode(':', [$env, 'spotlightSection*']);
-        $pattern[] = implode(':', [$env, 'spotlightSectionMarketWise*']);
-      }
-      elseif ($entity_type == 'stories') {
-        $pattern[] = implode(':', [$env, 'storiesListing', $market . '*']);
-        $pattern[] = implode(':', [$env, 'storiesDetail', $market . '*']);
-        $pattern[] = implode(':', [$env, 'spotlightSection*']);
-        $pattern[] = implode(':', [$env, 'spotlightSectionMarketWise*']);
-        $pattern[] = implode(':', [$env, 'storiesTrendingSection*']);
-        $pattern[] = implode(':', [$env, 'storiesTrendingSectionMarketWise*']);
-      }
-      elseif ($entity_type == 'tools-pdf') {
-        $pattern[] = implode(':', [$env, 'toolsListings', $market . '*']);
-      }
-      elseif ($entity_type == 't_c') {
-        $pattern[] = implode(':', [$env . '_t_c', 'detail', $market . '*']);
-      }
+    elseif ($entity_type == 'level_interactive_content') {
+      $pattern[] = implode(':', [$env, 'levelInteractiveContent*']);
+      $pattern[] = implode(':', [$env, 'levelInteractiveTermsContent*']);
+      $pattern[] = implode(':', [$env, 'learningLevels*']);
+      $pattern[] = implode(':', [$env, 'exploreLearningLevels*']);
+      $pattern[] = implode(':', [$env, 'spotlightSection*']);
+      $pattern[] = implode(':', [$env, 'spotlightSectionMarketWise*']);
+    }
+    elseif ($entity_type == 'tools') {
+      $pattern[] = implode(':', [$env, 'videoCategory*']);
+      $pattern[] = implode(':', [$env, 'videoListings*']);
+      $pattern[] = implode(':', [$env, 'videoListingMobile*']);
+      $pattern[] = implode(':', [$env, 'videoDetails']);
+      $pattern[] = implode(':', [$env, 'spotlightSection*']);
+      $pattern[] = implode(':', [$env, 'spotlightSectionMarketWise*']);
+    }
+    elseif ($entity_type == 'stories') {
+      $pattern[] = implode(':', [$env, 'storiesListing*']);
+      $pattern[] = implode(':', [$env, 'storiesDetail*']);
+      $pattern[] = implode(':', [$env, 'spotlightSection*']);
+      $pattern[] = implode(':', [$env, 'spotlightSectionMarketWise*']);
+      $pattern[] = implode(':', [$env, 'storiesTrendingSection*']);
+      $pattern[] = implode(':', [$env, 'storiesTrendingSectionMarketWise*']);
+    }
+    elseif ($entity_type == 'tools-pdf') {
+      $pattern[] = implode(':', [$env, 'toolsListings*']);
+    }
+    elseif ($entity_type == 't_c') {
+      $pattern[] = implode(':', [$env . '_t_c', 'detail*']);
     }
   }
   elseif ($entity->getEntityTypeId() == 'entity_subqueue' && !empty($entity->getQueue())) {
