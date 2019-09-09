@@ -51,8 +51,14 @@ class BrandCategoryListing extends ResourceBase {
       }
       $i++;
     }
-
+    // Sorting items alphabetically by title.
+    usort($brands_list, 'compareTitle');
     return $this->commonUtility->successResponse($brands_list);
+  }
+
+  // Compare title to arrange alphabetically.
+  function compareTitle($a, $b) {
+    return strnatcmp($a['title'], $b['title']);
   }
 
 }
