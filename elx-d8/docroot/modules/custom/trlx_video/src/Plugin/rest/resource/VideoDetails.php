@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\elx_video\Plugin\rest\resource;
+namespace Drupal\trlx_video\Plugin\rest\resource;
 
 use Drupal\rest\Plugin\ResourceBase;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -49,16 +49,11 @@ class VideoDetails extends ResourceBase {
     // Prepare array of keys for alteration in response.
     $data = [
       'title' => 'decode',
+      'displayTitle' => 'decode',
       'nid' => 'int',
       'pointValue' => 'int',
     ];
-    // Get user market by user id.
-    $user_market = $user_utility->getMarketByUserId(\Drupal::currentUser()
-      ->id());
-    $roles = $user_utility->getUserRoles(\Drupal::currentUser()->id());
-    // Prepare redis key.
-    $key = ':videoDetails:' . $user_market . '_' . $roles[0] . '_' . $nid . '_'
-     . \Drupal::currentUser()->getPreferredLangcode();
+    $key = ':videoDetails:' . '_' . $nid;
     // Prepare view response.
     list($view_results, $status_code) = $entity_utility
       ->fetchApiResult($key, 'video_details', 'rest_export_video_details',

@@ -68,19 +68,6 @@ function elx_utility_views_query_alter(ViewExecutable $view, $query) {
       $view->setOffset($offset);
       $view->setItemsPerPage($limit);
     }
-    if (in_array($view->current_display, $access_by_role_api)) {
-      $user_utility = new UserUtility();
-      $roles = $user_utility->getUserRoles(\Drupal::currentUser()->id());
-      if ($roles  && $view->id() != 'level_interactive_content') {
-        // Add access by role table to the query.
-        $query->queueTable('node__field_access_by_role', "node_field_data",
-         NULL, 'node__field_access_by_role');
-        // Add access by role condition based on the current user role.
-        $query->addWhere('1',
-        'node__field_access_by_role.field_access_by_role_target_id', $roles,
-         'IN');
-      }
-    }
   }
 }
 
@@ -133,17 +120,6 @@ function elx_utility_form_alter(&$form, FormStateInterface $form_state, $form_id
     case 'node_stories_edit_form':
     case 'node_tools_edit_form':
     case 'node_tools-pdf_edit_form':
-      unset($form['field_access_by_role']['widget']['#options']['anonymous']);
-      unset($form['field_access_by_role']['widget']['#options']
-      ['authenticated']);
-      unset($form['field_access_by_role']['widget']['#options']
-      ['administrator']);
-      $form['field_access_by_role']['widget'] += [
-        'el_nyo_global_education_system_admin' => [
-          '#default_value' => TRUE,
-          '#disabled' => TRUE,
-        ],
-      ];
       // Changed type of point value field.
       $form['field_point_value']['widget'][0]['value']['#type'] = 'number';
       // Set default value 0 of point value field.

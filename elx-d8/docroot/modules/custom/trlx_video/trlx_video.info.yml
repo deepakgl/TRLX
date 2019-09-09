@@ -1,0 +1,5 @@
+name: TRLX Video
+type: module
+description: TRLX custom module for video.
+core: 8.x
+package: TRLX
