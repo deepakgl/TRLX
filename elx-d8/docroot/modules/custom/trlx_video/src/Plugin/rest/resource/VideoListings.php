@@ -59,7 +59,7 @@ class VideoListings extends ResourceBase {
     'video_listing', 'rest_export_video_listing', $data);
 
     $response = JSON::decode($view_results, TRUE);
-    return new JsonResponse(['success' => TRUE, 'result' => $response['results'], 'code' => 200], 200);
+    return new JsonResponse(['success' => TRUE, 'result' => $response['results'], 'pager' => $response['pager'], 'code' => 200], 200);
   }
 
 }
