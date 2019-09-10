@@ -5,6 +5,7 @@ dependencies:
   config:
     - entity_browser.browser.media_entity_browser
     - field.field.node.brand_story.body
+    - field.field.node.brand_story.field_brands
     - field.field.node.brand_story.field_display_title
     - field.field.node.brand_story.field_featured_image
     - field.field.node.brand_story.field_point_value
@@ -36,6 +37,12 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_brands:
+    weight: 27
+    settings: {  }
+    third_party_settings: {  }
+    type: options_buttons
+    region: content
   field_display_title:
     weight: 9
     settings:
