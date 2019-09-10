@@ -22,12 +22,11 @@ class CommonUtility {
    * @return Illuminate\Http\JsonResponse
    */
   public function successResponse($data = [], $code = Response::HTTP_OK, $success = TRUE, $pager = []) {
+    $responseArr = ['result' => $data];
     if (!empty($pager)) {
-      return new JsonResponse(['success' => $success, 'result' => $data, 'pager' => $pager, 'code' => $code], $code);
+      $responseArr['pager'] = $pager;
     }
-    else {
-      return new JsonResponse(['success' => $success, 'result' => $data, 'code' => $code], $code);
-    }
+    return new JsonResponse($responseArr, $code);
   }
 
   /**
@@ -39,7 +38,7 @@ class CommonUtility {
    * @return Illuminate\Http\JsonResponse
    */
   public function errorResponse($message, $code) {
-    return new JsonResponse(['success' => FALSE, 'result' => $message, 'code' => $code], $code);
+    return new JsonResponse(['message' => $message], $code);
   }
 
   /**
@@ -58,6 +57,25 @@ class CommonUtility {
     $languages = \Drupal::service('language_manager')->getStandardLanguageList();
     if (!array_key_exists(strtolower($langcode), $languages)) {
       return $this->errorResponse(t('Please enter valid language code.'), Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
+    return $this->successResponse();
+  }
+
+  /**
+   * Validate _format parameter.
+   *
+   * @param string $_format
+   * @param \Symfony\Component\HttpFoundation\Request $request
+   *
+   * @return \Symfony\Component\HttpFoundation\JsonResponse
+   */
+  public function validateFormat($_format, $request) {
+    if (!$request->query->has('_format')) {
+      return $this->errorResponse(t('"_format" parameter is required.'), Response::HTTP_BAD_REQUEST);
+    }
+
+    if (!in_array(strtolower($_format), ['json'])) {
+      return $this->errorResponse(t('Please enter valid format.'), Response::HTTP_UNPROCESSABLE_ENTITY);
     }
     return $this->successResponse();
   }
@@ -117,13 +135,13 @@ class CommonUtility {
     $request_uri = $base_url . \Drupal::request()->getRequestUri();
     $param = implode(',', $param);
     $logger = \Drupal::service('logger.stdout');
-    $logger->log(RfcLogLevel::ERROR, 'Following params required: ' . $param, [
+    $logger->log(RfcLogLevel::ERROR, 'Following parameters is/are required: ' . $param, [
       'user' => \Drupal::currentUser(),
       'request_uri' => $request_uri,
       'data' => $param,
     ]);
 
-    return $this->errorResponse(t('Following params required: ' . $param), Response::HTTP_BAD_REQUEST);
+    return $this->errorResponse(t('Following parameters is/are required: ' . $param), Response::HTTP_BAD_REQUEST);
   }
 
   /**

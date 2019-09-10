@@ -43,10 +43,17 @@ class EntityUtility {
    *   View markup.
    */
   public function getViewContent($view_name, $view_display, $arguments, $data = NULL, $type = NULL) {
+    $limit = $offset = '';
     if (is_array($arguments) && $this->isAssoc($arguments)) {
       $args = [];
       foreach ($arguments as $key => $argument) {
-        $args[] = (count($argument) > 1) ? implode("+", $argument) : $argument;
+        // Set value for $limit & $offset if respective value is available
+        if (in_array($key, ['limit', 'offset'])) {
+          $$key = $argument;
+        }
+        else {
+          $args[] = (count($argument) > 1) ? implode("+", $argument) : $argument;
+        }
       }
       $arguments = $args;
     }
@@ -58,6 +65,17 @@ class EntityUtility {
     if (!empty(array_filter($arguments))) {
       $view->setArguments($arguments);
     }
+
+    // set view pager limit (items_per_page)
+    if (!empty($limit)) {
+      $view->setItemsPerPage($limit);
+    }
+
+    // set view pager offset
+    if (!empty($offset)) {
+      $view->setOffset($offset);
+    }
+
     $view->execute();
     $view_result = \Drupal::service('renderer')->renderRoot($view->render());
     $view_results = JSON::decode($view_result->jsonSerialize(), TRUE);
@@ -177,6 +195,10 @@ class EntityUtility {
           elseif ($value == 'string_replace') {
             $output['results'][$view_key][$key] = $this->stringReplace($result[$key]);
           }
+          // Set value for boolean fields without value (if it is unselected by default)
+          elseif ($value == 'boolean') {
+            $output['results'][$view_key][$key] = empty($result[$key]) ? "false" : "true";
+          }
           else {
             $output['results'][$view_key] = $result;
             if (isset($output['results'][$view_key][$key])) {
@@ -186,7 +208,8 @@ class EntityUtility {
         }
       }
     }
-    $response = JSON::encode($output);
+    // $response = JSON::encode($output);
+    $response = $output;
     if (is_object($response)) {
       $response = $response->getContent();
     }
@@ -222,6 +245,10 @@ class EntityUtility {
           }
           elseif ($value == 'append_host') {
             $output[$view_key][$key] = !empty($result[$key]) ? \Drupal::request()->getSchemeAndHttpHost() . $result[$key] : $result[$key];
+          }
+          // Set value for boolean fields without value (if it is unselected by default)
+          elseif ($value == 'boolean') {
+            $output[$view_key][$key] = empty($result[$key]) ? "false" : "true";
           }
           else {
             $output[$view_key] = $result;

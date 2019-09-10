@@ -1,0 +1,19 @@
+uuid: 9ef8d84a-7339-460e-b138-29bc2fc722c1
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_brand_key
+    - taxonomy.vocabulary.brands
+id: taxonomy_term.brands.field_brand_key
+field_name: field_brand_key
+entity_type: taxonomy_term
+bundle: brands
+label: 'Brand Key'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

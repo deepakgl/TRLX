@@ -1,0 +1,18 @@
+uuid: 961c5847-8e65-43ec-bd4a-69208c7268df
+langcode: en
+status: true
+dependencies:
+  module:
+    - serialization
+    - trlx_factsheets
+    - user
+id: factsheets_listing
+plugin_id: factsheets_listing
+granularity: resource
+configuration:
+  methods:
+    - GET
+  formats:
+    - json
+  authentication:
+    - cookie

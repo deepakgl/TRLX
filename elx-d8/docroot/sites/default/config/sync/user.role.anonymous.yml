@@ -19,6 +19,7 @@ permissions:
   - 'restful get '
   - 'restful get brand_story_details'
   - 'restful get brands_category_listing'
+  - 'restful get factsheets_listing'
   - 'restful get main_navigation_menu'
   - 'restful get primary_navigation_menu'
   - 'restful get product_details'
