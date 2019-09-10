@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - entity_browser.browser.media_entity_browser
+    - field.field.node.tools.field_brands
     - field.field.node.tools.field_display_title
     - field.field.node.tools.field_featured
     - field.field.node.tools.field_featured_image
@@ -32,6 +33,12 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_brands:
+    weight: 26
+    settings: {  }
+    third_party_settings: {  }
+    type: options_buttons
+    region: content
   field_display_title:
     weight: 6
     settings:
