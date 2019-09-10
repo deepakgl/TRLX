@@ -74,10 +74,11 @@ class Handler extends ExceptionHandler {
     if ($exception instanceof ValidationException) {
       $required_key_exists = array_column($exception->validator->failed(), 'Required');
       $errors = $exception->validator->errors()->getMessages();
+      $error_message = array_column($errors, 0);
       if (array_key_exists(0, $required_key_exists)) {
-        return $this->errorResponse($errors, Response::HTTP_BAD_REQUEST);
+        return $this->errorResponse($error_message[0], Response::HTTP_BAD_REQUEST);
       }
-      return $this->errorResponse($errors, Response::HTTP_UNPROCESSABLE_ENTITY);
+      return $this->errorResponse($error_message[0], Response::HTTP_UNPROCESSABLE_ENTITY);
     }
     if ($exception instanceof TokenInvalidException) {
       return $this->errorResponse($exception->getMessage(), Response::HTTP_UNAUTHORIZED);

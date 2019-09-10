@@ -17,12 +17,12 @@ class CommonUtility {
    *
    * @param string|array $data
    * @param int $code
-   * @param bool $success
+   * @param array $pager
    *
    * @return Illuminate\Http\JsonResponse
    */
-  public function successResponse($data = [], $code = Response::HTTP_OK, $success = TRUE, $pager = []) {
-    $responseArr = ['result' => $data];
+  public function successResponse($data = [], $code = Response::HTTP_OK, $pager = []) {
+    $responseArr = ['results' => $data];
     if (!empty($pager)) {
       $responseArr['pager'] = $pager;
     }
@@ -194,6 +194,36 @@ class CommonUtility {
       return $this->errorResponse(t('Format parameter is required.'), Response::HTTP_BAD_REQUEST);
     }
     return $this->successResponse();
+  }
+
+  /**
+   * Fetch term name by tid.
+   *
+   * @param int $tid
+   *   Term Id.
+   *
+   * @return string
+   *   Term name.
+   */
+  public function getTermName($tid) {
+    $lang = \Drupal::currentUser()->getPreferredLangcode();
+    $query = \Drupal::database()->select('taxonomy_term_field_data', 'ttfd');
+    $query->fields('ttfd', ['name', 'tid', 'langcode']);
+    $query->condition('ttfd.tid', $tid);
+    $query->condition('ttfd.langcode', ['en', $lang], 'IN');
+    $results = $query->execute()->fetchAll();
+    $data = [];
+    foreach ($results as $key => $result) {
+      if (empty($data[$result->tid]) || $data[$result->tid]['lang'] == 'en') {
+        $data[$result->tid] = [
+          'name' => $result->name,
+          'lang' => $result->langcode,
+        ];
+      }
+    }
+    $term_name = array_column($data, 'name');
+
+    return $term_name[0];
   }
 
 }
