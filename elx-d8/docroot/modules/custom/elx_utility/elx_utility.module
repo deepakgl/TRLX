@@ -502,6 +502,9 @@ function elx_utility_get_redis_pattern(EntityInterface $entity) {
     elseif ($entity_type == 't_c') {
       $pattern[] = implode(':', [$env . '_t_c', 'detail*']);
     }
+    elseif ($entity_type == 'brand_story') {
+      $pattern[] = implode(':', [$env . 'brandStoryDetails*']);
+    }
   }
   elseif ($entity->getEntityTypeId() == 'entity_subqueue' && !empty($entity->getQueue())) {
     if ($entity->getQueue()->id() == 'stories' || $entity->getQueue()->id() == 'stories_market_wise') {

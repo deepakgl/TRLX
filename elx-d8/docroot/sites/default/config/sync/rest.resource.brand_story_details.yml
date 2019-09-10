@@ -1,0 +1,18 @@
+uuid: 6491a0d2-1f21-478a-8089-4b1c59dde6f7
+langcode: en
+status: true
+dependencies:
+  module:
+    - serialization
+    - trlx_brand_story
+    - user
+id: brand_story_details
+plugin_id: brand_story_details
+granularity: resource
+configuration:
+  methods:
+    - GET
+  formats:
+    - json
+  authentication:
+    - cookie
