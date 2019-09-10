@@ -64,31 +64,30 @@ class TrlxDashboardUtility {
     if (!empty($uuid)) {
       $entity = \Drupal::service('entity.repository')->loadEntityByUuid('menu_link_content', $uuid);
       $fid = $entity->link->first()->options['menu_icon']['fid'];
-    }
-    $type = 'internal';
-    $url = $icon_path = '';
-    if ($menu_item->getUrlObject()->isExternal()) {
-      $type = 'external';
-      $url = $menu_item->getUrlObject()->toString();
-    }
-    // Get menu icon path.
-    if (!empty($fid)) {
-      $file = File::load($fid);
-      if (!empty($file)) {
-        $icon_path = file_create_url($file->getFileUri());
+      $type = 'internal';
+      $url = $icon_path = '';
+      if ($menu_item->getUrlObject()->isExternal()) {
+        $type = 'external';
+        $url = $menu_item->getUrlObject()->toString();
       }
+      // Get menu icon path.
+      if (!empty($fid)) {
+        $file = File::load($fid);
+        if (!empty($file)) {
+          $icon_path = file_create_url($file->getFileUri());
+        }
+      }
+      // Get link attributes.
+      $options = $entity->hasTranslation($langcode) ? $entity->getTranslation($langcode)->getUrlObject()->getOptions() : $entity->getUrlObject()->getOptions();
+
+      $menu_result = [
+        'sequenceId' => $entity->hasTranslation($langcode) ? intval($entity->getTranslation($langcode)->getWeight()) : intval($entity->getWeight()),
+        'name' => $entity->hasTranslation($langcode) ? $entity->getTranslation($langcode)->getTitle() : $entity->getTitle(),
+        'URL' => $url,
+        'type' => $type,
+        'attributes' => isset($options['attributes']) ? $options['attributes'] : "",
+      ];
     }
-    // Get link attributes.
-    $options = $entity->hasTranslation($langcode) ? $entity->getTranslation($langcode)->getUrlObject()->getOptions() : $entity->getUrlObject()->getOptions();
-    
-    $menu_result = [
-      'sequenceId' => $entity->hasTranslation($langcode) ? intval($entity->getTranslation($langcode)->getWeight()) : intval($entity->getWeight()),
-      'name' => $entity->hasTranslation($langcode) ? $entity->getTranslation($langcode)->getTitle() : $entity->getTitle(),
-      'URL' => $url,
-      'type' => $type,
-      'attributes' => isset($options['attributes']) ? $options['attributes'] : "",
-    ];
-    
     return $menu_result;
   }
 

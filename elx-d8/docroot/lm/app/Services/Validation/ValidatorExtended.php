@@ -9,7 +9,8 @@ class ValidatorExtended extends IlluminateValidator {
   private $_custom_messages = [
     'numericarray' => 'The :attribute must be numeric array value.',
     'positiveinteger' => 'The :attribute must be positive integer',
-    'likebookmarkflag' => 'The :attribute must be either like or bookmark.'
+    'likebookmarkflag' => 'The :attribute must be either like or bookmark.',
+    'format' => 'The :attribute must be json'
   ];
 
   public function __construct($translator, $data, $rules, $messages = array(), $customAttributes = array()) {
@@ -82,5 +83,22 @@ class ValidatorExtended extends IlluminateValidator {
 
     return false;
   }
+  
+  /**
+   * Validate response format.
+   * 
+   * @param $attribute
+   * @param $value
+   * @param $parameters
+   * @param $validator
+   * @return bool
+   */
+  protected function validateFormat($attribute, $value, $parameters, $validator) {
+    if ($value == 'json') {
+      return true;
+    }
+
+    return false;
+  }  
 
 }

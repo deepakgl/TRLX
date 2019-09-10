@@ -69,6 +69,7 @@ class UserActivitiesController extends Controller {
     $validatedData = $this->validate($request, [
       'uid' => 'required|positiveinteger|exists:users_field_data,uid',
       'nid' => 'required|numericarray|exists:node,nid',
+      '_format' => 'required|format'
     ]);
     $this->uid = $validatedData['uid'];
     $nids = $validatedData['nid'];
