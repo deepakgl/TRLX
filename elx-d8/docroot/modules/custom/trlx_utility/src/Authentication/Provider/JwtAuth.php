@@ -11,8 +11,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
-use Drupal\drh_utility\Transcoder\JwtDecodeException;
-use Drupal\drh_utility\Transcoder\JwtTranscoder;
+use Drupal\trlx_utility\Transcoder\JwtDecodeException;
+use Drupal\trlx_utility\Transcoder\JwtTranscoder;
 
 
 /**
