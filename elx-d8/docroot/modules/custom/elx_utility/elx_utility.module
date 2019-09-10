@@ -484,7 +484,7 @@ function elx_utility_get_redis_pattern(EntityInterface $entity) {
       $pattern[] = implode(':', [$env, 'videoCategory*']);
       $pattern[] = implode(':', [$env, 'videoListings*']);
       $pattern[] = implode(':', [$env, 'videoListingMobile*']);
-      $pattern[] = implode(':', [$env, 'videoDetails']);
+      $pattern[] = implode(':', [$env, 'videoDetails*']);
       $pattern[] = implode(':', [$env, 'spotlightSection*']);
       $pattern[] = implode(':', [$env, 'spotlightSectionMarketWise*']);
     }
