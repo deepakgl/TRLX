@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.taxonomy_term.brands.field_brand_key
     - field.field.taxonomy_term.brands.field_brand_logo
     - image.style.thumbnail
     - taxonomy.vocabulary.brands
@@ -23,6 +24,14 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+  field_brand_key:
+    weight: 32
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
   field_brand_logo:
     weight: 31
     settings:

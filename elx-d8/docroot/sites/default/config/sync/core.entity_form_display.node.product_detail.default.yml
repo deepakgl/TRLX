@@ -13,6 +13,7 @@ dependencies:
     - field.field.node.product_detail.field_customer_questions
     - field.field.node.product_detail.field_demonstration
     - field.field.node.product_detail.field_display_title
+    - field.field.node.product_detail.field_downloadable
     - field.field.node.product_detail.field_end_date
     - field.field.node.product_detail.field_featured_image
     - field.field.node.product_detail.field_field_product_image
@@ -53,7 +54,7 @@ third_party_settings:
     group_perfect_partners:
       children: {  }
       parent_name: ''
-      weight: 45
+      weight: 46
       format_type: fieldset
       format_settings:
         id: ''
@@ -77,26 +78,26 @@ content:
     type: text_textarea_with_summary
     region: content
   field_access_by_role:
-    weight: 7
+    weight: 8
     settings: {  }
     third_party_settings: {  }
     type: options_buttons
     region: content
   field_ar_search:
-    weight: 31
+    weight: 32
     settings:
       display_label: true
     third_party_settings: {  }
     type: boolean_checkbox
     region: content
   field_archive_and_unarchive:
-    weight: 28
+    weight: 29
     settings: {  }
     third_party_settings: {  }
     type: options_select
     region: content
   field_benefits:
-    weight: 18
+    weight: 19
     settings:
       rows: 9
       summary_rows: 3
@@ -111,7 +112,7 @@ content:
     type: options_buttons
     region: content
   field_customer_questions:
-    weight: 20
+    weight: 21
     settings:
       rows: 9
       summary_rows: 3
@@ -120,7 +121,7 @@ content:
     type: text_textarea_with_summary
     region: content
   field_demonstration:
-    weight: 17
+    weight: 18
     settings:
       rows: 9
       summary_rows: 3
@@ -136,14 +137,21 @@ content:
     third_party_settings: {  }
     type: string_textfield
     region: content
+  field_downloadable:
+    weight: 7
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
   field_end_date:
-    weight: 21
+    weight: 22
     settings: {  }
     third_party_settings: {  }
     type: datetime_default
     region: content
   field_featured_image:
-    weight: 23
+    weight: 24
     settings:
       entity_browser: media_entity_browser
       field_widget_display: rendered_entity
@@ -173,24 +181,6 @@ content:
     type: entity_browser_entity_reference
     region: content
   field_how_to_sell_this_product:
-    weight: 29
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: entity_reference_autocomplete
-    region: content
-  field_if_she_asks_share:
-    weight: 19
-    settings:
-      rows: 9
-      summary_rows: 3
-      placeholder: ''
-    third_party_settings: {  }
-    type: text_textarea_with_summary
-    region: content
-  field_learning_category:
     weight: 30
     settings:
       match_operator: CONTAINS
@@ -199,8 +189,26 @@ content:
     third_party_settings: {  }
     type: entity_reference_autocomplete
     region: content
+  field_if_she_asks_share:
+    weight: 20
+    settings:
+      rows: 9
+      summary_rows: 3
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea_with_summary
+    region: content
+  field_learning_category:
+    weight: 31
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
   field_markets:
-    weight: 22
+    weight: 23
     settings:
       start_minimized: true
       leaves_only: false
@@ -219,13 +227,13 @@ content:
     type: string_textfield
     region: content
   field_product_categories:
-    weight: 12
+    weight: 13
     settings: {  }
     third_party_settings: {  }
     type: options_buttons
     region: content
   field_product_video:
-    weight: 24
+    weight: 25
     settings:
       entity_browser: video_entity_browser
       field_widget_display: rendered_entity
@@ -240,7 +248,7 @@ content:
     type: entity_browser_entity_reference
     region: content
   field_product_video_thumbnail:
-    weight: 25
+    weight: 26
     settings:
       entity_browser: media_entity_browser
       field_widget_display: rendered_entity
@@ -255,7 +263,7 @@ content:
     type: entity_browser_entity_reference
     region: content
   field_season:
-    weight: 14
+    weight: 15
     settings: {  }
     third_party_settings: {  }
     type: options_select
@@ -269,7 +277,7 @@ content:
     type: string_textfield
     region: content
   field_tags_keywords:
-    weight: 9
+    weight: 10
     settings:
       match_operator: CONTAINS
       size: 60
@@ -279,7 +287,7 @@ content:
     region: content
   field_translation:
     type: options_buttons
-    weight: 26
+    weight: 27
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -291,7 +299,7 @@ content:
     type: boolean_checkbox
     region: content
   field_why_there_s_only_one:
-    weight: 16
+    weight: 17
     settings:
       rows: 9
       summary_rows: 3
@@ -301,14 +309,14 @@ content:
     region: content
   langcode:
     type: language_select
-    weight: 8
+    weight: 9
     region: content
     settings:
       include_locked: true
     third_party_settings: {  }
   path:
     type: path
-    weight: 13
+    weight: 14
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -316,12 +324,12 @@ content:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 10
+    weight: 11
     region: content
     third_party_settings: {  }
   status:
     type: boolean_checkbox
-    weight: 27
+    weight: 28
     region: content
     settings:
       display_label: true
@@ -330,7 +338,7 @@ content:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 11
+    weight: 12
     region: content
     third_party_settings: {  }
   title:
@@ -342,7 +350,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
   translation:
-    weight: 15
+    weight: 16
     region: content
     settings: {  }
     third_party_settings: {  }
