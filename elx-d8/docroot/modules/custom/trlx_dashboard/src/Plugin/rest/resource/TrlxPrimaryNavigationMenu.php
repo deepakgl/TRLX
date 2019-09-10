@@ -18,7 +18,7 @@ use Drupal\trlx_utility\Utility\CommonUtility;
  *   id = "main_navigation_menu",
  *   label = @Translation("Main Navigation Menu"),
  *   uri_paths = {
- *     "canonical" = "/api/{version}/header/items"
+ *     "canonical" = "/api/{version}/headerNavigationMenu"
  *   }
  * )
  */
