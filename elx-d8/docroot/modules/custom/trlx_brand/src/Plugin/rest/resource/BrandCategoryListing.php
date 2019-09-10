@@ -6,6 +6,7 @@ use Drupal\rest\Plugin\ResourceBase;
 use Symfony\Component\HttpFoundation\Request;
 use Drupal\trlx_brand\Utility\BrandUtility;
 use Drupal\trlx_utility\Utility\CommonUtility;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Provides a brands category listing resource.
@@ -32,6 +33,13 @@ class BrandCategoryListing extends ResourceBase {
   public function get(Request $request) {
     $this->commonUtility = new CommonUtility();
     $this->brandUtility = new BrandUtility();
+
+    // Response format validation.
+    $response = $this->commonUtility->validateResponseFormat($request);
+    if (!($response->getStatusCode() === Response::HTTP_OK)) {
+      return $response;
+    }
+
     // Query to get all brand term ids.
     $query = \Drupal::entityQuery('taxonomy_term');
     $query->condition('vid', 'brands');

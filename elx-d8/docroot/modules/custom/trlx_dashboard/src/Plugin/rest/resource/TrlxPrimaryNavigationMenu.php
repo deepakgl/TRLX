@@ -3,7 +3,6 @@
 namespace Drupal\trlx_dashboard\Plugin\rest\resource;
 
 use Drupal\rest\Plugin\ResourceBase;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Drupal\Component\Serialization\Json;
 use Drupal\trlx_dashboard\Utility\TrlxDashboardUtility;
 use Drupal\trlx_utility\RedisClientBuilder;
@@ -18,7 +17,7 @@ use Drupal\trlx_utility\Utility\CommonUtility;
  *   id = "main_navigation_menu",
  *   label = @Translation("Main Navigation Menu"),
  *   uri_paths = {
- *     "canonical" = "/api/{version}/headerNavigationMenu"
+ *     "canonical" = "/api/{version}/primaryNavigationMenu"
  *   }
  * )
  */
@@ -35,12 +34,20 @@ class TrlxPrimaryNavigationMenu extends ResourceBase {
    */
   public function get($version, Request $request) {
     $this->commonUtility = new CommonUtility();
+    
+    // Response format validation.
+    $response = $this->commonUtility->validateResponseFormat($request);
+    if (!($response->getStatusCode() === Response::HTTP_OK)) {
+      return $response;
+    }
+    
     // Validate language code.
     $langcode = $request->query->get('language');
     $response = $this->commonUtility->validateLanguageCode($langcode, $request);
     if (!($response->getStatusCode() === Response::HTTP_OK)) {
       return $response;
     }
+    
     // Prepare redis key.
     $key = \Drupal::config('elx_utility.settings')->get('elx_environment') .
       ':navigationMenu:' .

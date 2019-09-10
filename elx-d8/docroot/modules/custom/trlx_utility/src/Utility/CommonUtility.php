@@ -21,8 +21,13 @@ class CommonUtility {
    *
    * @return Illuminate\Http\JsonResponse
    */
-  public function successResponse($data = [], $code = Response::HTTP_OK, $success = TRUE) {
-    return new JsonResponse(['success' => $success, 'result' => $data, 'code' => $code], $code);
+  public function successResponse($data = [], $code = Response::HTTP_OK, $success = TRUE, $pager = []) {
+    if (!empty($pager)) {
+      return new JsonResponse(['success' => $success, 'result' => $data, 'pager' => $pager, 'code' => $code], $code);
+    }
+    else {
+      return new JsonResponse(['success' => $success, 'result' => $data, 'code' => $code], $code);
+    }
   }
 
   /**
@@ -157,6 +162,20 @@ class CommonUtility {
     }
 
     return TRUE;
+  }
+
+  /**
+   * Validate response format.
+   *
+   * @param \Symfony\Component\HttpFoundation\Request $request
+   *
+   * @return \Symfony\Component\HttpFoundation\JsonResponse
+   */
+  public function validateResponseFormat($request) {
+    if (!$request->query->has('_format')) {
+      return $this->errorResponse(t('Format parameter is required.'), Response::HTTP_BAD_REQUEST);
+    }
+    return $this->successResponse();
   }
 
 }

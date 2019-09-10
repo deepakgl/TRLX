@@ -54,7 +54,8 @@ class FlagController extends Controller {
       'uid' => 'required|positiveinteger|exists:users_field_data,uid',
       'nid' => 'required|positiveinteger|exists:node,nid',
       'flag' => 'required|likebookmarkflag',
-      'status' => 'required|boolean'
+      'status' => 'required|boolean',
+      '_format' => 'required|format'
     ]);
     $this->uid = $validatedData['uid'];
     $nid = $validatedData['nid'];
