@@ -31,8 +31,8 @@ class VideoDetails extends ResourceBase {
    *   Resource response.
    */
   public function get(Request $request) {
-    $this->commonUtility = new CommonUtility();
-    $this->entityUtility = new EntityUtility();
+    $commonUtility = new CommonUtility();
+    $entityUtility = new EntityUtility();
     $nid = $request->query->get('nid');
     $language = $request->query->get('language');
 
@@ -40,22 +40,22 @@ class VideoDetails extends ResourceBase {
     if (empty($language)) {
       $param = ['language'];
 
-      return $this->commonUtility->invalidData($param);
+      return $commonUtility->invalidData($param);
     }
 
     // Checkfor valid language code.
-    $response = $this->commonUtility->validateLanguageCode($language, $request);
+    $response = $commonUtility->validateLanguageCode($language, $request);
     if (!($response->getStatusCode() === Response::HTTP_OK)) {
       return $response;
     }
 
     if (empty($nid)) {
       $param = ['nid'];
-      return $this->commonUtility->invalidData($param);
+      return $commonUtility->invalidData($param);
     }
 
-    if (empty($this->commonUtility->isValidNid($nid, $language))) {
-      return $this->commonUtility->errorResponse($this->t('Node id does not exist or requested language data is not available.'), Response::HTTP_UNPROCESSABLE_ENTITY);
+    if (empty($commonUtility->isValidNid($nid, $language))) {
+      return $commonUtility->errorResponse($this->t('Node id does not exist or requested language data is not available.'), Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     // Prepare array of keys for alteration in response.
@@ -72,7 +72,7 @@ class VideoDetails extends ResourceBase {
     $key = ':videoDetails:' . '_' . $nid . '_' . $language;
 
     // Prepare response.
-    list($view_results, $status_code) = $this->entityUtility->fetchApiResult(
+    list($view_results, $status_code) = $entityUtility->fetchApiResult(
       $key,
       'video_details',
       'rest_export_video_details',
@@ -82,10 +82,10 @@ class VideoDetails extends ResourceBase {
 
     // Check for empty / no result from views.
     if (empty($view_results)) {
-      return $this->commonUtility->errorResponse($this->t('No result found.'), $status_code);
+      return $commonUtility->errorResponse($this->t('No result found.'), $status_code);
     }
 
-    return $this->commonUtility->successResponse([$view_results], $status_code);
+    return $commonUtility->successResponse([$view_results], $status_code);
   }
 
 }
