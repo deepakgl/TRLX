@@ -1,10 +1,10 @@
-uuid: f4ac37f8-a681-40c5-91de-a93084c64b0a
+uuid: 93923238-f777-4598-bedd-e41c563750bd
 langcode: en
 status: true
 dependencies:
   config:
     - field.storage.node.field_markets
-    - node.type.tools
+    - node.type.brand_story
     - taxonomy.vocabulary.markets
   content:
     - 'taxonomy_term:markets:17c7b9d1-ce1d-4e92-8be7-3928b522bf12'
@@ -17,10 +17,10 @@ dependencies:
     - 'taxonomy_term:markets:ae7bea46-5433-4dba-b53b-b60ad1ed607d'
     - 'taxonomy_term:markets:af97464c-cdd8-4000-98c6-9c6157c5dc58'
     - 'taxonomy_term:markets:d6a4626d-613f-41c7-922b-d329296c04eb'
-id: node.tools.field_markets
+id: node.brand_story.field_markets
 field_name: field_markets
 entity_type: node
-bundle: tools
+bundle: brand_story
 label: Market
 description: ''
 required: false

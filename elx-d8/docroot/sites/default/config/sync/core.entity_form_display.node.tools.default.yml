@@ -21,6 +21,7 @@ dependencies:
     - entity_browser
     - file
     - path
+    - term_reference_tree
     - text
 id: node.tools.default
 targetEntityType: node
@@ -34,7 +35,7 @@ content:
     settings: {  }
     third_party_settings: {  }
   field_brands:
-    weight: 26
+    weight: 16
     settings: {  }
     third_party_settings: {  }
     type: options_buttons
@@ -62,6 +63,17 @@ content:
     third_party_settings: {  }
     type: entity_browser_entity_reference
     region: content
+  field_markets:
+    type: term_reference_tree
+    weight: 17
+    region: content
+    settings:
+      start_minimized: true
+      leaves_only: false
+      select_parents: false
+      cascading_selection: 0
+      max_depth: 0
+    third_party_settings: {  }
   field_point_value:
     weight: 8
     settings:
@@ -175,7 +187,6 @@ hidden:
   field_featured: true
   field_headline: true
   field_how_to_sell_flag: true
-  field_markets: true
   field_product_categories: true
   field_product_family: true
   field_related_products_videos: true
