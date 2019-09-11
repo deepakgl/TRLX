@@ -85,7 +85,7 @@ class VideoDetails extends ResourceBase {
       return $commonUtility->errorResponse($this->t('No result found.'), $status_code);
     }
 
-    return $commonUtility->successResponse([$view_results], $status_code);
+    return $commonUtility->successResponse($view_results, $status_code);
   }
 
 }
