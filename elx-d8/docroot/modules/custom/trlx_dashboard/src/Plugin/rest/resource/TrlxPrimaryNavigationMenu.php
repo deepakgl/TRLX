@@ -34,20 +34,20 @@ class TrlxPrimaryNavigationMenu extends ResourceBase {
    */
   public function get($version, Request $request) {
     $this->commonUtility = new CommonUtility();
-    
+
     // Response format validation.
     $response = $this->commonUtility->validateResponseFormat($request);
     if (!($response->getStatusCode() === Response::HTTP_OK)) {
       return $response;
     }
-    
+
     // Validate language code.
     $langcode = $request->query->get('language');
     $response = $this->commonUtility->validateLanguageCode($langcode, $request);
     if (!($response->getStatusCode() === Response::HTTP_OK)) {
       return $response;
     }
-    
+
     // Prepare redis key.
     $key = \Drupal::config('elx_utility.settings')->get('elx_environment') .
       ':navigationMenu:' .
@@ -81,7 +81,12 @@ class TrlxPrimaryNavigationMenu extends ResourceBase {
     $this->dashboardUtility = new TrlxDashboardUtility();
     // Load Navigation menu.
     $primary_navigation_menu = $this->dashboardUtility->getMenuByName('main', 'navigation', $version, $langcode);
-    $data['primaryNavigationMenu'] = array_values(array_filter($primary_navigation_menu));
+    if (array_values(array_filter($primary_navigation_menu)) != NULL) {
+      $data['primaryNavigationMenu'] = array_values(array_filter($primary_navigation_menu));
+    }
+    else {
+      $data['primaryNavigationMenu'] = [];
+    }
     return $data;
   }
 

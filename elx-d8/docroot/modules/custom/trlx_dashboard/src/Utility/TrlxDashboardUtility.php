@@ -2,6 +2,7 @@
 
 namespace Drupal\trlx_dashboard\Utility;
 
+use Drupal\trlx_utility\Utility\CommonUtility;
 use Drupal\Core\Menu\MenuTreeParameters;
 use Drupal\file\Entity\File;
 
@@ -62,7 +63,13 @@ class TrlxDashboardUtility {
   public function createMenuArray($menu_item, $langcode) {
     $uuid = $menu_item->getDerivativeId();
     if (!empty($uuid)) {
+      $this->commonUtility = new CommonUtility();
       $entity = \Drupal::service('entity.repository')->loadEntityByUuid('menu_link_content', $uuid);
+      $tid = $entity->getFields()['trlx_menu_content']->getString();
+      $term_name = '';
+      if ($tid) {
+        $term_name = $this->commonUtility->getTermName($tid);
+      }
       $fid = $entity->link->first()->options['menu_icon']['fid'];
       $type = 'internal';
       $url = $icon_path = '';
@@ -82,6 +89,7 @@ class TrlxDashboardUtility {
 
       $menu_result = [
         'sequenceId' => $entity->hasTranslation($langcode) ? intval($entity->getTranslation($langcode)->getWeight()) : intval($entity->getWeight()),
+        'content' => $term_name,
         'name' => $entity->hasTranslation($langcode) ? $entity->getTranslation($langcode)->getTitle() : $entity->getTitle(),
         'URL' => $url,
         'type' => $type,
