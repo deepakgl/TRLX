@@ -34,9 +34,10 @@ class TrlxPrimaryNavigationMenu extends ResourceBase {
    */
   public function get($version, Request $request) {
     $this->commonUtility = new CommonUtility();
-
+    
     // Response format validation.
-    $response = $this->commonUtility->validateResponseFormat($request);
+    $_format = $request->query->get('_format');
+    $response = $this->commonUtility->validateFormat($_format, $request);
     if (!($response->getStatusCode() === Response::HTTP_OK)) {
       return $response;
     }

@@ -4,6 +4,7 @@
  * @file
  * Utility file.
  */
+
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 

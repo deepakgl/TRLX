@@ -16,10 +16,16 @@ class CommonUtility {
    * Build success response.
    *
    * @param string|array $data
+   *   Response data.
    * @param int $code
+   *   Response code.
    * @param array $pager
+   *   Response if pager is there.
+   * @param string $res
+   *   Param if result is from view.
    *
    * @return Illuminate\Http\JsonResponse
+   *   Success json response.
    */
   public function successResponse($data = [], $code = Response::HTTP_OK, $pager = [], $res = NULL) {
     $responseArr = $data;
@@ -36,9 +42,12 @@ class CommonUtility {
    * Build error responses.
    *
    * @param string|array $message
+   *   Error response message.
    * @param int $code
+   *   Response code.
    *
    * @return Illuminate\Http\JsonResponse
+   *   Error json response.
    */
   public function errorResponse($message, $code) {
     return new JsonResponse(['message' => $message], $code);
@@ -48,14 +57,18 @@ class CommonUtility {
    * Validate language code.
    *
    * @param string $langcode
+   *   Language code.
    * @param \Symfony\Component\HttpFoundation\Request $request
+   *   Request object.
    *
    * @return \Symfony\Component\HttpFoundation\JsonResponse
+   *   Json response.
    */
   public function validateLanguageCode($langcode, $request) {
     if (!$request->query->has('language')) {
       return $this->errorResponse(t('Language parameter is required.'), Response::HTTP_BAD_REQUEST);
     }
+
     // Getting all the available languages.
     $languages = \Drupal::service('language_manager')->getStandardLanguageList();
     if (!array_key_exists(strtolower($langcode), $languages)) {
@@ -68,9 +81,12 @@ class CommonUtility {
    * Validate _format parameter.
    *
    * @param string $_format
+   *   Format param.
    * @param \Symfony\Component\HttpFoundation\Request $request
+   *   Request object.
    *
    * @return \Symfony\Component\HttpFoundation\JsonResponse
+   *   Json response.
    */
   public function validateFormat($_format, $request) {
     if (!$request->query->has('_format')) {
@@ -88,7 +104,6 @@ class CommonUtility {
    *
    * @param string $image_style
    *   Image style machine name.
-   *
    * @param string $path
    *   Image path.
    *
@@ -142,7 +157,7 @@ class CommonUtility {
    * @param mixed $param
    *   Parameter name.
    *
-   * @return JsonResponse
+   * @return \Symfony\Component\HttpFoundation\JsonResponse
    *   Following params required.
    */
   public function invalidData($param = []) {
@@ -165,9 +180,8 @@ class CommonUtility {
    *
    * @param int $nid
    *   Node id.
-   *
    * @param string $langcode
-   *   Two characters long language code
+   *   Two characters long language code.
    *
    * @return bool
    *   True or false.
@@ -198,20 +212,6 @@ class CommonUtility {
   }
 
   /**
-   * Validate response format.
-   *
-   * @param \Symfony\Component\HttpFoundation\Request $request
-   *
-   * @return \Symfony\Component\HttpFoundation\JsonResponse
-   */
-  public function validateResponseFormat($request) {
-    if (!$request->query->has('_format')) {
-      return $this->errorResponse(t('Format parameter is required.'), Response::HTTP_BAD_REQUEST);
-    }
-    return $this->successResponse();
-  }
-
-  /**
    * Fetch term name by tid.
    *
    * @param int $tid
@@ -239,6 +239,23 @@ class CommonUtility {
     $term_name = array_column($data, 'name');
 
     return $term_name[0];
+  }
+
+  /**
+   * Validate integer value.
+   *
+   * @param int $num
+   *   Integer number.
+   *
+   * @return \Symfony\Component\HttpFoundation\JsonResponse
+   *   Json response.
+   */
+  public function validateIntegerValue($num) {
+    if ((int) $num == $num && (int) $num > 0) {
+      return $this->successResponse();
+    }
+
+    return $this->errorResponse(t('Please enter positive integer value.'), Response::HTTP_UNPROCESSABLE_ENTITY);
   }
 
 }
