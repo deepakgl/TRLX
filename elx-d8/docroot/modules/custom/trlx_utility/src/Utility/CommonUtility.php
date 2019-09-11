@@ -21,8 +21,11 @@ class CommonUtility {
    *
    * @return Illuminate\Http\JsonResponse
    */
-  public function successResponse($data = [], $code = Response::HTTP_OK, $pager = []) {
-    $responseArr = ['results' => $data];
+  public function successResponse($data = [], $code = Response::HTTP_OK, $pager = [], $res = NULL) {
+    $responseArr = $data;
+    if (empty($res)) {
+      $responseArr = ['results' => $data];
+    }
     if (!empty($pager)) {
       $responseArr['pager'] = $pager;
     }
