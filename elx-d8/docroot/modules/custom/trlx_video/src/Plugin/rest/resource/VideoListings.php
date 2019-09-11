@@ -31,21 +31,52 @@ class VideoListings extends ResourceBase {
    *   Resource response
    */
   public function get(Request $request) {
-    $this->commonUtility = new CommonUtility();
-    $this->entityUtility = new EntityUtility();
-    $language = $request->query->get('language');
+    $commonUtility = new CommonUtility();
+    $entityUtility = new EntityUtility();
 
-    // Check for empty language.
-    if (empty($language)) {
-      $param = ['language'];
+    // Required parameters.
+    $requiredParams = [
+      '_format',
+      'brandId',
+      'language',
+    ];
 
-      return $this->commonUtility->invalidData($param);
+    // Check for required parameters.
+    $missingParams = [];
+    foreach ($requiredParams as $param) {
+      $$param = $request->query->get($param);
+      if (empty($$param)) {
+        $missingParams[] = $param;
+      }
     }
-
-    // Checkfor valid language code.
-    $response = $this->commonUtility->validateLanguageCode($language, $request);
+    // Report missing required parameters.
+    if (!empty($missingParams)) {
+      return $commonUtility->invalidData($missingParams);
+    }
+    // Check for valid _format type.
+    $response = $commonUtility->validateFormat($_format, $request);
     if (!($response->getStatusCode() === Response::HTTP_OK)) {
       return $response;
+    }
+    // Checkfor valid language code.
+    $response = $commonUtility->validateLanguageCode($language, $request);
+    if (!($response->getStatusCode() === Response::HTTP_OK)) {
+      return $response;
+    }
+
+    // Validation for valid brand key
+    // Prepare view response for valid brand key.
+    list($view_results, $status_code) = $entityUtility->fetchApiResult(
+      '',
+      'brand_key_validation',
+      'rest_export_brand_key_validation',
+      '',
+      $brandId
+    );
+
+    // Check for empty resultset.
+    if (empty($view_results)) {
+      return $commonUtility->errorResponse($this->t('Brand Id (@brandId) does not exist.', ['@brandId' => $brandId]), Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     // Prepare array of keys for alteration in response.
@@ -56,24 +87,28 @@ class VideoListings extends ResourceBase {
       'pointValue' => 'int',
     ];
 
+    list($limit, $offset, $errorResponse) = $commonUtility->getPagerParam($request);
+    if (!empty($errorResponse)) {
+      return $errorResponse;
+    }
     // Prepare redis key.
-    $key = ':videoDetails:' . '_' . $language;
+    $key = ':videoDetails:' . '_' . $language . '_' . $limit . '_' . $offset;
 
     // Prepare response.
-    list($view_results, $status_code) = $this->entityUtility->fetchApiResult(
+    list($view_results, $status_code) = $entityUtility->fetchApiResult(
       $key,
       'video_listing',
       'rest_export_video_listing',
-      $data, ['language' => $language],
+      $data, ['language' => $language, 'brand' => $brandId],
       'video_listing'
     );
 
     // Check for empty / no result from views.
     if (empty($view_results)) {
-      return $this->commonUtility->errorResponse($this->t('No result found.'), $status_code);
+      return $commonUtility->successResponse([], Response::HTTP_OK);
     }
 
-    return $this->commonUtility->successResponse($view_results, $status_code, [], 'results');
+    return $commonUtility->successResponse($view_results, $status_code, [], 'results');
   }
 
 }
