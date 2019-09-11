@@ -8,6 +8,7 @@ dependencies:
     - field.field.node.brand_story.field_brands
     - field.field.node.brand_story.field_display_title
     - field.field.node.brand_story.field_featured_image
+    - field.field.node.brand_story.field_markets
     - field.field.node.brand_story.field_point_value
     - field.field.node.brand_story.field_subtitle
     - field.field.node.brand_story.field_tool_pdf
@@ -16,6 +17,7 @@ dependencies:
   module:
     - entity_browser
     - path
+    - term_reference_tree
     - text
 id: node.brand_story.default
 targetEntityType: node
@@ -65,6 +67,17 @@ content:
       open: false
     third_party_settings: {  }
     type: entity_browser_entity_reference
+    region: content
+  field_markets:
+    weight: 28
+    settings:
+      start_minimized: true
+      leaves_only: false
+      select_parents: false
+      cascading_selection: 0
+      max_depth: 0
+    third_party_settings: {  }
+    type: term_reference_tree
     region: content
   field_point_value:
     weight: 14

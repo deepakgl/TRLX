@@ -93,7 +93,10 @@ class FactsheetsListing extends ResourceBase {
       'downloadable' => 'boolean'
     ];
 
-    list($limit, $offset) = $commonUtility->getPagerParam($request);
+    list($limit, $offset, $errorResponse) = $commonUtility->getPagerParam($request);
+    if (!empty($errorResponse)) {
+      return $errorResponse;
+    }
   
     // Prepare redis key.
     $key = ':factsheetsListings:' . '_' . $language . '_' . $limit . '_' . $offset;
@@ -113,6 +116,6 @@ class FactsheetsListing extends ResourceBase {
       return $commonUtility->errorResponse($this->t('No result found.'), Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
-    return $commonUtility->successResponse($view_results['results'], $status_code, TRUE, $view_results['pager']);
+    return $commonUtility->successResponse($view_results['results'], $status_code, $view_results['pager']);
   }
 }

@@ -86,7 +86,7 @@ class BrandStoryDetails extends ResourceBase {
       return $this->commonUtility->errorResponse($this->t('No result found.'), $status_code);
     }
 
-    return $this->commonUtility->successResponse($view_results, $status_code);
+    return $this->commonUtility->successResponse([$view_results], $status_code);
   }
 
 }

@@ -119,9 +119,21 @@ class CommonUtility {
    */
   public function getPagerParam(Request $request, $limit_default = 10, $offset_default = 0) {
     $limit = $request->query->get('limit') ? $request->query->get('limit') : $limit_default;
+    $err = [];
+    if (!is_numeric($limit)) {
+      $err[] = 'limit';
+    }
     $offset = $request->query->get('offset') ? $request->query->get('offset') : $offset_default;
+    if (!is_numeric($offset)) {
+      $err[] = 'offset';
+    }
 
-    return [$limit, $offset];
+    $errResponse = '';
+    if (!empty($err)) {
+      $errResponse = $this->errorResponse(t('Please provide only numeric value parameter(s): ' . implode(',', $err)), Response::HTTP_BAD_REQUEST);
+    }
+
+    return [$limit, $offset, $errResponse];
   }
 
   /**
