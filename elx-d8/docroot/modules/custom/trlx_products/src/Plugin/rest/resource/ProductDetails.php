@@ -3,12 +3,10 @@
 namespace Drupal\trlx_products\Plugin\rest\resource;
 
 use Drupal\rest\Plugin\ResourceBase;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Drupal\trlx_utility\Utility\CommonUtility;
 use Drupal\trlx_utility\Utility\EntityUtility;
-use Drupal\Component\Serialization\Json;
 
 /**
  * Provides a product details resource.
@@ -34,31 +32,44 @@ class ProductDetails extends ResourceBase {
    */
   public function get(Request $request) {
     // $user_utility = new UserUtility(); // fixMe
-    $this->commonUtility = new CommonUtility();
-    $this->entityUtility = new EntityUtility();
-    $nid = $request->query->get('nid');
-    $language = $request->query->get('language');
+    $commonUtility = new CommonUtility();
+    $entityUtility = new EntityUtility();
 
-    // Check for empty language
-    if (empty($language)) {
-      $param = ['language'];
+    // Required parameters
+    $requiredParams = [
+      '_format',
+      'nid',
+      'language',
+    ];
 
-      return $this->commonUtility->invalidData($param);
+    // Check for required parameters
+    $missingParams = [];
+    foreach ($requiredParams as $param) {
+      $$param = $request->query->get($param);
+      if (empty($$param)) {
+        $missingParams[] = $param;
+      }
     }
 
-    // Checkfor valid language code
-    $response = $this->commonUtility->validateLanguageCode($language, $request);
+    // Report missing required parameters.
+    if (!empty($missingParams)) {
+      return $commonUtility->invalidData($missingParams);
+    }
+
+    // Checkfor valid _format type
+    $response = $commonUtility->validateFormat($_format, $request);
     if (!($response->getStatusCode() === Response::HTTP_OK)) {
       return $response;
     }
-  
-    if (empty($nid)) {
-      $param = ['nid'];
-      return $this->commonUtility->invalidData($param);
+
+    // Checkfor valid language code
+    $response = $commonUtility->validateLanguageCode($language, $request);
+    if (!($response->getStatusCode() === Response::HTTP_OK)) {
+      return $response;
     }
 
-    if (empty($this->commonUtility->isValidNid($nid, $language))) {
-      return $this->commonUtility->errorResponse($this->t('Node id does not exist or requested language data is not available.'), Response::HTTP_UNPROCESSABLE_ENTITY);
+    if (empty($commonUtility->isValidNid($nid, $language))) {
+      return $commonUtility->errorResponse($this->t('Node id does not exist or requested language data is not available.'), Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     // Prepare array of keys for alteration in response.
@@ -67,7 +78,7 @@ class ProductDetails extends ResourceBase {
       'subTitle' => 'decode',
       'nid' => 'int',
       'pointValue' => 'int',
-      'body' => 'string_replace',
+      'body' => 'decode',
       'video' => 'append_host',
     ];
   
@@ -75,7 +86,7 @@ class ProductDetails extends ResourceBase {
     $key = ':productDetails:' . '___' . $nid . '_' . $language;
 
     // Prepare response.
-    list($view_results, $status_code, ) = $this->entityUtility->fetchApiResult(
+    list($view_results, $status_code, ) = $entityUtility->fetchApiResult(
       $key,
       'product_detail',
       'product_details_rest_export',
@@ -85,10 +96,10 @@ class ProductDetails extends ResourceBase {
 
     // Check for empty / no result from views
     if (empty($view_results)) {
-      return $this->commonUtility->errorResponse($this->t('No result found.'), $status_code);
+      $status_code = Response::HTTP_NO_CONTENT;
     }
   
-    return $this->commonUtility->successResponse($view_results, $status_code);
+    return $commonUtility->successResponse($view_results, $status_code);
   }
 
 }

@@ -1508,15 +1508,11 @@ display:
             sort_order: asc
             number_of_records: 0
             format: default_summary
-          specify_validation: true
+          specify_validation: false
           validate:
-            type: 'entity:configurable_language'
-            fail: empty
-          validate_options:
-            operation: view
-            multiple: 0
-            access: false
-            bundles: null
+            type: none
+            fail: 'not found'
+          validate_options: {  }
           entity_type: node
           entity_field: langcode
           plugin_id: language
@@ -2834,7 +2830,7 @@ display:
           group_type: group
           admin_label: ''
           label: ''
-          exclude: false
+          exclude: true
           alter:
             alter_text: true
             text: '{{ langcode__value }}'

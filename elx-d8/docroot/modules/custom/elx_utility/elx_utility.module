@@ -40,6 +40,7 @@ function elx_utility_views_query_alter(ViewExecutable $view, $query) {
     'video_listing',
     'video_listing_mobile',
     'video_details',
+    'fact_sheets_list',
   ];
   $current_display = [
     'rest_export_product_listings',
@@ -50,6 +51,7 @@ function elx_utility_views_query_alter(ViewExecutable $view, $query) {
     'rest_export_video_category',
     'rest_export_level_interactive_content',
     'rest_export_tools_listing',
+    'rest_export_fact_sheets_list',
   ];
   $access_by_role_api = [
     'rest_export_product_listings',
