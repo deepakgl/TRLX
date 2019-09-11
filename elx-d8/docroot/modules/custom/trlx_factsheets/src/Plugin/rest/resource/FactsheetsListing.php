@@ -33,7 +33,7 @@ class FactsheetsListing extends ResourceBase {
   public function get(Request $request) {
     $commonUtility = new CommonUtility();
     $entityUtility = new EntityUtility();
-  
+
     // Required parameters
     $requiredParams = [
       '_format',
@@ -66,7 +66,7 @@ class FactsheetsListing extends ResourceBase {
     if (!($response->getStatusCode() === Response::HTTP_OK)) {
       return $response;
     }
-  
+
     // Validation for valid brand key
     // Prepare view response for valid brand key
     list($view_results, $status_code) = $entityUtility->fetchApiResult(
@@ -76,7 +76,7 @@ class FactsheetsListing extends ResourceBase {
       '',
       $brandId
     );
-  
+
     // Check for empty resultset
     if (empty($view_results)) {
       return $commonUtility->errorResponse($this->t('Brand Id (@brandId) does not exist.', ['@brandId' => $brandId]), Response::HTTP_UNPROCESSABLE_ENTITY);
@@ -97,7 +97,7 @@ class FactsheetsListing extends ResourceBase {
     if (!empty($errorResponse)) {
       return $errorResponse;
     }
-  
+
     // Prepare redis key.
     $key = ':factsheetsListings:' . '_' . $language . '_' . $limit . '_' . $offset;
 
@@ -107,13 +107,12 @@ class FactsheetsListing extends ResourceBase {
       'fact_sheets_list',
       'rest_export_fact_sheets_list',
       $data,
-      ['brand' => $brandId, 'language' => $language, 'limit' => $limit, 'offset' => $offset]
+      ['brand' => $brandId, 'language' => $language]
     );
 
     // Check for empty / no result from views
     if (empty($view_results)) {
-      // fixMe - Check what code to pass to response
-      return $commonUtility->errorResponse($this->t('No result found.'), Response::HTTP_UNPROCESSABLE_ENTITY);
+      return $commonUtility->successResponse([], Response::HTTP_OK);
     }
 
     return $commonUtility->successResponse($view_results['results'], $status_code, $view_results['pager']);
