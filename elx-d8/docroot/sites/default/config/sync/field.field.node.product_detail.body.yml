@@ -19,7 +19,7 @@ id: node.product_detail.body
 field_name: body
 entity_type: node
 bundle: product_detail
-label: Description
+label: 'What It Is'
 description: ''
 required: false
 translatable: true

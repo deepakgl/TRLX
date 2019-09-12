@@ -6,12 +6,20 @@ dependencies:
     - field.storage.node.field_benefits
     - node.type.product_detail
   module:
+    - allowed_formats
     - text
+third_party_settings:
+  allowed_formats:
+    full_html: '0'
+    basic_html: '0'
+    restricted_html: '0'
+    plain_text: '0'
+    quiz: '0'
 id: node.product_detail.field_benefits
 field_name: field_benefits
 entity_type: node
 bundle: product_detail
-label: Benefits
+label: 'What It Does'
 description: ''
 required: false
 translatable: true

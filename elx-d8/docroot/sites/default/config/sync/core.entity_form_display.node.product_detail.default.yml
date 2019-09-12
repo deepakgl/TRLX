@@ -78,7 +78,7 @@ content:
     type: text_textarea_with_summary
     region: content
   field_access_by_role:
-    weight: 8
+    weight: 10
     settings: {  }
     third_party_settings: {  }
     type: options_buttons
@@ -97,7 +97,7 @@ content:
     type: options_select
     region: content
   field_benefits:
-    weight: 19
+    weight: 5
     settings:
       rows: 9
       summary_rows: 3
@@ -106,7 +106,7 @@ content:
     type: text_textarea_with_summary
     region: content
   field_brands:
-    weight: 6
+    weight: 8
     settings: {  }
     third_party_settings: {  }
     type: options_buttons
@@ -121,7 +121,7 @@ content:
     type: text_textarea_with_summary
     region: content
   field_demonstration:
-    weight: 18
+    weight: 6
     settings:
       rows: 9
       summary_rows: 3
@@ -138,7 +138,7 @@ content:
     type: string_textfield
     region: content
   field_downloadable:
-    weight: 7
+    weight: 9
     settings:
       display_label: true
     third_party_settings: {  }
@@ -219,7 +219,7 @@ content:
     type: term_reference_tree
     region: content
   field_point_value:
-    weight: 5
+    weight: 7
     settings:
       size: 60
       placeholder: ''
@@ -227,7 +227,7 @@ content:
     type: string_textfield
     region: content
   field_product_categories:
-    weight: 13
+    weight: 15
     settings: {  }
     third_party_settings: {  }
     type: options_buttons
@@ -263,7 +263,7 @@ content:
     type: entity_browser_entity_reference
     region: content
   field_season:
-    weight: 15
+    weight: 17
     settings: {  }
     third_party_settings: {  }
     type: options_select
@@ -277,7 +277,7 @@ content:
     type: string_textfield
     region: content
   field_tags_keywords:
-    weight: 10
+    weight: 12
     settings:
       match_operator: CONTAINS
       size: 60
@@ -299,7 +299,7 @@ content:
     type: boolean_checkbox
     region: content
   field_why_there_s_only_one:
-    weight: 17
+    weight: 19
     settings:
       rows: 9
       summary_rows: 3
@@ -309,14 +309,14 @@ content:
     region: content
   langcode:
     type: language_select
-    weight: 9
+    weight: 11
     region: content
     settings:
       include_locked: true
     third_party_settings: {  }
   path:
     type: path
-    weight: 14
+    weight: 16
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -324,7 +324,7 @@ content:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 11
+    weight: 13
     region: content
     third_party_settings: {  }
   status:
@@ -338,7 +338,7 @@ content:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 12
+    weight: 14
     region: content
     third_party_settings: {  }
   title:
@@ -350,7 +350,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
   translation:
-    weight: 16
+    weight: 18
     region: content
     settings: {  }
     third_party_settings: {  }

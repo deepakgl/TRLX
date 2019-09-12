@@ -78,7 +78,9 @@ class ProductDetails extends ResourceBase {
       'subTitle' => 'decode',
       'nid' => 'int',
       'pointValue' => 'int',
-      'body' => 'decode',
+      'whatItIs' => 'decode',
+      'whatItDoes' => 'decode',
+      'demonstration' => 'decode',
       'video' => 'append_host',
     ];
   
