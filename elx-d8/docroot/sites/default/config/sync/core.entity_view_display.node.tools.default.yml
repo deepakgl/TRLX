@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.field.node.tools.field_brands
     - field.field.node.tools.field_display_title
+    - field.field.node.tools.field_downloadable
     - field.field.node.tools.field_featured
     - field.field.node.tools.field_featured_image
     - field.field.node.tools.field_headline
@@ -57,6 +58,16 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     type: string
+    region: content
+  field_downloadable:
+    weight: 127
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
     region: content
   field_featured:
     weight: 108

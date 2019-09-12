@@ -70,6 +70,7 @@ class TrendListing extends ResourceBase {
       'subTitle' => 'decode',
       'nid' => 'int',
       'pointValue' => 'int',
+      'downloadable' => 'boolean',
     ];
 
     list($limit, $offset, $errorResponse) = $commonUtility->getPagerParam($request);

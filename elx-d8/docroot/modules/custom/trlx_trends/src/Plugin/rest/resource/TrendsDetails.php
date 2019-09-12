@@ -65,6 +65,7 @@ class TrendsDetails extends ResourceBase {
       'subTitle' => 'decode',
       'nid' => 'int',
       'pointValue' => 'int',
+      'downloadable' => 'boolean',
     ];
 
     // Prepare redis key.

@@ -4,7 +4,6 @@ namespace Drupal\trlx_brand_story\Plugin\rest\resource;
 
 use Drupal\rest\Plugin\ResourceBase;
 use Symfony\Component\HttpFoundation\Request;
-use Drupal\elx_user\Utility\UserUtility;
 use Drupal\trlx_utility\Utility\EntityUtility;
 use Drupal\trlx_utility\Utility\CommonUtility;
 use Symfony\Component\HttpFoundation\Response;
@@ -32,9 +31,8 @@ class BrandStoryDetails extends ResourceBase {
    *   Story details.
    */
   public function get(Request $request) {
-    $user_utility = new UserUtility();
-    $this->commonUtility = new CommonUtility();
-    $this->entityUtility = new EntityUtility();
+    $commonUtility = new CommonUtility();
+    $entityUtility = new EntityUtility();
     $nid = $request->query->get('nid');
     $language = $request->query->get('language');
 
@@ -42,22 +40,22 @@ class BrandStoryDetails extends ResourceBase {
     if (empty($language)) {
       $param = ['language'];
 
-      return $this->commonUtility->invalidData($param);
+      return $commonUtility->invalidData($param);
     }
 
     // Checkfor valid language code.
-    $response = $this->commonUtility->validateLanguageCode($language, $request);
+    $response = $commonUtility->validateLanguageCode($language, $request);
     if (!($response->getStatusCode() === Response::HTTP_OK)) {
       return $response;
     }
 
     if (empty($nid)) {
       $param = ['nid'];
-      return $this->commonUtility->invalidData($param);
+      return $commonUtility->invalidData($param);
     }
 
-    if (empty($this->commonUtility->isValidNid($nid, $language))) {
-      return $this->commonUtility->errorResponse($this->t('Node id does not exist or requested language data is not available.'), Response::HTTP_UNPROCESSABLE_ENTITY);
+    if (empty($commonUtility->isValidNid($nid, $language))) {
+      return $commonUtility->errorResponse($this->t('Node id does not exist or requested language data is not available.'), Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     // Prepare array of keys for alteration in response.
@@ -68,12 +66,13 @@ class BrandStoryDetails extends ResourceBase {
       'nid' => 'int',
       'pointValue' => 'int',
       'video' => 'append_host',
+      'downloadable' => 'boolean',
     ];
     // Prepare redis key.
     $key = ':brandStoryDetails:' . '_' . $nid . '_' . $language;
 
     // Prepare response.
-    list($view_results, $status_code,) = $this->entityUtility->fetchApiResult(
+    list($view_results, $status_code,) = $entityUtility->fetchApiResult(
       $key,
       'brand_story',
       'rest_export_brand_story_details',
@@ -81,12 +80,12 @@ class BrandStoryDetails extends ResourceBase {
       'brand_story_detail'
     );
 
-    // Check for empty/no result from views.
+    // Check for empty / no result from views.
     if (empty($view_results)) {
-      return $this->commonUtility->errorResponse($this->t('No result found.'), $status_code);
+      return $commonUtility->successResponse([], Response::HTTP_OK);
     }
 
-    return $this->commonUtility->successResponse($view_results, $status_code);
+    return $commonUtility->successResponse($view_results, $status_code);
   }
 
 }
