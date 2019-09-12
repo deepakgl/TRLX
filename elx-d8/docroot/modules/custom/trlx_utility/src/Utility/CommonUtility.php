@@ -142,7 +142,7 @@ class CommonUtility {
    * @param mixed $param
    *   Parameter name.
    *
-   * @return JsonResponse
+   * @return \Symfony\Component\HttpFoundation\JsonResponse
    *   Following params required.
    */
   public function invalidData($param = []) {
@@ -167,7 +167,7 @@ class CommonUtility {
    *   Node id.
    *
    * @param string $langcode
-   *   Two characters long language code
+   *   Two characters long language code.
    *
    * @return bool
    *   True or false.

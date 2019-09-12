@@ -1,0 +1,5 @@
+name: TRLX TR Trends
+type: module
+description: TRLX custom module for TR Trends.
+core: 8.x
+package: TRLX

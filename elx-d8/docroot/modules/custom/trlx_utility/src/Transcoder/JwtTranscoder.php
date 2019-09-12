@@ -2,7 +2,6 @@
 
 namespace Drupal\trlx_utility\Transcoder;
 
-use Drupal\Core\Config\ConfigFactoryInterface;
 use Firebase\JWT\JWT;
 
 /**
@@ -34,7 +33,7 @@ class JwtTranscoder {
    */
   public function decode($jwt) {
 
-    //@TODO Create a config to set key and $algorithms
+    // @TODO Create a config to set key and $algorithms
     $key = '43B0CEF99265F9E34C10EA9D3501926D27B39F57C6D674561D8BA236E7A819FB';
     $algorithms = ['HS256'];
     try {

@@ -6,6 +6,17 @@ dependencies:
     - field.storage.node.field_markets
     - node.type.stories
     - taxonomy.vocabulary.markets
+  content:
+    - 'taxonomy_term:markets:17c7b9d1-ce1d-4e92-8be7-3928b522bf12'
+    - 'taxonomy_term:markets:28d3a5d3-e049-4e59-9ae7-61096494f8e0'
+    - 'taxonomy_term:markets:416ae29a-b8f7-4398-b4d1-29c77667d878'
+    - 'taxonomy_term:markets:4f1c1dd1-11c6-42eb-afd5-5a4c8baf4442'
+    - 'taxonomy_term:markets:5a39b073-ddf8-4f83-9cbe-2bf28b7373d3'
+    - 'taxonomy_term:markets:939ce1a7-7e87-4395-8775-20cbe0a856be'
+    - 'taxonomy_term:markets:a401a297-07c9-4067-91fd-02b130039a49'
+    - 'taxonomy_term:markets:ae7bea46-5433-4dba-b53b-b60ad1ed607d'
+    - 'taxonomy_term:markets:af97464c-cdd8-4000-98c6-9c6157c5dc58'
+    - 'taxonomy_term:markets:d6a4626d-613f-41c7-922b-d329296c04eb'
 id: node.stories.field_markets
 field_name: field_markets
 entity_type: node
@@ -14,7 +25,27 @@ label: Market
 description: ''
 required: false
 translatable: true
-default_value: {  }
+default_value:
+  -
+    target_uuid: a401a297-07c9-4067-91fd-02b130039a49
+  -
+    target_uuid: af97464c-cdd8-4000-98c6-9c6157c5dc58
+  -
+    target_uuid: d6a4626d-613f-41c7-922b-d329296c04eb
+  -
+    target_uuid: 17c7b9d1-ce1d-4e92-8be7-3928b522bf12
+  -
+    target_uuid: 4f1c1dd1-11c6-42eb-afd5-5a4c8baf4442
+  -
+    target_uuid: 939ce1a7-7e87-4395-8775-20cbe0a856be
+  -
+    target_uuid: 5a39b073-ddf8-4f83-9cbe-2bf28b7373d3
+  -
+    target_uuid: ae7bea46-5433-4dba-b53b-b60ad1ed607d
+  -
+    target_uuid: 28d3a5d3-e049-4e59-9ae7-61096494f8e0
+  -
+    target_uuid: 416ae29a-b8f7-4398-b4d1-29c77667d878
 default_value_callback: ''
 settings:
   handler: 'default:taxonomy_term'

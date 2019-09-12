@@ -53,16 +53,6 @@ function elx_utility_views_query_alter(ViewExecutable $view, $query) {
     'rest_export_tools_listing',
     'rest_export_fact_sheets_list',
   ];
-  $access_by_role_api = [
-    'rest_export_product_listings',
-    'rest_export_product_detail',
-    'rest_export_video_listing',
-    'rest_export_video_listing_mobile',
-    'rest_export_video_details',
-    'rest_export_stories_listing',
-    'rest_export_stories_details',
-    'rest_export_tools_listing',
-  ];
   if (in_array($view->id(), $view_id)) {
     if (in_array($view->current_display, $current_display)) {
       $limit = $_GET['limit'] != 0 ? (int) $_GET['limit'] : 10;
@@ -149,7 +139,7 @@ function elx_utility_form_alter(&$form, FormStateInterface $form_state, $form_id
     case 'bulk_update_fields_form':
       if (!in_array('el_regional_market_admin', $roles)) {
         // Attached elx_market js.
-        $form['#attached']['library'][] = 'elx_market_hierarchy/elx_market';
+       // $form['#attached']['library'][] = 'elx_market_hierarchy/elx_market';
       }
       break;
 
@@ -491,8 +481,8 @@ function elx_utility_get_redis_pattern(EntityInterface $entity) {
       $pattern[] = implode(':', [$env, 'spotlightSectionMarketWise*']);
     }
     elseif ($entity_type == 'stories') {
-      $pattern[] = implode(':', [$env, 'storiesListing*']);
-      $pattern[] = implode(':', [$env, 'storiesDetail*']);
+      $pattern[] = implode(':', [$env, 'trendListing*']);
+      $pattern[] = implode(':', [$env, 'trendDetail*']);
       $pattern[] = implode(':', [$env, 'spotlightSection*']);
       $pattern[] = implode(':', [$env, 'spotlightSectionMarketWise*']);
       $pattern[] = implode(':', [$env, 'storiesTrendingSection*']);

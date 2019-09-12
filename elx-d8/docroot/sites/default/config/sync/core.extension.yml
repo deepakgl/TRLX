@@ -138,6 +138,7 @@ module:
   trlx_dashboard: 0
   trlx_factsheets: 0
   trlx_products: 0
+  trlx_trends: 0
   trlx_utility: 0
   trlx_video: 0
   user: 0
