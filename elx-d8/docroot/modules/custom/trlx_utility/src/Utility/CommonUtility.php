@@ -65,7 +65,7 @@ class CommonUtility {
    *   Json response.
    */
   public function validateLanguageCode($langcode, $request) {
-    if (!$request->query->has('language')) {
+    if (!$request->query->has('language') || empty($langcode)) {
       return $this->errorResponse(t('Language parameter is required.'), Response::HTTP_BAD_REQUEST);
     }
 
@@ -89,7 +89,7 @@ class CommonUtility {
    *   Json response.
    */
   public function validateFormat($_format, $request) {
-    if (!$request->query->has('_format')) {
+    if (!$request->query->has('_format') || empty($_format)) {
       return $this->errorResponse(t('"_format" parameter is required.'), Response::HTTP_BAD_REQUEST);
     }
 
