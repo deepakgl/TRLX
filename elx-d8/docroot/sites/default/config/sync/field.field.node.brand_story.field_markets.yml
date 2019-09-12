@@ -1,0 +1,273 @@
+uuid: 93923238-f777-4598-bedd-e41c563750bd
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_markets
+    - node.type.brand_story
+    - taxonomy.vocabulary.markets
+  content:
+    - 'taxonomy_term:markets:02a9bc3f-8a6c-4f4f-9e10-bc465b5f7a09'
+    - 'taxonomy_term:markets:03b45a68-bc70-45bf-9562-90045fe33819'
+    - 'taxonomy_term:markets:0da3d233-6494-4ea1-af9b-bab6c11ea57c'
+    - 'taxonomy_term:markets:0e0361d4-6b92-4f59-8478-406c9b3bb87a'
+    - 'taxonomy_term:markets:17c7b9d1-ce1d-4e92-8be7-3928b522bf12'
+    - 'taxonomy_term:markets:18e98ef8-13c0-4552-b717-d53c88cadd40'
+    - 'taxonomy_term:markets:1943f6df-2477-45c9-b173-3af10cfdaf0f'
+    - 'taxonomy_term:markets:1cb0354c-3931-4934-b631-ef063d354b66'
+    - 'taxonomy_term:markets:1e867500-3097-4c5c-ab1e-6b53024bb8fc'
+    - 'taxonomy_term:markets:246333a1-8419-4167-a500-4c50282f2e01'
+    - 'taxonomy_term:markets:25ad35dc-2851-4b03-a266-79877011d458'
+    - 'taxonomy_term:markets:28d3a5d3-e049-4e59-9ae7-61096494f8e0'
+    - 'taxonomy_term:markets:2a401895-d7bf-4311-9f3a-2cbc03cb5603'
+    - 'taxonomy_term:markets:332a692e-6166-4db8-b71e-02d7f944403e'
+    - 'taxonomy_term:markets:34b63ae7-90f4-4266-bc6c-96c952e26e58'
+    - 'taxonomy_term:markets:3aac40d8-2c54-4796-9f46-63e18ea9be96'
+    - 'taxonomy_term:markets:3f459a14-405c-4258-bc4c-a4aaf923f3f2'
+    - 'taxonomy_term:markets:3f82dd7a-82ef-4d20-b4fd-c1b95c2acbe6'
+    - 'taxonomy_term:markets:416ae29a-b8f7-4398-b4d1-29c77667d878'
+    - 'taxonomy_term:markets:41c66e28-ebfa-49d1-9ffc-9c52755ef49d'
+    - 'taxonomy_term:markets:447a845b-4442-41e0-a86f-5f204a4c3f32'
+    - 'taxonomy_term:markets:44bcaa46-7f24-430c-aa4f-891e16fc3277'
+    - 'taxonomy_term:markets:4f0643ba-21a3-4298-95c6-ccb6306acb74'
+    - 'taxonomy_term:markets:4f1c1dd1-11c6-42eb-afd5-5a4c8baf4442'
+    - 'taxonomy_term:markets:515383d2-24c2-4a7b-b5fe-79d89ce507af'
+    - 'taxonomy_term:markets:516d45d9-7c75-4cf9-ad02-c95e95a19734'
+    - 'taxonomy_term:markets:5a39b073-ddf8-4f83-9cbe-2bf28b7373d3'
+    - 'taxonomy_term:markets:5cfe279b-7d23-48f0-9c7d-1f726abe3cc0'
+    - 'taxonomy_term:markets:5f762e87-233d-432f-b68e-18810fb78015'
+    - 'taxonomy_term:markets:5fb7ff0e-718c-4571-adc6-e0156e1da817'
+    - 'taxonomy_term:markets:625c57b2-755a-4365-ad6b-6ccc87123755'
+    - 'taxonomy_term:markets:63072f31-564c-41fe-a76a-01a282af22c2'
+    - 'taxonomy_term:markets:66dfc17e-852f-4839-ad43-15411b389b58'
+    - 'taxonomy_term:markets:6b04ba60-aa02-4235-8bc8-7d688de353a4'
+    - 'taxonomy_term:markets:70b7c5d9-2924-4580-9d01-690988355eb4'
+    - 'taxonomy_term:markets:737bccbe-36a5-4214-a9d3-e4de336ceab5'
+    - 'taxonomy_term:markets:7544f6da-8d6e-42bc-9117-490627f00a0e'
+    - 'taxonomy_term:markets:79d1ad17-0e4a-4191-a5b2-3c9935a18e52'
+    - 'taxonomy_term:markets:8525b12d-61e0-446f-8e8d-d2bd6778e557'
+    - 'taxonomy_term:markets:8603a335-57e6-4488-94f7-ef0982946f05'
+    - 'taxonomy_term:markets:8d22fb30-b7bb-4a55-ad75-276fc7866631'
+    - 'taxonomy_term:markets:8dd0aee4-bd33-4444-a787-0d8075d5788a'
+    - 'taxonomy_term:markets:9187aaa5-11b4-4746-afd3-1a34369ed768'
+    - 'taxonomy_term:markets:938685cb-25f6-4287-87ce-a804ec229fa5'
+    - 'taxonomy_term:markets:939ce1a7-7e87-4395-8775-20cbe0a856be'
+    - 'taxonomy_term:markets:95627cbc-2b4a-4f77-a3d7-c49725e1a52d'
+    - 'taxonomy_term:markets:974c3d96-5234-491d-a2e4-44070ff11c6c'
+    - 'taxonomy_term:markets:9d611f09-fdb5-4849-a3da-ee1789c86317'
+    - 'taxonomy_term:markets:a2cb493f-9c19-4489-8d77-ce76c392432a'
+    - 'taxonomy_term:markets:a401a297-07c9-4067-91fd-02b130039a49'
+    - 'taxonomy_term:markets:a56d25ae-6dbf-4bcc-a688-c3373c32b278'
+    - 'taxonomy_term:markets:a75366e1-26ff-41bb-ad09-e6a68b63bcca'
+    - 'taxonomy_term:markets:a8e7e43e-5e4b-4e17-bb38-174358673389'
+    - 'taxonomy_term:markets:ad8735d8-643a-4e77-928b-9881e3b68ab0'
+    - 'taxonomy_term:markets:ae7bea46-5433-4dba-b53b-b60ad1ed607d'
+    - 'taxonomy_term:markets:ae82f9f6-d580-4faf-8bb8-962b8e8258e2'
+    - 'taxonomy_term:markets:af97464c-cdd8-4000-98c6-9c6157c5dc58'
+    - 'taxonomy_term:markets:b27d1016-98ac-445f-8e4b-e22bd5dd90bc'
+    - 'taxonomy_term:markets:b30cf934-68fb-4192-af5f-131ef41c72dc'
+    - 'taxonomy_term:markets:bf5e4b49-4242-452a-b11a-c7b8ea568a14'
+    - 'taxonomy_term:markets:ca1705cf-fe80-41fa-84b8-1b13d6b71be7'
+    - 'taxonomy_term:markets:cb501ee7-2f30-4148-90bf-7435d237e463'
+    - 'taxonomy_term:markets:ccf50a60-af04-4dd8-bf5d-7392ff64665a'
+    - 'taxonomy_term:markets:cf523835-36bd-4e41-9c61-7aff55522bf7'
+    - 'taxonomy_term:markets:d12846b4-7c6a-403a-8285-d7fba2d79a9f'
+    - 'taxonomy_term:markets:d1e6df55-7380-4e87-85b8-d42ecfcc7041'
+    - 'taxonomy_term:markets:d3b06e1c-6cc2-4c3b-9f87-6b62398d2b06'
+    - 'taxonomy_term:markets:d6a4626d-613f-41c7-922b-d329296c04eb'
+    - 'taxonomy_term:markets:d8c8a5c0-bbcc-4044-99e7-b27eb6877fae'
+    - 'taxonomy_term:markets:dc190512-3e7d-4319-91f5-ce77bbed5ee7'
+    - 'taxonomy_term:markets:dd3eac0b-e525-433d-a72d-20316c214895'
+    - 'taxonomy_term:markets:e05d4cfa-5720-46ee-a7a5-5fc0848514cf'
+    - 'taxonomy_term:markets:e06d20fd-6c24-4ac8-b65b-1670b764a79e'
+    - 'taxonomy_term:markets:e19ed166-8ef8-4934-b397-2ece59d8fd07'
+    - 'taxonomy_term:markets:f316da5f-e050-4413-80a8-8ab105eec863'
+    - 'taxonomy_term:markets:f491d429-bd01-404a-a41e-fef4f4edffad'
+    - 'taxonomy_term:markets:f4a930f3-d73a-4335-8da7-308b44f2350e'
+    - 'taxonomy_term:markets:f8631bcd-a12a-45f4-9f37-81e840a955fb'
+    - 'taxonomy_term:markets:fa3ba7c9-7043-4011-ac9e-4e9fce3cb15c'
+    - 'taxonomy_term:markets:fa3f76a6-2b14-4940-bb0d-a1c5937cfbc1'
+    - 'taxonomy_term:markets:ffa9b4b7-cf5d-43ab-ba06-35bf8aef7c98'
+id: node.brand_story.field_markets
+field_name: field_markets
+entity_type: node
+bundle: brand_story
+label: Market
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    target_uuid: a401a297-07c9-4067-91fd-02b130039a49
+  -
+    target_uuid: af97464c-cdd8-4000-98c6-9c6157c5dc58
+  -
+    target_uuid: f8631bcd-a12a-45f4-9f37-81e840a955fb
+  -
+    target_uuid: 41c66e28-ebfa-49d1-9ffc-9c52755ef49d
+  -
+    target_uuid: e06d20fd-6c24-4ac8-b65b-1670b764a79e
+  -
+    target_uuid: 25ad35dc-2851-4b03-a266-79877011d458
+  -
+    target_uuid: bf5e4b49-4242-452a-b11a-c7b8ea568a14
+  -
+    target_uuid: a56d25ae-6dbf-4bcc-a688-c3373c32b278
+  -
+    target_uuid: 5fb7ff0e-718c-4571-adc6-e0156e1da817
+  -
+    target_uuid: d6a4626d-613f-41c7-922b-d329296c04eb
+  -
+    target_uuid: 3f459a14-405c-4258-bc4c-a4aaf923f3f2
+  -
+    target_uuid: 17c7b9d1-ce1d-4e92-8be7-3928b522bf12
+  -
+    target_uuid: d12846b4-7c6a-403a-8285-d7fba2d79a9f
+  -
+    target_uuid: 332a692e-6166-4db8-b71e-02d7f944403e
+  -
+    target_uuid: 4f1c1dd1-11c6-42eb-afd5-5a4c8baf4442
+  -
+    target_uuid: d3b06e1c-6cc2-4c3b-9f87-6b62398d2b06
+  -
+    target_uuid: 737bccbe-36a5-4214-a9d3-e4de336ceab5
+  -
+    target_uuid: 8603a335-57e6-4488-94f7-ef0982946f05
+  -
+    target_uuid: 939ce1a7-7e87-4395-8775-20cbe0a856be
+  -
+    target_uuid: 516d45d9-7c75-4cf9-ad02-c95e95a19734
+  -
+    target_uuid: 8d22fb30-b7bb-4a55-ad75-276fc7866631
+  -
+    target_uuid: e19ed166-8ef8-4934-b397-2ece59d8fd07
+  -
+    target_uuid: 3aac40d8-2c54-4796-9f46-63e18ea9be96
+  -
+    target_uuid: 63072f31-564c-41fe-a76a-01a282af22c2
+  -
+    target_uuid: 7544f6da-8d6e-42bc-9117-490627f00a0e
+  -
+    target_uuid: f4a930f3-d73a-4335-8da7-308b44f2350e
+  -
+    target_uuid: ad8735d8-643a-4e77-928b-9881e3b68ab0
+  -
+    target_uuid: a8e7e43e-5e4b-4e17-bb38-174358673389
+  -
+    target_uuid: 8525b12d-61e0-446f-8e8d-d2bd6778e557
+  -
+    target_uuid: 18e98ef8-13c0-4552-b717-d53c88cadd40
+  -
+    target_uuid: 6b04ba60-aa02-4235-8bc8-7d688de353a4
+  -
+    target_uuid: 03b45a68-bc70-45bf-9562-90045fe33819
+  -
+    target_uuid: 2a401895-d7bf-4311-9f3a-2cbc03cb5603
+  -
+    target_uuid: 0e0361d4-6b92-4f59-8478-406c9b3bb87a
+  -
+    target_uuid: ca1705cf-fe80-41fa-84b8-1b13d6b71be7
+  -
+    target_uuid: cf523835-36bd-4e41-9c61-7aff55522bf7
+  -
+    target_uuid: ae82f9f6-d580-4faf-8bb8-962b8e8258e2
+  -
+    target_uuid: 3f82dd7a-82ef-4d20-b4fd-c1b95c2acbe6
+  -
+    target_uuid: 79d1ad17-0e4a-4191-a5b2-3c9935a18e52
+  -
+    target_uuid: a75366e1-26ff-41bb-ad09-e6a68b63bcca
+  -
+    target_uuid: 66dfc17e-852f-4839-ad43-15411b389b58
+  -
+    target_uuid: ffa9b4b7-cf5d-43ab-ba06-35bf8aef7c98
+  -
+    target_uuid: 70b7c5d9-2924-4580-9d01-690988355eb4
+  -
+    target_uuid: 938685cb-25f6-4287-87ce-a804ec229fa5
+  -
+    target_uuid: 9187aaa5-11b4-4746-afd3-1a34369ed768
+  -
+    target_uuid: d8c8a5c0-bbcc-4044-99e7-b27eb6877fae
+  -
+    target_uuid: 8dd0aee4-bd33-4444-a787-0d8075d5788a
+  -
+    target_uuid: 1943f6df-2477-45c9-b173-3af10cfdaf0f
+  -
+    target_uuid: 5a39b073-ddf8-4f83-9cbe-2bf28b7373d3
+  -
+    target_uuid: 246333a1-8419-4167-a500-4c50282f2e01
+  -
+    target_uuid: 95627cbc-2b4a-4f77-a3d7-c49725e1a52d
+  -
+    target_uuid: dd3eac0b-e525-433d-a72d-20316c214895
+  -
+    target_uuid: f491d429-bd01-404a-a41e-fef4f4edffad
+  -
+    target_uuid: ccf50a60-af04-4dd8-bf5d-7392ff64665a
+  -
+    target_uuid: 515383d2-24c2-4a7b-b5fe-79d89ce507af
+  -
+    target_uuid: f316da5f-e050-4413-80a8-8ab105eec863
+  -
+    target_uuid: 9d611f09-fdb5-4849-a3da-ee1789c86317
+  -
+    target_uuid: 5cfe279b-7d23-48f0-9c7d-1f726abe3cc0
+  -
+    target_uuid: 1e867500-3097-4c5c-ab1e-6b53024bb8fc
+  -
+    target_uuid: 44bcaa46-7f24-430c-aa4f-891e16fc3277
+  -
+    target_uuid: e05d4cfa-5720-46ee-a7a5-5fc0848514cf
+  -
+    target_uuid: 447a845b-4442-41e0-a86f-5f204a4c3f32
+  -
+    target_uuid: ae7bea46-5433-4dba-b53b-b60ad1ed607d
+  -
+    target_uuid: 1cb0354c-3931-4934-b631-ef063d354b66
+  -
+    target_uuid: b27d1016-98ac-445f-8e4b-e22bd5dd90bc
+  -
+    target_uuid: 02a9bc3f-8a6c-4f4f-9e10-bc465b5f7a09
+  -
+    target_uuid: 0da3d233-6494-4ea1-af9b-bab6c11ea57c
+  -
+    target_uuid: 34b63ae7-90f4-4266-bc6c-96c952e26e58
+  -
+    target_uuid: fa3ba7c9-7043-4011-ac9e-4e9fce3cb15c
+  -
+    target_uuid: cb501ee7-2f30-4148-90bf-7435d237e463
+  -
+    target_uuid: 5f762e87-233d-432f-b68e-18810fb78015
+  -
+    target_uuid: d1e6df55-7380-4e87-85b8-d42ecfcc7041
+  -
+    target_uuid: 974c3d96-5234-491d-a2e4-44070ff11c6c
+  -
+    target_uuid: dc190512-3e7d-4319-91f5-ce77bbed5ee7
+  -
+    target_uuid: 28d3a5d3-e049-4e59-9ae7-61096494f8e0
+  -
+    target_uuid: b30cf934-68fb-4192-af5f-131ef41c72dc
+  -
+    target_uuid: 416ae29a-b8f7-4398-b4d1-29c77667d878
+  -
+    target_uuid: a2cb493f-9c19-4489-8d77-ce76c392432a
+  -
+    target_uuid: 4f0643ba-21a3-4298-95c6-ccb6306acb74
+  -
+    target_uuid: fa3f76a6-2b14-4940-bb0d-a1c5937cfbc1
+  -
+    target_uuid: 625c57b2-755a-4365-ad6b-6ccc87123755
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      markets: markets
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

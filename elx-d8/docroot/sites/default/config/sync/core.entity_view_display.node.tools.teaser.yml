@@ -7,15 +7,12 @@ dependencies:
     - field.field.node.tools.field_display_title
     - field.field.node.tools.field_featured
     - field.field.node.tools.field_featured_image
-    - field.field.node.tools.field_featured_on_elx_specialty
     - field.field.node.tools.field_headline
-    - field.field.node.tools.field_make_this_welcome_video
     - field.field.node.tools.field_markets
     - field.field.node.tools.field_point_value
     - field.field.node.tools.field_tool_description
     - field.field.node.tools.field_tool_pdf
     - field.field.node.tools.field_tool_thumbnail
-    - field.field.node.tools.field_video_category
     - field.field.node.tools.field_video_sub_titles
     - node.type.tools
   module:
@@ -30,6 +27,7 @@ content:
     region: content
 hidden:
   field_access_by_role: true
+  field_archive_and_unarchive: true
   field_display_title: true
   field_featured: true
   field_featured_image: true
@@ -50,3 +48,4 @@ hidden:
   field_video_category: true
   field_video_sub_titles: true
   langcode: true
+  search_api_excerpt: true

@@ -28,6 +28,7 @@ content:
     region: content
 hidden:
   field_access_by_role: true
+  field_archive_and_unarchive: true
   field_background_image: true
   field_content_object_type: true
   field_featured: true
@@ -48,3 +49,4 @@ hidden:
   field_tool_by_role: true
   field_translation: true
   langcode: true
+  search_api_excerpt: true

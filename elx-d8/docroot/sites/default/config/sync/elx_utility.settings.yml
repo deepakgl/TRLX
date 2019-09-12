@@ -1,20 +1,28 @@
 elastic_host: elasticsearch
-elastic_port: '9200'
+elastic_port: '80'
 elastic_scheme: http
-lrs_statement_id: 'Basic ODVmMDBiOTBkOTI5YjJlZWNmMjJkNmE1YjEzOGY0YWYwZTcwMDdlNjowNzA5MDY0MTEzODQ5OTI2NTA2YmNlZjZhOGMxZWNiMDM1ZDIyZmNm'
-elx_environment: ankit
+lrs_statement_id: 'Basic vdsfsd'
+elx_environment: lmx_local
 redis_host: redis
 redis_port: '6379'
-redis_base: ''
-redis_password: zkuHsFYuY/8AFTXFCCdRrnpyNfMES8ObDpg6dWzsZ40=
-elx_site_url: 'http://localhost:82'
-elx_front_end_url: 'http://localhost:82'
+redis_password: ''
+elx_site_url: 'http://localhost:81'
+elx_front_end_url: ''
 elx_get_started_level_id: ''
 elx_internal_url_video: ''
 elx_mail_subject: ''
 elx_mail_body: ''
+limit: '2000'
+offset: '37000'
 migration_limit: ''
 migration_offset: ''
 migration_mail: ''
+redis_base: '0'
 elastic_username: ''
 elastic_password: ''
+submit: 'Save configuration'
+form_build_id: form-t6IUbNShpNSyl4MmZa65lCsqhebE3XhLGTRoKYelrO8
+form_token: QkG-atdw19UQawiLl8cMvsQ3U67R0ajI9uzXNUay0zA
+form_id: elx_external_integration
+op: 'Save configuration'
+elx_users_list_access_on_site_down: ''

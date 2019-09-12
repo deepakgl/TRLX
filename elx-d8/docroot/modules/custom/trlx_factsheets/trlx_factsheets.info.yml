@@ -1,0 +1,5 @@
+name: TRLX FACT SHEETS
+type: module
+description: TRLX custom module for Fact Sheets.
+core: 8.x
+package: TRLX

@@ -1,0 +1,13 @@
+modules:
+  sendgrid_integration:
+    SG:
+      VrF5boOLShmL-XRyDzGxSA:
+        1d6S597jzY20n2rUvmz2uN6YaNKczWrPNAutVZeEaus:
+          formatter: sendgrid_integration
+          sender: sendgrid_integration
+      formatter: sendgrid_integration
+      sender: sendgrid_integration
+defaults:
+  formatter: sendgrid_integration
+  sender: sendgrid_integration
+theme: current

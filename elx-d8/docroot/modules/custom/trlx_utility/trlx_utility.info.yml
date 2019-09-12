@@ -1,0 +1,7 @@
+name: TRLX Utility
+type: module
+description: TRLX custom utility module.
+core: 8.x
+package: TRLX
+dependencies:
+  -  elx_utility
