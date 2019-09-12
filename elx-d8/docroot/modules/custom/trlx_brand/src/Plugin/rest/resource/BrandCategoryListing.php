@@ -35,7 +35,8 @@ class BrandCategoryListing extends ResourceBase {
     $this->brandUtility = new BrandUtility();
 
     // Response format validation.
-    $response = $this->commonUtility->validateResponseFormat($request);
+    $_format = $request->query->get('_format');
+    $response = $this->commonUtility->validateFormat($_format, $request);
     if (!($response->getStatusCode() === Response::HTTP_OK)) {
       return $response;
     }

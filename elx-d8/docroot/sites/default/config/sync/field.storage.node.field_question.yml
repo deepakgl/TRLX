@@ -1,19 +1,18 @@
-uuid: 4944fe19-ec0a-4526-bdb5-e8b708d86f4b
+uuid: 795d5790-bd87-4c7a-863a-8794fa0cbed3
 langcode: en
 status: true
 dependencies:
   module:
     - node
-    - taxonomy
-id: node.field_brands
-field_name: field_brands
+id: node.field_question
+field_name: field_question
 entity_type: node
-type: entity_reference
+type: string_long
 settings:
-  target_type: taxonomy_term
+  case_sensitive: false
 module: core
 locked: false
-cardinality: -1
+cardinality: 1
 translatable: true
 indexes: {  }
 persist_with_no_fields: false

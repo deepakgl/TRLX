@@ -47,7 +47,7 @@ class EntityUtility {
     if (is_array($arguments) && $this->isAssoc($arguments)) {
       $args = [];
       foreach ($arguments as $key => $argument) {
-        // Set value for $limit & $offset if respective value is available
+        // Set value for $limit & $offset if respective value is available.
         if (in_array($key, ['limit', 'offset'])) {
           $$key = $argument;
         }
@@ -66,12 +66,12 @@ class EntityUtility {
       $view->setArguments($arguments);
     }
 
-    // set view pager limit (items_per_page)
+    // Set view pager limit (items_per_page)
     if (!empty($limit)) {
       $view->setItemsPerPage($limit);
     }
 
-    // set view pager offset
+    // Set view pager offset.
     if (!empty($offset)) {
       $view->setOffset($offset);
     }
