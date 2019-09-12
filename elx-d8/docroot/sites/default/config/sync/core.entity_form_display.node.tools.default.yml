@@ -6,6 +6,7 @@ dependencies:
     - entity_browser.browser.media_entity_browser
     - field.field.node.tools.field_brands
     - field.field.node.tools.field_display_title
+    - field.field.node.tools.field_downloadable
     - field.field.node.tools.field_featured
     - field.field.node.tools.field_featured_image
     - field.field.node.tools.field_headline
@@ -47,6 +48,13 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
+    region: content
+  field_downloadable:
+    weight: 26
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
     region: content
   field_featured_image:
     weight: 11

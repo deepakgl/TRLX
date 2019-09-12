@@ -9,6 +9,7 @@ dependencies:
     - field.field.node.stories.field_archive_and_unarchive
     - field.field.node.stories.field_comment
     - field.field.node.stories.field_display_title
+    - field.field.node.stories.field_downloadable
     - field.field.node.stories.field_featured_image
     - field.field.node.stories.field_featured_on_elx_specialty
     - field.field.node.stories.field_hero_image
@@ -57,6 +58,16 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     type: string
+    region: content
+  field_downloadable:
+    weight: 12
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
     region: content
   field_featured_image:
     weight: 3

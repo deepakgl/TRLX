@@ -85,6 +85,7 @@ class VideoListings extends ResourceBase {
       'displayTitle' => 'decode',
       'nid' => 'int',
       'pointValue' => 'int',
+      'downloadable' => 'boolean',
     ];
 
     list($limit, $offset, $errorResponse) = $commonUtility->getPagerParam($request);

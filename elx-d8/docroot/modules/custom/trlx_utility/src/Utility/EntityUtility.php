@@ -197,7 +197,7 @@ class EntityUtility {
           }
           // Set value for boolean fields without value (if it is unselected by default)
           elseif ($value == 'boolean') {
-            $output['results'][$view_key][$key] = empty($result[$key]) ? "false" : "true";
+            $output['results'][$view_key][$key] = empty($result[$key]) ? false : true;
           }
           else {
             $output['results'][$view_key] = $result;
@@ -248,7 +248,7 @@ class EntityUtility {
           }
           // Set value for boolean fields without value (if it is unselected by default)
           elseif ($value == 'boolean') {
-            $output[$view_key][$key] = empty($result[$key]) ? "false" : "true";
+            $output[$view_key][$key] = empty($result[$key]) ? false : true;
           }
           else {
             $output[$view_key] = $result;
