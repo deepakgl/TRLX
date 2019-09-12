@@ -7,6 +7,7 @@
 
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Implements hook_entity_base_field_info().
@@ -29,4 +30,34 @@ function trlx_utility_entity_base_field_info(EntityTypeInterface $entity_type) {
   }
 
   return $fields;
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function trlx_utility_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  switch ($form_id) {
+    case 'node_best_sellers_form':
+    case 'node_best_sellers_edit_form':
+    case 'node_product_detail_form':
+    case 'node_product_detail_edit_form':
+    case 'node_level_interactive_content_form':
+    case 'node_level_interactive_content_edit_form':
+    case 'node_stories_form':
+    case 'node_stories_edit_form':
+    case 'node_tools_form':
+    case 'node_tools-pdf_form':
+    case 'node_tools_edit_form':
+    case 'node_tools-pdf_edit_form':
+    case 'node_brand_story_form':
+    case 'node_brand_story_edit_form':
+    case 'node_t_c_form':
+    case 'node_t_c_edit_form':
+    case 'node_welcome_message_form':
+    case 'node_welcome_message_edit_form':
+      $form['#attached']['library'][] = 'trlx_utility/trlx_utility';
+      break;
+
+    default:
+  }
 }
