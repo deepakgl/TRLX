@@ -10,9 +10,9 @@ class BrandUtility {
   /**
    * Taxonomy term data based on language and term id.
    *
-   * @param  int $tid
+   * @param int $tid
    *   Term id.
-   * @param  string $language
+   * @param string $language
    *   Language code.
    *
    * @return array

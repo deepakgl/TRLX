@@ -95,7 +95,7 @@ bundle: tools
 label: Market
 description: ''
 required: false
-translatable: true
+translatable: false
 default_value:
   -
     target_uuid: a401a297-07c9-4067-91fd-02b130039a49
