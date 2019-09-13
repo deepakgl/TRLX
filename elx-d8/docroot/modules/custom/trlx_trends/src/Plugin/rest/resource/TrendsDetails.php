@@ -33,25 +33,37 @@ class TrendsDetails extends ResourceBase {
   public function get(Request $request) {
     $commonUtility = new CommonUtility();
     $entityUtility = new EntityUtility();
-    $nid = $request->query->get('nid');
-    $language = $request->query->get('language');
+    // Required parameters.
+    $requiredParams = [
+      '_format',
+      'nid',
+      'language',
+    ];
 
-    // Check for empty language.
-    if (empty($language)) {
-      $param = ['language'];
+    // Check for required parameters.
+    $missingParams = [];
+    foreach ($requiredParams as $param) {
+      $$param = $request->query->get($param);
+      if (empty($$param)) {
+        $missingParams[] = $param;
+      }
+    }
 
-      return $commonUtility->invalidData($param);
+    // Report missing required parameters.
+    if (!empty($missingParams)) {
+      return $commonUtility->invalidData($missingParams);
+    }
+
+    // Checkfor valid _format type.
+    $response = $commonUtility->validateFormat($_format, $request);
+    if (!($response->getStatusCode() === Response::HTTP_OK)) {
+      return $response;
     }
 
     // Checkfor valid language code.
     $response = $commonUtility->validateLanguageCode($language, $request);
     if (!($response->getStatusCode() === Response::HTTP_OK)) {
       return $response;
-    }
-
-    if (empty($nid)) {
-      $param = ['nid'];
-      return $commonUtility->invalidData($param);
     }
 
     if (empty($commonUtility->isValidNid($nid, $language))) {
@@ -82,7 +94,7 @@ class TrendsDetails extends ResourceBase {
 
     // Check for empty / no result from views.
     if (empty($view_results)) {
-      return $commonUtility->successResponse([], Response::HTTP_OK);
+      $status_code = Response::HTTP_NO_CONTENT;
     }
 
     return $commonUtility->successResponse($view_results, $status_code);
