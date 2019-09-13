@@ -187,6 +187,9 @@ class CommonUtility {
    *   True or false.
    */
   public function isValidNid($nid, $langcode) {
+    if (!is_numeric($nid)) {
+      return FALSE;
+    }
     $query = \Drupal::database();
     $query = $query->select('node_field_data', 'n');
     $query->fields('n', ['nid'])
