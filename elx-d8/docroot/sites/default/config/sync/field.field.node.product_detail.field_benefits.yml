@@ -19,7 +19,7 @@ id: node.product_detail.field_benefits
 field_name: field_benefits
 entity_type: node
 bundle: product_detail
-label: 'What It Does'
+label: Benefits
 description: ''
 required: false
 translatable: true

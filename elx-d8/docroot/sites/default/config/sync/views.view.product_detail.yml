@@ -1413,7 +1413,7 @@ display:
               alias: imageSmall
               raw_output: false
             body:
-              alias: whatItIs
+              alias: ''
               raw_output: false
             field_benefits:
               alias: whatItDoes
@@ -2114,7 +2114,7 @@ display:
           group_type: group
           admin_label: ''
           label: ''
-          exclude: false
+          exclude: true
           alter:
             alter_text: false
             text: ''
@@ -2176,7 +2176,7 @@ display:
           group_type: group
           admin_label: ''
           label: ''
-          exclude: false
+          exclude: true
           alter:
             alter_text: false
             text: ''
