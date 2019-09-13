@@ -93,9 +93,9 @@ class BrandStoryDetails extends ResourceBase {
       'brand_story_detail'
     );
 
-    // Check for empty / no result from views.
+    // Check for empty / no result from views
     if (empty($view_results)) {
-      return $commonUtility->successResponse([], Response::HTTP_OK);
+      $status_code = Response::HTTP_NO_CONTENT;
     }
 
     return $commonUtility->successResponse($view_results, $status_code);
