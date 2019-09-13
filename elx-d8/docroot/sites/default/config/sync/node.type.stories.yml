@@ -9,7 +9,7 @@ third_party_settings:
     available_menus:
       - main
     parent: 'main:'
-name: 'TR Trends'
+name: Stories
 type: stories
 description: ''
 help: ''
