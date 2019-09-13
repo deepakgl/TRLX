@@ -9,8 +9,8 @@ use Illuminate\Auth\AuthenticationException;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Auth\Access\AuthorizationException;
 use Tymon\JWTAuth\Exceptions\TokenInvalidException;
-use Tymon\JWTAuth\Exceptions\TokenExpiredException;
-use Tymon\JWTAuth\Exceptions\JWTException;
+use Firebase\JWT\ExpiredException;
+use Firebase\JWT\BeforeValidException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -83,7 +83,7 @@ class Handler extends ExceptionHandler {
     if ($exception instanceof TokenInvalidException) {
       return $this->errorResponse($exception->getMessage(), Response::HTTP_UNAUTHORIZED);
     }
-    if ($exception instanceof TokenExpiredException) {
+    if ($exception instanceof ExpiredException) {
       return $this->errorResponse($exception->getMessage(), Response::HTTP_UNAUTHORIZED);
     }
     if ($exception instanceof NoNodesAvailableException) {
@@ -92,7 +92,7 @@ class Handler extends ExceptionHandler {
     if ($exception instanceof QueryException) {
       return $this->errorResponse($exception->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
     }
-    if ($exception instanceof JWTException) {
+    if ($exception instanceof BeforeValidException) {
       return $this->errorResponse($exception->getMessage(), Response::HTTP_UNAUTHORIZED);
     }
     if ($exception instanceof InvalidArgumentException) {

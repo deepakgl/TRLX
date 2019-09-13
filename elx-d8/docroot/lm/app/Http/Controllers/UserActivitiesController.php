@@ -65,13 +65,12 @@ class UserActivitiesController extends Controller {
    *   User activities.
    */
   public function userActivities(Request $request) {
-    // $uid = Helper::getJtiToken($request);
+    global $userData;
     $validatedData = $this->validate($request, [
-      'uid' => 'required|positiveinteger|exists:users_field_data,uid',
       'nid' => 'required|numericarray|exists:node,nid',
       '_format' => 'required|format'
     ]);
-    $this->uid = $validatedData['uid'];
+    $this->uid = $userData->userId;
     $nids = $validatedData['nid'];
     $client = Helper::checkElasticClient();
     if (!$client) {
