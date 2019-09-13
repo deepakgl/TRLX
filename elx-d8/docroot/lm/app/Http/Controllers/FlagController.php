@@ -49,15 +49,14 @@ class FlagController extends Controller {
    *   Set user flag.
    */
   public function setFlag(Request $request) {
-    // $this->uid = Helper::getJtiToken($request);
+    global $userData;
     $validatedData = $this->validate($request, [
-      'uid' => 'required|positiveinteger|exists:users_field_data,uid',
       'nid' => 'required|positiveinteger|exists:node,nid',
       'flag' => 'required|likebookmarkflag',
       'status' => 'required|boolean',
       '_format' => 'required|format'
     ]);
-    $this->uid = $validatedData['uid'];
+    $this->uid = $userData->userId;
     $nid = $validatedData['nid'];
     $flag = $validatedData['flag'];
     $status = $validatedData['status'];
