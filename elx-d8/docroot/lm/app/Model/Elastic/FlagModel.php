@@ -135,7 +135,7 @@ class FlagModel {
 
     return $response;
   }
-  
+
   /**
    * Delete node data from elastic.
    *
@@ -159,6 +159,6 @@ class FlagModel {
     }
 
     return $response;
-  }  
+  }
 
 }
