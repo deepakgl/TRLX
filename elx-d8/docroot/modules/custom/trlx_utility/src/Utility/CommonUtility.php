@@ -135,11 +135,11 @@ class CommonUtility {
   public function getPagerParam(Request $request, $limit_default = 10, $offset_default = 0) {
     $limit = $request->query->get('limit') ? $request->query->get('limit') : $limit_default;
     $err = [];
-    if (!is_numeric($limit)) {
+    if (!is_numeric($limit) || $limit < 0) {
       $err[] = 'limit';
     }
     $offset = $request->query->get('offset') ? $request->query->get('offset') : $offset_default;
-    if (!is_numeric($offset)) {
+    if (!is_numeric($offset) || $offset < 0) {
       $err[] = 'offset';
     }
 
@@ -259,6 +259,28 @@ class CommonUtility {
     }
 
     return $this->errorResponse(t('Please enter positive integer value.'), Response::HTTP_UNPROCESSABLE_ENTITY);
+  }
+
+  /**
+   * Validate story section.
+   *
+   * @param string $name
+   *   Section name.
+   * @param \Symfony\Component\HttpFoundation\Request $request
+   *   Request object.
+   *
+   * @return \Symfony\Component\HttpFoundation\JsonResponse
+   *   Json response.
+   */
+  public function validateStorySectionCode($name, $request) {
+    if (!$request->query->has('section') || empty($name)) {
+      return $this->errorResponse(t('Section parameter is required.'), Response::HTTP_BAD_REQUEST);
+    }
+    $section = ['trend', 'sellingTips', 'insiderCorner'];
+    if (!preg_match("/^[A-Za-z\\- \']+$/", $name) || !in_array($name, $section)) {
+      return $this->errorResponse(t('Please enter valid section name.'), Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
+    return $this->successResponse();
   }
 
 }

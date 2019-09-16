@@ -9,7 +9,6 @@ dependencies:
     - field.storage.node.field_downloadable
     - field.storage.node.field_point_value
     - field.storage.node.field_video_sub_titles
-    - image.style.video_listing_375_210_
     - node.type.tools
   module:
     - file
@@ -18,7 +17,6 @@ dependencies:
     - node
     - rest
     - serialization
-    - svg_image
     - user
 id: video_details
 label: 'Video Details'
@@ -396,14 +394,11 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: image
+          type: image_url
           settings:
+            url_type: '0'
             image_style: video_listing_375_210_
             image_link: ''
-            svg_render_as_image: 0
-            svg_attributes:
-              width: ''
-              height: ''
           group_column: ''
           group_columns: {  }
           group_rows: true
@@ -464,14 +459,11 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: image
+          type: image_url
           settings:
+            url_type: '0'
             image_style: video_listing_375_210_
             image_link: ''
-            svg_render_as_image: 0
-            svg_attributes:
-              width: ''
-              height: ''
           group_column: ''
           group_columns: {  }
           group_rows: true
