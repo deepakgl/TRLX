@@ -145,7 +145,7 @@ class CommonUtility {
 
     $errResponse = '';
     if (!empty($err)) {
-      $errResponse = $this->errorResponse(t('Please provide only numeric value parameter(s): ' . implode(',', $err)), Response::HTTP_BAD_REQUEST);
+      $errResponse = $this->errorResponse(t('Please provide only numeric value parameter(s): ' . implode(',', $err)), Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     return [$limit, $offset, $errResponse];
