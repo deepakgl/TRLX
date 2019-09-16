@@ -1,0 +1,29 @@
+uuid: b32d03f5-5c80-402f-8c2d-03f042b2fca3
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_content_section_key
+    - taxonomy.vocabulary.trlx_content_sections
+  module:
+    - allowed_formats
+    - text
+third_party_settings:
+  allowed_formats:
+    plain_text: plain_text
+    full_html: '0'
+    basic_html: '0'
+    restricted_html: '0'
+    quiz: '0'
+id: taxonomy_term.trlx_content_sections.field_content_section_key
+field_name: field_content_section_key
+entity_type: taxonomy_term
+bundle: trlx_content_sections
+label: 'Content section key'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text

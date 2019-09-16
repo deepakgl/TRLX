@@ -1,0 +1,53 @@
+uuid: 658a7536-c242-40c1-8ca2-25ae10c2cc6b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.trlx_content_sections.field_content_section_key
+    - taxonomy.vocabulary.trlx_content_sections
+  module:
+    - path
+    - text
+id: taxonomy_term.trlx_content_sections.default
+targetEntityType: taxonomy_term
+bundle: trlx_content_sections
+mode: default
+content:
+  description:
+    type: text_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_content_section_key:
+    weight: 31
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textfield
+    region: content
+  langcode:
+    type: language_select
+    weight: 2
+    region: content
+    settings:
+      include_locked: true
+    third_party_settings: {  }
+  name:
+    type: string_textfield
+    weight: -5
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  path:
+    type: path
+    weight: 30
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden: {  }
