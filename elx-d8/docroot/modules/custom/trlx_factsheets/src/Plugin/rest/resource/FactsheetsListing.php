@@ -34,14 +34,14 @@ class FactsheetsListing extends ResourceBase {
     $commonUtility = new CommonUtility();
     $entityUtility = new EntityUtility();
 
-    // Required parameters
+    // Required parameters.
     $requiredParams = [
       '_format',
       'brandId',
       'language',
     ];
 
-    // Check for required parameters
+    // Check for required parameters.
     $missingParams = [];
     foreach ($requiredParams as $param) {
       $$param = $request->query->get($param);
@@ -55,20 +55,20 @@ class FactsheetsListing extends ResourceBase {
       return $commonUtility->invalidData($missingParams);
     }
 
-    // Checkfor valid _format type
+    // Checkfor valid _format type.
     $response = $commonUtility->validateFormat($_format, $request);
     if (!($response->getStatusCode() === Response::HTTP_OK)) {
       return $response;
     }
 
-    // Checkfor valid language code
+    // Checkfor valid language code.
     $response = $commonUtility->validateLanguageCode($language, $request);
     if (!($response->getStatusCode() === Response::HTTP_OK)) {
       return $response;
     }
 
     // Validation for valid brand key
-    // Prepare view response for valid brand key
+    // Prepare view response for valid brand key.
     list($view_results, $status_code) = $entityUtility->fetchApiResult(
       '',
       'brand_key_validation',
@@ -77,7 +77,7 @@ class FactsheetsListing extends ResourceBase {
       $brandId
     );
 
-    // Check for empty resultset
+    // Check for empty resultset.
     if (empty($view_results)) {
       return $commonUtility->errorResponse($this->t('Brand Id (@brandId) does not exist.', ['@brandId' => $brandId]), Response::HTTP_UNPROCESSABLE_ENTITY);
     }
@@ -85,12 +85,11 @@ class FactsheetsListing extends ResourceBase {
     // Prepare array of keys for alteration in response.
     $data = [
       'nid' => 'int',
-      'link' => 'int',
       'title' => 'decode',
       'displayTitle' => 'decode',
       'subTitle' => 'decode',
       'pointValue' => 'int',
-      'downloadable' => 'boolean'
+      'downloadable' => 'boolean',
     ];
 
     list($limit, $offset, $errorResponse) = $commonUtility->getPagerParam($request);
@@ -110,11 +109,12 @@ class FactsheetsListing extends ResourceBase {
       ['brand' => $brandId, 'language' => $language]
     );
 
-    // Check for empty / no result from views
+    // Check for empty / no result from views.
     if (empty($view_results)) {
       return $commonUtility->successResponse([], Response::HTTP_OK);
     }
 
     return $commonUtility->successResponse($view_results['results'], $status_code, $view_results['pager']);
   }
+
 }

@@ -56,13 +56,13 @@ class ProductDetails extends ResourceBase {
       return $commonUtility->invalidData($missingParams);
     }
 
-    // Checkfor valid _format type
+    // Checkfor valid _format type.
     $response = $commonUtility->validateFormat($_format, $request);
     if (!($response->getStatusCode() === Response::HTTP_OK)) {
       return $response;
     }
 
-    // Checkfor valid language code
+    // Checkfor valid language code.
     $response = $commonUtility->validateLanguageCode($language, $request);
     if (!($response->getStatusCode() === Response::HTTP_OK)) {
       return $response;
@@ -74,6 +74,7 @@ class ProductDetails extends ResourceBase {
 
     // Prepare array of keys for alteration in response.
     $data = [
+      'title' => 'decode',
       'displayTitle' => 'decode',
       'subTitle' => 'decode',
       'nid' => 'int',
@@ -81,7 +82,7 @@ class ProductDetails extends ResourceBase {
       'body' => 'decode',
       'video' => 'append_host',
     ];
-  
+
     // Prepare redis key.
     $key = ':productDetails:' . '___' . $nid . '_' . $language;
 
@@ -98,7 +99,7 @@ class ProductDetails extends ResourceBase {
     if (empty($view_results)) {
       $status_code = Response::HTTP_NO_CONTENT;
     }
-  
+
     return $commonUtility->successResponse($view_results, $status_code);
   }
 
