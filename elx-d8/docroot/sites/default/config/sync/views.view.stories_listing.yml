@@ -13,6 +13,9 @@ dependencies:
     - field.storage.node.field_sub_title
     - node.type.stories
     - taxonomy.vocabulary.markets
+    - taxonomy.vocabulary.trlx_content_sections
+  content:
+    - 'taxonomy_term:trlx_content_sections:d918c7ba-4e09-40c3-bde3-ff3a34a55834'
   module:
     - elx_utility
     - entityqueue
@@ -1279,6 +1282,50 @@ display:
           expose:
             operator: ''
           group: 1
+        field_content_section_target_id:
+          id: field_content_section_target_id
+          table: node__field_content_section
+          field: field_content_section_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: or
+          value:
+            - 86464
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          type: textfield
+          limit: true
+          vid: trlx_content_sections
+          hierarchy: false
+          error_message: true
+          plugin_id: taxonomy_index_tid
       filter_groups:
         operator: AND
         groups:
@@ -1331,6 +1378,7 @@ display:
         - request_format
         - url
         - url.query_args
+        - user
         - 'user.node_grants:view'
         - user.permissions
       tags:
@@ -2094,6 +2142,50 @@ display:
           expose:
             operator: ''
           group: 1
+        field_content_section_target_id:
+          id: field_content_section_target_id
+          table: node__field_content_section
+          field: field_content_section_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: or
+          value:
+            - 86464
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          type: textfield
+          limit: true
+          vid: trlx_content_sections
+          hierarchy: false
+          error_message: true
+          plugin_id: taxonomy_index_tid
       filter_groups:
         operator: AND
         groups:
@@ -2182,6 +2274,7 @@ display:
         - 'languages:language_interface'
         - request_format
         - url
+        - user
         - 'user.node_grants:view'
         - user.permissions
       tags:
