@@ -139,7 +139,7 @@ function elx_utility_form_alter(&$form, FormStateInterface $form_state, $form_id
     case 'bulk_update_fields_form':
       if (!in_array('el_regional_market_admin', $roles)) {
         // Attached elx_market js.
-       // $form['#attached']['library'][] = 'elx_market_hierarchy/elx_market';
+       $form['#attached']['library'][] = 'elx_market_hierarchy/elx_market';
       }
       break;
 
