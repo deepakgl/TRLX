@@ -13,9 +13,6 @@ dependencies:
     - field.storage.node.field_sub_title
     - node.type.stories
     - taxonomy.vocabulary.markets
-    - taxonomy.vocabulary.trlx_content_sections
-  content:
-    - 'taxonomy_term:trlx_content_sections:d918c7ba-4e09-40c3-bde3-ff3a34a55834'
   module:
     - elx_utility
     - entityqueue
@@ -1229,6 +1226,15 @@ display:
           admin_label: 'field_hero_image: Media'
           required: false
           plugin_id: standard
+        field_content_section:
+          id: field_content_section
+          table: node__field_content_section
+          field: field_content_section
+          relationship: none
+          group_type: group
+          admin_label: 'field_content_section: Taxonomy term'
+          required: false
+          plugin_id: standard
       display_description: ''
       filters:
         type:
@@ -1282,16 +1288,15 @@ display:
           expose:
             operator: ''
           group: 1
-        field_content_section_target_id:
-          id: field_content_section_target_id
-          table: node__field_content_section
-          field: field_content_section_target_id
-          relationship: none
+        field_content_section_key_value:
+          id: field_content_section_key_value
+          table: taxonomy_term__field_content_section_key
+          field: field_content_section_key_value
+          relationship: field_content_section
           group_type: group
           admin_label: ''
-          operator: or
-          value:
-            - 86464
+          operator: '='
+          value: trend
           group: 1
           exposed: false
           expose:
@@ -1306,7 +1311,7 @@ display:
             multiple: false
             remember_roles:
               authenticated: authenticated
-            reduce: false
+            placeholder: ''
           is_grouped: false
           group_info:
             label: ''
@@ -1319,13 +1324,7 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          reduce_duplicates: false
-          type: textfield
-          limit: true
-          vid: trlx_content_sections
-          hierarchy: false
-          error_message: true
-          plugin_id: taxonomy_index_tid
+          plugin_id: string
       filter_groups:
         operator: AND
         groups:
@@ -1378,7 +1377,6 @@ display:
         - request_format
         - url
         - url.query_args
-        - user
         - 'user.node_grants:view'
         - user.permissions
       tags:
@@ -2080,6 +2078,7 @@ display:
         filters: false
         filter_groups: false
         arguments: false
+        relationships: false
       pager:
         type: some
         options:
@@ -2142,16 +2141,15 @@ display:
           expose:
             operator: ''
           group: 1
-        field_content_section_target_id:
-          id: field_content_section_target_id
-          table: node__field_content_section
-          field: field_content_section_target_id
-          relationship: none
+        field_content_section_key_value:
+          id: field_content_section_key_value
+          table: taxonomy_term__field_content_section_key
+          field: field_content_section_key_value
+          relationship: field_content_section
           group_type: group
           admin_label: ''
-          operator: or
-          value:
-            - 86464
+          operator: '='
+          value: trend
           group: 1
           exposed: false
           expose:
@@ -2166,7 +2164,7 @@ display:
             multiple: false
             remember_roles:
               authenticated: authenticated
-            reduce: false
+            placeholder: ''
           is_grouped: false
           group_info:
             label: ''
@@ -2179,13 +2177,7 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          reduce_duplicates: false
-          type: textfield
-          limit: true
-          vid: trlx_content_sections
-          hierarchy: false
-          error_message: true
-          plugin_id: taxonomy_index_tid
+          plugin_id: string
       filter_groups:
         operator: AND
         groups:
@@ -2267,6 +2259,25 @@ display:
           entity_type: node
           entity_field: langcode
           plugin_id: language
+      relationships:
+        field_featured_image:
+          id: field_featured_image
+          table: node__field_featured_image
+          field: field_featured_image
+          relationship: none
+          group_type: group
+          admin_label: 'field_featured_image: Media'
+          required: false
+          plugin_id: standard
+        field_content_section:
+          id: field_content_section
+          table: node__field_content_section
+          field: field_content_section
+          relationship: none
+          group_type: group
+          admin_label: 'field_content_section: Taxonomy term'
+          required: false
+          plugin_id: standard
     cache_metadata:
       max-age: -1
       contexts:
@@ -2274,7 +2285,6 @@ display:
         - 'languages:language_interface'
         - request_format
         - url
-        - user
         - 'user.node_grants:view'
         - user.permissions
       tags:

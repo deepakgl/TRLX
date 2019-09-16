@@ -42,6 +42,7 @@ function trlx_utility_form_alter(&$form, FormStateInterface $form_state, $form_i
     case 'node_tools_form':
     case 'node_tools_edit_form':
       $form['field_brands']['widget']['#type'] = 'radios';
+      $form['field_brands']['widget']['#default_value'] = $form['field_brands']['widget']['#default_value'][0];
     case 'node_best_sellers_form':
     case 'node_best_sellers_edit_form':
     case 'node_product_detail_form':
