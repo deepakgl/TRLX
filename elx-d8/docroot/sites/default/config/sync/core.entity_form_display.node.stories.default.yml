@@ -8,6 +8,7 @@ dependencies:
     - field.field.node.stories.field_access_by_role
     - field.field.node.stories.field_archive_and_unarchive
     - field.field.node.stories.field_comment
+    - field.field.node.stories.field_content_section
     - field.field.node.stories.field_display_title
     - field.field.node.stories.field_downloadable
     - field.field.node.stories.field_featured_image
@@ -50,6 +51,12 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: comment_default
+    region: content
+  field_content_section:
+    weight: 27
+    settings: {  }
+    third_party_settings: {  }
+    type: options_buttons
     region: content
   field_display_title:
     weight: 1
