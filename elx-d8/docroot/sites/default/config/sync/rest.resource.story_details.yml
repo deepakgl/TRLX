@@ -1,13 +1,13 @@
-uuid: b598f3d3-228e-488f-9d75-9e41c3618983
+uuid: 0d4174b3-ec55-428b-978f-4d6ca1f3ebcb
 langcode: en
-status: false
+status: true
 dependencies:
   module:
     - serialization
-    - trlx_trends
+    - trlx_story
     - user
-id: trend_details
-plugin_id: trend_details
+id: story_details
+plugin_id: story_details
 granularity: resource
 configuration:
   methods:

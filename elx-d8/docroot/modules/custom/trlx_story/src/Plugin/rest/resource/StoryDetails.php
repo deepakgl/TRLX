@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\trlx_trends\Plugin\rest\resource;
+namespace Drupal\trlx_story\Plugin\rest\resource;
 
 use Drupal\rest\Plugin\ResourceBase;
 use Symfony\Component\HttpFoundation\Request;
@@ -9,20 +9,20 @@ use Drupal\trlx_utility\Utility\CommonUtility;
 use Drupal\trlx_utility\Utility\EntityUtility;
 
 /**
- * Provides a tr trends details page resource.
+ * Provides a story details page resource.
  *
  * @RestResource(
- *   id = "trend_details",
- *   label = @Translation("TR Trends Details"),
+ *   id = "story_details",
+ *   label = @Translation("Story Details"),
  *   uri_paths = {
- *     "canonical" = "/api/v1/trendDetails"
+ *     "canonical" = "/api/v1/storyDetails"
  *   }
  * )
  */
-class TrendsDetails extends ResourceBase {
+class StoryDetails extends ResourceBase {
 
   /**
-   * Rest resource for tr trends details.
+   * Rest resource for story details.
    *
    * @param \Symfony\Component\HttpFoundation\Request $request
    *   Rest resource query parameters.
@@ -38,6 +38,7 @@ class TrendsDetails extends ResourceBase {
       '_format',
       'nid',
       'language',
+      'section',
     ];
 
     // Check for required parameters.
@@ -54,13 +55,13 @@ class TrendsDetails extends ResourceBase {
       return $commonUtility->invalidData($missingParams);
     }
 
-    // Checkfor valid _format type.
+    // Check for valid _format type.
     $response = $commonUtility->validateFormat($_format, $request);
     if (!($response->getStatusCode() === Response::HTTP_OK)) {
       return $response;
     }
 
-    // Checkfor valid language code.
+    // Check for valid language code.
     $response = $commonUtility->validateLanguageCode($language, $request);
     if (!($response->getStatusCode() === Response::HTTP_OK)) {
       return $response;
@@ -68,6 +69,12 @@ class TrendsDetails extends ResourceBase {
 
     if (empty($commonUtility->isValidNid($nid, $language))) {
       return $commonUtility->errorResponse($this->t('Node id does not exist or requested language data is not available.'), Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
+
+    // Check for valid section name.
+    $response = $commonUtility->validateStorySectionCode($section, $request);
+    if (!($response->getStatusCode() === Response::HTTP_OK)) {
+      return $response;
     }
 
     // Prepare array of keys for alteration in response.
@@ -81,7 +88,7 @@ class TrendsDetails extends ResourceBase {
     ];
 
     // Prepare redis key.
-    $key = ':trendDetail:' . '_' . $nid . '_' . $language;
+    $key = ':storyDetail:' . '_' . $nid . '_' . $language;
 
     // Prepare response.
     list($view_results, $status_code) = $entityUtility->fetchApiResult(

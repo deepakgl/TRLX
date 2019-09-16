@@ -473,7 +473,7 @@ function elx_utility_get_redis_pattern(EntityInterface $entity) {
     }
     elseif ($entity_type == 'stories') {
       $pattern[] = implode(':', [$env, 'trendListing*']);
-      $pattern[] = implode(':', [$env, 'trendDetail*']);
+      $pattern[] = implode(':', [$env, 'storyDetail*']);
       $pattern[] = implode(':', [$env, 'spotlightSection*']);
       $pattern[] = implode(':', [$env, 'spotlightSectionMarketWise*']);
       $pattern[] = implode(':', [$env, 'storiesTrendingSection*']);

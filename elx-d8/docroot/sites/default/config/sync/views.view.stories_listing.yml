@@ -1275,10 +1275,10 @@ display:
         - 'config:field.storage.node.field_point_value'
         - 'config:field.storage.node.field_sub_title'
         - extensions
-  rest_export_trend_details:
+  rest_export_story_details:
     display_plugin: rest_export
-    id: rest_export_trend_details
-    display_title: 'TR Trend Details'
+    id: rest_export_story_details
+    display_title: 'story Details'
     position: 4
     display_options:
       display_extenders: {  }
@@ -1758,7 +1758,7 @@ display:
           type: image_url
           settings:
             url_type: '0'
-            image_style: stories_details_1440_398
+            image_style: stories_details_mov_375_340_
             image_link: ''
           group_column: ''
           group_columns: {  }

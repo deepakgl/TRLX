@@ -1,0 +1,5 @@
+name: TRLX Story
+type: module
+description: TRLX custom module for story.
+core: 8.x
+package: TRLX
