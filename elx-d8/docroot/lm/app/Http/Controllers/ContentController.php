@@ -17,7 +17,6 @@ class ContentController extends Controller {
    * Create a new controller instance.
    */
   public function __construct() {
-    
   }
 
   /**
@@ -30,8 +29,10 @@ class ContentController extends Controller {
    *   True.
    */
   public function setTermsNodeData(Request $request) {
-    $nid = $request->input('nid'); // Node id.
-    $tid = $request->input('tid'); // Term id.
+    // Node id.
+    $nid = $request->input('nid');
+    // Term id.
+    $tid = $request->input('tid');
     $client = Helper::checkElasticClient();
     $node_elastic_exists = FlagModel::checkElasticNodeIndex($nid, $client);
     if (!$node_elastic_exists && $client) {

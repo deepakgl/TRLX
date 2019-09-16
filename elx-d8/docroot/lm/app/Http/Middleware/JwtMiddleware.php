@@ -6,9 +6,11 @@ use Closure;
 use Exception;
 use Firebase\JWT\JWT;
 use App\Traits\ApiResponser;
-use Firebase\JWT\ExpiredException;
 use Illuminate\Http\Response;
 
+/**
+ * Purpose of this class is to verify and decode token coming in request header.
+ */
 class JwtMiddleware {
 
   use ApiResponser;
@@ -16,12 +18,18 @@ class JwtMiddleware {
   /**
    * Handle an incoming request.
    *
-   * @param  \Illuminate\Http\Request  $request
-   * @param  \Closure  $next
+   * @param Request $request
+   *   Request object.
+   * @param \Closure $next
+   *   Next request param.
+   * @param string $guard
+   *   Middleware authetication gurad.
+   *
    * @return mixed
+   *   Token or json response.
    */
-  public function handle($request, Closure $next, $guard = null) {
-    global $userData;
+  public function handle($request, Closure $next, $guard = NULL) {
+    global $_userData;
 
     if (!$request->headers->has('Authorization')) {
       return $this->errorResponse('Authorization header is required.', Response::HTTP_BAD_REQUEST);
@@ -30,11 +38,11 @@ class JwtMiddleware {
       $token = $matches[1];
 
       if (!$token) {
-        // Unauthorized response if token not there
+        // Unauthorized response if token not there.
         return $this->errorResponse('Token not provided.', Response::HTTP_UNAUTHORIZED);
       }
       try {
-        $userData = JWT::decode($token, env('JWT_SECRET'), ['HS256']);
+        $_userData = JWT::decode($token, env('JWT_SECRET'), ['HS256']);
       }
       catch (Exception $e) {
         return $this->errorResponse('An error while decoding token.', 400);
