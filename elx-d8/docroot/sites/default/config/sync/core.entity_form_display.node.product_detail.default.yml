@@ -43,7 +43,6 @@ dependencies:
     - field.field.node.product_detail.field_why_there_s_only_one
     - node.type.product_detail
   module:
-    - datetime
     - entity_browser
     - field_group
     - path
@@ -77,21 +76,8 @@ content:
     third_party_settings: {  }
     type: text_textarea_with_summary
     region: content
-  field_access_by_role:
-    weight: 10
-    settings: {  }
-    third_party_settings: {  }
-    type: options_buttons
-    region: content
-  field_ar_search:
-    weight: 32
-    settings:
-      display_label: true
-    third_party_settings: {  }
-    type: boolean_checkbox
-    region: content
   field_archive_and_unarchive:
-    weight: 29
+    weight: 24
     settings: {  }
     third_party_settings: {  }
     type: options_select
@@ -106,13 +92,13 @@ content:
     type: text_textarea_with_summary
     region: content
   field_brands:
-    weight: 8
+    weight: 20
     settings: {  }
     third_party_settings: {  }
     type: options_buttons
     region: content
   field_customer_questions:
-    weight: 21
+    weight: 18
     settings:
       rows: 9
       summary_rows: 3
@@ -138,20 +124,14 @@ content:
     type: string_textfield
     region: content
   field_downloadable:
-    weight: 9
+    weight: 11
     settings:
       display_label: true
     third_party_settings: {  }
     type: boolean_checkbox
     region: content
-  field_end_date:
-    weight: 22
-    settings: {  }
-    third_party_settings: {  }
-    type: datetime_default
-    region: content
   field_featured_image:
-    weight: 24
+    weight: 7
     settings:
       entity_browser: media_entity_browser
       field_widget_display: rendered_entity
@@ -180,17 +160,8 @@ content:
     third_party_settings: {  }
     type: entity_browser_entity_reference
     region: content
-  field_how_to_sell_this_product:
-    weight: 30
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: entity_reference_autocomplete
-    region: content
   field_if_she_asks_share:
-    weight: 20
+    weight: 17
     settings:
       rows: 9
       summary_rows: 3
@@ -198,17 +169,8 @@ content:
     third_party_settings: {  }
     type: text_textarea_with_summary
     region: content
-  field_learning_category:
-    weight: 31
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: entity_reference_autocomplete
-    region: content
   field_markets:
-    weight: 23
+    weight: 21
     settings:
       start_minimized: true
       leaves_only: false
@@ -219,21 +181,15 @@ content:
     type: term_reference_tree
     region: content
   field_point_value:
-    weight: 7
+    weight: 10
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
     region: content
-  field_product_categories:
-    weight: 15
-    settings: {  }
-    third_party_settings: {  }
-    type: options_buttons
-    region: content
   field_product_video:
-    weight: 25
+    weight: 8
     settings:
       entity_browser: video_entity_browser
       field_widget_display: rendered_entity
@@ -248,7 +204,7 @@ content:
     type: entity_browser_entity_reference
     region: content
   field_product_video_thumbnail:
-    weight: 26
+    weight: 9
     settings:
       entity_browser: media_entity_browser
       field_widget_display: rendered_entity
@@ -262,12 +218,6 @@ content:
     third_party_settings: {  }
     type: entity_browser_entity_reference
     region: content
-  field_season:
-    weight: 17
-    settings: {  }
-    third_party_settings: {  }
-    type: options_select
-    region: content
   field_subtitle:
     weight: 2
     settings:
@@ -277,7 +227,7 @@ content:
     type: string_textfield
     region: content
   field_tags_keywords:
-    weight: 12
+    weight: 19
     settings:
       match_operator: CONTAINS
       size: 60
@@ -287,7 +237,7 @@ content:
     region: content
   field_translation:
     type: options_buttons
-    weight: 27
+    weight: 22
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -299,7 +249,7 @@ content:
     type: boolean_checkbox
     region: content
   field_why_there_s_only_one:
-    weight: 19
+    weight: 16
     settings:
       rows: 9
       summary_rows: 3
@@ -309,14 +259,14 @@ content:
     region: content
   langcode:
     type: language_select
-    weight: 11
+    weight: 12
     region: content
     settings:
       include_locked: true
     third_party_settings: {  }
   path:
     type: path
-    weight: 16
+    weight: 14
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -329,17 +279,10 @@ content:
     third_party_settings: {  }
   status:
     type: boolean_checkbox
-    weight: 28
+    weight: 23
     region: content
     settings:
       display_label: true
-    third_party_settings: {  }
-  sticky:
-    type: boolean_checkbox
-    settings:
-      display_label: true
-    weight: 14
-    region: content
     third_party_settings: {  }
   title:
     type: string_textfield
@@ -350,21 +293,29 @@ content:
       placeholder: ''
     third_party_settings: {  }
   translation:
-    weight: 18
+    weight: 15
     region: content
     settings: {  }
     third_party_settings: {  }
 hidden:
   created: true
+  field_access_by_role: true
+  field_ar_search: true
+  field_end_date: true
   field_fun_fact_sheet: true
+  field_how_to_sell_this_product: true
   field_just_for_you: true
+  field_learning_category: true
   field_perfect_partners: true
   field_perfect_partners_text: true
   field_price: true
+  field_product_categories: true
   field_product_family: true
   field_related_products: true
   field_related_products_stories: true
   field_related_products_tools: true
   field_related_products_videos: true
+  field_season: true
   field_story: true
+  sticky: true
   uid: true
