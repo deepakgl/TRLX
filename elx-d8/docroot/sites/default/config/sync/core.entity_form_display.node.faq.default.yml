@@ -6,6 +6,7 @@ dependencies:
     - field.field.node.faq.body
     - field.field.node.faq.field_brands
     - field.field.node.faq.field_question
+    - field.field.node.faq.field_translation
     - node.type.faq
   module:
     - path
@@ -43,6 +44,12 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: string_textarea
+    region: content
+  field_translation:
+    weight: 26
+    settings: {  }
+    third_party_settings: {  }
+    type: options_buttons
     region: content
   langcode:
     type: language_select

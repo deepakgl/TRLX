@@ -35,10 +35,10 @@ class FaqUtility {
     $query->condition('n.type', 'faq', '=');
     $query->condition('n.langcode', $langcode, '=');
     $query->condition('nb.langcode', $langcode, '=');
-    if ($brand_id) {
-      $query->condition('nfb.langcode', $langcode, '=');
-    }
     $query->condition('nfq.langcode', $langcode, '=');
+    if ($brand_id) {
+      $query->condition('ttfbk.field_brand_key_value', $brand_id, '=');
+    }
     $query->condition('n.status', 1, '=');
     $result = $query->execute()->fetchAll();
     return $result;
@@ -79,7 +79,7 @@ class FaqUtility {
           $icon_path = file_create_url($file->getFileUri());
         }
       }
-      
+
       // Get link attributes.
       $options = $entity->hasTranslation($langcode) ? $entity->getTranslation($langcode)->getUrlObject()->getOptions() : $entity->getUrlObject()->getOptions();
 
