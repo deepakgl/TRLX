@@ -8,6 +8,7 @@
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\File\FileInterface;
 
 /**
  * Implements hook_entity_base_field_info().
@@ -67,26 +68,26 @@ function trlx_utility_form_alter(&$form, FormStateInterface $form_state, $form_i
 /**
  * Implements hook_file_validate().
  */
-function trlx_utility_file_validate(Drupal\file\FileInterface $file) {
-  // Allowed Image extensions for image upload via editor image upload
+function trlx_utility_file_validate(FileInterface $file) {
+  // Allowed Image extensions for image upload via editor image upload.
   $allowedImgExt = [
     'jpeg',
     'jpg',
     'png',
   ];
 
-  // Check for valid image file
-  $isValidImage = file_validate_is_image($file);
+  // Check for valid image file.
+  $inValidImage = file_validate_is_image($file);
 
-  // Fetch file type
-  $imageFileType = $file->getMimeType();
+  // Check whether the file is a valid image file only.
+  if (empty($inValidImage)) {
+    // Fetch file type.
+    $fileType = $file->getMimeType();
 
-  // Check if the file is a valid image file
-  if (empty($error)) {
-    // Extract the exact image extension
-    $imageFileType = end(explode("image/", $imageFileType));
+    // Extract the exact image extension.
+    $imageFileType = end(explode("image/", $fileType));
 
-    // Check if extension is out of allowed image extensions
+    // Check if extension is out of allowed image extensions.
     if (!in_array($imageFileType, $allowedImgExt)) {
       $errors[] = t("The allowed image file extensions are: @imgExt", ['@imgExt' => implode(", ", $allowedImgExt)]);
     }
