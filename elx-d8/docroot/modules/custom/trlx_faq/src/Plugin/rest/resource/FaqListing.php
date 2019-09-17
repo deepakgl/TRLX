@@ -84,7 +84,8 @@ class FaqListing extends ResourceBase {
       "next_page" => 0
     ];
 
-    return $commonUtility->successResponse($result, 200, $pager);
+    (count($result) == 0) ? $res =  $commonUtility->successResponse($result, 200) : $res =  $commonUtility->successResponse($result, 200, $pager);
+    return $res;
   }
 
 }

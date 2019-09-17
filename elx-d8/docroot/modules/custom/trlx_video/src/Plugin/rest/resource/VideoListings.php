@@ -104,9 +104,9 @@ class VideoListings extends ResourceBase {
       'video_listing'
     );
 
-    // Check for empty / no result from views
+    // Check for empty / no result from views.
     if (empty($view_results)) {
-      $status_code = Response::HTTP_OK;
+      return $commonUtility->successResponse([], Response::HTTP_OK);
     }
 
     return $commonUtility->successResponse($view_results, $status_code, [], 'results');
