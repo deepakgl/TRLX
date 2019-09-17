@@ -52,6 +52,25 @@ class FaqListing extends ResourceBase {
       if (!($response->getStatusCode() === Response::HTTP_OK)) {
         return $response;
       }
+      // Validation for valid brand key
+      // Prepare view response for valid brand key.
+      list($view_results, $status_code) = $entityUtility->fetchApiResult(
+        '',
+        'brand_key_validation',
+        'rest_export_brand_key_validation',
+        '',
+        $brand_id
+      );
+
+      // Check for empty resultset.
+      if (empty($view_results)) {
+        return $commonUtility->errorResponse($this->t('Brand Id (@brandId) does not exist.', ['@brandId' => $brand_id]), Response::HTTP_UNPROCESSABLE_ENTITY);
+      }
+    }
+
+    list($limit, $offset, $errorResponse) = $commonUtility->getPagerParam($request);
+    if (!empty($errorResponse)) {
+      return $errorResponse;
     }
 
     list($limit, $offset, $errorResponse) = $commonUtility->getPagerParam($request);
