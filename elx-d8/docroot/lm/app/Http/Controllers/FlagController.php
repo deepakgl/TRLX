@@ -57,6 +57,10 @@ class FlagController extends Controller {
     ]);
     $this->uid = $_userData->userId;
     $nid = isset($validatedData['nid']) ? $validatedData['nid'] : 0;
+    // Check node status.
+    if (empty(ContentModel::getStatusByNid($nid))) {
+      return $this->errorResponse('Node is not published.', Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
     $flag = $validatedData['flag'];
     $status = $validatedData['status'];
 
