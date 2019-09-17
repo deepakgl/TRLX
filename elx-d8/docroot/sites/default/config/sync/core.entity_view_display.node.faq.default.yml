@@ -6,8 +6,10 @@ dependencies:
     - field.field.node.faq.body
     - field.field.node.faq.field_brands
     - field.field.node.faq.field_question
+    - field.field.node.faq.field_translation
     - node.type.faq
   module:
+    - options
     - text
     - user
 id: node.faq.default
@@ -36,6 +38,13 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: basic_string
+    region: content
+  field_translation:
+    weight: 104
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
     region: content
   links:
     weight: 100
