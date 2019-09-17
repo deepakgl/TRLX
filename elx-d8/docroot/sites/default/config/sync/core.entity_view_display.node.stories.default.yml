@@ -8,7 +8,9 @@ dependencies:
     - field.field.node.stories.field_access_by_role
     - field.field.node.stories.field_archive_and_unarchive
     - field.field.node.stories.field_comment
+    - field.field.node.stories.field_content_section
     - field.field.node.stories.field_display_title
+    - field.field.node.stories.field_downloadable
     - field.field.node.stories.field_featured_image
     - field.field.node.stories.field_featured_on_elx_specialty
     - field.field.node.stories.field_hero_image
@@ -37,28 +39,12 @@ content:
   body:
     label: hidden
     type: text_default
-    weight: 101
+    weight: 1
     settings: {  }
     third_party_settings: {  }
     region: content
-  field_access_by_role:
-    weight: 114
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
-  field_archive_and_unarchive:
-    weight: 119
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
   field_comment:
-    weight: 112
+    weight: 9
     label: above
     settings:
       view_mode: default
@@ -66,24 +52,24 @@ content:
     third_party_settings: {  }
     type: comment_default
     region: content
-  field_display_title:
-    weight: 110
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    type: string
-    region: content
-  field_featured_image:
-    weight: 103
+  field_content_section:
+    weight: 13
     label: above
     settings:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
     region: content
-  field_featured_on_elx_specialty:
-    weight: 107
+  field_display_title:
+    weight: 7
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_downloadable:
+    weight: 12
     label: above
     settings:
       format: default
@@ -92,8 +78,16 @@ content:
     third_party_settings: {  }
     type: boolean
     region: content
+  field_featured_image:
+    weight: 3
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
   field_hero_image:
-    weight: 113
+    weight: 10
     label: above
     settings:
       link: true
@@ -101,7 +95,7 @@ content:
     type: entity_reference_label
     region: content
   field_markets:
-    weight: 104
+    weight: 4
     label: above
     settings:
       link: true
@@ -109,55 +103,15 @@ content:
     type: entity_reference_label
     region: content
   field_point_value:
-    weight: 108
+    weight: 6
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
     type: string
     region: content
-  field_product_categories:
-    weight: 117
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
-  field_product_family:
-    weight: 116
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
   field_pulsed_content:
-    weight: 106
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
-  field_quiz:
-    weight: 120
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
-  field_related_products_stories:
-    weight: 118
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
-  field_related_stories:
-    weight: 109
+    weight: 5
     label: above
     settings:
       link: true
@@ -165,7 +119,7 @@ content:
     type: entity_reference_label
     region: content
   field_sub_title:
-    weight: 111
+    weight: 8
     label: above
     settings:
       link_to_entity: false
@@ -173,7 +127,7 @@ content:
     type: string
     region: content
   field_tags:
-    weight: 102
+    weight: 2
     label: above
     settings:
       link: true
@@ -181,14 +135,25 @@ content:
     type: entity_reference_label
     region: content
   field_translation:
-    weight: 115
+    weight: 11
     label: above
     settings: {  }
     third_party_settings: {  }
     type: list_default
     region: content
   links:
-    weight: 100
+    weight: 0
     region: content
+    settings: {  }
+    third_party_settings: {  }
 hidden:
+  field_access_by_role: true
+  field_archive_and_unarchive: true
+  field_featured_on_elx_specialty: true
+  field_product_categories: true
+  field_product_family: true
+  field_quiz: true
+  field_related_products_stories: true
+  field_related_stories: true
   langcode: true
+  search_api_excerpt: true

@@ -40,6 +40,7 @@ function elx_utility_views_query_alter(ViewExecutable $view, $query) {
     'video_listing',
     'video_listing_mobile',
     'video_details',
+    'fact_sheets_list',
   ];
   $current_display = [
     'rest_export_product_listings',
@@ -50,16 +51,7 @@ function elx_utility_views_query_alter(ViewExecutable $view, $query) {
     'rest_export_video_category',
     'rest_export_level_interactive_content',
     'rest_export_tools_listing',
-  ];
-  $access_by_role_api = [
-    'rest_export_product_listings',
-    'rest_export_product_detail',
-    'rest_export_video_listing',
-    'rest_export_video_listing_mobile',
-    'rest_export_video_details',
-    'rest_export_stories_listing',
-    'rest_export_stories_details',
-    'rest_export_tools_listing',
+    'rest_export_fact_sheets_list',
   ];
   if (in_array($view->id(), $view_id)) {
     if (in_array($view->current_display, $current_display)) {
@@ -67,19 +59,6 @@ function elx_utility_views_query_alter(ViewExecutable $view, $query) {
       $offset = isset($_GET['offset']) ? (int) $_GET['offset'] : 0;
       $view->setOffset($offset);
       $view->setItemsPerPage($limit);
-    }
-    if (in_array($view->current_display, $access_by_role_api)) {
-      $user_utility = new UserUtility();
-      $roles = $user_utility->getUserRoles(\Drupal::currentUser()->id());
-      if ($roles  && $view->id() != 'level_interactive_content') {
-        // Add access by role table to the query.
-        $query->queueTable('node__field_access_by_role', "node_field_data",
-         NULL, 'node__field_access_by_role');
-        // Add access by role condition based on the current user role.
-        $query->addWhere('1',
-        'node__field_access_by_role.field_access_by_role_target_id', $roles,
-         'IN');
-      }
     }
   }
 }
@@ -133,44 +112,26 @@ function elx_utility_form_alter(&$form, FormStateInterface $form_state, $form_id
     case 'node_stories_edit_form':
     case 'node_tools_edit_form':
     case 'node_tools-pdf_edit_form':
-      unset($form['field_access_by_role']['widget']['#options']['anonymous']);
-      unset($form['field_access_by_role']['widget']['#options']
-      ['authenticated']);
-      unset($form['field_access_by_role']['widget']['#options']
-      ['administrator']);
-      $form['field_access_by_role']['widget'] += [
-        'el_nyo_global_education_system_admin' => [
-          '#default_value' => TRUE,
-          '#disabled' => TRUE,
-        ],
-      ];
+    case 'node_brand_story_form':
+    case 'node_brand_story_edit_form':
       // Changed type of point value field.
       $form['field_point_value']['widget'][0]['value']['#type'] = 'number';
       // Set default value 0 of point value field.
       $form['field_point_value']['widget'][0]['value']['#min'] = 0;
-    case 'user_register_form':
-    case 'user_form':
-      $uid = \Drupal::currentUser()->id();
-      // Get current user markets.
-      $query = $user_utility->getMarketByUserId($uid, 'all');
-      // Hide markets for market admin.
-      if (in_array('el_regional_market_admin', $roles)) {
-        foreach ($query as $key => $value) {
-          $market = $value->field_default_market_target_id;
-          $form['field_markets']['#disabled'] = TRUE;
-          $form['field_default_market']['widget']['#after_build'][] = 'elx_utility_default_market_after_build';
-          $form['field_default_market']['widget']['#default_value'][$key]['target_id'] = $market;
-        }
-      }
-    case 'node_t_c_form':
-    case 'node_t_c_edit_form':
-    case 'node_welcome_message_form':
-    case 'node_welcome_message_edit_form':
-    case 'bulk_update_fields_form':
-      if (!in_array('el_regional_market_admin', $roles)) {
-        // Attached elx_market js.
-        $form['#attached']['library'][] = 'elx_market_hierarchy/elx_market';
-      }
+    // case 'user_register_form':
+    // case 'user_form':
+    //   $uid = \Drupal::currentUser()->id();
+    //   // Get current user markets.
+    //   $query = $user_utility->getMarketByUserId($uid, 'all');
+    //   // Hide markets for market admin.
+    //   if (in_array('el_regional_market_admin', $roles)) {
+    //     foreach ($query as $key => $value) {
+    //       $market = $value->field_default_market_target_id;
+    //       $form['field_markets']['#disabled'] = TRUE;
+    //       $form['field_default_market']['widget']['#after_build'][] = 'elx_utility_default_market_after_build';
+    //       $form['field_default_market']['widget']['#default_value'][$key]['target_id'] = $market;
+    //     }
+    //   }
       break;
 
     case 'taxonomy_term_learning_category_form':
@@ -483,56 +444,49 @@ function elx_utility_get_redis_pattern(EntityInterface $entity) {
 
       return $pattern;
     }
-    $entity_markets = array_column($entity->get('field_markets')->getValue(), 'target_id');
-    if (isset($entity->original)) {
-      $entity_markets_legacy = array_column($entity->original->get('field_markets')->getValue(), 'target_id');
-      $entity_markets = array_unique(array_merge($entity_markets, $entity_markets_legacy));
+    $uid = \Drupal::currentUser()->id();
+    $entity_id = $entity->id();
+    if ($entity_type == 'product_detail') {
+      $pattern[] = implode(':', [$env, 'productDetails*']);
+      $pattern[] = implode(':', [$env, 'productCategories*']);
+      $pattern[] = implode(':', [$env, 'productListings*']);
+      $pattern[] = implode(':', [$env, 'globalBrowseProducts*']);
+      $pattern[] = implode(':', [$env, 'browseProductsMarketWise*']);
+      $pattern[] = implode(':', [$env, 'spotlightSection*']);
+      $pattern[] = implode(':', [$env, 'spotlightSectionMarketWise*']);
     }
-    foreach ($entity_markets as $key => $market) {
-      $uid = \Drupal::currentUser()->id();
-      $entity_id = $entity->id();
-      if ($entity_type == 'product_detail') {
-        $pattern[] = implode(':', [$env, 'productDetails', $market . '*']);
-        $pattern[] = implode(':', [$env, 'productCategories', $market . '*']);
-        $pattern[] = implode(':', [$env, 'productListings', $market . '*']);
-        $pattern[] = implode(':', [$env, 'globalBrowseProducts*']);
-        $pattern[] = implode(':', [$env, 'browseProductsMarketWise*']);
-        $pattern[] = implode(':', [$env, 'spotlightSection*']);
-        $pattern[] = implode(':', [$env, 'spotlightSectionMarketWise*']);
-      }
-      elseif ($entity_type == 'level_interactive_content') {
-        $pattern[] = implode(':', [$env, 'levelInteractiveContent', $market .
-         '*']);
-        $pattern[] = implode(':', [$env, 'levelInteractiveTermsContent',
-         $market . '*']);
-        $pattern[] = implode(':', [$env, 'learningLevels', $market . '*']);
-        $pattern[] = implode(':', [$env, 'exploreLearningLevels', $market .
-         '*']);
-        $pattern[] = implode(':', [$env, 'spotlightSection*']);
-        $pattern[] = implode(':', [$env, 'spotlightSectionMarketWise*']);
-      }
-      elseif ($entity_type == 'tools') {
-        $pattern[] = implode(':', [$env, 'videoCategory', $market . '*']);
-        $pattern[] = implode(':', [$env, 'videoListings', $market . '*']);
-        $pattern[] = implode(':', [$env, 'videoListingMobile', $market . '*']);
-        $pattern[] = implode(':', [$env, 'videoDetails', $market . '*']);
-        $pattern[] = implode(':', [$env, 'spotlightSection*']);
-        $pattern[] = implode(':', [$env, 'spotlightSectionMarketWise*']);
-      }
-      elseif ($entity_type == 'stories') {
-        $pattern[] = implode(':', [$env, 'storiesListing', $market . '*']);
-        $pattern[] = implode(':', [$env, 'storiesDetail', $market . '*']);
-        $pattern[] = implode(':', [$env, 'spotlightSection*']);
-        $pattern[] = implode(':', [$env, 'spotlightSectionMarketWise*']);
-        $pattern[] = implode(':', [$env, 'storiesTrendingSection*']);
-        $pattern[] = implode(':', [$env, 'storiesTrendingSectionMarketWise*']);
-      }
-      elseif ($entity_type == 'tools-pdf') {
-        $pattern[] = implode(':', [$env, 'toolsListings', $market . '*']);
-      }
-      elseif ($entity_type == 't_c') {
-        $pattern[] = implode(':', [$env . '_t_c', 'detail', $market . '*']);
-      }
+    elseif ($entity_type == 'level_interactive_content') {
+      $pattern[] = implode(':', [$env, 'levelInteractiveContent*']);
+      $pattern[] = implode(':', [$env, 'levelInteractiveTermsContent*']);
+      $pattern[] = implode(':', [$env, 'learningLevels*']);
+      $pattern[] = implode(':', [$env, 'exploreLearningLevels*']);
+      $pattern[] = implode(':', [$env, 'spotlightSection*']);
+      $pattern[] = implode(':', [$env, 'spotlightSectionMarketWise*']);
+    }
+    elseif ($entity_type == 'tools') {
+      $pattern[] = implode(':', [$env, 'videoCategory*']);
+      $pattern[] = implode(':', [$env, 'videoListings*']);
+      $pattern[] = implode(':', [$env, 'videoListingMobile*']);
+      $pattern[] = implode(':', [$env, 'videoDetails*']);
+      $pattern[] = implode(':', [$env, 'spotlightSection*']);
+      $pattern[] = implode(':', [$env, 'spotlightSectionMarketWise*']);
+    }
+    elseif ($entity_type == 'stories') {
+      $pattern[] = implode(':', [$env, 'trendListing*']);
+      $pattern[] = implode(':', [$env, 'storyDetail*']);
+      $pattern[] = implode(':', [$env, 'spotlightSection*']);
+      $pattern[] = implode(':', [$env, 'spotlightSectionMarketWise*']);
+      $pattern[] = implode(':', [$env, 'storiesTrendingSection*']);
+      $pattern[] = implode(':', [$env, 'storiesTrendingSectionMarketWise*']);
+    }
+    elseif ($entity_type == 'tools-pdf') {
+      $pattern[] = implode(':', [$env, 'toolsListings*']);
+    }
+    elseif ($entity_type == 't_c') {
+      $pattern[] = implode(':', [$env . '_t_c', 'detail*']);
+    }
+    elseif ($entity_type == 'brand_story') {
+      $pattern[] = implode(':', [$env . 'brandStoryDetails*']);
     }
   }
   elseif ($entity->getEntityTypeId() == 'entity_subqueue' && !empty($entity->getQueue())) {
@@ -697,9 +651,8 @@ function set_user_object_elastic($uid) {
         'node_views_tools' => [],
         'node_views_t_c' => [],
         'node_views_tools-pdf' => [],
-        'favorites' => [],
-        'bookmarks' => [],
-        'downloads' => [],
+        'like' => [],
+        'bookmark' => [],
         'access_permission' => $access,
         'ignore' => $ignore,
         'email' => $email,
@@ -772,56 +725,56 @@ function elx_utility_mail_alter(&$message) {
 /**
  * Implements hook_entity_base_field_info().
  */
-function elx_utility_entity_base_field_info(EntityTypeInterface $entity_type) {
-  $fields = [];
-  if ($entity_type->id() == 'menu_link_content') {
-    $fields['elx_menu_content'] =
-     BaseFieldDefinition::create('entity_reference')
-       ->setLabel(t('Menu Content'))
-       ->setSetting('target_type', 'taxonomy_term')
-       ->setSetting('handler', 'default:taxonomy_term')
-       ->setSetting('handler_settings', [
-         'target_bundles' => [
-           'menu_content' => 'menu_content',
-         ],
-       ])
-       ->setDisplayOptions('form', ['type' => 'options_select', 'weight' => 0])
-       ->setDisplayConfigurable('form', TRUE)
-       ->setDisplayConfigurable('view', TRUE);
-
-    $fields['elx_menu_web'] = BaseFieldDefinition::create('boolean')
-      ->setLabel(t('Web'))
-      ->setDisplayOptions('form', [
-        'type' => 'boolean_checkbox',
-        'settings' => [
-          'display_label' => TRUE,
-        ],
-      ])
-      ->setDisplayConfigurable('form', TRUE);
-
-    $fields['elx_menu_otg'] = BaseFieldDefinition::create('boolean')
-      ->setLabel(t('OTG'))
-      ->setDisplayOptions('form', [
-        'type' => 'boolean_checkbox',
-        'settings' => [
-          'display_label' => TRUE,
-        ],
-      ])
-      ->setDisplayConfigurable('form', TRUE);
-
-    $fields['elx_menu_otg_sequence_id'] = BaseFieldDefinition::create('integer')
-      ->setLabel(t('OTG Sequence Id'))
-      ->setDisplayOptions('form', [
-        'type' => 'integer',
-        'settings' => [
-          'display_label' => TRUE,
-        ],
-      ])
-      ->setDisplayConfigurable('form', TRUE);
-  }
-
-  return $fields;
-}
+//function elx_utility_entity_base_field_info(EntityTypeInterface $entity_type) {
+//  $fields = [];
+//  if ($entity_type->id() == 'menu_link_content') {
+//    $fields['elx_menu_content'] =
+//     BaseFieldDefinition::create('entity_reference')
+//       ->setLabel(t('Menu Content'))
+//       ->setSetting('target_type', 'taxonomy_term')
+//       ->setSetting('handler', 'default:taxonomy_term')
+//       ->setSetting('handler_settings', [
+//         'target_bundles' => [
+//           'menu_content' => 'menu_content',
+//         ],
+//       ])
+//       ->setDisplayOptions('form', ['type' => 'options_select', 'weight' => 0])
+//       ->setDisplayConfigurable('form', TRUE)
+//       ->setDisplayConfigurable('view', TRUE);
+//
+//    $fields['elx_menu_web'] = BaseFieldDefinition::create('boolean')
+//      ->setLabel(t('Web'))
+//      ->setDisplayOptions('form', [
+//        'type' => 'boolean_checkbox',
+//        'settings' => [
+//          'display_label' => TRUE,
+//        ],
+//      ])
+//      ->setDisplayConfigurable('form', TRUE);
+//
+//    $fields['elx_menu_otg'] = BaseFieldDefinition::create('boolean')
+//      ->setLabel(t('OTG'))
+//      ->setDisplayOptions('form', [
+//        'type' => 'boolean_checkbox',
+//        'settings' => [
+//          'display_label' => TRUE,
+//        ],
+//      ])
+//      ->setDisplayConfigurable('form', TRUE);
+//
+//    $fields['elx_menu_otg_sequence_id'] = BaseFieldDefinition::create('integer')
+//      ->setLabel(t('OTG Sequence Id'))
+//      ->setDisplayOptions('form', [
+//        'type' => 'integer',
+//        'settings' => [
+//          'display_label' => TRUE,
+//        ],
+//      ])
+//      ->setDisplayConfigurable('form', TRUE);
+//  }
+//
+//  return $fields;
+//}
 
 /**
  * Implements hook_preprocess_views_view_field().

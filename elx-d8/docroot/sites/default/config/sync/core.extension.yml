@@ -44,7 +44,6 @@ module:
   elx_entityqueue_alter: 0
   elx_lang_translation: 0
   elx_learning_levels: 0
-  elx_market_hierarchy: 0
   elx_mcq: 0
   elx_menu: 0
   elx_migration: 0
@@ -93,7 +92,6 @@ module:
   media: 0
   media_entity_browser: 0
   menu_link_attributes: 0
-  menu_per_role: 0
   menu_ui: 0
   migrate: 0
   migrate_drupal: 0
@@ -135,6 +133,16 @@ module:
   toolbar: 0
   tour: 0
   translation_views: 0
+  trlx_brand: 0
+  trlx_brand_story: 0
+  trlx_dashboard: 0
+  trlx_factsheets: 0
+  trlx_faq: 0
+  trlx_products: 0
+  trlx_story: 0
+  trlx_trends: 0
+  trlx_utility: 0
+  trlx_video: 0
   user: 0
   video_embed_field: 0
   view_custom_table: 0

@@ -8,7 +8,9 @@ dependencies:
     - field.field.node.stories.field_access_by_role
     - field.field.node.stories.field_archive_and_unarchive
     - field.field.node.stories.field_comment
+    - field.field.node.stories.field_content_section
     - field.field.node.stories.field_display_title
+    - field.field.node.stories.field_downloadable
     - field.field.node.stories.field_featured_image
     - field.field.node.stories.field_featured_on_elx_specialty
     - field.field.node.stories.field_hero_image
@@ -37,41 +39,42 @@ mode: default
 content:
   body:
     type: text_textarea_with_summary
-    weight: 7
+    weight: 4
     settings:
       rows: 9
       summary_rows: 3
       placeholder: ''
     third_party_settings: {  }
     region: content
-  field_access_by_role:
-    weight: 8
-    settings: {  }
-    third_party_settings: {  }
-    type: options_buttons
-    region: content
-  field_archive_and_unarchive:
-    weight: 21
-    settings: {  }
-    third_party_settings: {  }
-    type: options_select
-    region: content
   field_comment:
-    weight: 16
+    weight: 9
     settings: {  }
     third_party_settings: {  }
     type: comment_default
     region: content
+  field_content_section:
+    weight: 27
+    settings: {  }
+    third_party_settings: {  }
+    type: options_buttons
+    region: content
   field_display_title:
-    weight: 2
+    weight: 1
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
     region: content
+  field_downloadable:
+    weight: 26
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
   field_featured_image:
-    weight: 10
+    weight: 5
     settings:
       entity_browser: media_entity_browser
       field_widget_display: rendered_entity
@@ -85,15 +88,8 @@ content:
     third_party_settings: {  }
     type: entity_browser_entity_reference
     region: content
-  field_featured_on_elx_specialty:
-    type: boolean_checkbox
-    weight: 13
-    region: content
-    settings:
-      display_label: true
-    third_party_settings: {  }
   field_hero_image:
-    weight: 12
+    weight: 7
     settings:
       entity_browser: media_entity_browser
       field_widget_display: rendered_entity
@@ -108,93 +104,57 @@ content:
     type: entity_browser_entity_reference
     region: content
   field_markets:
-    weight: 17
-    settings: {  }
+    weight: 10
+    settings:
+      start_minimized: true
+      leaves_only: false
+      select_parents: false
+      cascading_selection: 0
+      max_depth: 0
     third_party_settings: {  }
     type: term_reference_tree
     region: content
   field_point_value:
-    weight: 15
+    weight: 8
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
-    region: content
-  field_quiz:
-    weight: 1
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: entity_reference_autocomplete
-    region: content
-  field_related_stories:
-    weight: 14
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: entity_reference_autocomplete
     region: content
   field_sub_title:
-    weight: 4
+    weight: 3
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
-    region: content
-  field_tags:
-    weight: 9
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: entity_reference_autocomplete
     region: content
   field_translation:
     type: options_buttons
-    weight: 20
+    weight: 13
     region: content
     settings: {  }
     third_party_settings: {  }
   langcode:
     type: language_select
-    weight: 3
+    weight: 2
     region: content
     settings:
       include_locked: true
     third_party_settings: {  }
   path:
     type: path
-    weight: 18
+    weight: 11
     region: content
     settings: {  }
     third_party_settings: {  }
-  promote:
-    type: boolean_checkbox
-    settings:
-      display_label: true
-    weight: 5
-    region: content
-    third_party_settings: {  }
   status:
     type: boolean_checkbox
-    weight: 19
+    weight: 12
     region: content
     settings:
       display_label: true
-    third_party_settings: {  }
-  sticky:
-    type: boolean_checkbox
-    settings:
-      display_label: true
-    weight: 6
-    region: content
     third_party_settings: {  }
   title:
     type: string_textfield
@@ -205,14 +165,22 @@ content:
       placeholder: ''
     third_party_settings: {  }
   translation:
-    weight: 11
+    weight: 6
     region: content
     settings: {  }
     third_party_settings: {  }
 hidden:
   created: true
+  field_access_by_role: true
+  field_archive_and_unarchive: true
+  field_featured_on_elx_specialty: true
   field_product_categories: true
   field_product_family: true
   field_pulsed_content: true
+  field_quiz: true
   field_related_products_stories: true
+  field_related_stories: true
+  field_tags: true
+  promote: true
+  sticky: true
   uid: true

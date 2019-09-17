@@ -17,7 +17,6 @@ class ContentController extends Controller {
    * Create a new controller instance.
    */
   public function __construct() {
-
   }
 
   /**
@@ -30,8 +29,10 @@ class ContentController extends Controller {
    *   True.
    */
   public function setTermsNodeData(Request $request) {
-    $nid = $request->input('nid'); // Node id.
-    $tid = $request->input('tid'); // Term id.
+    // Node id.
+    $nid = $request->input('nid');
+    // Term id.
+    $tid = $request->input('tid');
     $client = Helper::checkElasticClient();
     $node_elastic_exists = FlagModel::checkElasticNodeIndex($nid, $client);
     if (!$node_elastic_exists && $client) {
@@ -91,10 +92,42 @@ class ContentController extends Controller {
     // Check for index existence previously.
     $exist = ElasticUserModel::checkElasticUserIndex($uid, $client);
     if (!$exist) {
-      return FALSE;
+      return Helper::jsonError('No data to delete.', 422);
     }
-    // Purge respectice user data from elastic.
+    // Purge respective user data from elastic.
     $response = ElasticUserModel::deleteElasticUserData($uid, $client);
+    return Helper::jsonSuccess($response);
+  }
+
+  /**
+   * Purge node elastic data.
+   *
+   * @param \Illuminate\Http\Request $request
+   *   Rest resource query parameters.
+   *
+   * @return json
+   *   True or false.
+   */
+  public function purgeElasticNodeData(Request $request) {
+    // Node id.
+    $nid = $request->input('nid');
+    if (!$nid) {
+      return Helper::jsonError('Please provide node id.', 422);
+    }
+    try {
+      // Check whether elastic connectivity is there.
+      $client = Helper::checkElasticClient();
+    }
+    catch (\Exception $e) {
+      return Helper::jsonError($e->getMessage(), 400);
+    }
+    // Check for index existence previously.
+    $exist = FlagModel::checkElasticNodeIndex($nid, $client);
+    if (!$exist) {
+      return Helper::jsonError('No data to delete.', 422);
+    }
+    // Purge respective node data from elastic.
+    $response = FlagModel::deleteElasticNodeData($nid, $client);
     return Helper::jsonSuccess($response);
   }
 

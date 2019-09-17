@@ -1,0 +1,30 @@
+uuid: a05dbc35-cc9d-4ebd-992d-2e82b204d347
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.body
+    - node.type.product_detail
+  module:
+    - allowed_formats
+    - text
+third_party_settings:
+  allowed_formats:
+    full_html: '0'
+    basic_html: '0'
+    restricted_html: '0'
+    plain_text: '0'
+    quiz: '0'
+id: node.product_detail.body
+field_name: body
+entity_type: node
+bundle: product_detail
+label: Description
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  display_summary: false
+field_type: text_with_summary

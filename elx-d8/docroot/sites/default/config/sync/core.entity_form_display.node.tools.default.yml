@@ -4,25 +4,18 @@ status: true
 dependencies:
   config:
     - entity_browser.browser.media_entity_browser
-    - field.field.node.tools.field_access_by_role
-    - field.field.node.tools.field_archive_and_unarchive
+    - field.field.node.tools.field_brands
     - field.field.node.tools.field_display_title
+    - field.field.node.tools.field_downloadable
     - field.field.node.tools.field_featured
     - field.field.node.tools.field_featured_image
-    - field.field.node.tools.field_featured_on_elx_specialty
     - field.field.node.tools.field_headline
-    - field.field.node.tools.field_how_to_sell_flag
-    - field.field.node.tools.field_make_this_welcome_video
     - field.field.node.tools.field_markets
     - field.field.node.tools.field_point_value
-    - field.field.node.tools.field_product_categories
-    - field.field.node.tools.field_product_family
-    - field.field.node.tools.field_related_products_videos
     - field.field.node.tools.field_tool_description
     - field.field.node.tools.field_tool_pdf
     - field.field.node.tools.field_tool_thumbnail
     - field.field.node.tools.field_translation
-    - field.field.node.tools.field_video_category
     - field.field.node.tools.field_video_sub_titles
     - node.type.tools
   module:
@@ -42,17 +35,11 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-  field_access_by_role:
-    weight: 8
+  field_brands:
+    weight: 16
     settings: {  }
     third_party_settings: {  }
     type: options_buttons
-    region: content
-  field_archive_and_unarchive:
-    weight: 26
-    settings: {  }
-    third_party_settings: {  }
-    type: options_select
     region: content
   field_display_title:
     weight: 6
@@ -62,8 +49,15 @@ content:
     third_party_settings: {  }
     type: string_textfield
     region: content
+  field_downloadable:
+    weight: 26
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
   field_featured_image:
-    weight: 12
+    weight: 11
     settings:
       entity_browser: media_entity_browser
       field_widget_display: rendered_entity
@@ -77,28 +71,19 @@ content:
     third_party_settings: {  }
     type: entity_browser_entity_reference
     region: content
-  field_featured_on_elx_specialty:
-    type: boolean_checkbox
-    weight: 14
-    region: content
-    settings:
-      display_label: true
-    third_party_settings: {  }
-  field_make_this_welcome_video:
-    weight: 16
-    settings:
-      display_label: true
-    third_party_settings: {  }
-    type: boolean_checkbox
-    region: content
   field_markets:
-    weight: 18
-    settings: {  }
-    third_party_settings: {  }
     type: term_reference_tree
+    weight: 17
     region: content
+    settings:
+      start_minimized: true
+      leaves_only: false
+      select_parents: false
+      cascading_selection: 0
+      max_depth: 0
+    third_party_settings: {  }
   field_point_value:
-    weight: 9
+    weight: 8
     settings:
       size: 60
       placeholder: ''
@@ -115,7 +100,7 @@ content:
     type: text_textarea_with_summary
     region: content
   field_tool_pdf:
-    weight: 13
+    weight: 12
     settings:
       entity_browser: video_entity_browser
       field_widget_display: rendered_entity
@@ -130,7 +115,7 @@ content:
     type: entity_browser_entity_reference
     region: content
   field_tool_thumbnail:
-    weight: 10
+    weight: 9
     settings:
       entity_browser: media_entity_browser
       field_widget_display: rendered_entity
@@ -146,18 +131,12 @@ content:
     region: content
   field_translation:
     type: options_buttons
-    weight: 19
+    weight: 14
     region: content
     settings: {  }
     third_party_settings: {  }
-  field_video_category:
-    weight: 17
-    settings: {  }
-    third_party_settings: {  }
-    type: options_buttons
-    region: content
   field_video_sub_titles:
-    weight: 15
+    weight: 13
     settings:
       progress_indicator: throbber
     third_party_settings: {  }
@@ -185,7 +164,7 @@ content:
     third_party_settings: {  }
   status:
     type: boolean_checkbox
-    weight: 20
+    weight: 15
     region: content
     settings:
       display_label: true
@@ -199,7 +178,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
   translation:
-    weight: 11
+    weight: 10
     region: content
     settings: {  }
     third_party_settings: {  }

@@ -11,7 +11,7 @@ field_name: field_product_video_thumbnail
 entity_type: node
 bundle: product_detail
 label: 'Product video thumbnail'
-description: 'Allowed file types:<b> png, gif, jpg, jpeg.</b><br>Image Resolution:<b> 100 x 100px</b>'
+description: 'Allowed file types:<b> jpg, jpeg and png.</b><br>Image Resolution:<b> 100 x 100px</b>'
 required: false
 translatable: true
 default_value: {  }

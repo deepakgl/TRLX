@@ -1,0 +1,31 @@
+uuid: 1973d575-f168-40c5-9fb5-2a77809f2ec7
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.trlx_content_sections.field_content_section_key
+    - taxonomy.vocabulary.trlx_content_sections
+  module:
+    - text
+id: taxonomy_term.trlx_content_sections.default
+targetEntityType: taxonomy_term
+bundle: trlx_content_sections
+mode: default
+content:
+  description:
+    label: hidden
+    type: text_default
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_content_section_key:
+    weight: 1
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+hidden:
+  langcode: true
+  search_api_excerpt: true

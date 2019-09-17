@@ -1,11 +1,11 @@
 uuid: e6912ad1-51aa-4b4f-91c4-6ecd5e3d216b
-name: ELX-D8
-mail: arunima.shekhar@srijan.net
+name: 'LMX 3.0'
+mail: noreply-myelx@estee.com
 slogan: ''
 page:
   403: ''
   404: ''
-  front: /admin/content
+  front: /user
 admin_compact_mode: false
 weight_select_max: 100
 langcode: en

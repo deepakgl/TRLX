@@ -1,0 +1,18 @@
+uuid: ce3171fb-270d-45e0-9072-a5fe86b86da7
+langcode: en
+status: true
+dependencies:
+  module:
+    - serialization
+    - trlx_faq
+    - user
+id: faq_listing
+plugin_id: faq_listing
+granularity: resource
+configuration:
+  methods:
+    - GET
+  formats:
+    - json
+  authentication:
+    - cookie

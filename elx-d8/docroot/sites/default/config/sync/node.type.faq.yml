@@ -1,0 +1,17 @@
+uuid: f549a8b2-c64b-4be7-8cab-5f4d0b8b557c
+langcode: en
+status: true
+dependencies:
+  module:
+    - menu_ui
+third_party_settings:
+  menu_ui:
+    available_menus: {  }
+    parent: ''
+name: FAQ
+type: faq
+description: 'This content type can be used to add brand-specific or brand agnostic frequently asked questions.'
+help: ''
+new_revision: true
+preview_mode: 0
+display_submitted: false

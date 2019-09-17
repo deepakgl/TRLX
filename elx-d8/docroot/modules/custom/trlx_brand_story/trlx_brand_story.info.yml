@@ -1,0 +1,5 @@
+name: TRLX Brand Story
+type: module
+description: TRLX custom module for brand stroy.
+core: 8.x
+package: TRLX

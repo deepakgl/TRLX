@@ -5,12 +5,16 @@ dependencies:
   config:
     - core.entity_view_mode.node.teaser
     - field.storage.node.field_archive_and_unarchive
+    - node.type.brand_story
+    - node.type.faq
     - node.type.level_interactive_content
     - node.type.product_detail
     - node.type.quiz
     - node.type.stories
+    - node.type.t_c
     - node.type.tools
     - node.type.tools-pdf
+    - node.type.welcome_message
     - taxonomy.vocabulary.markets
     - user.role.administrator
     - user.role.authenticated
@@ -950,11 +954,15 @@ display:
           admin_label: ''
           operator: in
           value:
+            brand_story: brand_story
+            faq: faq
             level_interactive_content: level_interactive_content
             product_detail: product_detail
             stories: stories
+            t_c: t_c
             tools-pdf: tools-pdf
             tools: tools
+            welcome_message: welcome_message
           group: 1
           exposed: false
           expose:
@@ -1698,11 +1706,15 @@ display:
           admin_label: ''
           operator: in
           value:
+            brand_story: brand_story
+            faq: faq
             level_interactive_content: level_interactive_content
             product_detail: product_detail
             stories: stories
+            t_c: t_c
             tools-pdf: tools-pdf
             tools: tools
+            welcome_message: welcome_message
           group: 1
           exposed: false
           expose:
@@ -2562,11 +2574,15 @@ display:
           admin_label: ''
           operator: in
           value:
+            brand_story: brand_story
+            faq: faq
             level_interactive_content: level_interactive_content
             product_detail: product_detail
             stories: stories
+            t_c: t_c
             tools-pdf: tools-pdf
             tools: tools
+            welcome_message: welcome_message
           group: 1
           exposed: false
           expose:
@@ -3864,11 +3880,15 @@ display:
           admin_label: ''
           operator: in
           value:
+            brand_story: brand_story
+            faq: faq
             level_interactive_content: level_interactive_content
             product_detail: product_detail
             stories: stories
+            t_c: t_c
             tools-pdf: tools-pdf
             tools: tools
+            welcome_message: welcome_message
           group: 1
           exposed: false
           expose:

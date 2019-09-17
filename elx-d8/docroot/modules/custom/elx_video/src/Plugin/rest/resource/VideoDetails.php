@@ -16,7 +16,7 @@ use Drupal\elx_utility\Utility\EntityUtility;
  *   id = "video_details",
  *   label = @Translation("Video Details"),
  *   uri_paths = {
- *     "canonical" = "/api/v1/videoDetails"
+ *     "canonical" = "/api/v1/videoDetails1"
  *   }
  * )
  */

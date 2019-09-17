@@ -1,0 +1,18 @@
+uuid: b598f3d3-228e-488f-9d75-9e41c3618983
+langcode: en
+status: false
+dependencies:
+  module:
+    - serialization
+    - trlx_trends
+    - user
+id: trend_details
+plugin_id: trend_details
+granularity: resource
+configuration:
+  methods:
+    - GET
+  formats:
+    - json
+  authentication:
+    - cookie

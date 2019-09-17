@@ -1,0 +1,5 @@
+name: TRLX FAQ
+type: module
+description: TRLX custom module for FAQs.
+core: 8.x
+package: TRLX

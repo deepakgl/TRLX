@@ -1,0 +1,21 @@
+uuid: 30637e44-2c66-4977-887c-39b36a07eb81
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_point_value
+    - node.type.brand_story
+id: node.brand_story.field_point_value
+field_name: field_point_value
+entity_type: node
+bundle: brand_story
+label: 'Point Value'
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: '50'
+default_value_callback: ''
+settings: {  }
+field_type: string

@@ -1,0 +1,8 @@
+name: TRLX PRODUCTS
+type: module
+description: TRLX custom module for Products.
+core: 8.x
+package: TRLX
+
+dependencies:
+  - trlx_utility

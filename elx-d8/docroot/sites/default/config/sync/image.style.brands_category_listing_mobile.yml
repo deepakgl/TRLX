@@ -1,0 +1,15 @@
+uuid: e7949a8f-2448-47d4-a7be-fe09ca81432f
+langcode: en
+status: true
+dependencies: {  }
+name: brands_category_listing_mobile
+label: 'Brands Category Listing Mobile (160X60)'
+effects:
+  4a94ff3d-39be-4fbc-87f6-c669450205c6:
+    uuid: 4a94ff3d-39be-4fbc-87f6-c669450205c6
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 160
+      height: 60
+      anchor: center-center
