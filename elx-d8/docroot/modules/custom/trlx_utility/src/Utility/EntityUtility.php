@@ -11,8 +11,7 @@ use Drupal\elx_user\Utility\UserUtility;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Purpose of this class is to build view response, fetch & set the view.
- * response in redis.
+ * Purpose is to build view response, fetch & set the view. Response in redis.
  */
 class EntityUtility {
 
@@ -195,7 +194,7 @@ class EntityUtility {
           elseif ($value == 'string_replace') {
             $output['results'][$view_key][$key] = $this->stringReplace($result[$key]);
           }
-          // Set value for boolean fields without value (if it is unselected by default)
+          // Set value for boolean by default unselected fields.
           elseif ($value == 'boolean') {
             $output['results'][$view_key][$key] = empty($result[$key]) ? FALSE : TRUE;
           }
@@ -246,7 +245,7 @@ class EntityUtility {
           elseif ($value == 'append_host') {
             $output[$view_key][$key] = !empty($result[$key]) ? \Drupal::request()->getSchemeAndHttpHost() . $result[$key] : $result[$key];
           }
-          // Set value for boolean fields without value (if it is unselected by default)
+          // Set value for boolean by default unselected fields.
           elseif ($value == 'boolean') {
             $output[$view_key][$key] = empty($result[$key]) ? FALSE : TRUE;
           }

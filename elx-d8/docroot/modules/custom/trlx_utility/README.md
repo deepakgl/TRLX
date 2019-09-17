@@ -8,12 +8,12 @@ CONTENTS OF THIS FILE
 
 INTRODUCTION
 ------------
-This module creates the API for TR Trends listing.
+This module provides common reusable funtions / features.
 
 
 REQUIREMENTS
 ------------
-* trlx_utility
+* elx_utility
 
 
 INSTALLATION

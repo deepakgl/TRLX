@@ -8,7 +8,7 @@ CONTENTS OF THIS FILE
 
 INTRODUCTION
 ------------
-This module creates the API for TR Trends listing.
+This module creates the APIs for Dashboard e.g. primaryNavigationMenu, etc.
 
 
 REQUIREMENTS

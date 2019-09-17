@@ -98,7 +98,7 @@ class BrandStoryDetails extends ResourceBase {
       'downloadable' => 'boolean',
     ];
     // Prepare redis key.
-    $key = ':brandStoryDetails:' . '_' . $nid . '_' . $language;
+    $key = ":brandStoryDetails:_{$nid}_{$language}";
 
     // Prepare response.
     list($view_results, $status_code,) = $entityUtility->fetchApiResult(
@@ -108,6 +108,11 @@ class BrandStoryDetails extends ResourceBase {
       $data, ['nid' => $nid, 'language' => $language, 'brand' => $brandId],
       'brand_story_detail'
     );
+
+    // Check for empty resultset.
+    if (empty($view_results)) {
+      return $commonUtility->errorResponse($this->t('Brand Id (@brandId) does not exist.', ['@brandId' => $brandId]), Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
 
     // Check for empty / no result from views.
     if (empty($view_results)) {

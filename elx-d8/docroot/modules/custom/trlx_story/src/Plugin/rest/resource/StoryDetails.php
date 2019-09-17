@@ -88,7 +88,7 @@ class StoryDetails extends ResourceBase {
     ];
 
     // Prepare redis key.
-    $key = ':storyDetail:' . '_' . $nid . '_' . $language;
+    $key = ":storyDetail:_{$nid}_{$language}";
 
     // Prepare response.
     list($view_results, $status_code) = $entityUtility->fetchApiResult(

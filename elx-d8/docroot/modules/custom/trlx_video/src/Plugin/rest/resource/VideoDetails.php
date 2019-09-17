@@ -82,7 +82,7 @@ class VideoDetails extends ResourceBase {
     ];
 
     // Prepare redis key.
-    $key = ':videoDetails:' . '_' . $nid . '_' . $language;
+    $key = ":videoDetails:_{$nid}_{$language}";
 
     // Prepare response.
     list($view_results, $status_code) = $entityUtility->fetchApiResult(
@@ -93,7 +93,7 @@ class VideoDetails extends ResourceBase {
       'video_detail'
     );
 
-    // Check for empty / no result from views
+    // Check for empty / no result from views.
     if (empty($view_results)) {
       $status_code = Response::HTTP_NO_CONTENT;
     }
