@@ -145,7 +145,7 @@ class CommonUtility {
 
     $errResponse = '';
     if (!empty($err)) {
-      $errResponse = $this->errorResponse(t('Please provide only numeric value parameter(s): ' . implode(',', $err)), Response::HTTP_UNPROCESSABLE_ENTITY);
+      $errResponse = $this->errorResponse(t('Please provide only numeric value parameter(s): @params', ['@param' => implode(',', $err)]), Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     return [$limit, $offset, $errResponse];
@@ -171,12 +171,11 @@ class CommonUtility {
       'data' => $param,
     ]);
 
-    return $this->errorResponse(t('Following parameters is/are required: ' . $param), Response::HTTP_BAD_REQUEST);
+    return $this->errorResponse(t('Following parameters is/are required: @reqParam', ['@reqParam' => $param]), Response::HTTP_BAD_REQUEST);
   }
 
   /**
-   * Check if node id exists, is published
-   * & requested language is available for that nid.
+   * Check if node data exists for requested parameters.
    *
    * @param int $nid
    *   Node id.

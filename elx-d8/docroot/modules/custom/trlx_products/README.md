@@ -19,9 +19,3 @@ REQUIREMENTS
 INSTALLATION
 ------------
  * Install as you would normally install a contributed Drupal module.
-
-
-MAINTAINERS
------------
-Current maintainers:
- * Aaditya Walawalkar - https://www.drupal.org/u/aadityawalawalkar

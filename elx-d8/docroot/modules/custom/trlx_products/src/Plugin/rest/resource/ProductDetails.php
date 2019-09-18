@@ -35,14 +35,14 @@ class ProductDetails extends ResourceBase {
     $commonUtility = new CommonUtility();
     $entityUtility = new EntityUtility();
 
-    // Required parameters
+    // Required parameters.
     $requiredParams = [
       '_format',
       'nid',
       'language',
     ];
 
-    // Check for required parameters
+    // Check for required parameters.
     $missingParams = [];
     foreach ($requiredParams as $param) {
       $$param = $request->query->get($param);
@@ -84,10 +84,10 @@ class ProductDetails extends ResourceBase {
     ];
 
     // Prepare redis key.
-    $key = ':productDetails:' . '___' . $nid . '_' . $language;
+    $key = ":productDetails:___{$nid}_{$language}";
 
     // Prepare response.
-    list($view_results, $status_code, ) = $entityUtility->fetchApiResult(
+    list($view_results, $status_code) = $entityUtility->fetchApiResult(
       $key,
       'product_detail',
       'product_details_rest_export',
@@ -95,7 +95,7 @@ class ProductDetails extends ResourceBase {
       'product_detail'
     );
 
-    // Check for empty / no result from views
+    // Check for empty / no result from views.
     if (empty($view_results)) {
       $status_code = Response::HTTP_NO_CONTENT;
     }
