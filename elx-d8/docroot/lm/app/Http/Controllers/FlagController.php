@@ -11,7 +11,6 @@ use App\Model\Elastic\ElasticUserModel;
 use App\Model\Elastic\FlagModel;
 use App\Model\Elastic\BadgeModel;
 use App\Traits\ApiResponser;
-use App\Http\Controllers\UserActivitiesController;
 
 /**
  * Purpose of building this class is to set and fetch user flag.
@@ -45,33 +44,40 @@ class FlagController extends Controller {
    * @param \Illuminate\Http\Request $request
    *   Rest resource query parameters.
    *
-   * @return JSON response
+   * @return JSON
    *   Set user flag.
    */
   public function setFlag(Request $request) {
-    // $this->uid = Helper::getJtiToken($request);
+    global $_userData;
     $validatedData = $this->validate($request, [
-      'uid' => 'required|positiveinteger|exists:users_field_data,uid',
-      'nid' => 'required|positiveinteger|exists:node,nid',
+      'nid' => 'sometimes|required|positiveinteger|exists:node,nid',
       'flag' => 'required|likebookmarkflag',
       'status' => 'required|boolean',
-      '_format' => 'required|format'
+      '_format' => 'required|format',
     ]);
-    $this->uid = $validatedData['uid'];
-    $nid = $validatedData['nid'];
+    $this->uid = $_userData->userId;
+    $nid = isset($validatedData['nid']) ? $validatedData['nid'] : 0;
+    // Check node status.
+    if (empty(ContentModel::getStatusByNid($nid))) {
+      return $this->errorResponse('Node is not published.', Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
     $flag = $validatedData['flag'];
     $status = $validatedData['status'];
 
+    $type = $request->get('type');
+    if ($type != 'faq') {
+      $this->errorResponse('Type param value must only be faq', Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
     $this->elasticClient = Helper::checkElasticClient();
     if (!$this->elasticClient) {
       $this->errorResponse('No alive nodes found in cluster.', Response::HTTP_INTERNAL_SERVER_ERROR);
     }
-
     $this->updateUserIndex($nid, $flag, $status);
     $this->updateNodeIndex($nid, $flag, $status);
 
     $lang = UserModel::getUserInfoByUid($this->uid, 'language');
-    header('Content-language: ' . $lang[0]->language);
+    $language = isset($lang[0]) ? $lang[0]->language : 'en';
+    header('Content-language: ' . $language);
 
     // Fetch node data from elastic.
     $response = FlagModel::fetchMultipleElasticNodeData([$nid], $this->elasticClient);
@@ -317,51 +323,88 @@ class FlagController extends Controller {
    *   Allocate user points and badges.
    */
   public function contentViewFlag(Request $request) {
-    $this->uid = Helper::getJtiToken($request);
-    if (!$this->uid) {
-      return Helper::jsonError('Please provide user id.', 422);
-    }
-    $nid = (int) $request->input('nid');
+    global $_userData;
+    $validatedData = $this->validate($request, [
+      'nid' => 'required|positiveinteger|exists:node,nid',
+      '_format' => 'required|format',
+    ]);
+    $this->uid = $_userData->userId;
+    $nid = $validatedData['nid'];
     // Check node type.
     $type = ContentModel::getTypeByNid($nid);
-    if (empty($type)) {
-      return Helper::jsonError('Node id not exist.', 422);
-    }
+
     // Check node status.
     if (empty(ContentModel::getStatusByNid($nid))) {
-      return Helper::jsonError('Node is not published.', 422);
+      return $this->errorResponse('Node is not published.', Response::HTTP_UNPROCESSABLE_ENTITY);
     }
     // Check whether elastic client exists.
     $this->elasticClient = Helper::checkElasticClient();
     if (!$this->elasticClient) {
-      return FALSE;
+      return $this->errorResponse('No alive nodes found in cluster.', Response::HTTP_INTERNAL_SERVER_ERROR);
     }
     // Check whether user elastic index exists.
     $exist = ElasticUserModel::checkElasticUserIndex($this->uid, $this->elasticClient);
+    // If index not exist, create new index.
     if (!$exist) {
-      return Helper::jsonError("Index Not Found.", 404);
+      $params['body'] = ['uid' => $this->uid];
+      $output = ElasticUserModel::createElasticUserIndex($params, $this->uid, $this->elasticClient);
     }
     // Fetch user data from elastic index.
     $response = ElasticUserModel::fetchElasticUserData($this->uid, $this->elasticClient);
-    $node_ids = $response['_source']['node_views_' . $type->type];
-    if (in_array($nid, $node_ids)) {
-      return new Response(['status' => FALSE, 'message' => 'Node id already exist.'], 400);
+    if (isset($response['_source']['node_views_' . $type->type])) {
+      $node_ids = $response['_source']['node_views_' . $type->type];
+      if (in_array($nid, $node_ids)) {
+        return $this->errorResponse('Node id already exist.', Response::HTTP_BAD_REQUEST);
+      }
+      $node_ids[] = $nid;
+      $params['body'] = [
+        'doc' => [
+          'node_views_' . $type->type => $node_ids,
+        ],
+        'doc_as_upsert' => TRUE,
+      ];
+      ElasticUserModel::updateElasticUserData($params, $this->uid, $this->elasticClient);
+      $response = ElasticUserModel::fetchElasticUserData($this->uid, $this->elasticClient);
     }
-    $node_ids[] = $nid;
+    else {
+      $node_ids[] = $nid;
+      $params['body'] = [
+        'doc' => [
+          'node_views_' . $type->type => $node_ids,
+        ],
+        'doc_as_upsert' => TRUE,
+      ];
+      ElasticUserModel::updateElasticUserData($params, $this->uid, $this->elasticClient);
+      $response = ElasticUserModel::fetchElasticUserData($this->uid, $this->elasticClient);
+    }
     $lang = UserModel::getUserInfoByUid($this->uid, 'language');
+    $language = isset($lang[0]) ? $lang[0]->language : 'en';
     // Get point value by node id.
-    $point_value = ContentModel::getPointValueByNid($nid, $lang[0]->language);
-    $badge_info['old_points'] = $response['_source']['total_points'];
-    $response['_source']['total_points'] = $response['_source']['total_points'] + $point_value;
-    // Prepare the elastic params and update the user index.
-    $params['body'] = [
-      'doc' => [
-        'total_points' => $response['_source']['total_points'],
-        'node_views_' . $type->type => $node_ids,
-      ],
-      'doc_as_upsert' => TRUE,
-    ];
-    $output = ElasticUserModel::updateElasticUserData($params, $this->uid, $this->elasticClient);
+    $point_value = ContentModel::getPointValueByNid($nid, $language);
+    if (isset($response['_source']['total_points'])) {
+      $badge_info['old_points'] = $response['_source']['total_points'];
+      $response['_source']['total_points'] = $response['_source']['total_points'] + $point_value;
+      // Prepare the elastic params and update the user index.
+      $params['body'] = [
+        'doc' => [
+          'total_points' => $response['_source']['total_points'],
+          'node_views_' . $type->type => $node_ids,
+        ],
+        'doc_as_upsert' => TRUE,
+      ];
+      $output = ElasticUserModel::updateElasticUserData($params, $this->uid, $this->elasticClient);
+    }
+    else {
+      $badge_info['old_points'] = 0;
+      $params['body'] = [
+        'doc' => [
+          'total_points' => $point_value,
+        ],
+        'doc_as_upsert' => TRUE,
+      ];
+      $output = ElasticUserModel::updateElasticUserData($params, $this->uid, $this->elasticClient);
+      $response = ElasticUserModel::fetchElasticUserData($this->uid, $this->elasticClient);
+    }
     // New points of user.
     $badge_info['new_points'] = $response['_source']['total_points'];
     $new_points = $badge_info['new_points'];

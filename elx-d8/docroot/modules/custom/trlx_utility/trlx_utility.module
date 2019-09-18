@@ -8,6 +8,7 @@
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\File\FileInterface;
 
 /**
  * Implements hook_entity_base_field_info().
@@ -37,22 +38,24 @@ function trlx_utility_entity_base_field_info(EntityTypeInterface $entity_type) {
  */
 function trlx_utility_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   switch ($form_id) {
-    case 'node_best_sellers_form':
-    case 'node_best_sellers_edit_form':
+    case 'node_brand_story_form':
+    case 'node_brand_story_edit_form':
     case 'node_product_detail_form':
     case 'node_product_detail_edit_form':
+    case 'node_tools_form':
+    case 'node_tools_edit_form':
+      $form['field_brands']['widget']['#type'] = 'radios';
+      $form['field_brands']['widget']['#default_value'] = $form['field_brands']['widget']['#default_value'][0];
+    case 'node_best_sellers_form':
+    case 'node_best_sellers_edit_form':
     case 'node_level_interactive_content_form':
     case 'node_level_interactive_content_edit_form':
     case 'node_stories_form':
     case 'node_stories_edit_form':
-    case 'node_tools_form':
-    case 'node_tools-pdf_form':
-    case 'node_tools_edit_form':
-    case 'node_tools-pdf_edit_form':
-    case 'node_brand_story_form':
-    case 'node_brand_story_edit_form':
     case 'node_t_c_form':
     case 'node_t_c_edit_form':
+    case 'node_tools-pdf_form':
+    case 'node_tools-pdf_edit_form':
     case 'node_welcome_message_form':
     case 'node_welcome_message_edit_form':
       $form['#attached']['library'][] = 'trlx_utility/trlx_utility';
@@ -60,4 +63,34 @@ function trlx_utility_form_alter(&$form, FormStateInterface $form_state, $form_i
 
     default:
   }
+}
+
+/**
+ * Implements hook_file_validate().
+ */
+function trlx_utility_file_validate(FileInterface $file) {
+  // Allowed Image extensions for image upload via editor image upload.
+  $allowedImgExt = [
+    'jpeg',
+    'jpg',
+    'png',
+  ];
+
+  // Check for valid image file.
+  $inValidImage = file_validate_is_image($file);
+
+  // Check whether the file is a valid image file only.
+  if (empty($inValidImage)) {
+    // Fetch file type.
+    $fileType = $file->getMimeType();
+
+    // Extract the exact image extension.
+    $imageFileType = end(explode("image/", $fileType));
+
+    // Check if extension is out of allowed image extensions.
+    if (!in_array($imageFileType, $allowedImgExt)) {
+      $errors[] = t("The allowed image file extensions are: @imgExt", ['@imgExt' => implode(", ", $allowedImgExt)]);
+    }
+  }
+  return $errors;
 }

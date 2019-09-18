@@ -33,14 +33,33 @@ class BrandStoryDetails extends ResourceBase {
   public function get(Request $request) {
     $commonUtility = new CommonUtility();
     $entityUtility = new EntityUtility();
-    $nid = $request->query->get('nid');
-    $language = $request->query->get('language');
 
-    // Check for empty language.
-    if (empty($language)) {
-      $param = ['language'];
+    // Required parameters.
+    $requiredParams = [
+      '_format',
+      'nid',
+      'language',
+      'brandId',
+    ];
 
-      return $commonUtility->invalidData($param);
+    // Check for required parameters.
+    $missingParams = [];
+    foreach ($requiredParams as $param) {
+      $$param = $request->query->get($param);
+      if (empty($$param)) {
+        $missingParams[] = $param;
+      }
+    }
+
+    // Report missing required parameters.
+    if (!empty($missingParams)) {
+      return $commonUtility->invalidData($missingParams);
+    }
+
+    // Checkfor valid _format type.
+    $response = $commonUtility->validateFormat($_format, $request);
+    if (!($response->getStatusCode() === Response::HTTP_OK)) {
+      return $response;
     }
 
     // Checkfor valid language code.
@@ -49,13 +68,23 @@ class BrandStoryDetails extends ResourceBase {
       return $response;
     }
 
-    if (empty($nid)) {
-      $param = ['nid'];
-      return $commonUtility->invalidData($param);
-    }
-
     if (empty($commonUtility->isValidNid($nid, $language))) {
       return $commonUtility->errorResponse($this->t('Node id does not exist or requested language data is not available.'), Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
+
+    // Validation for valid brand key
+    // Prepare view response for valid brand key.
+    list($view_results, $status_code) = $entityUtility->fetchApiResult(
+      '',
+      'brand_key_validation',
+      'rest_export_brand_key_validation',
+      '',
+      $brandId
+    );
+
+    // Check for empty resultset.
+    if (empty($view_results)) {
+      return $commonUtility->errorResponse($this->t('Brand Id (@brandId) does not exist.', ['@brandId' => $brandId]), Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     // Prepare array of keys for alteration in response.
@@ -69,20 +98,25 @@ class BrandStoryDetails extends ResourceBase {
       'downloadable' => 'boolean',
     ];
     // Prepare redis key.
-    $key = ':brandStoryDetails:' . '_' . $nid . '_' . $language;
+    $key = ":brandStoryDetails:_{$nid}_{$language}";
 
     // Prepare response.
     list($view_results, $status_code,) = $entityUtility->fetchApiResult(
       $key,
       'brand_story',
       'rest_export_brand_story_details',
-      $data, ['nid' => $nid, 'language' => $language],
+      $data, ['nid' => $nid, 'language' => $language, 'brand' => $brandId],
       'brand_story_detail'
     );
 
+    // Check for empty resultset.
+    if (empty($view_results)) {
+      return $commonUtility->errorResponse($this->t('Brand Id (@brandId) does not exist.', ['@brandId' => $brandId]), Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
+
     // Check for empty / no result from views.
     if (empty($view_results)) {
-      return $commonUtility->successResponse([], Response::HTTP_OK);
+      $status_code = Response::HTTP_NO_CONTENT;
     }
 
     return $commonUtility->successResponse($view_results, $status_code);

@@ -1,0 +1,29 @@
+uuid: 8d879dfd-aaf5-48fb-b873-e1b8e0309ac2
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_content_section
+    - node.type.stories
+    - taxonomy.vocabulary.trlx_content_sections
+id: node.stories.field_content_section
+field_name: field_content_section
+entity_type: node
+bundle: stories
+label: 'Content Section'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      trlx_content_sections: trlx_content_sections
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

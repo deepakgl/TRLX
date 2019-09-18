@@ -135,17 +135,17 @@ class CommonUtility {
   public function getPagerParam(Request $request, $limit_default = 10, $offset_default = 0) {
     $limit = $request->query->get('limit') ? $request->query->get('limit') : $limit_default;
     $err = [];
-    if (!is_numeric($limit)) {
+    if (!is_numeric($limit) || $limit < 0) {
       $err[] = 'limit';
     }
     $offset = $request->query->get('offset') ? $request->query->get('offset') : $offset_default;
-    if (!is_numeric($offset)) {
+    if (!is_numeric($offset) || $offset < 0) {
       $err[] = 'offset';
     }
 
     $errResponse = '';
     if (!empty($err)) {
-      $errResponse = $this->errorResponse(t('Please provide only numeric value parameter(s): ' . implode(',', $err)), Response::HTTP_BAD_REQUEST);
+      $errResponse = $this->errorResponse(t('Please provide only numeric value parameter(s): @params', ['@param' => implode(',', $err)]), Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     return [$limit, $offset, $errResponse];
@@ -171,12 +171,11 @@ class CommonUtility {
       'data' => $param,
     ]);
 
-    return $this->errorResponse(t('Following parameters is/are required: ' . $param), Response::HTTP_BAD_REQUEST);
+    return $this->errorResponse(t('Following parameters is/are required: @reqParam', ['@reqParam' => $param]), Response::HTTP_BAD_REQUEST);
   }
 
   /**
-   * Check if node id exists, is published
-   * & requested language is available for that nid.
+   * Check if node data exists for requested parameters.
    *
    * @param int $nid
    *   Node id.
@@ -187,6 +186,9 @@ class CommonUtility {
    *   True or false.
    */
   public function isValidNid($nid, $langcode) {
+    if (!is_numeric($nid)) {
+      return FALSE;
+    }
     $query = \Drupal::database();
     $query = $query->select('node_field_data', 'n');
     $query->fields('n', ['nid'])
@@ -256,6 +258,28 @@ class CommonUtility {
     }
 
     return $this->errorResponse(t('Please enter positive integer value.'), Response::HTTP_UNPROCESSABLE_ENTITY);
+  }
+
+  /**
+   * Validate story section.
+   *
+   * @param string $name
+   *   Section name.
+   * @param \Symfony\Component\HttpFoundation\Request $request
+   *   Request object.
+   *
+   * @return \Symfony\Component\HttpFoundation\JsonResponse
+   *   Json response.
+   */
+  public function validateStorySectionCode($name, $request) {
+    if (!$request->query->has('section') || empty($name)) {
+      return $this->errorResponse(t('Section parameter is required.'), Response::HTTP_BAD_REQUEST);
+    }
+    $section = ['trend', 'sellingTips', 'insiderCorner'];
+    if (!preg_match("/^[A-Za-z\\- \']+$/", $name) || !in_array($name, $section)) {
+      return $this->errorResponse(t('Please enter valid section name.'), Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
+    return $this->successResponse();
   }
 
 }

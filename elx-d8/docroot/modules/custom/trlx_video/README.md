@@ -8,7 +8,7 @@ CONTENTS OF THIS FILE
 
 INTRODUCTION
 ------------
-This module creates the API for video listing and details page.
+This module creates the APIs for Video e.g. videoListing, etc.
 
 
 REQUIREMENTS
@@ -19,9 +19,3 @@ REQUIREMENTS
 INSTALLATION
 ------------
  * Install as you would normally install a contributed Drupal module.
-
-
-MAINTAINERS
------------
-Current maintainers:
- * Deepak Goyal - https://www.drupal.org/u/deepak-goyal

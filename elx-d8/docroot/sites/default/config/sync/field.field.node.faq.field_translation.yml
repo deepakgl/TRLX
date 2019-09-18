@@ -1,0 +1,21 @@
+uuid: c94606f8-00f6-4e13-a4f9-07bac016bdcc
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_translation
+    - node.type.faq
+  module:
+    - options
+id: node.faq.field_translation
+field_name: field_translation
+entity_type: node
+bundle: faq
+label: Translation
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

@@ -5,10 +5,13 @@ dependencies:
   config:
     - field.field.node.faq.body
     - field.field.node.faq.field_brands
+    - field.field.node.faq.field_markets
     - field.field.node.faq.field_question
+    - field.field.node.faq.field_translation
     - node.type.faq
   module:
     - path
+    - term_reference_tree
     - text
 id: node.faq.default
 targetEntityType: node
@@ -36,6 +39,17 @@ content:
     third_party_settings: {  }
     type: options_buttons
     region: content
+  field_markets:
+    weight: 27
+    settings:
+      start_minimized: true
+      leaves_only: false
+      select_parents: false
+      cascading_selection: 0
+      max_depth: 0
+    third_party_settings: {  }
+    type: term_reference_tree
+    region: content
   field_question:
     weight: 9
     settings:
@@ -43,6 +57,12 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: string_textarea
+    region: content
+  field_translation:
+    weight: 26
+    settings: {  }
+    third_party_settings: {  }
+    type: options_buttons
     region: content
   langcode:
     type: language_select

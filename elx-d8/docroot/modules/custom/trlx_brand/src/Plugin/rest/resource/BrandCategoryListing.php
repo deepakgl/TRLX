@@ -53,7 +53,7 @@ class BrandCategoryListing extends ResourceBase {
         $brands_list[$i]['id'] = $data['tid'];
         $brands_list[$i]['link'] = '';
         $brands_list[$i]['title'] = $data['name'];
-        // Create image urls for three different display screens. 
+        // Create image urls for three different display screens.
         $brands_list[$i]['imageSmall'] = $this->commonUtility->getImageStyleBasedUrl('brands_category_listing_mobile', $data['brand_logo_uri']);
         $brands_list[$i]['imageMedium'] = $this->commonUtility->getImageStyleBasedUrl('brands_category_listing_tablet', $data['brand_logo_uri']);
         $brands_list[$i]['imageLarge'] = $this->commonUtility->getImageStyleBasedUrl('brands_category_listing_desktop', $data['brand_logo_uri']);
@@ -65,8 +65,10 @@ class BrandCategoryListing extends ResourceBase {
     return $this->commonUtility->successResponse($brands_list);
   }
 
-  // Compare title to arrange alphabetically.
-  function compareTitle($a, $b) {
+  /**
+   * Compare title to arrange alphabetically.
+   */
+  public function compareTitle($a, $b) {
     return strnatcmp($a['title'], $b['title']);
   }
 

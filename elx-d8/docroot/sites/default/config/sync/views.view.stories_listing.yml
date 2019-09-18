@@ -493,7 +493,7 @@ display:
   rest_export_stories_listing:
     display_plugin: rest_export
     id: rest_export_stories_listing
-    display_title: 'TR Trend Listing'
+    display_title: 'Story Listing'
     position: 1
     display_options:
       display_extenders: {  }
@@ -554,6 +554,9 @@ display:
               raw_output: false
             field_downloadable:
               alias: downloadable
+              raw_output: false
+            body:
+              alias: ''
               raw_output: false
       fields:
         nid:
@@ -1136,6 +1139,68 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
+        body:
+          id: body
+          table: node__body
+          field: body
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: ''
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: text_default
+          settings: {  }
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
       defaults:
         fields: false
         query: false
@@ -1159,6 +1224,15 @@ display:
           relationship: none
           group_type: group
           admin_label: 'field_hero_image: Media'
+          required: false
+          plugin_id: standard
+        field_content_section:
+          id: field_content_section
+          table: node__field_content_section
+          field: field_content_section
+          relationship: none
+          group_type: group
+          admin_label: 'field_content_section: Taxonomy term'
           required: false
           plugin_id: standard
       display_description: ''
@@ -1214,6 +1288,43 @@ display:
           expose:
             operator: ''
           group: 1
+        field_content_section_key_value:
+          id: field_content_section_key_value
+          table: taxonomy_term__field_content_section_key
+          field: field_content_section_key_value
+          relationship: field_content_section
+          group_type: group
+          admin_label: ''
+          operator: '='
+          value: trend
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            placeholder: ''
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          plugin_id: string
       filter_groups:
         operator: AND
         groups:
@@ -1270,15 +1381,16 @@ display:
         - user.permissions
       tags:
         - 'config:field.storage.media.field_media_image'
+        - 'config:field.storage.node.body'
         - 'config:field.storage.node.field_display_title'
         - 'config:field.storage.node.field_downloadable'
         - 'config:field.storage.node.field_point_value'
         - 'config:field.storage.node.field_sub_title'
         - extensions
-  rest_export_trend_details:
+  rest_export_story_details:
     display_plugin: rest_export
-    id: rest_export_trend_details
-    display_title: 'TR Trend Details'
+    id: rest_export_story_details
+    display_title: 'story Details'
     position: 4
     display_options:
       display_extenders: {  }
@@ -1758,7 +1870,7 @@ display:
           type: image_url
           settings:
             url_type: '0'
-            image_style: stories_details_1440_398
+            image_style: stories_details_mov_375_340_
             image_link: ''
           group_column: ''
           group_columns: {  }
@@ -1966,6 +2078,7 @@ display:
         filters: false
         filter_groups: false
         arguments: false
+        relationships: false
       pager:
         type: some
         options:
@@ -2028,6 +2141,43 @@ display:
           expose:
             operator: ''
           group: 1
+        field_content_section_key_value:
+          id: field_content_section_key_value
+          table: taxonomy_term__field_content_section_key
+          field: field_content_section_key_value
+          relationship: field_content_section
+          group_type: group
+          admin_label: ''
+          operator: '='
+          value: trend
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            placeholder: ''
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          plugin_id: string
       filter_groups:
         operator: AND
         groups:
@@ -2109,6 +2259,25 @@ display:
           entity_type: node
           entity_field: langcode
           plugin_id: language
+      relationships:
+        field_featured_image:
+          id: field_featured_image
+          table: node__field_featured_image
+          field: field_featured_image
+          relationship: none
+          group_type: group
+          admin_label: 'field_featured_image: Media'
+          required: false
+          plugin_id: standard
+        field_content_section:
+          id: field_content_section
+          table: node__field_content_section
+          field: field_content_section
+          relationship: none
+          group_type: group
+          admin_label: 'field_content_section: Taxonomy term'
+          required: false
+          plugin_id: standard
     cache_metadata:
       max-age: -1
       contexts:

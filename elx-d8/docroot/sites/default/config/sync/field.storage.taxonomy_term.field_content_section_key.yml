@@ -1,0 +1,20 @@
+uuid: 8db84f88-67f8-4e2d-9114-edbabbeda001
+langcode: en
+status: true
+dependencies:
+  module:
+    - taxonomy
+    - text
+id: taxonomy_term.field_content_section_key
+field_name: field_content_section_key
+entity_type: taxonomy_term
+type: text
+settings:
+  max_length: 255
+module: text
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

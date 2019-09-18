@@ -9,8 +9,8 @@ use Illuminate\Auth\AuthenticationException;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Auth\Access\AuthorizationException;
 use Tymon\JWTAuth\Exceptions\TokenInvalidException;
-use Tymon\JWTAuth\Exceptions\TokenExpiredException;
-use Tymon\JWTAuth\Exceptions\JWTException;
+use Firebase\JWT\ExpiredException;
+use Firebase\JWT\BeforeValidException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -20,6 +20,9 @@ use Symfony\Component\Process\Exception\InvalidArgumentException;
 use ErrorException;
 use UnexpectedValueException;
 
+/**
+ * A list of the exception types that should be reported.
+ */
 class Handler extends ExceptionHandler {
 
   use ApiResponser;
@@ -30,10 +33,7 @@ class Handler extends ExceptionHandler {
    * @var array
    */
   protected $dontReport = [
-    AuthorizationException::class,
-    HttpException::class,
     ModelNotFoundException::class,
-    ValidationException::class,
   ];
 
   /**
@@ -41,8 +41,8 @@ class Handler extends ExceptionHandler {
    *
    * This is a great spot to send exceptions to Sentry, Bugsnag, etc.
    *
-   * @param  \Exception  $exception
-   * @return void
+   * @param \Exception $exception
+   *   Exception.
    */
   public function report(Exception $exception) {
     parent::report($exception);
@@ -51,9 +51,13 @@ class Handler extends ExceptionHandler {
   /**
    * Render an exception into an HTTP response.
    *
-   * @param  \Illuminate\Http\Request  $request
-   * @param  \Exception  $exception
+   * @param \Illuminate\Http\Request $request
+   *   Request object.
+   * @param \Exception $exception
+   *   Exception.
+   *
    * @return \Illuminate\Http\Response
+   *   Json response.
    */
   public function render($request, Exception $exception) {
     if ($exception instanceof HttpException) {
@@ -83,7 +87,7 @@ class Handler extends ExceptionHandler {
     if ($exception instanceof TokenInvalidException) {
       return $this->errorResponse($exception->getMessage(), Response::HTTP_UNAUTHORIZED);
     }
-    if ($exception instanceof TokenExpiredException) {
+    if ($exception instanceof ExpiredException) {
       return $this->errorResponse($exception->getMessage(), Response::HTTP_UNAUTHORIZED);
     }
     if ($exception instanceof NoNodesAvailableException) {
@@ -92,7 +96,7 @@ class Handler extends ExceptionHandler {
     if ($exception instanceof QueryException) {
       return $this->errorResponse($exception->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
     }
-    if ($exception instanceof JWTException) {
+    if ($exception instanceof BeforeValidException) {
       return $this->errorResponse($exception->getMessage(), Response::HTTP_UNAUTHORIZED);
     }
     if ($exception instanceof InvalidArgumentException) {
@@ -105,7 +109,7 @@ class Handler extends ExceptionHandler {
       return $this->errorResponse($exception->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
     }
 
-    if (env('APP_DEBUG', false)) {
+    if (env('APP_DEBUG', FALSE)) {
       return parent::render($request, $exception);
     }
 

@@ -35,14 +35,14 @@ class ProductDetails extends ResourceBase {
     $commonUtility = new CommonUtility();
     $entityUtility = new EntityUtility();
 
-    // Required parameters
+    // Required parameters.
     $requiredParams = [
       '_format',
       'nid',
       'language',
     ];
 
-    // Check for required parameters
+    // Check for required parameters.
     $missingParams = [];
     foreach ($requiredParams as $param) {
       $$param = $request->query->get($param);
@@ -56,13 +56,13 @@ class ProductDetails extends ResourceBase {
       return $commonUtility->invalidData($missingParams);
     }
 
-    // Checkfor valid _format type
+    // Checkfor valid _format type.
     $response = $commonUtility->validateFormat($_format, $request);
     if (!($response->getStatusCode() === Response::HTTP_OK)) {
       return $response;
     }
 
-    // Checkfor valid language code
+    // Checkfor valid language code.
     $response = $commonUtility->validateLanguageCode($language, $request);
     if (!($response->getStatusCode() === Response::HTTP_OK)) {
       return $response;
@@ -74,21 +74,20 @@ class ProductDetails extends ResourceBase {
 
     // Prepare array of keys for alteration in response.
     $data = [
+      'title' => 'decode',
       'displayTitle' => 'decode',
       'subTitle' => 'decode',
       'nid' => 'int',
       'pointValue' => 'int',
-      'whatItIs' => 'decode',
-      'whatItDoes' => 'decode',
-      'demonstration' => 'decode',
+      'body' => 'decode',
       'video' => 'append_host',
     ];
-  
+
     // Prepare redis key.
-    $key = ':productDetails:' . '___' . $nid . '_' . $language;
+    $key = ":productDetails:___{$nid}_{$language}";
 
     // Prepare response.
-    list($view_results, $status_code, ) = $entityUtility->fetchApiResult(
+    list($view_results, $status_code) = $entityUtility->fetchApiResult(
       $key,
       'product_detail',
       'product_details_rest_export',
@@ -96,11 +95,11 @@ class ProductDetails extends ResourceBase {
       'product_detail'
     );
 
-    // Check for empty / no result from views
+    // Check for empty / no result from views.
     if (empty($view_results)) {
       $status_code = Response::HTTP_NO_CONTENT;
     }
-  
+
     return $commonUtility->successResponse($view_results, $status_code);
   }
 

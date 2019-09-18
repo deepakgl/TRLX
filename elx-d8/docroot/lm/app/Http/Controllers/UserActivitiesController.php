@@ -14,14 +14,14 @@ use App\Model\Mysql\UserModel;
  * Purpose of this class is to build and fetch user actitivities.
  */
 class UserActivitiesController extends Controller {
-  
+
   use ApiResponser;
 
   /**
    * Create a new controller instance.
    */
   public function __construct() {
-    
+
   }
 
   /**
@@ -65,13 +65,12 @@ class UserActivitiesController extends Controller {
    *   User activities.
    */
   public function userActivities(Request $request) {
-    // $uid = Helper::getJtiToken($request);
+    global $_userData;
     $validatedData = $this->validate($request, [
-      'uid' => 'required|positiveinteger|exists:users_field_data,uid',
       'nid' => 'required|numericarray|exists:node,nid',
-      '_format' => 'required|format'
+      '_format' => 'required|format',
     ]);
-    $this->uid = $validatedData['uid'];
+    $this->uid = $_userData->userId;
     $nids = $validatedData['nid'];
     $client = Helper::checkElasticClient();
     if (!$client) {
@@ -286,7 +285,7 @@ class UserActivitiesController extends Controller {
   }
 
   /**
-   * Fetch user flag empty response
+   * Fetch user flag empty response.
    *
    * @param int $id
    *   Node id.
@@ -301,8 +300,8 @@ class UserActivitiesController extends Controller {
     if ($flag == "userActivity") {
       $user_activities = [
         "nid" => (int) $id,
-        "userLikeStatus" => false,
-        "userBookmarkStatus" => false,
+        "userLikeStatus" => FALSE,
+        "userBookmarkStatus" => FALSE,
       ];
     }
     elseif ($flag == "globalActivity") {
@@ -317,8 +316,8 @@ class UserActivitiesController extends Controller {
         "nid" => (int) $id,
         "likes" => 0,
         "bookmarks" => 0,
-        "userLikeStatus" => false,
-        "userBookmarkStatus" => false,
+        "userLikeStatus" => FALSE,
+        "userBookmarkStatus" => FALSE,
       ];
     }
     return $user_activities;

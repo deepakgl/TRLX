@@ -78,7 +78,7 @@ class TrendListing extends ResourceBase {
       return $errorResponse;
     }
     // Prepare redis key.
-    $key = ':trendListing:' . '_' . $language . '_' . $limit . '_' . $offset;
+    $key = ":trendListing:_{$language}_{$limit}_{$offset}";
 
     // Prepare response.
     list($view_results, $status_code) = $entityUtility->fetchApiResult(
