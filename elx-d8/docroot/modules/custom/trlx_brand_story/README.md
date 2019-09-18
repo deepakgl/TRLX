@@ -8,7 +8,7 @@ CONTENTS OF THIS FILE
 
 INTRODUCTION
 ------------
-This module creates the API for brand story details page.
+This module creates the APIs for Brands story e.g. brandStoryDetails, etc.
 
 
 REQUIREMENTS

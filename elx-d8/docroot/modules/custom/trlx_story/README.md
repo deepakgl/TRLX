@@ -8,7 +8,7 @@ CONTENTS OF THIS FILE
 
 INTRODUCTION
 ------------
-This module creates the API for story details page.
+This module creates the APIs for Story e.g. storyDetails, etc.
 
 
 REQUIREMENTS

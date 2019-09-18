@@ -8,7 +8,7 @@ CONTENTS OF THIS FILE
 
 INTRODUCTION
 ------------
-This module creates the API for video listing and details page.
+This module creates the APIs for Video e.g. videoListing, etc.
 
 
 REQUIREMENTS
