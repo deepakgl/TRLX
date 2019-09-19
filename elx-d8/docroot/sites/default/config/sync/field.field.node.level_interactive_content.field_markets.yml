@@ -10,7 +10,7 @@ id: node.level_interactive_content.field_markets
 field_name: field_markets
 entity_type: node
 bundle: level_interactive_content
-label: Market
+label: Region
 description: ''
 required: false
 translatable: false

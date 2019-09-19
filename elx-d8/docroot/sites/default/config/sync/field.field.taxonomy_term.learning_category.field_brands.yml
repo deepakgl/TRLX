@@ -1,28 +1,29 @@
-uuid: b294e26c-6503-4507-a538-05e02bde8d4e
+uuid: 3f349cf3-78d0-4fe4-b4b7-a734fb15d7b3
 langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.taxonomy_term.field_image
-    - media.type.image
+    - field.storage.taxonomy_term.field_brands
+    - taxonomy.vocabulary.brands
     - taxonomy.vocabulary.learning_category
-id: taxonomy_term.learning_category.field_image
-field_name: field_image
+id: taxonomy_term.learning_category.field_brands
+field_name: field_brands
 entity_type: taxonomy_term
 bundle: learning_category
-label: Image
-description: 'Allowed file types:<b> png, jpg, jpeg.</b>'
+label: Brands
+description: ''
 required: false
-translatable: true
+translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
-  handler: 'default:media'
+  handler: 'default:taxonomy_term'
   handler_settings:
     target_bundles:
-      image: image
+      brands: brands
     sort:
-      field: _none
+      field: name
+      direction: asc
     auto_create: false
     auto_create_bundle: ''
 field_type: entity_reference

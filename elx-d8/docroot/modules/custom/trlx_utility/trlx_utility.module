@@ -94,3 +94,10 @@ function trlx_utility_file_validate(FileInterface $file) {
   }
   return $errors;
 }
+
+/**
+ * Implements hook_preprocess_html().
+ */
+function trlx_utility_preprocess_page(&$variables) {
+  $variables['#attached']['library'][] = 'trlx_utility/trlx_css';
+}
