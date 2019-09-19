@@ -4,3 +4,8 @@ trlx_utility:
   dependencies:
     - core/jquery
     - core/drupal
+trlx_css:
+  version: 1.x
+  css:
+    theme:
+      css/trlx.css: {}

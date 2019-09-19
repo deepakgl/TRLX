@@ -3,6 +3,13 @@
     attach: function(context, settings) {
       $('.user-register-form .term-reference-tree-button, .user-form.term-reference-tree button, .user-form .term-reference-tree-button, .user-form.term-reference-tree button').next('div').find('input[type="checkbox"]').attr('disabled', 'disabled');
       $('.user-register-form .term-reference-tree-button, .user-form.term-reference-tree button, .user-form .term-reference-tree-button, .user-form.term-reference-tree button').next('div').find('input[type="checkbox"]').prop("checked", false);
+
+      // Js for select all markets by default.
+      $('.node-level-interactive-content-form .term-reference-tree-level .form-type-checkbox input:checkbox').prop("checked", true);
+      $('.node-product-detail-form .term-reference-tree-level .form-type-checkbox input:checkbox').prop("checked", true);
+      $('.node-stories-form .term-reference-tree-level .form-type-checkbox input:checkbox').prop("checked", true);
+      $('.node-tools-form .term-reference-tree-level .form-type-checkbox input:checkbox').prop("checked", true);
+
       // Js for select all markets on select of region.
       var $region = $('.path-node .term-reference-tree-button').next('div').find('input[type="checkbox"]');
       $region.on('click', function() {

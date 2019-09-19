@@ -43,7 +43,6 @@ module:
   elx_elastic_user: 0
   elx_entityqueue_alter: 0
   elx_lang_translation: 0
-  elx_learning_levels: 0
   elx_mcq: 0
   elx_menu: 0
   elx_migration: 0
@@ -138,6 +137,7 @@ module:
   trlx_dashboard: 0
   trlx_factsheets: 0
   trlx_faq: 0
+  trlx_learning_levels: 0
   trlx_products: 0
   trlx_story: 0
   trlx_trends: 0

@@ -1,0 +1,5 @@
+/* Hide remove button from level interactive paragraph */
+.node-level-interactive-content-form .paragraph-type-top,
+.node-level-interactive-content-edit-form .paragraph-type-top {
+  display: none !important;
+}
