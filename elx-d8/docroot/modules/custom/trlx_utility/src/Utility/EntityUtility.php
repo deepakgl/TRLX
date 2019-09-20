@@ -166,7 +166,10 @@ class EntityUtility {
     }
     // Fetch result from respective view.
     list($view_results, $status_code) = $this->getViewContent($view_name, $current_display, $filter, $data, $type);
-
+    // Convert pager count value to int.
+    if (isset($view_results['pager']['count'])) {
+      $view_results['pager']['count'] = (int) $view_results['pager']['count'];
+    }
     return [$view_results, $status_code];
   }
 

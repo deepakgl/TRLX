@@ -1,0 +1,18 @@
+uuid: c66ef56f-efbd-46c4-a917-09f2785f830f
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.t_c
+id: node.t_c.title
+field_name: title
+entity_type: node
+bundle: t_c
+label: 'Title (Backend use only)'
+description: ''
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

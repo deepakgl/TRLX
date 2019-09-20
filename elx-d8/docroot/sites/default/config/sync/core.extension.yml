@@ -138,6 +138,7 @@ module:
   trlx_factsheets: 0
   trlx_faq: 0
   trlx_learning_levels: 0
+  trlx_market_hierarchy: 0
   trlx_products: 0
   trlx_story: 0
   trlx_trends: 0
