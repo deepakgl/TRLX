@@ -6,7 +6,6 @@
  */
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\elx_user\Utility\UserUtility;
 use Drupal\node\Entity\Node;
 
 /**
@@ -154,18 +153,7 @@ function trlx_learning_levels_views_query_alter($view, $query) {
   $current_display = [
     'rest_export_level_interactive_content',
   ];
-  if ($view->id() == 'learning_levels' && $view->current_display == 'rest_export_learning_levels') {
-    $uid = \Drupal::currentUser()->id();
-    $user_utility = new UserUtility();
-    $roles = $user_utility->getUserRoles($uid);
-    if ($roles) {
-      // Add access by role table to the query.
-      $query->queueTable('taxonomy_term__field_access_by_role', "taxonomy_term_field_data", NULL, 'taxonomy_term__field_access_by_role');
-      // Add access by role condition based on the current user.
-      $query->addWhere('1', 'taxonomy_term__field_access_by_role.field_access_by_role_target_id', $roles, 'IN');
-    }
-  }
-  elseif (in_array($view->id(), $view_id) && in_array($view->current_display,
+  if (in_array($view->id(), $view_id) && in_array($view->current_display,
    $current_display)) {
     // Add join in node_field_data from draggableviews_structure for set order.
     // in level interactive module listing.
