@@ -15,7 +15,7 @@ use Drupal\node\Entity\Node;
  * @return string
  *   Generate file path.
  */
-function generate_unique_folder_path() {
+function trlx_generate_unique_folder_path() {
   mt_srand((double) microtime() * 10000);
   $char_id = strtoupper(md5(uniqid(rand(), TRUE)));
   $hyphen = chr(45);
@@ -81,7 +81,7 @@ function trlx_learning_levels_validate(&$form, FormStateInterface $form_state) {
     $uploaded_file = $form_state->getValue('field_interactive_content');
     foreach ($uploaded_file as $value) {
 
-      $path = generate_unique_folder_path();
+      $path = trlx_generate_unique_folder_path();
       $uri = 'public://' . $path;
 
       $uploaded_file = $value['subform']['field_articulate_file_upload'][0]['fids'];
