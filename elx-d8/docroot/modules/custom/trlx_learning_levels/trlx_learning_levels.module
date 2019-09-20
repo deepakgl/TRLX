@@ -36,10 +36,10 @@ function trlx_generate_unique_folder_path() {
  * @param string $dir
  *   File directory path.
  */
-function delete_learning_levels_files($dir) {
+function trlx_delete_learning_levels_files($dir) {
   $files = array_diff(scandir($dir), ['.', '..']);
   foreach ($files as $file) {
-    (is_dir("$dir/$file")) ? delete_learning_levels_files("$dir/$file") : unlink("$dir/$file");
+    (is_dir("$dir/$file")) ? trlx_delete_learning_levels_files("$dir/$file") : unlink("$dir/$file");
   }
   return rmdir($dir);
 }
@@ -126,7 +126,7 @@ function trlx_learning_levels_validate(&$form, FormStateInterface $form_state) {
               $dir = 'public://' . $str[3];
               $delpath = \Drupal::service('file_system')->realpath($dir);
               // Delete existing file directory on edit page.
-              delete_learning_levels_files($delpath);
+              trlx_delete_learning_levels_files($delpath);
             }
 
             $url = parse_url(file_create_url($uri))['path'] . '/' . $index_file;
