@@ -1,5 +1,5 @@
 services:
-  authentication.jwt_auth:
+  trlx_utility.authentication.jwt_auth:
     class: Drupal\trlx_utility\Authentication\Provider\JwtAuth
     arguments: ['@config.factory', '@entity.manager']
     tags:

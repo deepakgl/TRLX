@@ -97,12 +97,9 @@ class FactsheetsListing extends ResourceBase {
       return $errorResponse;
     }
 
-    // Prepare redis key.
-    $key = ':factsheetsListings:' . '_' . $language . '_' . $limit . '_' . $offset;
-
     // Prepare view response.
     list($view_results, $status_code) = $entityUtility->fetchApiResult(
-      $key,
+      '',
       'fact_sheets_list',
       'rest_export_fact_sheets_list',
       $data,

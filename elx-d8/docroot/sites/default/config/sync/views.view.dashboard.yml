@@ -960,7 +960,6 @@ display:
             product_detail: product_detail
             stories: stories
             t_c: t_c
-            tools-pdf: tools-pdf
             tools: tools
             welcome_message: welcome_message
           group: 1
@@ -1050,11 +1049,14 @@ display:
           admin_label: ''
           operator: in
           value:
+            brand_story: brand_story
+            faq: faq
             level_interactive_content: level_interactive_content
             product_detail: product_detail
             stories: stories
-            tools-pdf: tools-pdf
+            t_c: t_c
             tools: tools
+            welcome_message: welcome_message
           group: 1
           exposed: true
           expose:
@@ -1155,48 +1157,8 @@ display:
           admin_label: ''
           operator: in
           value:
-            all: all
-            '***LANGUAGE_site_default***': '***LANGUAGE_site_default***'
-            '***LANGUAGE_language_interface***': '***LANGUAGE_language_interface***'
-            '***LANGUAGE_language_content***': '***LANGUAGE_language_content***'
             en: en
             zh-hans: zh-hans
-            el: el
-            th: th
-            ko: ko
-            ja: ja
-            ru: ru
-            vi: vi
-            zh-hant: zh-hant
-            ar: ar
-            bg: bg
-            hr: hr
-            cs: cs
-            da: da
-            nl: nl
-            et: et
-            fil: fil
-            fi: fi
-            fr: fr
-            frca: frca
-            de: de
-            he: he
-            hu: hu
-            is: is
-            id: id
-            it: it
-            lv: lv
-            lt: lt
-            nb: nb
-            pl: pl
-            pt: pt
-            ro: ro
-            es: es
-            essp: essp
-            sv: sv
-            tr: tr
-            und: und
-            zxx: zxx
           group: 1
           exposed: true
           expose:
@@ -1220,7 +1182,7 @@ display:
               el_regional_market_admin: '0'
               el_nyo_global_education_system_admin: '0'
               el_regional_market_translator: '0'
-            reduce: false
+            reduce: true
           is_grouped: false
           group_info:
             label: ''
@@ -1712,7 +1674,6 @@ display:
             product_detail: product_detail
             stories: stories
             t_c: t_c
-            tools-pdf: tools-pdf
             tools: tools
             welcome_message: welcome_message
           group: 1
@@ -1802,11 +1763,14 @@ display:
           admin_label: ''
           operator: in
           value:
+            brand_story: brand_story
+            faq: faq
             level_interactive_content: level_interactive_content
             product_detail: product_detail
             stories: stories
-            tools-pdf: tools-pdf
+            t_c: t_c
             tools: tools
+            welcome_message: welcome_message
           group: 1
           exposed: true
           expose:
@@ -1855,48 +1819,8 @@ display:
           admin_label: ''
           operator: in
           value:
-            all: all
-            '***LANGUAGE_site_default***': '***LANGUAGE_site_default***'
-            '***LANGUAGE_language_interface***': '***LANGUAGE_language_interface***'
-            '***LANGUAGE_language_content***': '***LANGUAGE_language_content***'
             en: en
             zh-hans: zh-hans
-            el: el
-            th: th
-            ko: ko
-            ja: ja
-            ru: ru
-            vi: vi
-            zh-hant: zh-hant
-            ar: ar
-            bg: bg
-            hr: hr
-            cs: cs
-            da: da
-            nl: nl
-            et: et
-            fil: fil
-            fi: fi
-            fr: fr
-            frca: frca
-            de: de
-            he: he
-            hu: hu
-            is: is
-            id: id
-            it: it
-            lv: lv
-            lt: lt
-            nb: nb
-            pl: pl
-            pt: pt
-            ro: ro
-            es: es
-            essp: essp
-            sv: sv
-            tr: tr
-            und: und
-            zxx: zxx
           group: 1
           exposed: true
           expose:
@@ -1920,7 +1844,7 @@ display:
               el_regional_market_admin: '0'
               el_nyo_global_education_system_admin: '0'
               el_regional_market_translator: '0'
-            reduce: false
+            reduce: true
           is_grouped: false
           group_info:
             label: ''
@@ -2580,7 +2504,6 @@ display:
             product_detail: product_detail
             stories: stories
             t_c: t_c
-            tools-pdf: tools-pdf
             tools: tools
             welcome_message: welcome_message
           group: 1
@@ -2670,11 +2593,14 @@ display:
           admin_label: ''
           operator: in
           value:
+            brand_story: brand_story
+            faq: faq
             level_interactive_content: level_interactive_content
             product_detail: product_detail
             stories: stories
-            tools-pdf: tools-pdf
+            t_c: t_c
             tools: tools
+            welcome_message: welcome_message
           group: 1
           exposed: true
           expose:
@@ -2775,48 +2701,8 @@ display:
           admin_label: ''
           operator: in
           value:
-            all: all
-            '***LANGUAGE_site_default***': '***LANGUAGE_site_default***'
-            '***LANGUAGE_language_interface***': '***LANGUAGE_language_interface***'
-            '***LANGUAGE_language_content***': '***LANGUAGE_language_content***'
             en: en
             zh-hans: zh-hans
-            el: el
-            th: th
-            ko: ko
-            ja: ja
-            ru: ru
-            vi: vi
-            zh-hant: zh-hant
-            ar: ar
-            bg: bg
-            hr: hr
-            cs: cs
-            da: da
-            nl: nl
-            et: et
-            fil: fil
-            fi: fi
-            fr: fr
-            frca: frca
-            de: de
-            he: he
-            hu: hu
-            is: is
-            id: id
-            it: it
-            lv: lv
-            lt: lt
-            nb: nb
-            pl: pl
-            pt: pt
-            ro: ro
-            es: es
-            essp: essp
-            sv: sv
-            tr: tr
-            und: und
-            zxx: zxx
           group: 1
           exposed: true
           expose:
@@ -2840,7 +2726,7 @@ display:
               el_regional_market_admin: '0'
               el_nyo_global_education_system_admin: '0'
               el_regional_market_translator: '0'
-            reduce: false
+            reduce: true
           is_grouped: false
           group_info:
             label: ''
@@ -3842,6 +3728,7 @@ display:
           role:
             administrator: administrator
             el_nyo_global_education_system_admin: el_nyo_global_education_system_admin
+      enabled: false
     cache_metadata:
       max-age: -1
       contexts:
@@ -3886,7 +3773,6 @@ display:
             product_detail: product_detail
             stories: stories
             t_c: t_c
-            tools-pdf: tools-pdf
             tools: tools
             welcome_message: welcome_message
           group: 1
@@ -3976,6 +3862,8 @@ display:
           admin_label: ''
           operator: in
           value:
+            brand_story: brand_story
+            faq: faq
             level_interactive_content: level_interactive_content
             product_detail: product_detail
             stories: stories
@@ -4081,48 +3969,8 @@ display:
           admin_label: ''
           operator: in
           value:
-            all: all
-            '***LANGUAGE_site_default***': '***LANGUAGE_site_default***'
-            '***LANGUAGE_language_interface***': '***LANGUAGE_language_interface***'
-            '***LANGUAGE_language_content***': '***LANGUAGE_language_content***'
             en: en
-            ar: ar
-            bg: bg
             zh-hans: zh-hans
-            zh-hant: zh-hant
-            hr: hr
-            cs: cs
-            da: da
-            nl: nl
-            et: et
-            fil: fil
-            fi: fi
-            fr: fr
-            frca: frca
-            de: de
-            el: el
-            he: he
-            hu: hu
-            is: is
-            id: id
-            it: it
-            ja: ja
-            ko: ko
-            lv: lv
-            lt: lt
-            nb: nb
-            pl: pl
-            pt: pt
-            ro: ro
-            ru: ru
-            es: es
-            essp: essp
-            sv: sv
-            th: th
-            tr: tr
-            vi: vi
-            und: und
-            zxx: zxx
           group: 1
           exposed: true
           expose:
@@ -4146,7 +3994,7 @@ display:
               el_regional_market_admin: '0'
               el_nyo_global_education_system_admin: '0'
               el_regional_market_translator: '0'
-            reduce: false
+            reduce: true
           is_grouped: false
           group_info:
             label: ''

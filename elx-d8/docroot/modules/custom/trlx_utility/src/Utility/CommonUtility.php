@@ -282,4 +282,49 @@ class CommonUtility {
     return $this->successResponse();
   }
 
+  /**
+   * Validate story section.
+   *
+   * @param array $result
+   *   Listing array.
+   * @param int $limit
+   *   Items to be displayed on single page.
+   * @param int $offset
+   *   Items to be removed from the listing.
+   *
+   * @return array
+   *   Pager array.
+   */
+  public function listingPagination($result, $limit, $offset) {
+    $page = 1;
+    // Total items in array.
+    $total = count($result);
+    $limit = (int) $limit;
+    // Calculate total pages.
+    $totalPages = ceil($total / $limit);
+    $page = max($page, 1);
+    $currentPage = $page - 1;
+    if ($offset < 0) {
+      $offset = 0;
+    }
+    if (isset($offset)) {
+      $total = count($result) - $offset;
+      $totalPages = ceil($total / $limit);
+      $page = max($page, 1);
+      $currentPage = $page - 1;
+    }
+    $result = array_slice($result, $offset, $limit);
+
+    // Pager array for faq listing.
+    $pager = [
+      "count" => (int) $total,
+      "pages" => (int) $totalPages,
+      "items_per_page" => $limit,
+      "current_page" => $currentPage,
+      "next_page" => $currentPage,
+    ];
+
+    return [$result, $pager];
+  }
+
 }

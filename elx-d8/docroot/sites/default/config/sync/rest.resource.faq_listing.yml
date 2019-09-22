@@ -5,7 +5,7 @@ dependencies:
   module:
     - serialization
     - trlx_faq
-    - user
+    - trlx_utility
 id: faq_listing
 plugin_id: faq_listing
 granularity: resource
@@ -15,4 +15,4 @@ configuration:
   formats:
     - json
   authentication:
-    - cookie
+    - jwt_Auth

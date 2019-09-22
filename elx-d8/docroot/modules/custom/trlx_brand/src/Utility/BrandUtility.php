@@ -23,8 +23,10 @@ class BrandUtility {
     $query->fields('ttfd', ['tid', 'vid', 'langcode', 'name']);
     $query->leftjoin('taxonomy_term__field_brand_logo', 'ttfbl', 'ttfbl.entity_id = ttfd.tid');
     $query->leftjoin('file_managed', 'fm', 'fm.fid = ttfbl.field_brand_logo_target_id');
+    $query->leftjoin('taxonomy_term__field_brand_key', 'ttfbk', 'ttfbk.entity_id = ttfd.tid');
     $query->addExpression('ttfbl.field_brand_logo_target_id', 'brand_logo_target_id');
     $query->addExpression('fm.uri', 'brand_logo_uri');
+    $query->addExpression('ttfbk.field_brand_key_value', 'brand_key_value');
     $query->condition('ttfd.tid', $tid, '=');
     $query->condition('ttfd.langcode', $language, '=');
     return $query->execute()->fetchAssoc();

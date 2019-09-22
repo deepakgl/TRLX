@@ -5,7 +5,7 @@ dependencies:
   module:
     - serialization
     - trlx_trends
-    - user
+    - trlx_utility
 id: trends_listing
 plugin_id: trends_listing
 granularity: resource
@@ -15,4 +15,4 @@ configuration:
   formats:
     - json
   authentication:
-    - cookie
+    - jwt_Auth
