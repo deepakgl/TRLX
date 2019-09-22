@@ -77,12 +77,10 @@ class TrendListing extends ResourceBase {
     if (!empty($errorResponse)) {
       return $errorResponse;
     }
-    // Prepare redis key.
-    $key = ":trendListing:_{$language}_{$limit}_{$offset}";
 
     // Prepare response.
     list($view_results, $status_code) = $entityUtility->fetchApiResult(
-      $key,
+      '',
       'stories_listing',
       'rest_export_stories_listing',
       $data, ['language' => $language],

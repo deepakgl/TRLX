@@ -7,7 +7,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Drupal\trlx_utility\Utility\CommonUtility;
 use Drupal\trlx_utility\Utility\EntityUtility;
-use Drupal\trlx_faq\Utility\FaqUtility;
 
 /**
  * Provides a FAQ listing resource.
@@ -35,7 +34,6 @@ class FaqListing extends ResourceBase {
     $commonUtility = new CommonUtility();
     $entityUtility = new EntityUtility();
 
-    $faqUtility = new FaqUtility();
     $_format = $request->get('_format');
     $language = $request->get('language');
     $brand_id = $request->get('brandId');
@@ -46,7 +44,25 @@ class FaqListing extends ResourceBase {
       return $response;
     }
 
-    // Check for valid brand id type.
+    list($limit, $offset, $errorResponse) = $commonUtility->getPagerParam($request);
+    if (!empty($errorResponse)) {
+      return $errorResponse;
+    }
+
+    // Check for valid language code.
+    $response = $commonUtility->validateLanguageCode($language, $request);
+    if (!($response->getStatusCode() === Response::HTTP_OK)) {
+      return $response;
+    }
+
+    // Prepare array of keys for alteration in response.
+    $data = [
+      'nid' => 'int',
+      'question' => 'decode',
+      'answer' => 'decode',
+    ];
+
+    // To show the brand FAQs.
     if (isset($brand_id)) {
       $response = $commonUtility->validateIntegerValue($brand_id);
       if (!($response->getStatusCode() === Response::HTTP_OK)) {
@@ -66,72 +82,37 @@ class FaqListing extends ResourceBase {
       if (empty($view_results)) {
         return $commonUtility->errorResponse($this->t('Brand Id (@brandId) does not exist.', ['@brandId' => $brand_id]), Response::HTTP_UNPROCESSABLE_ENTITY);
       }
-    }
 
-    list($limit, $offset, $errorResponse) = $commonUtility->getPagerParam($request);
-    if (!empty($errorResponse)) {
-      return $errorResponse;
-    }
+      // Prepare view response.
+      list($view_results, $status_code) = $entityUtility->fetchApiResult(
+        '',
+        'trlx_faq_listing',
+        'rest_export_faq_listing',
+        $data,
+        ['brand' => $brand_id, 'language' => $language]
+      );
 
-    list($limit, $offset, $errorResponse) = $commonUtility->getPagerParam($request);
-    if (!empty($errorResponse)) {
-      return $errorResponse;
-    }
-
-    // Check for valid language code.
-    $response = $commonUtility->validateLanguageCode($language, $request);
-    if (!($response->getStatusCode() === Response::HTTP_OK)) {
-      return $response;
-    }
-
-    $response = $faqUtility->getFaqContent($language, $brand_id);
-    $result = [];
-    $i = 0;
-    foreach ($response as $value) {
-      if ($value->brand_key_value === $brand_id) {
-        $result[$i]['nid'] = (int) $value->nid;
-        $result[$i]['question'] = $value->question;
-        $result[$i]['answer'] = $value->answer;
-        $i++;
+      // Check for empty / no result from views.
+      if (empty($view_results)) {
+        return $commonUtility->successResponse([], Response::HTTP_OK);
       }
-      elseif (is_null($value->brand_key_value) && !isset($brand_id)) {
-        $result[$i]['nid'] = (int) $value->nid;
-        $result[$i]['question'] = $value->question;
-        $result[$i]['answer'] = $value->answer;
-        $i++;
-      }
+      return $commonUtility->successResponse($view_results['results'], $status_code, $view_results['pager']);
     }
+    // To show the global help FAQs.
+    // Prepare view response.
+    list($view_results, $status_code) = $entityUtility->fetchApiResult(
+      '',
+      'trlx_faq_listing',
+      'rest_export_global_faq_listing',
+      $data,
+      ['language' => $language]
+    );
 
-    $page = 1;
-    // Total items in array.
-    $total = count($result);
-    $limit = (int) $limit;
-    // Calculate total pages.
-    $totalPages = ceil($total / $limit);
-    $page = max($page, 1);
-    $currentPage = $page - 1;
-    if ($offset < 0) {
-      $offset = 0;
+    // Check for empty / no result from views.
+    if (empty($view_results)) {
+      return $commonUtility->successResponse([], Response::HTTP_OK);
     }
-    if (isset($offset)) {
-      $total = count($result) - $offset;
-      $totalPages = ceil($total / $limit);
-      $page = max($page, 1);
-      $currentPage = $page - 1;
-    }
-    $result = array_slice($result, $offset, $limit);
-
-    // Pager array for faq listing.
-    $pager = [
-      "count" => (int) $total,
-      "pages" => (int) $totalPages,
-      "items_per_page" => $limit,
-      "current_page" => $currentPage,
-      "next_page" => $currentPage + 1,
-    ];
-
-    (count($result) == 0) ? $res = $commonUtility->successResponse($result, 200) : $res = $commonUtility->successResponse($result, 200, $pager);
-    return $res;
+    return $commonUtility->successResponse($view_results['results'], $status_code, $view_results['pager']);
   }
 
 }

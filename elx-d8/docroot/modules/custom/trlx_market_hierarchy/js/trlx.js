@@ -9,6 +9,10 @@
       $('.node-product-detail-form .term-reference-tree-level .form-type-checkbox input:checkbox').prop("checked", true);
       $('.node-stories-form .term-reference-tree-level .form-type-checkbox input:checkbox').prop("checked", true);
       $('.node-tools-form .term-reference-tree-level .form-type-checkbox input:checkbox').prop("checked", true);
+      $('.node-faq-form .term-reference-tree-level .form-type-checkbox input:checkbox').prop("checked", true);
+      $('.node-brand-story-form .term-reference-tree-level .form-type-checkbox input:checkbox').prop("checked", true);
+      $('.node-t-c-form .term-reference-tree-level .form-type-checkbox input:checkbox').prop("checked", true);
+      $('.node-welcome-message-form .term-reference-tree-level .form-type-checkbox input:checkbox').prop("checked", true);
 
       // Js for select all markets on select of region.
       var $region = $('.path-node .term-reference-tree-button').next('div').find('input[type="checkbox"]');
