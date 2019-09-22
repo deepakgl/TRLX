@@ -1,9 +1,3 @@
-trlx_utility:
-  js:
-    js/trlx.js: {}
-  dependencies:
-    - core/jquery
-    - core/drupal
 trlx_css:
   version: 1.x
   css:
