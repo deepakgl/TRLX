@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * @file
+ * Brand module file.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_form_alter().
+ */
+function trlx_brand_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  switch ($form_id) {
+    // Disable brand key reference field in brands taxonomy.
+    case 'taxonomy_term_brands_form':
+      if ($form['tid']['#value'] != NULL) {
+        $form['field_brand_key']['widget'][0]['value']['#attributes']['readonly'] = 'readonly';
+      }
+      break;
+
+    default:
+  }
+}

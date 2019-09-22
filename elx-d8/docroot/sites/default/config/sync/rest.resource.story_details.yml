@@ -5,7 +5,7 @@ dependencies:
   module:
     - serialization
     - trlx_story
-    - user
+    - trlx_utility
 id: story_details
 plugin_id: story_details
 granularity: resource
@@ -15,4 +15,4 @@ configuration:
   formats:
     - json
   authentication:
-    - cookie
+    - jwt_Auth

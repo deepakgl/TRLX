@@ -1,0 +1,18 @@
+uuid: 94434433-6d7f-4a91-bd1e-d5907742975a
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.product_detail
+id: node.product_detail.title
+field_name: title
+entity_type: node
+bundle: product_detail
+label: 'Title (Backend use only)'
+description: ''
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

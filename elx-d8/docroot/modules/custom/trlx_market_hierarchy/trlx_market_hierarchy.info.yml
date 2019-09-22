@@ -1,0 +1,5 @@
+name: TRLX Market Hierarchy
+type: module
+description: Trlx Market Hierarchy module
+core: 8.x
+package: TRLX
