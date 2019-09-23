@@ -17,6 +17,9 @@ function trlx_market_hierarchy_views_query_alter($view, $query) {
     'trlx_faq_listing',
     'video_listing',
     'video_details',
+    'stories_listing',
+    'fact_sheets_list',
+    'product_detail',
   ];
   $current_display = [
     'rest_export_brand_story_details',
@@ -24,6 +27,10 @@ function trlx_market_hierarchy_views_query_alter($view, $query) {
     'rest_export_global_faq_listing',
     'rest_export_video_listing',
     'rest_export_video_details',
+    'rest_export_stories_listing',
+    'rest_export_story_details',
+    'rest_export_fact_sheets_list',
+    'product_details_rest_export',
   ];
   if (in_array($view->id(), $view_id) && in_array($view->current_display, $current_display)) {
     global $_userData;

@@ -5,7 +5,7 @@ dependencies:
   module:
     - serialization
     - trlx_factsheets
-    - user
+    - trlx_utility
 id: factsheets_listing
 plugin_id: factsheets_listing
 granularity: resource
@@ -15,4 +15,4 @@ configuration:
   formats:
     - json
   authentication:
-    - cookie
+    - jwt_Auth
