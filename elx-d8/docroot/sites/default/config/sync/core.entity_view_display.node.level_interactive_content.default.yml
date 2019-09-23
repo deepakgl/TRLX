@@ -17,6 +17,7 @@ dependencies:
     - field.field.node.level_interactive_content.field_point_value
     - field.field.node.level_interactive_content.field_product_categories
     - field.field.node.level_interactive_content.field_product_family
+    - field.field.node.level_interactive_content.field_subtitle
     - field.field.node.level_interactive_content.field_tags_keywords
     - field.field.node.level_interactive_content.field_translation
     - node.type.level_interactive_content
@@ -145,6 +146,14 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
+  field_subtitle:
+    weight: 16
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
     region: content
   field_translation:
     weight: 14

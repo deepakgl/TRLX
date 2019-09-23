@@ -101,7 +101,7 @@ class StoryDetails extends ResourceBase {
 
     // Check for empty / no result from views.
     if (empty($view_results)) {
-      $status_code = Response::HTTP_NO_CONTENT;
+      return $commonUtility->successResponse([], Response::HTTP_OK);
     }
 
     return $commonUtility->successResponse($view_results, $status_code);

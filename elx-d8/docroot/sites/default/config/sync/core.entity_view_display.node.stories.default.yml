@@ -31,6 +31,8 @@ dependencies:
     - field.field.node.stories.field_sub_title
     - field.field.node.stories.field_tags
     - field.field.node.stories.field_translation
+    - field.field.node.stories.field_video
+    - field.field.node.stories.field_video_thumbnail
     - node.type.stories
   module:
     - comment
@@ -195,6 +197,24 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: list_default
+    region: content
+  field_video:
+    type: entity_reference_entity_view
+    weight: 21
+    label: above
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    region: content
+  field_video_thumbnail:
+    type: entity_reference_entity_view
+    weight: 22
+    label: above
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
     region: content
   links:
     weight: 0
