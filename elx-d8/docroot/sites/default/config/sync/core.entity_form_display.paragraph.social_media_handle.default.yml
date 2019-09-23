@@ -1,0 +1,33 @@
+uuid: 963391fa-5452-4a3d-ab5e-d08d058c4ef2
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.social_media_handle.field_social_media_handle
+    - field.field.paragraph.social_media_handle.field_social_media_title
+    - paragraphs.paragraphs_type.social_media_handle
+id: paragraph.social_media_handle.default
+targetEntityType: paragraph
+bundle: social_media_handle
+mode: default
+content:
+  field_social_media_handle:
+    weight: 1
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_social_media_title:
+    weight: 0
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+hidden:
+  created: true
+  status: true
+  uid: true
