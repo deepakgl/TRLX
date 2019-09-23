@@ -89,7 +89,7 @@ id: node.brand_story.field_markets
 field_name: field_markets
 entity_type: node
 bundle: brand_story
-label: Market
+label: Region
 description: ''
 required: true
 translatable: false
