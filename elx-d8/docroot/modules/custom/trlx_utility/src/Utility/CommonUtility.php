@@ -145,7 +145,7 @@ class CommonUtility {
 
     $errResponse = '';
     if (!empty($err)) {
-      $errResponse = $this->errorResponse(t('Please provide only numeric value parameter(s): ' . implode(',', $err)), Response::HTTP_UNPROCESSABLE_ENTITY);
+      $errResponse = $this->errorResponse(t('Please provide only numeric value parameter(s): @params', ['@param' => implode(',', $err)]), Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     return [$limit, $offset, $errResponse];
@@ -171,12 +171,11 @@ class CommonUtility {
       'data' => $param,
     ]);
 
-    return $this->errorResponse(t('Following parameters is/are required: ' . $param), Response::HTTP_BAD_REQUEST);
+    return $this->errorResponse(t('Following parameters is/are required: @reqParam', ['@reqParam' => $param]), Response::HTTP_BAD_REQUEST);
   }
 
   /**
-   * Check if node id exists, is published
-   * & requested language is available for that nid.
+   * Check if node data exists for requested parameters.
    *
    * @param int $nid
    *   Node id.
@@ -281,6 +280,51 @@ class CommonUtility {
       return $this->errorResponse(t('Please enter valid section name.'), Response::HTTP_UNPROCESSABLE_ENTITY);
     }
     return $this->successResponse();
+  }
+
+  /**
+   * Validate story section.
+   *
+   * @param array $result
+   *   Listing array.
+   * @param int $limit
+   *   Items to be displayed on single page.
+   * @param int $offset
+   *   Items to be removed from the listing.
+   *
+   * @return array
+   *   Pager array.
+   */
+  public function listingPagination($result, $limit, $offset) {
+    $page = 1;
+    // Total items in array.
+    $total = count($result);
+    $limit = (int) $limit;
+    // Calculate total pages.
+    $totalPages = ceil($total / $limit);
+    $page = max($page, 1);
+    $currentPage = $page - 1;
+    if ($offset < 0) {
+      $offset = 0;
+    }
+    if (isset($offset)) {
+      $total = count($result) - $offset;
+      $totalPages = ceil($total / $limit);
+      $page = max($page, 1);
+      $currentPage = $page - 1;
+    }
+    $result = array_slice($result, $offset, $limit);
+
+    // Pager array for faq listing.
+    $pager = [
+      "count" => (int) $total,
+      "pages" => (int) $totalPages,
+      "items_per_page" => $limit,
+      "current_page" => $currentPage,
+      "next_page" => $currentPage,
+    ];
+
+    return [$result, $pager];
   }
 
 }

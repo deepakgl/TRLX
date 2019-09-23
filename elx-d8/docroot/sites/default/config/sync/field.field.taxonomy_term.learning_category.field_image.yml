@@ -11,7 +11,7 @@ field_name: field_image
 entity_type: taxonomy_term
 bundle: learning_category
 label: Image
-description: 'Allowed file types:<b> png, gif, jpg, jpeg.</b>'
+description: 'Allowed file types:<b> png, jpg, jpeg.</b>'
 required: false
 translatable: true
 default_value: {  }

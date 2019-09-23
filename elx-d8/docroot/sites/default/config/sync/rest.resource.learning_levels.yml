@@ -1,11 +1,11 @@
-uuid: 775918f9-c59e-49db-82e4-408f47318ee4
+uuid: ab23df62-b062-46d5-bec7-4acbafea9656
 langcode: en
 status: true
 dependencies:
   module:
-    - elx_learning_levels
     - serialization
-    - simple_oauth
+    - trlx_learning_levels
+    - user
 id: learning_levels
 plugin_id: learning_levels
 granularity: resource
@@ -15,4 +15,4 @@ configuration:
   formats:
     - json
   authentication:
-    - oauth2
+    - cookie

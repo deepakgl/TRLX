@@ -25,7 +25,7 @@ class JwtAuth implements AuthenticationProviderInterface {
    * {@inheritdoc}
    */
   public function authenticate(Request $request) {
-    global $userData;
+    global $_userData;
     $this->transcoder = new JwtTranscoder();
     $auth_header = $request->headers->get('Authorization');
     $matches = [];
@@ -42,7 +42,7 @@ class JwtAuth implements AuthenticationProviderInterface {
       throw new AccessDeniedHttpException($e->getMessage(), $e);
     }
 
-    $userData = $jwt;
+    $_userData = $jwt;
     return FALSE;
   }
 

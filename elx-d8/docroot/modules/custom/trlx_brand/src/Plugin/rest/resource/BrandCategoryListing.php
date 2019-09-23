@@ -51,7 +51,7 @@ class BrandCategoryListing extends ResourceBase {
       $data = $this->brandUtility->brandTermData($term);
       if (!empty($data['brand_logo_target_id'])) {
         $brands_list[$i]['id'] = $data['tid'];
-        $brands_list[$i]['link'] = '';
+        $brands_list[$i]['brandKey'] = $data['brand_key_value'];
         $brands_list[$i]['title'] = $data['name'];
         // Create image urls for three different display screens.
         $brands_list[$i]['imageSmall'] = $this->commonUtility->getImageStyleBasedUrl('brands_category_listing_mobile', $data['brand_logo_uri']);

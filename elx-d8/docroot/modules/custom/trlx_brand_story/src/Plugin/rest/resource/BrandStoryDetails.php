@@ -82,6 +82,11 @@ class BrandStoryDetails extends ResourceBase {
       $brandId
     );
 
+    // Check for empty resultset.
+    if (empty($view_results)) {
+      return $commonUtility->errorResponse($this->t('Brand Id (@brandId) does not exist.', ['@brandId' => $brandId]), Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
+
     // Prepare array of keys for alteration in response.
     $data = [
       'displayTitle' => 'decode',
@@ -93,7 +98,7 @@ class BrandStoryDetails extends ResourceBase {
       'downloadable' => 'boolean',
     ];
     // Prepare redis key.
-    $key = ':brandStoryDetails:' . '_' . $nid . '_' . $language;
+    $key = ":brandStoryDetails:_{$nid}_{$language}";
 
     // Prepare response.
     list($view_results, $status_code,) = $entityUtility->fetchApiResult(
@@ -104,14 +109,9 @@ class BrandStoryDetails extends ResourceBase {
       'brand_story_detail'
     );
 
-    // Check for empty resultset.
+    // Check for empty / no result from views.
     if (empty($view_results)) {
-      return $commonUtility->errorResponse($this->t('Brand Id (@brandId) does not exist.', ['@brandId' => $brandId]), Response::HTTP_UNPROCESSABLE_ENTITY);
-    }
-
-    // Check for empty / no result from views
-    if (empty($view_results)) {
-      $status_code = Response::HTTP_NO_CONTENT;
+      return $commonUtility->successResponse([], Response::HTTP_OK);
     }
 
     return $commonUtility->successResponse($view_results, $status_code);

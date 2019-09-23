@@ -20,9 +20,6 @@ class JwtTranscoder {
 
   /**
    * Constructs a new JwtTranscoder.
-   *
-   * @param \Firebase\JWT\JWT $php_jwt
-   *   The JWT library object.
    */
   public function __construct() {
     $this->transcoder = new JWT();

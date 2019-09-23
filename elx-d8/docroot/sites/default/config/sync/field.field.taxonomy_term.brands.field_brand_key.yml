@@ -10,7 +10,7 @@ field_name: field_brand_key
 entity_type: taxonomy_term
 bundle: brands
 label: 'Brand Key'
-description: ''
+description: 'On the move [Travel Retail] brand reference id.'
 required: true
 translatable: false
 default_value: {  }

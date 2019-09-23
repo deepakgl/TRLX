@@ -25,16 +25,18 @@ class TrlxPrimaryNavigationMenu extends ResourceBase {
 
   /**
    * Rest resource.
-   * 
+   *
+   * @param string $version
+   *   Defining version of the api e.g. v1.
    * @param \Symfony\Component\HttpFoundation\Request $request
    *   Rest resource query parameters.
-   * 
+   *
    * @return \Drupal\rest\ResourceResponse
    *   Json response.
    */
   public function get($version, Request $request) {
     $this->commonUtility = new CommonUtility();
-    
+
     // Response format validation.
     $_format = $request->query->get('_format');
     $response = $this->commonUtility->validateFormat($_format, $request);
@@ -76,7 +78,8 @@ class TrlxPrimaryNavigationMenu extends ResourceBase {
   /**
    * Fetch Navigation menu.
    *
-   * @return json response
+   * @return json
+   *   Response
    */
   private function getNavigationMenuResponse($version, $langcode) {
     $this->dashboardUtility = new TrlxDashboardUtility();

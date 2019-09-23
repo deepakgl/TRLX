@@ -92,12 +92,10 @@ class VideoListings extends ResourceBase {
     if (!empty($errorResponse)) {
       return $errorResponse;
     }
-    // Prepare redis key.
-    $key = ':videoDetails:' . '_' . $language . '_' . $limit . '_' . $offset;
 
     // Prepare response.
     list($view_results, $status_code) = $entityUtility->fetchApiResult(
-      $key,
+      '',
       'video_listing',
       'rest_export_video_listing',
       $data, ['language' => $language, 'brand' => $brandId],
