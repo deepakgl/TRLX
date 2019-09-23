@@ -1,0 +1,18 @@
+uuid: 2f3bdefd-e17e-4e88-bc2b-c92c0a082eeb
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.brand_story
+id: node.brand_story.title
+field_name: title
+entity_type: node
+bundle: brand_story
+label: 'Title (Backend use only)'
+description: ''
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

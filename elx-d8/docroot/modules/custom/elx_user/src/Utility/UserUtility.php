@@ -472,7 +472,7 @@ class UserUtility {
       $term = Term::load($market_tid);
       $market_name[$market_tid] = $term->getName();
     }
-    
+
     return $market_name;
   }
 
