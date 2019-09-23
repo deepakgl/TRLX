@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\trlx_factsheets\Plugin\rest\resource;
+namespace Drupal\trlx_learning_levels\Plugin\rest\resource;
 
 use Drupal\rest\Plugin\ResourceBase;
 use Symfony\Component\HttpFoundation\Request;
@@ -9,20 +9,20 @@ use Drupal\trlx_utility\Utility\CommonUtility;
 use Drupal\trlx_utility\Utility\EntityUtility;
 
 /**
- * Provides a Fact Sheets listing resource.
+ * Provides a modules listing resource.
  *
  * @RestResource(
- *   id = "factsheets_listing",
- *   label = @Translation("Fact Sheets Listing"),
+ *   id = "modules_listing",
+ *   label = @Translation("Modules Listing"),
  *   uri_paths = {
- *     "canonical" = "/api/v1/factsheetListing"
+ *     "canonical" = "/api/v1/modulesListing"
  *   }
  * )
  */
-class FactsheetsListing extends ResourceBase {
+class ModulesListing extends ResourceBase {
 
   /**
-   * Rest resource for listing Fact Sheets.
+   * Fetch modules listing.
    *
    * @param \Symfony\Component\HttpFoundation\Request $request
    *   Rest resource query parameters.
@@ -37,8 +37,8 @@ class FactsheetsListing extends ResourceBase {
     // Required parameters.
     $requiredParams = [
       '_format',
-      'brandId',
       'language',
+      'categoryId',
     ];
 
     // Check for required parameters.
@@ -49,47 +49,32 @@ class FactsheetsListing extends ResourceBase {
         $missingParams[] = $param;
       }
     }
-
     // Report missing required parameters.
     if (!empty($missingParams)) {
       return $commonUtility->invalidData($missingParams);
     }
-
-    // Checkfor valid _format type.
+    // Check for valid _format type.
     $response = $commonUtility->validateFormat($_format, $request);
     if (!($response->getStatusCode() === Response::HTTP_OK)) {
       return $response;
     }
-
     // Checkfor valid language code.
     $response = $commonUtility->validateLanguageCode($language, $request);
     if (!($response->getStatusCode() === Response::HTTP_OK)) {
       return $response;
     }
 
-    // Validation for valid brand key
-    // Prepare view response for valid brand key.
-    list($view_results, $status_code) = $entityUtility->fetchApiResult(
-      '',
-      'brand_key_validation',
-      'rest_export_brand_key_validation',
-      '',
-      $brandId
-    );
-
-    // Check for empty resultset.
-    if (empty($view_results)) {
-      return $commonUtility->errorResponse($this->t('Brand Id (@brandId) does not exist.', ['@brandId' => $brandId]), Response::HTTP_UNPROCESSABLE_ENTITY);
+    // Checkfor valid category id.
+    if (empty($commonUtility->isValidTid($categoryId))) {
+      return $commonUtility->errorResponse($this->t('Category id does not exist.'), Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     // Prepare array of keys for alteration in response.
     $data = [
       'nid' => 'int',
-      'title' => 'decode',
       'displayTitle' => 'decode',
       'subTitle' => 'decode',
       'pointValue' => 'int',
-      'downloadable' => 'boolean',
     ];
 
     list($limit, $offset, $errorResponse) = $commonUtility->getPagerParam($request);
@@ -97,21 +82,21 @@ class FactsheetsListing extends ResourceBase {
       return $errorResponse;
     }
 
-    // Prepare view response.
+    // Prepare response.
     list($view_results, $status_code) = $entityUtility->fetchApiResult(
-      '',
-      'fact_sheets_list',
-      'rest_export_fact_sheets_list',
-      $data,
-      ['brand' => $brandId, 'language' => $language]
-    );
+        NULL,
+        'level_interactive_content',
+        'rest_export_level_interactive_content',
+        $data, ['language' => $language, 'categoryId' => $categoryId],
+        'modules_listing'
+      );
 
     // Check for empty / no result from views.
     if (empty($view_results)) {
       return $commonUtility->successResponse([], Response::HTTP_OK);
     }
 
-    return $commonUtility->successResponse($view_results['results'], $status_code, $view_results['pager']);
+    return $commonUtility->successResponse($view_results, $status_code, [], 'results');
   }
 
 }

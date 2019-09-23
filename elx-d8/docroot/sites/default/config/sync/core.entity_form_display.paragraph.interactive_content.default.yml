@@ -19,7 +19,7 @@ bundle: interactive_content
 mode: default
 content:
   field_articulate_file_upload:
-    weight: 4
+    weight: 3
     settings:
       progress_indicator: throbber
     third_party_settings: {  }
@@ -27,28 +27,20 @@ content:
     region: content
   field_file_path:
     type: string_textfield
-    weight: 3
+    weight: 2
     region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
   field_intro_text:
-    weight: 2
+    weight: 1
     settings:
       rows: 9
       summary_rows: 3
       placeholder: ''
     third_party_settings: {  }
     type: text_textarea_with_summary
-    region: content
-  field_sub_title:
-    weight: 1
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: string_textfield
     region: content
   field_title:
     weight: 0
@@ -59,12 +51,13 @@ content:
     type: string_textfield
     region: content
   translation:
-    weight: 10
+    weight: 4
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
 hidden:
   created: true
   field_featured_image: true
+  field_sub_title: true
   status: true
   uid: true

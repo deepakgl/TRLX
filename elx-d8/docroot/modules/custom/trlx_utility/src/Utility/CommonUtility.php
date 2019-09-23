@@ -283,48 +283,38 @@ class CommonUtility {
   }
 
   /**
-   * Validate story section.
+   * Check if term id exists.
    *
-   * @param array $result
-   *   Listing array.
-   * @param int $limit
-   *   Items to be displayed on single page.
-   * @param int $offset
-   *   Items to be removed from the listing.
+   * @param int $tid
+   *   Term id.
    *
-   * @return array
-   *   Pager array.
+   * @return bool
+   *   True or false.
    */
-  public function listingPagination($result, $limit, $offset) {
-    $page = 1;
-    // Total items in array.
-    $total = count($result);
-    $limit = (int) $limit;
-    // Calculate total pages.
-    $totalPages = ceil($total / $limit);
-    $page = max($page, 1);
-    $currentPage = $page - 1;
-    if ($offset < 0) {
-      $offset = 0;
+  public function isValidTid($tid) {
+    if (!is_numeric($tid)) {
+      return FALSE;
     }
-    if (isset($offset)) {
-      $total = count($result) - $offset;
-      $totalPages = ceil($total / $limit);
-      $page = max($page, 1);
-      $currentPage = $page - 1;
+    $query = \Drupal::database();
+    $query = $query->select('taxonomy_term_data', 't');
+    $query->fields('t', ['tid'])
+      ->condition('t.tid', $tid, '=')
+      ->range(0, 1);
+    $result = $query->execute()->fetchAll();
+    if (empty($result)) {
+      global $base_url;
+      $request_uri = $base_url . \Drupal::request()->getRequestUri();
+      $logger = \Drupal::service('logger.stdout');
+      $logger->log(RfcLogLevel::ERROR, 'Term Id @tid does not exist in database.', [
+        '@tid' => $tid,
+        'user' => \Drupal::currentUser(),
+        'request_uri' => $request_uri,
+        'data' => $tid,
+      ]);
+      return FALSE;
     }
-    $result = array_slice($result, $offset, $limit);
 
-    // Pager array for faq listing.
-    $pager = [
-      "count" => (int) $total,
-      "pages" => (int) $totalPages,
-      "items_per_page" => $limit,
-      "current_page" => $currentPage,
-      "next_page" => $currentPage,
-    ];
-
-    return [$result, $pager];
+    return TRUE;
   }
 
 }
