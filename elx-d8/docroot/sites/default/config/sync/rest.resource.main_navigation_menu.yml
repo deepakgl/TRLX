@@ -5,7 +5,7 @@ dependencies:
   module:
     - serialization
     - trlx_dashboard
-    - user
+    - trlx_utility
 id: main_navigation_menu
 plugin_id: main_navigation_menu
 granularity: resource
@@ -15,4 +15,4 @@ configuration:
   formats:
     - json
   authentication:
-    - cookie
+    - jwt_Auth

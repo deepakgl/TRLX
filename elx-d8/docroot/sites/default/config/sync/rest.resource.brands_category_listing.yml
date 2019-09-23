@@ -5,7 +5,7 @@ dependencies:
   module:
     - serialization
     - trlx_brand
-    - user
+    - trlx_utility
 id: brands_category_listing
 plugin_id: brands_category_listing
 granularity: resource
@@ -15,4 +15,4 @@ configuration:
   formats:
     - json
   authentication:
-    - cookie
+    - jwt_Auth
