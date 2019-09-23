@@ -9,12 +9,17 @@ dependencies:
     - field.field.node.stories.field_archive_and_unarchive
     - field.field.node.stories.field_comment
     - field.field.node.stories.field_content_section
+    - field.field.node.stories.field_country
+    - field.field.node.stories.field_department
     - field.field.node.stories.field_display_title
     - field.field.node.stories.field_downloadable
     - field.field.node.stories.field_featured_image
     - field.field.node.stories.field_featured_on_elx_specialty
+    - field.field.node.stories.field_first_name
     - field.field.node.stories.field_hero_image
+    - field.field.node.stories.field_last_name
     - field.field.node.stories.field_markets
+    - field.field.node.stories.field_occupation
     - field.field.node.stories.field_point_value
     - field.field.node.stories.field_product_categories
     - field.field.node.stories.field_product_family
@@ -22,12 +27,14 @@ dependencies:
     - field.field.node.stories.field_quiz
     - field.field.node.stories.field_related_products_stories
     - field.field.node.stories.field_related_stories
+    - field.field.node.stories.field_social_media_handles
     - field.field.node.stories.field_sub_title
     - field.field.node.stories.field_tags
     - field.field.node.stories.field_translation
     - node.type.stories
   module:
     - comment
+    - entity_reference_revisions
     - options
     - text
     - user
@@ -60,6 +67,21 @@ content:
     third_party_settings: {  }
     type: entity_reference_label
     region: content
+  field_country:
+    weight: 18
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_department:
+    weight: 16
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+    region: content
   field_display_title:
     weight: 7
     label: above
@@ -86,6 +108,14 @@ content:
     third_party_settings: {  }
     type: entity_reference_label
     region: content
+  field_first_name:
+    weight: 14
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
   field_hero_image:
     weight: 10
     label: above
@@ -94,6 +124,14 @@ content:
     third_party_settings: {  }
     type: entity_reference_label
     region: content
+  field_last_name:
+    weight: 20
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
   field_markets:
     weight: 4
     label: above
@@ -101,6 +139,14 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
+  field_occupation:
+    weight: 17
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
     region: content
   field_point_value:
     weight: 6
@@ -117,6 +163,15 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
+  field_social_media_handles:
+    type: entity_reference_revisions_entity_view
+    weight: 19
+    label: above
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
     region: content
   field_sub_title:
     weight: 8

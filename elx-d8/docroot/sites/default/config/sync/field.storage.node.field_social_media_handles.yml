@@ -1,0 +1,21 @@
+uuid: c214d3d2-1c5b-4c7d-8bd2-1386f476a839
+langcode: en
+status: true
+dependencies:
+  module:
+    - entity_reference_revisions
+    - node
+    - paragraphs
+id: node.field_social_media_handles
+field_name: field_social_media_handles
+entity_type: node
+type: entity_reference_revisions
+settings:
+  target_type: paragraph
+module: entity_reference_revisions
+locked: false
+cardinality: 3
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

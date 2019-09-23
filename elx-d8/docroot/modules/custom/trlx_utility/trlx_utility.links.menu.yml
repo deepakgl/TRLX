@@ -1,0 +1,5 @@
+trlx_utility.content_config_menu:
+  title: 'Content Configuration Form'
+  description: 'Set content related config variables.'
+  route_name: trlx_utility.content_config
+  parent: system.admin_config_system
