@@ -41,7 +41,7 @@ class EntityUtility {
    * @return markup
    *   View markup.
    */
-  public function getViewContent($view_name, $view_display, $arguments, $data = NULL, $type = NULL) {
+  public function getViewContent($view_name, $view_display, $arguments, $data = NULL, $type = NULL, $field_replace = []) {
     $limit = $offset = '';
     if (is_array($arguments) && $this->isAssoc($arguments)) {
       $args = [];
@@ -85,7 +85,7 @@ class EntityUtility {
     }
     // Build the response of listings and details respectively.
     $response = isset($view_results['results']) ? $this
-      ->buildListingResponse($view_results, $data) : $this
+      ->buildListingResponse($view_results, $data, $field_replace) : $this
       ->buildDetailResponse($view_results, $data, $type);
 
     return [$response, Response::HTTP_OK];
@@ -128,7 +128,7 @@ class EntityUtility {
    * @return json
    *   View object.
    */
-  public function fetchApiResult($key = NULL, $view_name, $current_display, $data = NULL, $filter = NULL, $type = NULL) {
+  public function fetchApiResult($key = NULL, $view_name, $current_display, $data = NULL, $filter = NULL, $type = NULL, $field_replace = []) {
     if (!is_array($filter)) {
       $filter = [$filter];
     }
@@ -150,12 +150,12 @@ class EntityUtility {
       }
       catch (\Exception $e) {
         // Fetch result from respective view.
-        list($view_results, $status_code) = $this->getViewContent($view_name, $current_display, $filter, $data, $type);
+        list($view_results, $status_code) = $this->getViewContent($view_name, $current_display, $filter, $data, $type, $field_replace);
 
         return [$view_results, $status_code];
       }
       // Fetch result from respective view.
-      list($view_results, $status_code) = $this->getViewContent($view_name, $current_display, $filter, $data, $type);
+      list($view_results, $status_code) = $this->getViewContent($view_name, $current_display, $filter, $data, $type, $field_replace);
       // Only set redis cache if there is some data.
       $decode = array_filter(JSON::decode($view_results, TRUE));
       if (!empty($decode) && !empty($redis_key[1])) {
@@ -165,7 +165,7 @@ class EntityUtility {
       return [$view_results, $status_code];
     }
     // Fetch result from respective view.
-    list($view_results, $status_code) = $this->getViewContent($view_name, $current_display, $filter, $data, $type);
+    list($view_results, $status_code) = $this->getViewContent($view_name, $current_display, $filter, $data, $type, $field_replace);
     // Convert pager count value to int.
     if (isset($view_results['pager']['count'])) {
       $view_results['pager']['count'] = (int) $view_results['pager']['count'];
@@ -184,7 +184,7 @@ class EntityUtility {
    * @return json
    *   API response.
    */
-  public function buildListingResponse($output, $data) {
+  public function buildListingResponse($output, $data, $field_replace = []) {
     if (!empty($data)) {
       foreach ($output['results'] as $view_key => $result) {
         foreach ($data as $key => $value) {
@@ -206,6 +206,19 @@ class EntityUtility {
             if (isset($output['results'][$view_key][$key])) {
               $output['results'][$view_key][$key] = $result[$key];
             }
+          }
+        }
+      }
+      // Manage the multiple fields.
+      if (!empty($field_replace)) {
+        foreach ($field_replace as $field_key => $replace_field) {
+          foreach ($output['results'] as $view_key => $result) {
+            // Replace the field.
+            if (empty($output['results'][$view_key][$field_key]) && !empty($output['results'][$view_key][$replace_field])) {
+              $output['results'][$view_key][$field_key] = $output['results'][$view_key][$replace_field];
+            }
+            // We don't need this data in response.
+            unset($output['results'][$view_key][$replace_field]);
           }
         }
       }

@@ -13,12 +13,14 @@ entity_settings:
   handler: 'default:node'
   handler_settings:
     target_bundles:
+      brand_story: brand_story
       level_interactive_content: level_interactive_content
       product_detail: product_detail
       stories: stories
       tools: tools
     sort:
-      field: _none
+      field: created
+      direction: DESC
     auto_create: false
     auto_create_bundle: level_interactive_content
 queue_settings:

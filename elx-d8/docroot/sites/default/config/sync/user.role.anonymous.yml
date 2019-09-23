@@ -27,6 +27,7 @@ permissions:
   - 'restful get modules_listing'
   - 'restful get primary_navigation_menu'
   - 'restful get product_details'
+  - 'restful get spotlight_section'
   - 'restful get story_details'
   - 'restful get terms_and_condition_anonymous'
   - 'restful get terms_and_conditions_anonymous'
