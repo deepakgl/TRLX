@@ -38,17 +38,12 @@ module:
   elx_audit_log: 0
   elx_bulk_mail: 0
   elx_custom_service: 0
-  elx_custom_user_migrate: 0
   elx_dashboard: 0
   elx_elastic_user: 0
   elx_entityqueue_alter: 0
   elx_lang_translation: 0
-  elx_mcq: 0
   elx_menu: 0
-  elx_migration: 0
-  elx_points_migration: 0
   elx_products: 0
-  elx_quiz: 0
   elx_redis_purge: 0
   elx_reports: 0
   elx_search: 0
@@ -58,7 +53,6 @@ module:
   elx_translation_workflow: 0
   elx_user: 0
   elx_utility: 0
-  elx_video: 0
   embed: 0
   entity: 0
   entity_browser: 0

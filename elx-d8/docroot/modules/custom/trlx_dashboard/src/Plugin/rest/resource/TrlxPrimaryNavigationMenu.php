@@ -91,6 +91,11 @@ class TrlxPrimaryNavigationMenu extends ResourceBase {
     else {
       $data['primaryNavigationMenu'] = [];
     }
+    // Sort by 'sequenceId'.
+    usort($data['primaryNavigationMenu'], function ($a, $b) {
+      // Compare numbers only.
+      return $a['sequenceId'] - $b['sequenceId'];
+    });
     return $data;
   }
 
