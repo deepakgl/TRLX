@@ -1,0 +1,19 @@
+uuid: 4b214c74-235b-4b23-83dc-75969647d698
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_social_media_handle
+    - paragraphs.paragraphs_type.social_media_handle
+id: paragraph.social_media_handle.field_social_media_handle
+field_name: field_social_media_handle
+entity_type: paragraph
+bundle: social_media_handle
+label: 'Social Media Handle'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

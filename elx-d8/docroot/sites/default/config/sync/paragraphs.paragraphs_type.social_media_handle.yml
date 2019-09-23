@@ -1,0 +1,9 @@
+uuid: fad99d73-bc02-4d1f-8ced-cd229ce63ea7
+langcode: en
+status: true
+dependencies: {  }
+id: social_media_handle
+label: 'Social Media Handle'
+icon_uuid: null
+description: 'Social Media Handle Type for Insider Corner Section (Stories Content Type)'
+behavior_plugins: {  }
