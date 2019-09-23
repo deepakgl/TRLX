@@ -20,50 +20,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Drupal\elx_user\Utility\UserUtility;
 
 /**
- * Implements hook_views_query_alter().
- */
-function elx_utility_views_query_alter(ViewExecutable $view, $query) {
-  $view_id = [
-    'product_listings',
-    'product_detail',
-    'product_categories',
-    'products_carousel',
-    'video_listing',
-    'video_listing_mobile',
-    'video_details',
-    'stories_listing',
-    'stories_details',
-    'video_category',
-    'level_interactive_content',
-    'tools_listing',
-    'product_detail',
-    'video_listing',
-    'video_listing_mobile',
-    'video_details',
-    'fact_sheets_list',
-  ];
-  $current_display = [
-    'rest_export_product_listings',
-    'rest_export_product_categories',
-    'rest_export_products_carousel',
-    'rest_export_video_listing',
-    'rest_export_stories_listing',
-    'rest_export_video_category',
-    'rest_export_level_interactive_content',
-    'rest_export_tools_listing',
-    'rest_export_fact_sheets_list',
-  ];
-  if (in_array($view->id(), $view_id)) {
-    if (in_array($view->current_display, $current_display)) {
-      $limit = $_GET['limit'] != 0 ? (int) $_GET['limit'] : 10;
-      $offset = isset($_GET['offset']) ? (int) $_GET['offset'] : 0;
-      $view->setOffset($offset);
-      $view->setItemsPerPage($limit);
-    }
-  }
-}
-
-/**
  * Set node id and terms id using rest resource.
  *
  * @param object $node

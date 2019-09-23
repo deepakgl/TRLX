@@ -9,6 +9,7 @@ label: 'anonymous user'
 weight: 0
 is_admin: false
 permissions:
+  - 'access content'
   - 'access resource user'
   - 'create field_employment_status'
   - 'create field_first_name'
@@ -21,6 +22,7 @@ permissions:
   - 'restful get brands_category_listing'
   - 'restful get factsheets_listing'
   - 'restful get faq_listing'
+  - 'restful get learning_levels'
   - 'restful get main_navigation_menu'
   - 'restful get primary_navigation_menu'
   - 'restful get product_details'
