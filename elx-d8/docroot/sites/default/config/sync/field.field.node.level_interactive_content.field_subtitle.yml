@@ -1,0 +1,19 @@
+uuid: f202e42a-87b1-4e06-94b1-85e49a70086a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_subtitle
+    - node.type.level_interactive_content
+id: node.level_interactive_content.field_subtitle
+field_name: field_subtitle
+entity_type: node
+bundle: level_interactive_content
+label: Subtitle
+description: ''
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string
