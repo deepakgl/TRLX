@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Drupal\trlx_utility\Utility\CommonUtility;
 use Drupal\trlx_utility\Utility\EntityUtility;
+use Drupal\trlx_learning_levels\Utility\LevelUtility;
 
 /**
  * Provides a learning levels resource.
@@ -129,11 +130,11 @@ class LearningLevels extends ResourceBase {
    *   View result.
    */
   private function prepareRow($decode, $offset, $limit, $language) {
-    $commonUtility = new CommonUtility();
+    $levelUtility = new LevelUtility();
     $term_ids = array_column($decode['results'], 'categoryId');
     global $_userData;
     // Get level intreactive node ids assosiated with level.
-    $term_nodes = $commonUtility->getTermNodes($term_ids, $_userData, $language);
+    $term_nodes = $levelUtility->getTermNodes($term_ids, $_userData, $language);
     $user_activity = [];
     $tmp = 0;
     foreach ($decode['results'] as $key => $value) {
