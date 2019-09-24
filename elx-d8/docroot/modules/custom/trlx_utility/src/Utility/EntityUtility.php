@@ -37,6 +37,8 @@ class EntityUtility {
    *   Response key value pair.
    * @param string $type
    *   Content type.
+   * @param array $field_replace
+   *   Fields to replace.
    *
    * @return markup
    *   View markup.
@@ -124,6 +126,8 @@ class EntityUtility {
    *   View contextual filter.
    * @param string $type
    *   Content type.
+   * @param array $field_replace
+   *   Fields to replace.
    *
    * @return json
    *   View object.
@@ -180,6 +184,8 @@ class EntityUtility {
    *   View output.
    * @param array $data
    *   Response key value pair.
+   * @param array $field_replace
+   *   Fields to replace.
    *
    * @return json
    *   API response.
