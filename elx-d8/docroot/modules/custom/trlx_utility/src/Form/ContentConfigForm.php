@@ -4,14 +4,13 @@ namespace Drupal\trlx_utility\Form;
 
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\trlx_utility\Utility\CommonUtility;
 
 /**
  * Configuration form for content related settings.
  */
 class ContentConfigForm extends ConfigFormBase {
 
-  /** 
+  /**
    * Config settings.
    *
    * @var string
@@ -46,7 +45,7 @@ class ContentConfigForm extends ConfigFormBase {
     $sectionTerms = $entityTypeManager->getStorage('taxonomy_term')->loadTree('trlx_content_sections', 0, NULL, TRUE);
 
     if (!empty($sectionTerms)) {
-      // Fieldset for point value
+      // Fieldset for point value.
       $form['stories_point_value'] = [
         '#type' => 'fieldset',
         '#title' => $this->t('Story Section(s) Point Value'),
@@ -93,7 +92,7 @@ class ContentConfigForm extends ConfigFormBase {
         // Iterate through all content types for section mapping.
         foreach ($contentTypes as $machineName => $contentType) {
           if ('stories' == $machineName) {
-            // Content Type Section Mapping Field/Key
+            // Content Type Section Mapping Field/Key.
             $contentTypeSectionMap = $machineName . '_sections';
 
             // Field to select sections for each content type.
@@ -102,7 +101,7 @@ class ContentConfigForm extends ConfigFormBase {
               '#multiple' => TRUE,
               '#title' => $this->t("Select Section(s) for content type: @contentType", ['@contentType' => $contentType->get('name')]),
               '#options' => $sections,
-              '#default_value' => $config->get($contentTypeSectionMap)
+              '#default_value' => $config->get($contentTypeSectionMap),
             ];
           }
         }
@@ -125,7 +124,7 @@ class ContentConfigForm extends ConfigFormBase {
       }
 
       if (!empty($insiderCornerReqFields)) {
-        // sort fields.
+        // Sort fields.
         asort($insiderCornerReqFields);
 
         // Add field to select required fields for Insider Corner section.
@@ -134,7 +133,7 @@ class ContentConfigForm extends ConfigFormBase {
           '#multiple' => TRUE,
           '#title' => $this->t("Select required fields for Insider Corner section."),
           '#options' => $insiderCornerReqFields,
-          '#default_value' => $config->get('insider_corner_req_fields')
+          '#default_value' => $config->get('insider_corner_req_fields'),
         ];
       }
     }
@@ -148,7 +147,7 @@ class ContentConfigForm extends ConfigFormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     // Load module config for editing.
     $config = $this->configFactory->getEditable(static::SETTINGS);
-    
+
     // Iterate through form fields.
     foreach ($form_state->getValues() as $key => $value) {
       // Set config value.

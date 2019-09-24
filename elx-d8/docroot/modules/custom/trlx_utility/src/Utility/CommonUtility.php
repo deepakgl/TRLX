@@ -320,12 +320,12 @@ class CommonUtility {
   }
 
   /**
-   * Fetch Content Type to Section Mapping
+   * Fetch Content Type to Section Mapping.
    *
    * @param string $contentType
    *   Machine name of content type.
    *
-   * @return array $sections
+   * @return array
    *   Array of Section(s) the content type is mapped to.
    */
   public function getContentTypeSectionMapping($contentType) {
@@ -337,7 +337,7 @@ class CommonUtility {
     // Load module config.
     $config = \Drupal::config('trlx_utility.settings');
     // Fetch content type mapped sections from config.
-    $contentTypeMappingArr = $config->get($contentType.'_sections');
+    $contentTypeMappingArr = $config->get($contentType . '_sections');
 
     if (!empty($contentTypeMappingArr)) {
       return $contentTypeMappingArr;
@@ -349,10 +349,10 @@ class CommonUtility {
   /**
    * Function to Insider Corner Section Taxonomy Term.
    *
-   * @return array $term
+   * @return array
    *   Taxonomy Term array for Insider Corner.
    */
-  function getInsiderCornerTerm() {
+  public function getInsiderCornerTerm() {
     // Load all Section taxonomy terms.
     $sectionTerms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadTree('trlx_content_sections', 0, NULL, TRUE);
 
