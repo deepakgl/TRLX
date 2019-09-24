@@ -4,19 +4,11 @@ status: true
 dependencies:
   config:
     - entityqueue.entity_queue.spotlight
-    - field.field.entity_subqueue.spotlight.field_queue_override_flag
 id: entity_subqueue.spotlight.default
 targetEntityType: entity_subqueue
 bundle: spotlight
 mode: default
 content:
-  field_queue_override_flag:
-    weight: 0
-    settings:
-      display_label: true
-    third_party_settings: {  }
-    type: boolean_checkbox
-    region: content
   items:
     type: entity_reference_autocomplete
     weight: 3
