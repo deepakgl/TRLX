@@ -692,4 +692,40 @@ class ContentModel {
     return $query->status;
   }
 
+  /**
+   * Get brand term ids.
+   *
+   * @return array
+   *   Brand term ids.
+   */
+  public static function getBrandTermIds() {
+    $query = DB::table('taxonomy_term__field_brand_key as ttfbk')
+      ->select('ttfbk.entity_id', 'ttfbk.field_brand_key_value')
+      ->get()->all();
+
+    return json_decode(json_encode((array) $query), TRUE);
+  }
+
+  /**
+   * Get latest brand faq id.
+   *
+   * @param int $brandId
+   *   Brand id.
+   *
+   * @return int
+   *   Latest faq content id.
+   */
+  public static function getBrandFaqId($brandId) {
+    $query = DB::table('node_field_data as nfd')
+      ->select('nfd.nid')
+      ->leftJoin('node__field_brands as nfb', 'nfd.nid', '=', 'nfb.entity_id')
+      ->leftJoin('taxonomy_term__field_brand_key as ttfbk', 'ttfbk.entity_id', '=', 'nfb.field_brands_target_id')
+      ->where('ttfbk.field_brand_key_value', '=', $brandId)
+      ->where('nfd.type', '=', 'faq')
+      ->where('nfd.status', '=', 1)
+      ->orderBy('nfd.nid', 'DESC')->first();
+
+    return $query == NULL ? $query : $query->nid;
+  }
+
 }

@@ -54,9 +54,20 @@ class FlagController extends Controller {
       'flag' => 'required|likebookmarkflag',
       'status' => 'required|boolean',
       '_format' => 'required|format',
+      'brandId' => 'sometimes|positiveinteger|brandid',
     ]);
     $this->uid = $_userData->userId;
-    $nid = isset($validatedData['nid']) ? $validatedData['nid'] : 0;
+    $brand_id = $validatedData['brandId'];
+    // Set node id value.
+    if (isset($validatedData['nid'])) {
+      $nid = $validatedData['nid'];
+    }
+    else {
+      $nid = ContentModel::getBrandFaqId($brand_id);
+      if ($nid == NULL) {
+        return $this->errorResponse('FAQ content does not exist for the respective brand.', Response::HTTP_UNPROCESSABLE_ENTITY);
+      }
+    }
     // Check node status.
     if (empty(ContentModel::getStatusByNid($nid))) {
       return $this->errorResponse('Node is not published.', Response::HTTP_UNPROCESSABLE_ENTITY);
@@ -66,11 +77,11 @@ class FlagController extends Controller {
 
     $type = $request->get('type');
     if ($type != 'faq') {
-      $this->errorResponse('Type param value must only be faq', Response::HTTP_UNPROCESSABLE_ENTITY);
+      return $this->errorResponse('Type param value must only be faq', Response::HTTP_UNPROCESSABLE_ENTITY);
     }
     $this->elasticClient = Helper::checkElasticClient();
     if (!$this->elasticClient) {
-      $this->errorResponse('No alive nodes found in cluster.', Response::HTTP_INTERNAL_SERVER_ERROR);
+      return $this->errorResponse('No alive nodes found in cluster.', Response::HTTP_INTERNAL_SERVER_ERROR);
     }
     $this->updateUserIndex($nid, $flag, $status);
     $this->updateNodeIndex($nid, $flag, $status);
