@@ -1,0 +1,113 @@
+uuid: 8a0533e2-1736-4370-91c0-80288acf5003
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.brand_story.body
+    - field.field.node.brand_story.field_brands
+    - field.field.node.brand_story.field_display_title
+    - field.field.node.brand_story.field_downloadable
+    - field.field.node.brand_story.field_featured_image
+    - field.field.node.brand_story.field_markets
+    - field.field.node.brand_story.field_point_value
+    - field.field.node.brand_story.field_subtitle
+    - field.field.node.brand_story.field_tool_pdf
+    - field.field.node.brand_story.field_translation
+    - node.type.brand_story
+  module:
+    - options
+    - text
+    - user
+id: node.brand_story.default
+targetEntityType: node
+bundle: brand_story
+mode: default
+content:
+  body:
+    label: hidden
+    type: text_default
+    weight: 101
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  field_brands:
+    weight: 108
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_display_title:
+    weight: 102
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_downloadable:
+    weight: 110
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
+    region: content
+  field_featured_image:
+    weight: 104
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_markets:
+    weight: 109
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_point_value:
+    weight: 105
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_subtitle:
+    weight: 103
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_tool_pdf:
+    weight: 106
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_translation:
+    weight: 107
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
+    region: content
+  links:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden:
+  langcode: true
+  search_api_excerpt: true

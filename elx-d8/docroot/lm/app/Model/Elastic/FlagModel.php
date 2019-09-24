@@ -136,4 +136,29 @@ class FlagModel {
     return $response;
   }
 
+  /**
+   * Delete node data from elastic.
+   *
+   * @param int $nid
+   *   Node id.
+   * @param mixed $client
+   *   Elastic client.
+   *
+   * @return bool
+   *   True or false.
+   */
+  public static function deleteElasticNodeData($nid, $client) {
+    $params['index'] = getenv("ELASTIC_ENV") . '_node_data';
+    $params['type'] = 'node';
+    $params['id'] = $nid;
+    try {
+      $response = $client->delete($params);
+    }
+    catch (\Exception $e) {
+      return FALSE;
+    }
+
+    return $response;
+  }
+
 }

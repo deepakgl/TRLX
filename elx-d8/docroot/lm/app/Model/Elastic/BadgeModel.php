@@ -124,6 +124,9 @@ class BadgeModel {
         $response['_source']['badge'] = $value;
       }
     }
+    else {
+      $response['_source']['badge'] = [];
+    }
     foreach ($badge as $key => $value) {
       $response['_source']['badge'][$value] = 1;
     }

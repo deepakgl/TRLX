@@ -6,6 +6,8 @@ dependencies:
     - entity_browser.browser.media_entity_browser
     - field.field.taxonomy_term.learning_category.field_access_by_role
     - field.field.taxonomy_term.learning_category.field_badges
+    - field.field.taxonomy_term.learning_category.field_brands
+    - field.field.taxonomy_term.learning_category.field_content_section
     - field.field.taxonomy_term.learning_category.field_image
     - field.field.taxonomy_term.learning_category.field_percentage
     - field.field.taxonomy_term.learning_category.field_sub_title
@@ -21,26 +23,26 @@ mode: default
 content:
   description:
     type: text_textarea
-    weight: 1
+    weight: 2
     region: content
     settings:
       placeholder: ''
       rows: 5
     third_party_settings: {  }
-  field_access_by_role:
-    weight: 2
+  field_brands:
+    weight: 4
     settings: {  }
     third_party_settings: {  }
     type: options_buttons
     region: content
-  field_badges:
-    weight: 8
+  field_content_section:
+    weight: 5
     settings: {  }
     third_party_settings: {  }
-    type: options_select
+    type: options_buttons
     region: content
   field_image:
-    weight: 7
+    weight: 3
     settings:
       entity_browser: media_entity_browser
       field_widget_display: rendered_entity
@@ -54,15 +56,8 @@ content:
     third_party_settings: {  }
     type: entity_browser_entity_reference
     region: content
-  field_percentage:
-    weight: 9
-    settings:
-      placeholder: ''
-    third_party_settings: {  }
-    type: number
-    region: content
   field_sub_title:
-    weight: 6
+    weight: 1
     settings:
       size: 60
       placeholder: ''
@@ -71,7 +66,7 @@ content:
     region: content
   langcode:
     type: language_select
-    weight: 3
+    weight: 6
     region: content
     settings:
       include_locked: true
@@ -86,13 +81,16 @@ content:
     third_party_settings: {  }
   path:
     type: path
-    weight: 5
+    weight: 8
     region: content
     settings: {  }
     third_party_settings: {  }
   translation:
-    weight: 4
+    weight: 7
     region: content
     settings: {  }
     third_party_settings: {  }
-hidden: {  }
+hidden:
+  field_access_by_role: true
+  field_badges: true
+  field_percentage: true

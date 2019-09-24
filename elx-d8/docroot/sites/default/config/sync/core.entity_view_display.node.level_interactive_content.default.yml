@@ -17,6 +17,7 @@ dependencies:
     - field.field.node.level_interactive_content.field_point_value
     - field.field.node.level_interactive_content.field_product_categories
     - field.field.node.level_interactive_content.field_product_family
+    - field.field.node.level_interactive_content.field_subtitle
     - field.field.node.level_interactive_content.field_tags_keywords
     - field.field.node.level_interactive_content.field_translation
     - node.type.level_interactive_content
@@ -30,7 +31,7 @@ bundle: level_interactive_content
 mode: default
 content:
   field_access_by_role:
-    weight: 121
+    weight: 11
     label: above
     settings:
       link: true
@@ -38,7 +39,7 @@ content:
     type: entity_reference_label
     region: content
   field_archive_and_unarchive:
-    weight: 125
+    weight: 15
     label: above
     settings:
       link: true
@@ -46,7 +47,7 @@ content:
     type: entity_reference_label
     region: content
   field_content_object_type:
-    weight: 103
+    weight: 2
     label: above
     settings:
       link: true
@@ -54,7 +55,7 @@ content:
     type: entity_reference_label
     region: content
   field_featured:
-    weight: 101
+    weight: 1
     label: above
     settings:
       format: default
@@ -65,7 +66,7 @@ content:
     region: content
   field_featured_image:
     type: entity_reference_entity_view
-    weight: 118
+    weight: 8
     label: above
     settings:
       view_mode: default
@@ -73,7 +74,7 @@ content:
     third_party_settings: {  }
     region: content
   field_headline:
-    weight: 111
+    weight: 5
     label: above
     settings:
       link_to_entity: false
@@ -82,7 +83,7 @@ content:
     region: content
   field_hero_image:
     type: entity_reference_entity_view
-    weight: 119
+    weight: 9
     label: above
     settings:
       view_mode: default
@@ -91,7 +92,7 @@ content:
     region: content
   field_interactive_content:
     type: entity_reference_revisions_entity_view
-    weight: 117
+    weight: 7
     label: above
     settings:
       view_mode: default
@@ -99,7 +100,7 @@ content:
     third_party_settings: {  }
     region: content
   field_learning_category:
-    weight: 109
+    weight: 4
     label: above
     settings:
       link: true
@@ -107,7 +108,7 @@ content:
     type: entity_reference_label
     region: content
   field_markets:
-    weight: 120
+    weight: 10
     label: above
     settings:
       link: true
@@ -115,7 +116,7 @@ content:
     type: entity_reference_label
     region: content
   field_order_weight:
-    weight: 105
+    weight: 3
     label: above
     settings:
       link_to_entity: false
@@ -123,7 +124,7 @@ content:
     type: string
     region: content
   field_point_value:
-    weight: 115
+    weight: 6
     label: above
     settings:
       link_to_entity: false
@@ -131,7 +132,7 @@ content:
     type: string
     region: content
   field_product_categories:
-    weight: 123
+    weight: 13
     label: above
     settings:
       link: true
@@ -139,30 +140,34 @@ content:
     type: entity_reference_label
     region: content
   field_product_family:
-    weight: 122
+    weight: 12
     label: above
     settings:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
     region: content
-  field_tags_keywords:
-    weight: 110
+  field_subtitle:
+    weight: 16
     label: above
     settings:
-      link: true
+      link_to_entity: false
     third_party_settings: {  }
-    type: entity_reference_label
+    type: string
     region: content
   field_translation:
-    weight: 124
+    weight: 14
     label: above
     settings: {  }
     third_party_settings: {  }
     type: list_default
     region: content
   links:
-    weight: 100
+    weight: 0
     region: content
+    settings: {  }
+    third_party_settings: {  }
 hidden:
+  field_tags_keywords: true
   langcode: true
+  search_api_excerpt: true

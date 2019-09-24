@@ -10,10 +10,10 @@ id: node.stories.field_markets
 field_name: field_markets
 entity_type: node
 bundle: stories
-label: Market
+label: Region
 description: ''
-required: false
-translatable: true
+required: true
+translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:

@@ -1,0 +1,12 @@
+cancel_confirm: {  }
+password_reset:
+  body: "[user:display-name], <br /><br />\r\n\r\nELX3.0はあなたのアカウントのパスワード リセットのリクエストを受け付けました。<br /><br />\r\n\r\n仮パスワード：<b>[elx_rest_password:rest_temp_password]</b> （7日間のみ有効）<br /><br />\r\n\r\nパスワードを変更するには <a href=\"https://elx3.myelx.com/confirmpassword\">ここ</a> をクリックしてください。<br /><br />"
+register_admin_created:
+  body: "<p>Hello #EsteeBeautyAdvisor,</p>\r\n\r\n<p>Welcome to ELX, the Estee Lauder Experience!下にあるリンクをクリックすると、エスティ ローダーのすべてがわかるサイトに行きます。そこにはクリックしたくなるストーリーや気軽に楽しめるラーニング レベルがあり、いつかあなたがトップになるかもしれないリーダーボードがあります。</p>\r\n\r\n<p>サイトにログインする前に以下の注意点をよく読んでください。</p>\r\n\r\n<p>ELX上の全ての個人情報は米国に移管され保管されます。初めてサイトにログインする時に、個人情報の移管について同意したものとみなされます。この条件に同意できない場合は、このサイトを利用しないこともできます。条件の同意を撤回し、サイトからアカウントを削除したい場合は、ELXヘルプデスクhelp-myelx@estee.comに直接コンタクトしてください。</p>\r\n\r\n<p>まずはあなたのアカウントを使用可能にするため、<a href=\"https://elx3.myelx.com/confirmpassword\">こちら</a> こちらをクリックしてサイトにアクセスしましょう。下のワンタイム パスワードを使ってください。</p>\r\n<p>[elx_rest_password:rest_temp_password] </p>\r\n\r\n<p>ELX learning journeyをお楽しみください。</p>\r\n\r\n<p>Thank you,</p>\r\n\r\n<p>The ELX Team</p>\r\n"
+  subject: '<p><i>ELX へようこそ-あなたの学習の旅はここから始まります!&nbsp;</i></p>'
+register_no_approval_required: {  }
+register_pending_approval: {  }
+register_pending_approval_admin: {  }
+status_activated:
+  body: "<p>Hello #EsteeBeautyAdvisor,</p>\r\n\r\n<p>Welcome to ELX, the Estee Lauder Experience! 下にあるリンクをクリックすると、エスティ ローダーのすべてがわかるサイトに行きます。そこにはクリックしたくなるストーリーや気軽に楽しめるラーニング レベルがあり、いつかあなたの名前がトップにあがるかもしれないリーダーボードがあります。</p>\r\n\r\n<p>サイトにログインする前に以下の注意点をよく読んでください。</p>\r\n\r\n<p>ELX上の全ての個人情報は米国に移管され保管されます。初めてサイトにログインする時に、個人情報の移管について同意したものとみなされます。この条件に同意できない場合は、このサイトを利用しないこともできます。条件の同意を撤回し、サイトからアカウントを削除したい場合は、ELXヘルプデスクhelp-myelx@estee.comに直接コンタクトしてください。</p>\r\n\r\n<p>アカウントを有効にするには、をクリックしてください<a href=\"https://elx3.myelx.com/confirmpassword\">ここ</a> 以下の OTP を使用してサイトにアクセスするには:</p>\r\n<p>[elx_rest_password:rest_temp_password] </p>\r\n\r\n<p>私たちはあなたの ELX 学習の旅であなたのすべての最高を願っています!</p>\r\n\r\n<p>Thank you,</p>\r\n\r\n<p>The ELX Team</p>\r\n"
+  subject: '<p><i>ELX へようこそ-あなたの学習の旅はここから始まります!&nbsp;</i></p>'

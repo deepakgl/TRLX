@@ -1,0 +1,163 @@
+uuid: 807973b3-0dd8-4e06-9eb2-645bc660e444
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_ar_search
+    - field.storage.node.field_display_title
+    - field.storage.node.field_how_to_sell_this_product
+    - field.storage.media.field_media_video_file
+    - field.storage.node.field_learning_category
+    - field.storage.node.field_markets
+    - field.storage.node.field_field_product_image
+    - field.storage.media.field_media_image
+    - field.storage.node.field_product_video
+    - field.storage.node.field_subtitle
+    - search_api.server.elastic_server
+  module:
+    - media
+    - file
+    - node
+    - search_api
+id: ar_product_search
+name: 'AR Product Search'
+description: ''
+read_only: false
+field_settings:
+  aggregated_field:
+    label: 'Aggregated field'
+    property_path: aggregated_field
+    type: text
+    configuration:
+      type: concat
+      fields:
+        - 'entity:node/field_display_title'
+        - 'entity:node/field_subtitle'
+  ar_search:
+    label: 'AR search'
+    datasource_id: 'entity:node'
+    property_path: field_ar_search
+    type: integer
+    dependencies:
+      config:
+        - field.storage.node.field_ar_search
+  display_title:
+    label: 'Display title'
+    datasource_id: 'entity:node'
+    property_path: field_display_title
+    type: text
+    dependencies:
+      config:
+        - field.storage.node.field_display_title
+  how_to_sell_this_product:
+    label: 'How to sell this product'
+    datasource_id: 'entity:node'
+    property_path: 'field_how_to_sell_this_product:entity:field_media_video_file:entity:uri:url'
+    type: text
+    dependencies:
+      config:
+        - field.storage.node.field_how_to_sell_this_product
+        - field.storage.media.field_media_video_file
+      module:
+        - media
+        - file
+        - file
+  learning_category:
+    label: 'Related learning level'
+    datasource_id: 'entity:node'
+    property_path: field_learning_category
+    type: integer
+    dependencies:
+      config:
+        - field.storage.node.field_learning_category
+  market:
+    label: Market
+    datasource_id: 'entity:node'
+    property_path: field_markets
+    type: integer
+    dependencies:
+      config:
+        - field.storage.node.field_markets
+  nid:
+    label: ID
+    datasource_id: 'entity:node'
+    property_path: nid
+    type: integer
+    dependencies:
+      module:
+        - node
+  product_image_uri:
+    label: 'Product Image Url'
+    datasource_id: 'entity:node'
+    property_path: 'field_field_product_image:entity:field_media_image:entity:uri:url'
+    type: text
+    dependencies:
+      config:
+        - field.storage.node.field_field_product_image
+        - field.storage.media.field_media_image
+      module:
+        - media
+        - file
+        - file
+  product_video:
+    label: 'Product video'
+    datasource_id: 'entity:node'
+    property_path: 'field_product_video:entity:field_media_video_file:entity:uri:url'
+    type: text
+    dependencies:
+      config:
+        - field.storage.node.field_product_video
+        - field.storage.media.field_media_video_file
+      module:
+        - media
+        - file
+        - file
+  status:
+    label: Published
+    datasource_id: 'entity:node'
+    property_path: status
+    type: integer
+    dependencies:
+      module:
+        - node
+  subtitle:
+    label: Subtitle
+    datasource_id: 'entity:node'
+    property_path: field_subtitle
+    type: text
+    dependencies:
+      config:
+        - field.storage.node.field_subtitle
+datasource_settings:
+  'entity:node':
+    bundles:
+      default: false
+      selected:
+        - product_detail
+    languages:
+      default: false
+      selected:
+        - en
+processor_settings:
+  add_url: {  }
+  aggregated_field: {  }
+  ignorecase:
+    all_fields: false
+    fields:
+      - aggregated_field
+      - display_title
+      - how_to_sell_this_product
+      - product_image_uri
+      - product_video
+      - subtitle
+    weights:
+      preprocess_index: -20
+      preprocess_query: -20
+  rendered_item: {  }
+tracker_settings:
+  default:
+    indexing_order: fifo
+options:
+  index_directly: true
+  cron_limit: 200
+server: elastic_server

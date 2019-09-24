@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Support\Helper;
 use App\Model\Elastic\FlagModel;
 use App\Model\Mysql\ContentModel;
+use App\Traits\ApiResponser;
 use App\Model\Mysql\UserModel;
 
 /**
@@ -14,10 +15,14 @@ use App\Model\Mysql\UserModel;
  */
 class UserActivitiesController extends Controller {
 
+  use ApiResponser;
+
   /**
    * Create a new controller instance.
    */
-  public function __construct() {}
+  public function __construct() {
+
+  }
 
   /**
    * Get user activities.
@@ -60,24 +65,23 @@ class UserActivitiesController extends Controller {
    *   User activities.
    */
   public function userActivities(Request $request) {
-    $uid = Helper::getJtiToken($request);
-    if (!$uid) {
-      return Helper::jsonError('Please provide user id.', 400);
-    }
-    $nids = $request->input('id');
-    if (!$nids) {
-      return Helper::jsonError('Please provide node id.', 400);
-    }
+    global $_userData;
+    $validatedData = $this->validate($request, [
+      'nid' => 'required|numericarray|exists:node,nid',
+      '_format' => 'required|format',
+    ]);
+    $this->uid = $_userData->userId;
+    $nids = $validatedData['nid'];
     $client = Helper::checkElasticClient();
     if (!$client) {
-      return FALSE;
+      $this->errorResponse('No alive nodes found in cluster.', Response::HTTP_INTERNAL_SERVER_ERROR);
     }
     // Fetch node data from elastic.
     $response = FlagModel::fetchMultipleElasticNodeData($nids, $client);
     // Check user flag status.
-    $user_activities = $this->userFlagStatus($response, $uid);
+    $user_activities = $this->userFlagStatus($response, $this->uid);
 
-    return new Response($user_activities, 200);
+    return $this->successResponse($user_activities);
   }
 
   /**
@@ -196,10 +200,9 @@ class UserActivitiesController extends Controller {
       "percentageCompleted" => $percentage_completed,
       "userLevelActivity" => [
         "categoryId" => $tid,
-        "favourites" => 100,
+        "likes" => 100,
         "bookmarks" => 100,
-        "downloadCount" => 100,
-        "userFavouriteStatus" => TRUE,
+        "userLikeStatus" => TRUE,
         "userBookmarkStatus" => TRUE,
       ],
     ];
@@ -227,54 +230,45 @@ class UserActivitiesController extends Controller {
     foreach ($response['docs'] as $key => $value) {
       // If data found in elastic.
       if ($value['found'] == 1) {
-        $fav_status = $bookmark_status = FALSE;
-        $fav_count = $bookmark_count = $download_count = 0;
+        $like_status = $bookmark_status = FALSE;
+        $like_count = $bookmark_count = 0;
         // If key exists in array, update the respective flag status.
-        if (array_key_exists('favorites_by_user', $value['_source'])) {
-          $fav_count = (int) count($value['_source']['favorites_by_user']);
-          if (in_array($uid, $value['_source']['favorites_by_user'])) {
-            $fav_status = TRUE;
+        if (array_key_exists('like_by_user', $value['_source'])) {
+          $like_count = (int) count($value['_source']['like_by_user']);
+          if (in_array($uid, $value['_source']['like_by_user'])) {
+            $like_status = TRUE;
           }
         }
-        if (array_key_exists('bookmarks_by_user', $value['_source'])) {
-          $bookmark_count = (int) count($value['_source']['bookmarks_by_user']);
-          if (in_array($uid, $value['_source']['bookmarks_by_user'])) {
+        if (array_key_exists('bookmark_by_user', $value['_source'])) {
+          $bookmark_count = (int) count($value['_source']['bookmark_by_user']);
+          if (in_array($uid, $value['_source']['bookmark_by_user'])) {
             $bookmark_status = TRUE;
-          }
-        }
-        if (array_key_exists('downloads_by_user', $value['_source'])) {
-          $download_count = count($value['_source']['downloads_by_user']);
-          if (in_array($uid, $value['_source']['downloads_by_user'])) {
-            $download_status = TRUE;
           }
         }
         if (!empty($module_status)) {
           $incomplete_status = ['progress', NULL];
-          $status[$key][$value['_id']] = (isset($module_status[$value['_id']])
-          && !in_array($module_status[$value['_id']]->statement_status, $incomplete_status)) ? (int) 1 : (int) 0;
+          $status[$key][$value['_id']] = (isset($module_status[$value['_id']]) && !in_array($module_status[$value['_id']]->statement_status, $incomplete_status)) ? (int) 1 : (int) 0;
         }
         if ($flag == "userActivity") {
           $user_activities[$key] = [
             "nid" => (int) $value['_id'],
-            "userFavouriteStatus" => $fav_status,
+            "userLikeStatus" => $like_status,
             "userBookmarkStatus" => $bookmark_status,
           ];
         }
         elseif ($flag == "globalActivity") {
           $user_activities[$key] = [
             "nid" => (int) $value['_id'],
-            "favourites" => $fav_count,
+            "likes" => $like_count,
             "bookmarks" => $bookmark_count,
-            "downloadCount" => $download_count,
           ];
         }
         else {
           $user_activities[$key] = [
             "nid" => (int) $value['_id'],
-            "favourites" => $fav_count,
+            "likes" => $like_count,
             "bookmarks" => $bookmark_count,
-            "downloadCount" => $download_count,
-            "userFavouriteStatus" => $fav_status,
+            "userLikeStatus" => $like_status,
             "userBookmarkStatus" => $bookmark_status,
           ];
         }
@@ -283,7 +277,7 @@ class UserActivitiesController extends Controller {
         }
       }
       else {
-        $user_activities[] =  self::userFlagStatusEmptyResponse($value['_id'], $flag);
+        $user_activities[] = self::userFlagStatusEmptyResponse($value['_id'], $flag);
       }
     }
 
@@ -291,7 +285,7 @@ class UserActivitiesController extends Controller {
   }
 
   /**
-   * Fetch user flag empty response
+   * Fetch user flag empty response.
    *
    * @param int $id
    *   Node id.
@@ -306,29 +300,27 @@ class UserActivitiesController extends Controller {
     if ($flag == "userActivity") {
       $user_activities = [
         "nid" => (int) $id,
-        "userFavouriteStatus" => false,
-        "userBookmarkStatus" => false,
+        "userLikeStatus" => FALSE,
+        "userBookmarkStatus" => FALSE,
       ];
     }
     elseif ($flag == "globalActivity") {
       $user_activities = [
         "nid" => (int) $id,
-        "favourites" => 0,
+        "likes" => 0,
         "bookmarks" => 0,
-        "downloadCount" => 0,
       ];
     }
     else {
       $user_activities = [
         "nid" => (int) $id,
-        "favourites" => 0,
+        "likes" => 0,
         "bookmarks" => 0,
-        "downloadCount" => 0,
-        "userFavouriteStatus" => false,
-        "userBookmarkStatus" => false,
+        "userLikeStatus" => FALSE,
+        "userBookmarkStatus" => FALSE,
       ];
     }
-   return $user_activities;
+    return $user_activities;
   }
 
 }

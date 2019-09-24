@@ -1,0 +1,7 @@
+trlx_utility.content_config:
+  path: '/admin/config/system/content_config'
+  defaults:
+    _form: '\Drupal\trlx_utility\Form\ContentConfigForm'
+    _title: 'Content Configuration Form'
+  requirements:
+    _permission: 'administer site configuration'

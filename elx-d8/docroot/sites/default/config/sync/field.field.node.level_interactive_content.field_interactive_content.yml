@@ -37,4 +37,19 @@ settings:
       best_sellers_template_two:
         weight: 7
         enabled: false
+      field_slides_bs_t3:
+        weight: 12
+        enabled: false
+      field_slids_bs_t4:
+        weight: 13
+        enabled: false
+      media_template_two:
+        weight: 15
+        enabled: false
+      multiple_answer_choice:
+        weight: 16
+        enabled: false
+      social_media_handle:
+        weight: 18
+        enabled: false
 field_type: entity_reference_revisions

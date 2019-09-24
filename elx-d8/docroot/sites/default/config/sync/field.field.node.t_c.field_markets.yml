@@ -10,10 +10,10 @@ id: node.t_c.field_markets
 field_name: field_markets
 entity_type: node
 bundle: t_c
-label: Market
+label: Region
 description: ''
 required: true
-translatable: true
+translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:

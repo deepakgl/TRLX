@@ -1,11 +1,11 @@
-uuid: f9dcb04b-2ed2-4cc7-9686-7765fef03acc
+uuid: 891431f1-5d2d-4c86-84db-6a942b21ed17
 langcode: en
 status: true
 dependencies:
   module:
-    - elx_products
     - serialization
-    - simple_oauth
+    - trlx_spotlight
+    - trlx_utility
 id: spotlight_section
 plugin_id: spotlight_section
 granularity: resource
@@ -15,4 +15,4 @@ configuration:
   formats:
     - json
   authentication:
-    - oauth2
+    - jwt_Auth

@@ -1,0 +1,18 @@
+uuid: 15777287-6a83-4e2d-8e50-f87305e3f8b6
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.level_interactive_content
+id: node.level_interactive_content.title
+field_name: title
+entity_type: node
+bundle: level_interactive_content
+label: 'Title (Backend use only)'
+description: ''
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

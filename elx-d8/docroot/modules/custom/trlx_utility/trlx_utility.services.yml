@@ -1,0 +1,6 @@
+services:
+  trlx_utility.authentication.jwt_auth:
+    class: Drupal\trlx_utility\Authentication\Provider\JwtAuth
+    arguments: ['@config.factory', '@entity.manager']
+    tags:
+      - { name: authentication_provider, provider_id: 'jwt_Auth', global: TRUE, priority: 100 }

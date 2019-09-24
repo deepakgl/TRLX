@@ -1,0 +1,8 @@
+cancel_confirm:
+  body: "[user:display-name],\r\n\r\nA request to cancel your account has been made at [site:name].\r\n\r\nYou may now cancel your account on [site:url-brief] by clicking this link or copying and pasting it into your browser:\r\n\r\n[user:cancel-url]\r\n\r\nNOTE: The cancellation of your account is not reversible.\r\n\r\nThis link expires in one day and nothing will happen if it is not used.\r\n\r\n--  [site:name] team"
+password_reset:
+  body: "[user:display-name], <br /><br />\r\nA request to reset the password for your account has been made at [site:name].<br /><br />\r\nHere is your one time password (OTP) <b>[elx_rest_password:rest_temp_password] and it will expire in 7 Days<br /><br />\r\nClick <a href=\"https://elx3.myelx.com/confirmpassword\">here</a> to update your password.<br /><br />"
+  subject: 'Replacement login information for [user:field_first_name:value] at [site:name]'
+register_admin_created:
+  body: "<p>#EsteeBeautyAdvisor 你好！</p>\r\n\r\n<p>欢迎来到 ELX 雅诗兰黛体验！ 点击下面的链接，即可访问所有有关雅诗兰黛的信息，包括值得一阅的故事、简单易懂的学习级别，以及排行榜。我们确信你很快就能排列榜首.</p>\r\n\r\n<p>登录网站前，请阅读下面的完整说明.</p>\r\n\r\n<p>请注意，通过 ELX 收集的所有个人信息都将传送和保存于美国。 首次登录该网站，即表示你同意我们传送你的个人数据。 如果你不同意上述条款，可选择不使用我们的网站。 如需撤销你的同意，可随时通过发送邮件至 help-myelx@estee.com 联系 ELX 帮助台，申请从系统中删除你的帐户.</p>\r\n\r\n<p><a href=\"ttps://elx3.myelx.com \">here</a></p>\r\n\r\n<p>We wish you all the best on your ELX learning journey!</p>\r\n\r\n<p>祝你的 ELX 学习旅程一切顺利!</p>\r\n\r\n<p>谢谢,</p>\r\n\r\n<p>ELX 团队</p>\r\n"
+  subject: '<p><i>#EsteeBeautyAdvisor 你好!</i></p>'

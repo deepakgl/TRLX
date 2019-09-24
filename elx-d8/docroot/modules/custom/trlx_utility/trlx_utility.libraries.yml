@@ -1,0 +1,5 @@
+trlx_css:
+  version: 1.x
+  css:
+    theme:
+      css/trlx.css: {}

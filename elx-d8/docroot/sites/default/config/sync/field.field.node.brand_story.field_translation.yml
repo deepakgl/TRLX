@@ -1,0 +1,21 @@
+uuid: a6cb984e-3b98-46bf-9328-d2f9824400f4
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_translation
+    - node.type.brand_story
+  module:
+    - options
+id: node.brand_story.field_translation
+field_name: field_translation
+entity_type: node
+bundle: brand_story
+label: Translation
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

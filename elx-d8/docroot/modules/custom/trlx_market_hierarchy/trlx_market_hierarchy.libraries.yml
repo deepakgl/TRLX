@@ -1,0 +1,6 @@
+trlx_market:
+  js:
+    js/trlx.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupal

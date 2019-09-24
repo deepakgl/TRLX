@@ -18,6 +18,7 @@ dependencies:
     - field.field.node.level_interactive_content.field_point_value
     - field.field.node.level_interactive_content.field_product_categories
     - field.field.node.level_interactive_content.field_product_family
+    - field.field.node.level_interactive_content.field_subtitle
     - field.field.node.level_interactive_content.field_tags_keywords
     - field.field.node.level_interactive_content.field_translation
     - node.type.level_interactive_content
@@ -45,12 +46,11 @@ third_party_settings:
     group_general_ic:
       children:
         - title
-        - field_access_by_role
         - field_learning_category
-        - field_tags_keywords
         - field_hero_image
         - field_featured_image
         - field_headline
+        - field_subtitle
         - field_point_value
         - field_markets
       parent_name: group_general
@@ -83,20 +83,14 @@ targetEntityType: node
 bundle: level_interactive_content
 mode: default
 content:
-  field_access_by_role:
-    weight: 9
-    settings: {  }
-    third_party_settings: {  }
-    type: options_buttons
-    region: content
   field_archive_and_unarchive:
-    weight: 26
+    weight: 7
     settings: {  }
     third_party_settings: {  }
     type: options_select
     region: content
   field_featured_image:
-    weight: 13
+    weight: 11
     settings:
       entity_browser: media_entity_browser
       field_widget_display: rendered_entity
@@ -111,7 +105,7 @@ content:
     type: entity_browser_entity_reference
     region: content
   field_headline:
-    weight: 14
+    weight: 12
     settings:
       size: 60
       placeholder: ''
@@ -119,7 +113,7 @@ content:
     type: string_textfield
     region: content
   field_hero_image:
-    weight: 12
+    weight: 10
     settings:
       entity_browser: media_entity_browser
       field_widget_display: rendered_entity
@@ -142,60 +136,64 @@ content:
       edit_mode: open
       add_mode: dropdown
       form_display_mode: default
-      default_paragraph_type: ''
+      default_paragraph_type: interactive_content
     third_party_settings: {  }
     region: content
   field_learning_category:
-    weight: 10
+    weight: 9
     settings: {  }
     third_party_settings: {  }
     type: options_select
     region: content
   field_markets:
-    weight: 16
-    settings: {  }
+    weight: 15
+    settings:
+      start_minimized: true
+      leaves_only: false
+      select_parents: false
+      cascading_selection: 0
+      max_depth: 0
     third_party_settings: {  }
     type: term_reference_tree
     region: content
   field_point_value:
-    weight: 15
+    weight: 14
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
     region: content
-  field_tags_keywords:
-    weight: 11
+  field_subtitle:
+    weight: 13
     settings:
-      match_operator: CONTAINS
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: entity_reference_autocomplete_tags
+    type: string_textfield
     region: content
   field_translation:
     type: options_buttons
-    weight: 5
+    weight: 6
     region: content
     settings: {  }
     third_party_settings: {  }
   langcode:
     type: language_select
-    weight: 2
+    weight: 3
     region: content
     settings:
       include_locked: true
     third_party_settings: {  }
   path:
     type: path
-    weight: 1
+    weight: 2
     region: content
     settings: {  }
     third_party_settings: {  }
   status:
     type: boolean_checkbox
-    weight: 4
+    weight: 5
     region: content
     settings:
       display_label: true
@@ -209,17 +207,19 @@ content:
       placeholder: ''
     third_party_settings: {  }
   translation:
-    weight: 3
+    weight: 4
     region: content
     settings: {  }
     third_party_settings: {  }
 hidden:
   created: true
+  field_access_by_role: true
   field_content_object_type: true
   field_featured: true
   field_order_weight: true
   field_product_categories: true
   field_product_family: true
+  field_tags_keywords: true
   promote: true
   sticky: true
   uid: true

@@ -10,10 +10,10 @@ id: node.tools.field_markets
 field_name: field_markets
 entity_type: node
 bundle: tools
-label: Market
+label: Region
 description: ''
-required: false
-translatable: true
+required: true
+translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
