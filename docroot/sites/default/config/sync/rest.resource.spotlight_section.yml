@@ -1,0 +1,18 @@
+uuid: 891431f1-5d2d-4c86-84db-6a942b21ed17
+langcode: en
+status: true
+dependencies:
+  module:
+    - serialization
+    - trlx_spotlight
+    - trlx_utility
+id: spotlight_section
+plugin_id: spotlight_section
+granularity: resource
+configuration:
+  methods:
+    - GET
+  formats:
+    - json
+  authentication:
+    - jwt_Auth

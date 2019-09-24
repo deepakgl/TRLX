@@ -1,0 +1,81 @@
+<?php
+
+/**
+ * @file
+ * Market hierarchy file.
+ */
+
+use Drupal\trlx_utility\Utility\UserUtility;
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_views_query_alter().
+ */
+function trlx_market_hierarchy_views_query_alter($view, $query) {
+  $view_id = [
+    'brand_story',
+    'trlx_faq_listing',
+    'video_listing',
+    'video_details',
+    'stories_listing',
+    'fact_sheets_list',
+    'product_detail',
+    'spotlight_section',
+    'level_interactive_content',
+  ];
+  $current_display = [
+    'rest_export_brand_story_details',
+    'rest_export_faq_listing',
+    'rest_export_global_faq_listing',
+    'rest_export_video_listing',
+    'rest_export_video_details',
+    'rest_export_stories_listing',
+    'rest_export_story_details',
+    'rest_export_fact_sheets_list',
+    'product_details_rest_export',
+    'rest_export_spotlight_section',
+    'rest_export_level_interactive_content',
+  ];
+  if (in_array($view->id(), $view_id) && in_array($view->current_display, $current_display)) {
+    global $_userData;
+    $regions = $_userData->region;
+    $subregions = $_userData->subregion;
+    $country = $_userData->country;
+    // Get region, subregion or country from token if array is not empty.
+    if (!empty($country)) {
+      $ref_keys = $country;
+    }
+    elseif (!empty($subregions)) {
+      $ref_keys = $subregions;
+    }
+    elseif (!empty($regions)) {
+      $ref_keys = $regions;
+    }
+    $user_utility = new UserUtility();
+    // Get current user markets.
+    $markets = array_column($user_utility->getMarketByReferenceId($ref_keys), 'entity_id');
+    $operator = 'IN';
+    if (!empty($markets)) {
+      // Add markets table to the query.
+      $query->queueTable('node__field_markets', "node_field_data", NULL, 'node__field_markets');
+      // Add markets condition based on the current user.
+      $query->addWhere('1', 'node__field_markets.field_markets_target_id', $markets, $operator);
+    }
+  }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function trlx_market_hierarchy_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  switch ($form_id) {
+    // Disable region subregion country reference field in market taxonomy.
+    case 'taxonomy_term_markets_form':
+      if ($form['tid']['#value'] != NULL) {
+        $form['field_region_subreg_country_id']['widget'][0]['value']['#attributes']['readonly'] = 'readonly';
+      }
+      break;
+
+    default:
+  }
+}

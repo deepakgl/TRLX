@@ -1,0 +1,55 @@
+uuid: e16beaa6-44c1-4679-886f-a1ce65b41578
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_interactive_content
+    - node.type.level_interactive_content
+    - paragraphs.paragraphs_type.interactive_content
+  module:
+    - entity_reference_revisions
+id: node.level_interactive_content.field_interactive_content
+field_name: field_interactive_content
+entity_type: node
+bundle: level_interactive_content
+label: 'Interactive Content'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    negate: 0
+    target_bundles:
+      interactive_content: interactive_content
+    target_bundles_drag_drop:
+      interactive_content:
+        enabled: true
+        weight: 2
+      best_sellers_template_four:
+        weight: 5
+        enabled: false
+      best_sellers_template_three:
+        weight: 6
+        enabled: false
+      best_sellers_template_two:
+        weight: 7
+        enabled: false
+      field_slides_bs_t3:
+        weight: 12
+        enabled: false
+      field_slids_bs_t4:
+        weight: 13
+        enabled: false
+      media_template_two:
+        weight: 15
+        enabled: false
+      multiple_answer_choice:
+        weight: 16
+        enabled: false
+      social_media_handle:
+        weight: 18
+        enabled: false
+field_type: entity_reference_revisions
