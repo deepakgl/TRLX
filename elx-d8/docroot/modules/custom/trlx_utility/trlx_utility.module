@@ -64,12 +64,9 @@ function trlx_utility_form_alter(&$form, FormStateInterface $form_state, $form_i
     case 'node_stories_edit_form':
       $form['#attached']['library'][] = 'trlx_market_hierarchy/trlx_market';
 
-      /**
-       * Stories Content Type node edit form alteration.
-       *
-       * - Alter form to show only Bundle mapped sections for selection.
-       * - Show/Hide fields based on section selection.
-       */
+      // Stories Content Type node edit form alteration.
+      // Alter form to show only Bundle mapped sections for selection.
+      // Show/Hide fields based on section selection.
       /*** Alter form to show only Bundle mapped sections for selection - START ***/
       $bundle = FALSE;
       // Fetch bundle.
@@ -82,7 +79,7 @@ function trlx_utility_form_alter(&$form, FormStateInterface $form_state, $form_i
       // Fetch sections mapped to current bundle (content type)
       $bundleMappedSections = $commonUtility->getContentTypeSectionMapping($bundle);
 
-      // iterate through section options.
+      // Iterate through section options.
       foreach ($form['field_content_section']['widget']['#options'] as $id => $value) {
         $entityIdArr[] = $id;
       }
