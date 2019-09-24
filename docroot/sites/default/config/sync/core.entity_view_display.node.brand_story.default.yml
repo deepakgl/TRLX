@@ -6,7 +6,6 @@ dependencies:
     - field.field.node.brand_story.body
     - field.field.node.brand_story.field_brands
     - field.field.node.brand_story.field_display_title
-    - field.field.node.brand_story.field_downloadable
     - field.field.node.brand_story.field_featured_image
     - field.field.node.brand_story.field_markets
     - field.field.node.brand_story.field_point_value
@@ -45,16 +44,6 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     type: string
-    region: content
-  field_downloadable:
-    weight: 110
-    label: above
-    settings:
-      format: default
-      format_custom_false: ''
-      format_custom_true: ''
-    third_party_settings: {  }
-    type: boolean
     region: content
   field_featured_image:
     weight: 104
@@ -105,9 +94,9 @@ content:
     region: content
   links:
     weight: 100
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
 hidden:
   langcode: true
   search_api_excerpt: true
