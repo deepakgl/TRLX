@@ -95,7 +95,6 @@ class BrandStoryDetails extends ResourceBase {
       'nid' => 'int',
       'pointValue' => 'int',
       'video' => 'append_host',
-      'downloadable' => 'boolean',
     ];
     // Prepare redis key.
     $key = ":brandStoryDetails:_{$nid}_{$language}";

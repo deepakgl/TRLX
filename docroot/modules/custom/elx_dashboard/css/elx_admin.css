@@ -26,13 +26,6 @@ ul.sf-menu.sf-style-black a.is-active {
  color: #000;
 }
 
-/* Quiz translation popup. */
-.path-node .ui-dialog {
-  width: 98% !important;
-  top: 10px !important;
-  left: 10px !important;
-}
-
 /* Articulate file error message. */
 .field--name-field-interactive-content input.error{
     border-width: 1px !important;
