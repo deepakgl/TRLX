@@ -197,6 +197,9 @@ class EntityUtility {
           elseif ($value == 'string_replace') {
             $output['results'][$view_key][$key] = $this->stringReplace($result[$key]);
           }
+          elseif ($value == 'append_host') {
+            $output['results'][$view_key][$key] = !empty($result[$key]) ? \Drupal::request()->getSchemeAndHttpHost() . $result[$key] : $result[$key];
+          }
           // Set value for boolean by default unselected fields.
           elseif ($value == 'boolean') {
             $output['results'][$view_key][$key] = empty($result[$key]) ? FALSE : TRUE;
