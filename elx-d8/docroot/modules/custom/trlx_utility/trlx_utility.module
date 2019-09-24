@@ -222,7 +222,7 @@ function trlx_utility_preprocess_page(&$variables) {
 /**
  * Implements hook_views_query_alter().
  */
-function elx_utility_views_query_alter(ViewExecutable $view, $query) {
+function trlx_utility_views_query_alter(ViewExecutable $view, $query) {
   $view_id = [
     'product_listings',
     'product_detail',

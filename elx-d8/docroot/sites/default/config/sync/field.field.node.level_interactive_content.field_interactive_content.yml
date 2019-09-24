@@ -15,7 +15,7 @@ bundle: level_interactive_content
 label: 'Interactive Content'
 description: ''
 required: true
-translatable: true
+translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
@@ -48,5 +48,8 @@ settings:
         enabled: false
       multiple_answer_choice:
         weight: 16
+        enabled: false
+      social_media_handle:
+        weight: 18
         enabled: false
 field_type: entity_reference_revisions

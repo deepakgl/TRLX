@@ -106,8 +106,52 @@ class LearningLevels extends ResourceBase {
     if (empty($view_results)) {
       return $commonUtility->successResponse([], Response::HTTP_OK);
     }
+    if (!empty($view_results['results'])) {
+      $view_results = $this->prepareRow($view_results, $offset, $limit, $language);
+    }
 
     return $commonUtility->successResponse($view_results, $status_code, [], 'results');
+  }
+
+  /**
+   * Fetch learning levels.
+   *
+   * @param mixed $decode
+   *   View data.
+   * @param int $offset
+   *   View offset.
+   * @param int $limit
+   *   View limit.
+   * @param string $language
+   *   Language code.
+   *
+   * @return json
+   *   View result.
+   */
+  private function prepareRow($decode, $offset, $limit, $language) {
+    $commonUtility = new CommonUtility();
+    $term_ids = array_column($decode['results'], 'categoryId');
+    global $_userData;
+    // Get level intreactive node ids assosiated with level.
+    $term_nodes = $commonUtility->getTermNodes($term_ids, $_userData, $language);
+    $user_activity = [];
+    $tmp = 0;
+    foreach ($decode['results'] as $key => $value) {
+      if (!isset($term_nodes[$value['categoryId']])) {
+        // Remove level from listing in no module belongs to user market and.
+        // language.
+        unset($value);
+        $decode['results'][$key] = $value;
+        $tmp++;
+      }
+    }
+    $data = array_values(array_filter($decode['results']));
+    $decode['results'] = array_slice($data, $offset, $limit);
+    $decode['pager']['count'] = count($data) - $offset;
+    $decode['pager']['pages'] = ceil(count($data) / $limit);
+    $decode['pager']['items_per_page'] = $limit;
+
+    return $decode;
   }
 
 }
