@@ -44,6 +44,7 @@ permissions:
   - 'restful get footer_menu'
   - 'restful get header_menu'
   - 'restful get image_style'
+  - 'restful get insiderCorner_listing'
   - 'restful get language_list'
   - 'restful get languages'
   - 'restful get leaderboard_compare_type'
