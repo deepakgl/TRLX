@@ -78,7 +78,6 @@ class VideoDetails extends ResourceBase {
       'pointValue' => 'int',
       'video' => 'append_host',
       'videoSubtitle' => 'append_host',
-      'downloadable' => 'boolean',
     ];
 
     // Prepare redis key.
