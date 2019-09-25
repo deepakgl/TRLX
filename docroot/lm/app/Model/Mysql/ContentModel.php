@@ -707,25 +707,17 @@ class ContentModel {
   }
 
   /**
-   * Get latest brand faq id.
+   * Get faq content config form values.
    *
-   * @param int $brandId
-   *   Brand id.
-   *
-   * @return int
-   *   Latest faq content id.
+   * @return array
+   *   Content config form data.
    */
-  public static function getBrandFaqId($brandId) {
-    $query = DB::table('node_field_data as nfd')
-      ->select('nfd.nid')
-      ->leftJoin('node__field_brands as nfb', 'nfd.nid', '=', 'nfb.entity_id')
-      ->leftJoin('taxonomy_term__field_brand_key as ttfbk', 'ttfbk.entity_id', '=', 'nfb.field_brands_target_id')
-      ->where('ttfbk.field_brand_key_value', '=', $brandId)
-      ->where('nfd.type', '=', 'faq')
-      ->where('nfd.status', '=', 1)
-      ->orderBy('nfd.nid', 'DESC')->first();
-
-    return $query == NULL ? $query : $query->nid;
+  public static function getFaqValues() {
+    $query = DB::table('config')
+      ->select('config.data')
+      ->where('config.name', '=', 'trlx_utility.settings')
+      ->first();
+    return unserialize($query->data);
   }
 
 }

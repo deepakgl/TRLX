@@ -10,6 +10,7 @@ $password = $databases['default']['default']['password'];
 $prefix = $databases['default']['default']['prefix'];
 $host = $databases['default']['default']['host'];
 $port = $databases['default']['default']['port'];
+$cert = $databases['default']['default']['pdo'];
 
 return [
 
@@ -80,6 +81,7 @@ return [
             'prefix'    => $prefix,
             'timezone'  => env('DB_TIMEZONE', '+00:00'),
             'strict'    => env('DB_STRICT_MODE', false),
+            'options'   => $cert,
         ],
 
         'pgsql' => [
