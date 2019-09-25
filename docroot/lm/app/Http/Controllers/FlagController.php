@@ -49,6 +49,7 @@ class FlagController extends Controller {
    */
   public function setFlag(Request $request) {
     global $_userData;
+    $faq_config_data = ContentModel::getFaqValues();
     $validatedData = $this->validate($request, [
       'nid' => 'sometimes|required|positiveinteger|exists:node,nid',
       'flag' => 'required|likebookmarkflag',
@@ -57,26 +58,34 @@ class FlagController extends Controller {
       'brandId' => 'sometimes|positiveinteger|brandid',
     ]);
     $this->uid = $_userData->userId;
-    $brand_id = $validatedData['brandId'];
+    $pageType = $request->get('type');
+    // Get brand id if faq is part of brand section.
+    if (isset($validatedData['brandId'])) {
+      $brand_id = $validatedData['brandId'];
+    }
+    elseif (!empty($pageType) && !isset($validatedData['nid'])) {
+      // Set brand id zero if faq not part of brand section.
+      $brand_id = 0;
+    }
     // Set node id value.
     if (isset($validatedData['nid'])) {
       $nid = $validatedData['nid'];
     }
     else {
-      $nid = ContentModel::getBrandFaqId($brand_id);
-      if ($nid == NULL) {
-        return $this->errorResponse('FAQ content does not exist for the respective brand.', Response::HTTP_UNPROCESSABLE_ENTITY);
-      }
+      $nid = !empty($faq_config_data['faq_id']) ? (int) $faq_config_data['faq_id'] : 9999999;
+      // Unique faq id summed with respective brand id.
+      $nid = $nid + $brand_id;
     }
-    // Check node status.
-    if (empty(ContentModel::getStatusByNid($nid))) {
-      return $this->errorResponse('Node is not published.', Response::HTTP_UNPROCESSABLE_ENTITY);
+    if (empty($pageType) && !empty($nid)) {
+      // Check node status.
+      if (empty(ContentModel::getStatusByNid($nid))) {
+        return $this->errorResponse('Node is not published.', Response::HTTP_UNPROCESSABLE_ENTITY);
+      }
     }
     $flag = $validatedData['flag'];
     $status = $validatedData['status'];
 
-    $type = $request->get('type');
-    if ($type != 'faq') {
+    if ($pageType != 'faq') {
       return $this->errorResponse('Type param value must only be faq', Response::HTTP_UNPROCESSABLE_ENTITY);
     }
     $this->elasticClient = Helper::checkElasticClient();
@@ -335,18 +344,43 @@ class FlagController extends Controller {
    */
   public function contentViewFlag(Request $request) {
     global $_userData;
+    $faq_config_data = ContentModel::getFaqValues();
     $validatedData = $this->validate($request, [
-      'nid' => 'required|positiveinteger|exists:node,nid',
+      'nid' => 'sometimes|required|positiveinteger|exists:node,nid',
+      'brandId' => 'sometimes|required|positiveinteger|brandid',
       '_format' => 'required|format',
     ]);
     $this->uid = $_userData->userId;
-    $nid = $validatedData['nid'];
-    // Check node type.
-    $type = ContentModel::getTypeByNid($nid);
+    $pageType = $request->get('type');
+    // Get brand id if faq is part of brand section.
+    if (isset($validatedData['brandId'])) {
+      $brand_id = $validatedData['brandId'];
+    }
+    elseif (!empty($pageType) && !isset($validatedData['nid'])) {
+      // Set brand id zero if faq not part of brand section.
+      $brand_id = 0;
+    }
+    $brand_id = isset($validatedData['brandId']) ? $validatedData['brandId'] : 0;
+    // Set node id value.
+    if (isset($validatedData['nid'])) {
+      $nid = $validatedData['nid'];
+    }
+    else {
+      $nid = !empty($faq_config_data['faq_id']) ? (int) $faq_config_data['faq_id'] : 9999999;
+      // Unique faq id summed with respective brand id.
+      $nid = $nid + $brand_id;
+    }
+    if ($pageType != 'faq') {
+      return $this->errorResponse('Type param value must only be faq', Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
 
-    // Check node status.
-    if (empty(ContentModel::getStatusByNid($nid))) {
-      return $this->errorResponse('Node is not published.', Response::HTTP_UNPROCESSABLE_ENTITY);
+    if (empty($pageType) && !empty($nid)) {
+      // Check node status.
+      if (empty(ContentModel::getStatusByNid($nid))) {
+        return $this->errorResponse('Node is not published.', Response::HTTP_UNPROCESSABLE_ENTITY);
+      }
+      // Check node type.
+      $type = ContentModel::getTypeByNid($nid);
     }
     // Check whether elastic client exists.
     $this->elasticClient = Helper::checkElasticClient();
@@ -362,15 +396,16 @@ class FlagController extends Controller {
     }
     // Fetch user data from elastic index.
     $response = ElasticUserModel::fetchElasticUserData($this->uid, $this->elasticClient);
-    if (isset($response['_source']['node_views_' . $type->type])) {
-      $node_ids = $response['_source']['node_views_' . $type->type];
+    $content_type = empty($type->type) ? 'faq' : $type->type;
+    if (isset($response['_source']['node_views_' . $content_type])) {
+      $node_ids = $response['_source']['node_views_' . $content_type];
       if (in_array($nid, $node_ids)) {
         return $this->errorResponse('Node id already exist.', Response::HTTP_BAD_REQUEST);
       }
       $node_ids[] = $nid;
       $params['body'] = [
         'doc' => [
-          'node_views_' . $type->type => $node_ids,
+          'node_views_' . $content_type => $node_ids,
         ],
         'doc_as_upsert' => TRUE,
       ];
@@ -381,7 +416,7 @@ class FlagController extends Controller {
       $node_ids[] = $nid;
       $params['body'] = [
         'doc' => [
-          'node_views_' . $type->type => $node_ids,
+          'node_views_' . $content_type => $node_ids,
         ],
         'doc_as_upsert' => TRUE,
       ];
@@ -392,6 +427,9 @@ class FlagController extends Controller {
     $language = isset($lang[0]) ? $lang[0]->language : 'en';
     // Get point value by node id.
     $point_value = ContentModel::getPointValueByNid($nid, $language);
+    if ($point_value === 0 && $pageType == 'faq') {
+      $point_value = !empty($faq_config_data['faq_points']) ? (int) $faq_config_data['faq_points'] : 50;
+    }
     if (isset($response['_source']['total_points'])) {
       $badge_info['old_points'] = $response['_source']['total_points'];
       $response['_source']['total_points'] = $response['_source']['total_points'] + $point_value;
@@ -399,7 +437,7 @@ class FlagController extends Controller {
       $params['body'] = [
         'doc' => [
           'total_points' => $response['_source']['total_points'],
-          'node_views_' . $type->type => $node_ids,
+          'node_views_' . $content_type => $node_ids,
         ],
         'doc_as_upsert' => TRUE,
       ];

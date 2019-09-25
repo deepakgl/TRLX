@@ -7,7 +7,6 @@ use Illuminate\Http\Response;
 use App\Support\Helper;
 use App\Model\Elastic\ElasticUserModel;
 use App\Traits\ApiResponser;
-use App\Model\Mysql\ContentModel;
 
 /**
  * Purpose of building this class is to fetch user points.
@@ -35,15 +34,9 @@ class PointsController extends Controller {
   public function getUserPoints(Request $request) {
     global $_userData;
     $validatedData = $this->validate($request, [
-      'nid' => 'required|positiveinteger|exists:node,nid',
       '_format' => 'required|format',
     ]);
     $uid = $_userData->userId;
-    $nid = $validatedData['nid'];
-    // Check node status.
-    if (empty(ContentModel::getStatusByNid($nid))) {
-      return $this->errorResponse('Node is not published.', Response::HTTP_UNPROCESSABLE_ENTITY);
-    }
     // Check whether elastic connectivity exists.
     $client = Helper::checkElasticClient();
     // Check whether use elastic index exists.
