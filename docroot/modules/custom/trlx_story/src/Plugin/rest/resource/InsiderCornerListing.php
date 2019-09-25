@@ -22,7 +22,7 @@ use Drupal\trlx_utility\Utility\EntityUtility;
 class InsiderCornerListing extends ResourceBase {
 
   /**
-   * Rest resource for listing Insider Corner.
+   * Rest resource for listing Insider Corner content.
    *
    * @param \Symfony\Component\HttpFoundation\Request $request
    *   Rest resource query parameters.
