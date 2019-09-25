@@ -22,6 +22,7 @@ class EntityUtility {
     $this->userUtility = new UserUtility();
     // fixMe.
     $this->config = \Drupal::config('elx_utility.settings');
+    $this->configuration = \Drupal::config('trlx_utility.settings');
   }
 
   /**
@@ -210,6 +211,11 @@ class EntityUtility {
           elseif ($value == 'boolean') {
             $output['results'][$view_key][$key] = empty($result[$key]) ? FALSE : TRUE;
           }
+          // Set point value specific to section from config.
+          elseif ($value == 'point_value_insiderCorner') {
+            $pointValue = $this->configuration->get($value);
+            $output['results'][$view_key][$key] = !empty($pointValue) ? $pointValue : $result[$key];
+          }
           else {
             $output['results'][$view_key] = $result;
             if (isset($output['results'][$view_key][$key])) {
@@ -273,6 +279,11 @@ class EntityUtility {
           // Set value for boolean by default unselected fields.
           elseif ($value == 'boolean') {
             $output[$view_key][$key] = empty($result[$key]) ? FALSE : TRUE;
+          }
+          // Set point value specific to section from config.
+          elseif ($value == 'point_value_insiderCorner') {
+            $pointValue = $this->configuration->get($value);
+            $output[$view_key][$key] = !empty($pointValue) ? $pointValue : $result[$key];
           }
           else {
             $output[$view_key] = $result;
