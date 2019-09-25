@@ -7,6 +7,7 @@ use Illuminate\Http\Response;
 use App\Support\Helper;
 use App\Model\Elastic\ElasticUserModel;
 use App\Traits\ApiResponser;
+use App\Model\Mysql\ContentModel;
 
 /**
  * Purpose of building this class is to fetch user points.
@@ -39,16 +40,20 @@ class PointsController extends Controller {
     ]);
     $uid = $_userData->userId;
     $nid = $validatedData['nid'];
+    // Check node status.
+    if (empty(ContentModel::getStatusByNid($nid))) {
+      return $this->errorResponse('Node is not published.', Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
     // Check whether elastic connectivity exists.
     $client = Helper::checkElasticClient();
     // Check whether use elastic index exists.
     $exist = ElasticUserModel::checkElasticUserIndex($uid, $client);
     if (!$client || !$exist) {
-      $this->errorResponse('No alive nodes found in cluster.', Response::HTTP_INTERNAL_SERVER_ERROR);
+      return $this->errorResponse('No alive nodes found in cluster.', Response::HTTP_INTERNAL_SERVER_ERROR);
     }
     $response = ElasticUserModel::fetchElasticUserData($uid, $client);
 
-    return $this->successResponse($response['_source']['total_points'], Response::HTTP_CREATED);
+    return $this->successResponse($response['_source']['total_points'], Response::HTTP_OK);
   }
 
 }
