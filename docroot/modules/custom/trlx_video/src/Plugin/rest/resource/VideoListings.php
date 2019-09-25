@@ -85,6 +85,7 @@ class VideoListings extends ResourceBase {
       'displayTitle' => 'decode',
       'nid' => 'int',
       'pointValue' => 'int',
+      'video' => 'append_host',
       'downloadable' => 'boolean',
     ];
 

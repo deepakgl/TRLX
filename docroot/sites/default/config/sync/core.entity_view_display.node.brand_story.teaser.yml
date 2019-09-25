@@ -5,6 +5,14 @@ dependencies:
   config:
     - core.entity_view_mode.node.teaser
     - field.field.node.brand_story.body
+    - field.field.node.brand_story.field_brands
+    - field.field.node.brand_story.field_display_title
+    - field.field.node.brand_story.field_featured_image
+    - field.field.node.brand_story.field_markets
+    - field.field.node.brand_story.field_point_value
+    - field.field.node.brand_story.field_subtitle
+    - field.field.node.brand_story.field_tool_pdf
+    - field.field.node.brand_story.field_translation
     - node.type.brand_story
   module:
     - text
@@ -24,13 +32,14 @@ content:
     region: content
   links:
     weight: 100
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
 hidden:
   field_brands: true
   field_display_title: true
   field_featured_image: true
+  field_markets: true
   field_point_value: true
   field_subtitle: true
   field_tool_pdf: true

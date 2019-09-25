@@ -3,11 +3,10 @@ langcode: en
 status: true
 dependencies:
   config:
-    - entity_browser.browser.media_entity_browser
+    - entity_browser.browser.video_entity_browser
     - field.field.node.brand_story.body
     - field.field.node.brand_story.field_brands
     - field.field.node.brand_story.field_display_title
-    - field.field.node.brand_story.field_downloadable
     - field.field.node.brand_story.field_featured_image
     - field.field.node.brand_story.field_markets
     - field.field.node.brand_story.field_point_value
@@ -54,13 +53,6 @@ content:
     third_party_settings: {  }
     type: string_textfield
     region: content
-  field_downloadable:
-    weight: 29
-    settings:
-      display_label: true
-    third_party_settings: {  }
-    type: boolean_checkbox
-    region: content
   field_featured_image:
     weight: 12
     settings:
@@ -106,7 +98,7 @@ content:
   field_tool_pdf:
     weight: 13
     settings:
-      entity_browser: media_entity_browser
+      entity_browser: video_entity_browser
       field_widget_display: rendered_entity
       field_widget_edit: true
       field_widget_remove: true
@@ -180,4 +172,5 @@ content:
       placeholder: ''
     region: content
     third_party_settings: {  }
-hidden: {  }
+hidden:
+  field_downloadable: true

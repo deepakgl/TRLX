@@ -37,7 +37,6 @@ class BrandStoryDetails extends ResourceBase {
     // Required parameters.
     $requiredParams = [
       '_format',
-      'nid',
       'language',
       'brandId',
     ];
@@ -68,10 +67,6 @@ class BrandStoryDetails extends ResourceBase {
       return $response;
     }
 
-    if (empty($commonUtility->isValidNid($nid, $language))) {
-      return $commonUtility->errorResponse($this->t('Node id does not exist or requested language data is not available.'), Response::HTTP_UNPROCESSABLE_ENTITY);
-    }
-
     // Validation for valid brand key
     // Prepare view response for valid brand key.
     list($view_results, $status_code) = $entityUtility->fetchApiResult(
@@ -95,7 +90,6 @@ class BrandStoryDetails extends ResourceBase {
       'nid' => 'int',
       'pointValue' => 'int',
       'video' => 'append_host',
-      'downloadable' => 'boolean',
     ];
     // Prepare redis key.
     $key = ":brandStoryDetails:_{$nid}_{$language}";
@@ -105,7 +99,7 @@ class BrandStoryDetails extends ResourceBase {
       $key,
       'brand_story',
       'rest_export_brand_story_details',
-      $data, ['nid' => $nid, 'language' => $language, 'brand' => $brandId],
+      $data, ['language' => $language, 'brand' => $brandId],
       'brand_story_detail'
     );
 
