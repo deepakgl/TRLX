@@ -1,0 +1,225 @@
+uuid: ceb6dea7-7af8-4813-ae00-e5a8c79549aa
+langcode: en
+status: true
+dependencies:
+  config:
+    - entity_browser.browser.media_entity_browser
+    - field.field.node.level_interactive_content.field_access_by_role
+    - field.field.node.level_interactive_content.field_archive_and_unarchive
+    - field.field.node.level_interactive_content.field_content_object_type
+    - field.field.node.level_interactive_content.field_featured
+    - field.field.node.level_interactive_content.field_featured_image
+    - field.field.node.level_interactive_content.field_headline
+    - field.field.node.level_interactive_content.field_hero_image
+    - field.field.node.level_interactive_content.field_interactive_content
+    - field.field.node.level_interactive_content.field_learning_category
+    - field.field.node.level_interactive_content.field_markets
+    - field.field.node.level_interactive_content.field_order_weight
+    - field.field.node.level_interactive_content.field_point_value
+    - field.field.node.level_interactive_content.field_product_categories
+    - field.field.node.level_interactive_content.field_product_family
+    - field.field.node.level_interactive_content.field_subtitle
+    - field.field.node.level_interactive_content.field_tags_keywords
+    - field.field.node.level_interactive_content.field_translation
+    - node.type.level_interactive_content
+  module:
+    - entity_browser
+    - field_group
+    - paragraphs
+    - path
+    - term_reference_tree
+third_party_settings:
+  field_group:
+    group_general:
+      children:
+        - group_general_ic
+        - group_interactive_content
+      parent_name: ''
+      weight: 0
+      format_type: tabs
+      format_settings:
+        id: ''
+        classes: ''
+        direction: horizontal
+      label: General
+      region: content
+    group_general_ic:
+      children:
+        - title
+        - field_learning_category
+        - field_hero_image
+        - field_featured_image
+        - field_headline
+        - field_subtitle
+        - field_point_value
+        - field_markets
+      parent_name: group_general
+      weight: 1
+      format_type: tab
+      format_settings:
+        id: ''
+        classes: ''
+        formatter: open
+        description: ''
+        required_fields: true
+      label: General
+      region: content
+    group_interactive_content:
+      children:
+        - field_interactive_content
+      parent_name: group_general
+      weight: 2
+      format_type: tab
+      format_settings:
+        id: ''
+        classes: ''
+        formatter: closed
+        description: ''
+        required_fields: true
+      label: 'Interactive Content'
+      region: content
+id: node.level_interactive_content.default
+targetEntityType: node
+bundle: level_interactive_content
+mode: default
+content:
+  field_archive_and_unarchive:
+    weight: 7
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_featured_image:
+    weight: 11
+    settings:
+      entity_browser: media_entity_browser
+      field_widget_display: rendered_entity
+      field_widget_edit: true
+      field_widget_remove: true
+      selection_mode: selection_append
+      field_widget_display_settings:
+        view_mode: default
+      open: false
+      field_widget_replace: false
+    third_party_settings: {  }
+    type: entity_browser_entity_reference
+    region: content
+  field_headline:
+    weight: 12
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_hero_image:
+    weight: 10
+    settings:
+      entity_browser: media_entity_browser
+      field_widget_display: rendered_entity
+      field_widget_edit: true
+      field_widget_remove: true
+      selection_mode: selection_append
+      field_widget_display_settings:
+        view_mode: default
+      open: false
+      field_widget_replace: false
+    third_party_settings: {  }
+    type: entity_browser_entity_reference
+    region: content
+  field_interactive_content:
+    type: entity_reference_paragraphs
+    weight: 1
+    settings:
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: open
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: interactive_content
+    third_party_settings: {  }
+    region: content
+  field_learning_category:
+    weight: 9
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_markets:
+    weight: 15
+    settings:
+      start_minimized: true
+      leaves_only: false
+      select_parents: false
+      cascading_selection: 0
+      max_depth: 0
+    third_party_settings: {  }
+    type: term_reference_tree
+    region: content
+  field_point_value:
+    weight: 14
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_subtitle:
+    weight: 13
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_translation:
+    type: options_buttons
+    weight: 6
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  langcode:
+    type: language_select
+    weight: 3
+    region: content
+    settings:
+      include_locked: true
+    third_party_settings: {  }
+  path:
+    type: path
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    weight: 5
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  title:
+    type: string_textfield
+    weight: 8
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  translation:
+    weight: 4
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  created: true
+  field_access_by_role: true
+  field_content_object_type: true
+  field_featured: true
+  field_order_weight: true
+  field_product_categories: true
+  field_product_family: true
+  field_tags_keywords: true
+  promote: true
+  sticky: true
+  uid: true

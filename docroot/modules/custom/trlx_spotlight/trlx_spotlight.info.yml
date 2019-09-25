@@ -1,0 +1,8 @@
+name: TRLX Spotlight
+type: module
+description: TRLX custom module for spotlight.
+core: 8.x
+package: TRLX
+
+dependencies:
+  - trlx_utility

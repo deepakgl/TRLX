@@ -1,0 +1,48 @@
+uuid: 18407f66-201f-45a8-8bb8-52f75b0b1708
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.brand_story.body
+    - field.field.node.brand_story.field_brands
+    - field.field.node.brand_story.field_display_title
+    - field.field.node.brand_story.field_featured_image
+    - field.field.node.brand_story.field_markets
+    - field.field.node.brand_story.field_point_value
+    - field.field.node.brand_story.field_subtitle
+    - field.field.node.brand_story.field_tool_pdf
+    - field.field.node.brand_story.field_translation
+    - node.type.brand_story
+  module:
+    - text
+    - user
+id: node.brand_story.teaser
+targetEntityType: node
+bundle: brand_story
+mode: teaser
+content:
+  body:
+    label: hidden
+    type: text_summary_or_trimmed
+    weight: 101
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+    region: content
+  links:
+    weight: 100
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  field_brands: true
+  field_display_title: true
+  field_featured_image: true
+  field_markets: true
+  field_point_value: true
+  field_subtitle: true
+  field_tool_pdf: true
+  field_translation: true
+  langcode: true
+  search_api_excerpt: true

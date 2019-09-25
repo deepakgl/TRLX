@@ -1,0 +1,173 @@
+uuid: d949c5af-c65c-4332-8726-040bb8c297a2
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.level_interactive_content.field_access_by_role
+    - field.field.node.level_interactive_content.field_archive_and_unarchive
+    - field.field.node.level_interactive_content.field_content_object_type
+    - field.field.node.level_interactive_content.field_featured
+    - field.field.node.level_interactive_content.field_featured_image
+    - field.field.node.level_interactive_content.field_headline
+    - field.field.node.level_interactive_content.field_hero_image
+    - field.field.node.level_interactive_content.field_interactive_content
+    - field.field.node.level_interactive_content.field_learning_category
+    - field.field.node.level_interactive_content.field_markets
+    - field.field.node.level_interactive_content.field_order_weight
+    - field.field.node.level_interactive_content.field_point_value
+    - field.field.node.level_interactive_content.field_product_categories
+    - field.field.node.level_interactive_content.field_product_family
+    - field.field.node.level_interactive_content.field_subtitle
+    - field.field.node.level_interactive_content.field_tags_keywords
+    - field.field.node.level_interactive_content.field_translation
+    - node.type.level_interactive_content
+  module:
+    - entity_reference_revisions
+    - options
+    - user
+id: node.level_interactive_content.default
+targetEntityType: node
+bundle: level_interactive_content
+mode: default
+content:
+  field_access_by_role:
+    weight: 11
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_archive_and_unarchive:
+    weight: 15
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_content_object_type:
+    weight: 2
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_featured:
+    weight: 1
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
+    region: content
+  field_featured_image:
+    type: entity_reference_entity_view
+    weight: 8
+    label: above
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    region: content
+  field_headline:
+    weight: 5
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_hero_image:
+    type: entity_reference_entity_view
+    weight: 9
+    label: above
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    region: content
+  field_interactive_content:
+    type: entity_reference_revisions_entity_view
+    weight: 7
+    label: above
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    region: content
+  field_learning_category:
+    weight: 4
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_markets:
+    weight: 10
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_order_weight:
+    weight: 3
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_point_value:
+    weight: 6
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_product_categories:
+    weight: 13
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_product_family:
+    weight: 12
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_subtitle:
+    weight: 16
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_translation:
+    weight: 14
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
+    region: content
+  links:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  field_tags_keywords: true
+  langcode: true
+  search_api_excerpt: true

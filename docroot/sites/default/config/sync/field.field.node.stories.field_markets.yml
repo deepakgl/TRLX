@@ -1,0 +1,29 @@
+uuid: f0417dab-65cf-4e0e-879f-d58548db1f71
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_markets
+    - node.type.stories
+    - taxonomy.vocabulary.markets
+id: node.stories.field_markets
+field_name: field_markets
+entity_type: node
+bundle: stories
+label: Region
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      markets: markets
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

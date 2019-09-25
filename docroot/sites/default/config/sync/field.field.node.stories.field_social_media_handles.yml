@@ -1,0 +1,55 @@
+uuid: bf92398d-b94b-45d0-8f2a-c08afee54eeb
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_social_media_handles
+    - node.type.stories
+    - paragraphs.paragraphs_type.social_media_handle
+  module:
+    - entity_reference_revisions
+id: node.stories.field_social_media_handles
+field_name: field_social_media_handles
+entity_type: node
+bundle: stories
+label: 'Social Media Handles'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    negate: 0
+    target_bundles:
+      social_media_handle: social_media_handle
+    target_bundles_drag_drop:
+      best_sellers_template_four:
+        weight: 9
+        enabled: false
+      best_sellers_template_three:
+        weight: 10
+        enabled: false
+      best_sellers_template_two:
+        weight: 11
+        enabled: false
+      field_slides_bs_t3:
+        weight: 12
+        enabled: false
+      field_slids_bs_t4:
+        weight: 13
+        enabled: false
+      interactive_content:
+        weight: 14
+        enabled: false
+      media_template_two:
+        weight: 15
+        enabled: false
+      multiple_answer_choice:
+        weight: 16
+        enabled: false
+      social_media_handle:
+        enabled: true
+        weight: 18
+field_type: entity_reference_revisions

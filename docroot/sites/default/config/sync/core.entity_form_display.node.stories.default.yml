@@ -1,0 +1,298 @@
+uuid: 6b5a7575-9e40-4589-af36-64d116a526c9
+langcode: en
+status: true
+dependencies:
+  config:
+    - entity_browser.browser.media_entity_browser
+    - field.field.node.stories.body
+    - field.field.node.stories.field_access_by_role
+    - field.field.node.stories.field_archive_and_unarchive
+    - field.field.node.stories.field_comment
+    - field.field.node.stories.field_content_section
+    - field.field.node.stories.field_country
+    - field.field.node.stories.field_department
+    - field.field.node.stories.field_display_title
+    - field.field.node.stories.field_downloadable
+    - field.field.node.stories.field_featured_image
+    - field.field.node.stories.field_featured_on_elx_specialty
+    - field.field.node.stories.field_first_name
+    - field.field.node.stories.field_hero_image
+    - field.field.node.stories.field_last_name
+    - field.field.node.stories.field_markets
+    - field.field.node.stories.field_occupation
+    - field.field.node.stories.field_point_value
+    - field.field.node.stories.field_product_categories
+    - field.field.node.stories.field_product_family
+    - field.field.node.stories.field_pulsed_content
+    - field.field.node.stories.field_quiz
+    - field.field.node.stories.field_related_products_stories
+    - field.field.node.stories.field_related_stories
+    - field.field.node.stories.field_social_media_handles
+    - field.field.node.stories.field_sub_title
+    - field.field.node.stories.field_tags
+    - field.field.node.stories.field_translation
+    - field.field.node.stories.field_video
+    - field.field.node.stories.field_video_thumbnail
+    - node.type.stories
+  module:
+    - comment
+    - entity_browser
+    - field_group
+    - paragraphs
+    - path
+    - term_reference_tree
+    - text
+third_party_settings:
+  field_group:
+    group_insider_corner:
+      children:
+        - field_first_name
+        - field_last_name
+        - field_department
+        - field_occupation
+        - field_country
+        - field_social_media_handles
+      parent_name: ''
+      weight: 5
+      format_type: fieldset
+      format_settings:
+        id: ''
+        classes: ''
+        description: 'Group of fields for Insider Corner Section.'
+        required_fields: false
+      label: 'Insider Corner'
+      region: content
+id: node.stories.default
+targetEntityType: node
+bundle: stories
+mode: default
+content:
+  body:
+    type: text_textarea_with_summary
+    weight: 6
+    settings:
+      rows: 9
+      summary_rows: 3
+      placeholder: ''
+    third_party_settings: {  }
+    region: content
+  field_comment:
+    weight: 14
+    settings: {  }
+    third_party_settings: {  }
+    type: comment_default
+    region: content
+  field_content_section:
+    weight: 0
+    settings: {  }
+    third_party_settings: {  }
+    type: options_buttons
+    region: content
+  field_country:
+    weight: 11
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_department:
+    weight: 9
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textarea
+    region: content
+  field_display_title:
+    weight: 2
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_downloadable:
+    weight: 18
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
+  field_featured_image:
+    weight: 7
+    settings:
+      entity_browser: media_entity_browser
+      field_widget_display: rendered_entity
+      field_widget_edit: true
+      field_widget_remove: true
+      selection_mode: selection_append
+      field_widget_display_settings:
+        view_mode: default
+      field_widget_replace: false
+      open: false
+    third_party_settings: {  }
+    type: entity_browser_entity_reference
+    region: content
+  field_first_name:
+    weight: 7
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_hero_image:
+    weight: 9
+    settings:
+      entity_browser: media_entity_browser
+      field_widget_display: rendered_entity
+      field_widget_edit: true
+      field_widget_remove: true
+      selection_mode: selection_append
+      field_widget_display_settings:
+        view_mode: default
+      field_widget_replace: false
+      open: false
+    third_party_settings: {  }
+    type: entity_browser_entity_reference
+    region: content
+  field_last_name:
+    weight: 8
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_markets:
+    weight: 13
+    settings:
+      start_minimized: true
+      leaves_only: false
+      select_parents: false
+      cascading_selection: 0
+      max_depth: 0
+    third_party_settings: {  }
+    type: term_reference_tree
+    region: content
+  field_occupation:
+    weight: 10
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_point_value:
+    weight: 12
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_social_media_handles:
+    type: entity_reference_paragraphs
+    weight: 12
+    settings:
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: open
+      add_mode: button
+      form_display_mode: default
+      default_paragraph_type: social_media_handle
+    third_party_settings: {  }
+    region: content
+  field_sub_title:
+    weight: 4
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_translation:
+    type: options_buttons
+    weight: 17
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_video:
+    weight: 10
+    settings:
+      entity_browser: video_entity_browser
+      field_widget_display: rendered_entity
+      field_widget_edit: true
+      field_widget_remove: true
+      selection_mode: selection_append
+      field_widget_display_settings:
+        view_mode: default
+      field_widget_replace: false
+      open: false
+    third_party_settings: {  }
+    type: entity_browser_entity_reference
+    region: content
+  field_video_thumbnail:
+    weight: 11
+    settings:
+      entity_browser: media_entity_browser
+      field_widget_display: rendered_entity
+      field_widget_edit: true
+      field_widget_remove: true
+      selection_mode: selection_append
+      field_widget_display_settings:
+        view_mode: default
+      field_widget_replace: false
+      open: false
+    third_party_settings: {  }
+    type: entity_browser_entity_reference
+    region: content
+  langcode:
+    type: language_select
+    weight: 3
+    region: content
+    settings:
+      include_locked: true
+    third_party_settings: {  }
+  path:
+    type: path
+    weight: 15
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    weight: 16
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  title:
+    type: string_textfield
+    weight: 1
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  translation:
+    weight: 8
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  created: true
+  field_access_by_role: true
+  field_archive_and_unarchive: true
+  field_featured_on_elx_specialty: true
+  field_product_categories: true
+  field_product_family: true
+  field_pulsed_content: true
+  field_quiz: true
+  field_related_products_stories: true
+  field_related_stories: true
+  field_tags: true
+  promote: true
+  sticky: true
+  uid: true

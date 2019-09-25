@@ -1,0 +1,18 @@
+uuid: 9308f7f8-88f3-482f-82db-6b1713b16c88
+langcode: en
+status: true
+dependencies:
+  module:
+    - serialization
+    - trlx_trends
+    - trlx_utility
+id: trends_listing
+plugin_id: trends_listing
+granularity: resource
+configuration:
+  methods:
+    - GET
+  formats:
+    - json
+  authentication:
+    - jwt_Auth

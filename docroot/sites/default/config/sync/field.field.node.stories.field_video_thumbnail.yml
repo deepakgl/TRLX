@@ -1,0 +1,28 @@
+uuid: edfaa536-c7d2-4e41-bad7-6eacbba0a8ff
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_video_thumbnail
+    - media.type.image
+    - node.type.stories
+id: node.stories.field_video_thumbnail
+field_name: field_video_thumbnail
+entity_type: node
+bundle: stories
+label: 'Video Thumbnail'
+description: 'Allowed file types:<b> jpg, jpeg and png.</b><br>Image Resolution:<b> 100 x 100px</b>'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      image: image
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

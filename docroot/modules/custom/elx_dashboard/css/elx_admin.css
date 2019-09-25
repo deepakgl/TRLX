@@ -1,0 +1,42 @@
+/* Hide entityqueue row weights. */
+.interactive-module-order .tabledrag-toggle-weight {
+  display: none;
+}
+
+/* Increasing Entityqueue autocomplete width. */
+.entity-subqueue-browse-products-edit-form .form-text,
+.entity-subqueue-explore-learning-levels-edit-form .form-text,
+.entity-subqueue-spotlight-edit-form .form-text {
+  width: 100%;
+}
+
+/* Top Superfish menu style. */
+.block-superfishbackend-user-top-menu {
+  float: left;
+}
+.content-header {
+  overflow: visible !important;
+}
+.content-header{padding: 0}
+@media screen and (min-width: 38em){
+ .layout-container{margin-left: 2.5em;margin-right:2.5em}
+}
+ul.sf-menu.sf-style-black a.is-active {
+ background: #fafafa;
+ color: #000;
+}
+
+/* Articulate file error message. */
+.field--name-field-interactive-content input.error{
+    border-width: 1px !important;
+    border-color: #b8b8b8 !important;
+    background-color: #fcfcfc !important;
+    box-shadow: inset 0 5px 5px -5px #b8b8b8 !important;
+    color: #a51b00 !important;
+}
+.field--name-field-interactive-content .form-item input.error {
+    border: 1px solid #b8b8b8 !important;
+}
+.path-user .tabs {
+  display: none;
+}

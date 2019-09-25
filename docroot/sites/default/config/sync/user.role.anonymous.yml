@@ -1,0 +1,41 @@
+uuid: 08de4756-f16b-4945-b8dd-81439b9ee8d4
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: j5zLMOdJBqC0bMvSdth5UebkprJB8g_2FXHqhfpJzow
+id: anonymous
+label: 'anonymous user'
+weight: 0
+is_admin: false
+permissions:
+  - 'access content'
+  - 'access resource user'
+  - 'create field_employment_status'
+  - 'create field_first_name'
+  - 'create field_last_name'
+  - 'create og_user_node'
+  - 'diff view changes'
+  - 'display EU Cookie Compliance popup'
+  - 'restful get '
+  - 'restful get brand_story_details'
+  - 'restful get brands_category_listing'
+  - 'restful get factsheets_listing'
+  - 'restful get faq_listing'
+  - 'restful get learning_levels'
+  - 'restful get main_navigation_menu'
+  - 'restful get modules_listing'
+  - 'restful get primary_navigation_menu'
+  - 'restful get product_details'
+  - 'restful get spotlight_section'
+  - 'restful get story_details'
+  - 'restful get terms_and_condition_anonymous'
+  - 'restful get terms_and_conditions_anonymous'
+  - 'restful get trends_listing'
+  - 'restful get video_details'
+  - 'restful get video_listings'
+  - 'restful post stories_comments_post'
+  - 'use text format filtered_html'
+  - 'view any unpublished content'
+  - 'view media'
+  - 'view own unpublished content'
