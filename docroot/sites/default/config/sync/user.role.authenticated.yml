@@ -66,6 +66,7 @@ permissions:
   - 'restful get terms_and_condition_anonymous'
   - 'restful get terms_and_conditions'
   - 'restful get tools_listings'
+  - 'restful get tr_trends_homepage_section'
   - 'restful get translation_key'
   - 'restful get user_dashboard'
   - 'restful get video_category'
