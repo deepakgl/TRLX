@@ -67,7 +67,7 @@ class StoryDetails extends ResourceBase {
       return $response;
     }
 
-    if (empty($commonUtility->isValidNid($nid, $language))) {
+    if (empty($commonUtility->isValidNid($nid, $language, 'stories'))) {
       return $commonUtility->errorResponse($this->t('Node id does not exist or requested language data is not available.'), Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
@@ -77,26 +77,51 @@ class StoryDetails extends ResourceBase {
       return $response;
     }
 
+    // Prepare redis key.
+    $key = ":storyDetail:_{$nid}_{$language}";
+
+    $views = $viewsDisplay = $type = $pointValAlterKey = '';
+
+    // Switch case to specify section specific views & variables.
+    switch ($section) {
+      case $commonUtility::INSIDER_CORNER:
+        $views = 'insider_corner';
+        $viewsDisplay = 'rest_export_insider_corner_details';
+        $type = $commonUtility::INSIDER_CORNER;
+        $pointValAlterKey = 'point_value_' . $commonUtility::INSIDER_CORNER;
+        break;
+
+      default:
+        $views = 'stories_listing';
+        $viewsDisplay = 'rest_export_story_details';
+        $type = 'trend_detail';
+        $pointValAlterKey = 'point_value_' . $commonUtility::TREND;
+        break;
+    }
+
     // Prepare array of keys for alteration in response.
     $data = [
       'title' => 'decode',
       'displayTitle' => 'decode',
       'subTitle' => 'decode',
       'nid' => 'int',
-      'pointValue' => 'int',
-      'downloadable' => 'boolean',
+      'pointValue' => $pointValAlterKey,
     ];
 
-    // Prepare redis key.
-    $key = ":storyDetail:_{$nid}_{$language}";
+    // Add Section specific result keys.
+    if ($commonUtility::INSIDER_CORNER == $section) {
+      $data['socialMediaHandles'] = 'social_media_handles';
+      $data['video'] = 'append_host';
+    }
 
     // Prepare response.
     list($view_results, $status_code) = $entityUtility->fetchApiResult(
       $key,
-      'stories_listing',
-      'rest_export_story_details',
-      $data, ['nid' => $nid, 'language' => $language],
-      'trend_detail'
+      $views,
+      $viewsDisplay,
+      $data,
+      ['nid' => $nid, 'language' => $language],
+      $type
     );
 
     // Check for empty / no result from views.

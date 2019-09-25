@@ -12,7 +12,6 @@ dependencies:
     - field.field.node.stories.field_country
     - field.field.node.stories.field_department
     - field.field.node.stories.field_display_title
-    - field.field.node.stories.field_downloadable
     - field.field.node.stories.field_featured_image
     - field.field.node.stories.field_featured_on_elx_specialty
     - field.field.node.stories.field_first_name
@@ -91,16 +90,6 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     type: string
-    region: content
-  field_downloadable:
-    weight: 12
-    label: above
-    settings:
-      format: default
-      format_custom_false: ''
-      format_custom_true: ''
-    third_party_settings: {  }
-    type: boolean
     region: content
   field_featured_image:
     weight: 3
