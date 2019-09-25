@@ -9,7 +9,7 @@ use Drupal\trlx_utility\Utility\CommonUtility;
 use Drupal\trlx_utility\Utility\EntityUtility;
 
 /**
- * Provides a Insider Corner listing resource.
+ * Provides an Insider Corner listing resource.
  *
  * @RestResource(
  *   id = "insiderCorner_listing",
