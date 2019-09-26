@@ -34,21 +34,19 @@ class PointsController extends Controller {
   public function getUserPoints(Request $request) {
     global $_userData;
     $validatedData = $this->validate($request, [
-      'nid' => 'required|positiveinteger|exists:node,nid',
       '_format' => 'required|format',
     ]);
     $uid = $_userData->userId;
-    $nid = $validatedData['nid'];
     // Check whether elastic connectivity exists.
     $client = Helper::checkElasticClient();
     // Check whether use elastic index exists.
     $exist = ElasticUserModel::checkElasticUserIndex($uid, $client);
     if (!$client || !$exist) {
-      $this->errorResponse('No alive nodes found in cluster.', Response::HTTP_INTERNAL_SERVER_ERROR);
+      return $this->errorResponse('No alive nodes found in cluster.', Response::HTTP_INTERNAL_SERVER_ERROR);
     }
     $response = ElasticUserModel::fetchElasticUserData($uid, $client);
 
-    return $this->successResponse($response['_source']['total_points'], Response::HTTP_CREATED);
+    return $this->successResponse($response['_source']['total_points'], Response::HTTP_OK);
   }
 
 }

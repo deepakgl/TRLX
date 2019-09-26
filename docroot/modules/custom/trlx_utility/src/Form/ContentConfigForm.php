@@ -77,6 +77,28 @@ class ContentConfigForm extends ConfigFormBase {
         ];
       }
 
+      // Fieldset for faq values.
+      $form['faq_values'] = [
+        '#type' => 'fieldset',
+        '#title' => $this->t('FAQ Values'),
+        '#collapsible' => TRUE,
+        '#collapsed' => TRUE,
+      ];
+
+      // Add number field for faq point value.
+      $form['faq_values']['faq_points'] = [
+        '#type' => 'number',
+        '#title' => 'Point Value ( FAQ )',
+        '#default_value' => $config->get('faq_points'),
+      ];
+
+      // Add number field for faq bookmark id.
+      $form['faq_values']['faq_id'] = [
+        '#type' => 'number',
+        '#title' => 'Bookmark ID ( FAQ )',
+        '#default_value' => $config->get('faq_id'),
+      ];
+
       // Load all content types.
       $contentTypes = $entityTypeManager->getStorage('node_type')->loadMultiple();
 

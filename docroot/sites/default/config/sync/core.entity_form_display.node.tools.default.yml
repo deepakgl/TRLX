@@ -36,7 +36,7 @@ content:
     settings: {  }
     third_party_settings: {  }
   field_brands:
-    weight: 16
+    weight: 15
     settings: {  }
     third_party_settings: {  }
     type: options_buttons
@@ -49,31 +49,9 @@ content:
     third_party_settings: {  }
     type: string_textfield
     region: content
-  field_downloadable:
-    weight: 26
-    settings:
-      display_label: true
-    third_party_settings: {  }
-    type: boolean_checkbox
-    region: content
-  field_featured_image:
-    weight: 11
-    settings:
-      entity_browser: media_entity_browser
-      field_widget_display: rendered_entity
-      field_widget_edit: true
-      field_widget_remove: true
-      selection_mode: selection_append
-      field_widget_display_settings:
-        view_mode: default
-      open: false
-      field_widget_replace: false
-    third_party_settings: {  }
-    type: entity_browser_entity_reference
-    region: content
   field_markets:
     type: term_reference_tree
-    weight: 17
+    weight: 16
     region: content
     settings:
       start_minimized: true
@@ -100,7 +78,7 @@ content:
     type: text_textarea_with_summary
     region: content
   field_tool_pdf:
-    weight: 12
+    weight: 10
     settings:
       entity_browser: video_entity_browser
       field_widget_display: rendered_entity
@@ -115,7 +93,7 @@ content:
     type: entity_browser_entity_reference
     region: content
   field_tool_thumbnail:
-    weight: 9
+    weight: 11
     settings:
       entity_browser: media_entity_browser
       field_widget_display: rendered_entity
@@ -131,12 +109,12 @@ content:
     region: content
   field_translation:
     type: options_buttons
-    weight: 14
+    weight: 13
     region: content
     settings: {  }
     third_party_settings: {  }
   field_video_sub_titles:
-    weight: 13
+    weight: 12
     settings:
       progress_indicator: throbber
     third_party_settings: {  }
@@ -164,7 +142,7 @@ content:
     third_party_settings: {  }
   status:
     type: boolean_checkbox
-    weight: 15
+    weight: 14
     region: content
     settings:
       display_label: true
@@ -178,7 +156,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
   translation:
-    weight: 10
+    weight: 9
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -192,7 +170,9 @@ content:
     region: content
     third_party_settings: {  }
 hidden:
+  field_downloadable: true
   field_featured: true
+  field_featured_image: true
   field_headline: true
   field_how_to_sell_flag: true
   field_product_categories: true
