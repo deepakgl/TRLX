@@ -68,7 +68,7 @@ class ProductDetails extends ResourceBase {
       return $response;
     }
 
-    if (empty($commonUtility->isValidNid($nid, $language))) {
+    if (empty($commonUtility->isValidNid($nid, $language, 'product_detail'))) {
       return $commonUtility->errorResponse($this->t('Node id does not exist or requested language data is not available.'), Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
@@ -97,7 +97,7 @@ class ProductDetails extends ResourceBase {
 
     // Check for empty / no result from views.
     if (empty($view_results)) {
-      $status_code = Response::HTTP_NO_CONTENT;
+      return $commonUtility->successResponse([], Response::HTTP_OK);
     }
 
     return $commonUtility->successResponse($view_results, $status_code);
