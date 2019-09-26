@@ -81,6 +81,7 @@ class StoryDetails extends ResourceBase {
     $key = ":storyDetail:_{$nid}_{$language}";
 
     $views = $viewsDisplay = $type = $pointValAlterKey = '';
+    $data = [];
 
     // Switch case to specify section specific views & variables.
     switch ($section) {
@@ -89,6 +90,20 @@ class StoryDetails extends ResourceBase {
         $viewsDisplay = 'rest_export_insider_corner_details';
         $type = $commonUtility::INSIDER_CORNER;
         $pointValAlterKey = 'point_value_' . $commonUtility::INSIDER_CORNER;
+
+        // Section specific keys for alteration.
+        $data['socialMediaHandles'] = 'social_media_handles';
+        $data['video'] = 'append_host';
+        break;
+
+      case $commonUtility::SELLING_TIPS:
+        $views = 'selling_tips';
+        $viewsDisplay = 'rest_export_selling_tips_details';
+        $type = $commonUtility::SELLING_TIPS;
+        $pointValAlterKey = 'point_value_' . $commonUtility::SELLING_TIPS;
+
+        // Section specific keys for alteration.
+        $data['video'] = 'append_host';
         break;
 
       default:
@@ -100,19 +115,17 @@ class StoryDetails extends ResourceBase {
     }
 
     // Prepare array of keys for alteration in response.
-    $data = [
-      'title' => 'decode',
-      'displayTitle' => 'decode',
-      'subTitle' => 'decode',
-      'nid' => 'int',
-      'pointValue' => $pointValAlterKey,
-    ];
-
-    // Add Section specific result keys.
-    if ($commonUtility::INSIDER_CORNER == $section) {
-      $data['socialMediaHandles'] = 'social_media_handles';
-      $data['video'] = 'append_host';
-    }
+    $data = array_merge(
+      $data,
+      [
+        'title' => 'decode',
+        'displayTitle' => 'decode',
+        'subTitle' => 'decode',
+        'nid' => 'int',
+        'pointValue' => $pointValAlterKey,
+        'body' => 'decode',
+      ]
+    );
 
     // Prepare response.
     list($view_results, $status_code) = $entityUtility->fetchApiResult(
