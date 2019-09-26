@@ -46,22 +46,9 @@ class LevelUtility {
    *   Return array of learning levels.
    */
   public function getTermNodes($tids, $_userData, $language) {
-    $regions = $_userData->region;
-    $subregions = $_userData->subregion;
-    $country = $_userData->country;
-    // Get region, subregion or country from token if array is not empty.
-    if (!empty($country)) {
-      $ref_keys = $country;
-    }
-    elseif (!empty($subregions)) {
-      $ref_keys = $subregions;
-    }
-    elseif (!empty($regions)) {
-      $ref_keys = $regions;
-    }
     $user_utility = new UserUtility();
     // Get current user markets.
-    $markets = array_column($user_utility->getMarketByReferenceId($ref_keys), 'entity_id');
+    $markets = $user_utility->getMarketByUserData($_userData);
     $query = \Drupal::database();
     $query = $query->select('node_field_data', 'n');
     $query->join('node__field_learning_category', 'nflc', 'n.nid = nflc.entity_id');
@@ -86,6 +73,52 @@ class LevelUtility {
     }
 
     return $arr;
+  }
+
+  /**
+   * Fetch previous and next level.
+   *
+   * @param int $_userData
+   *   User object.
+   * @param string $lang
+   *   User language.
+   * @param int $learning_category
+   *   Level category.
+   * @param int $nid
+   *   Node id.
+   *
+   * @return array
+   *   Level previous and next values.
+   */
+  public function fetchPreviousAndNextLevel($_userData, $lang, $learning_category, $nid) {
+    $uid = $_userData->userId;
+    $user_utility = new UserUtility();
+    // Get current user markets.
+    $markets = $user_utility->getMarketByUserData($_userData);
+
+    // Get nid for previous and next interactive content.
+    $query = \Drupal::database();
+    $query = $query->select('node_field_data', 'n');
+    $query->join('taxonomy_index', 'ti', 'n.nid = ti.nid');
+    $query->leftjoin('draggableviews_structure', 'ds', 'n.nid = ds.entity_id');
+    $query->join('node__field_markets', 'nfm', 'n.nid = nfm.entity_id');
+    $query->fields('n', ['nid'])
+      ->condition('ti.tid', $learning_category)
+      ->condition('n.status', '1')
+      ->condition('n.type', 'level_interactive_content')
+      ->condition('n.langcode', $lang)
+      ->condition('nfm.field_markets_target_id', $markets, IN)
+      ->orderBy('ds.weight', 'ASC');
+    $result = $query->execute()->fetchAll();
+    foreach ($result as $key => $value) {
+      $arr[] = $value->nid;
+    }
+    $arr = array_values(array_unique($arr));
+    $interactive_content = array_search($nid, $arr);
+    $previous = isset($arr[$interactive_content - 1]) ? intval($arr[$interactive_content - 1]) : "";
+    $next = isset($arr[$interactive_content + 1]) ? intval($arr[$interactive_content + 1]) : "";
+
+    return [$previous, $next];
   }
 
 }
