@@ -15,15 +15,16 @@ $router->get('/', function () use ($router) {
   return $router->app->version();
 });
 
+// LRS Routes.
+$router->group(['prefix' => 'v1/slrsa'], function () use ($router) {
+  $router->options('{arg1}[/{arg2}]', 'LrsAgentController@option');
+  $router->get('{arg1}[/{arg2}]', 'LrsAgentController@get');
+  $router->put('{arg1}[/{arg2}]', 'LrsAgentController@put');
+  $router->delete('{arg1}[/{arg2}]', 'LrsAgentController@delete');
+});
+
 $router->group(
   ['middleware' => 'jwt.auth'], function () use ($router) {
-    // LRS Routes.
-    $router->group(['prefix' => 'v1/slrsa'], function () use ($router) {
-      $router->options('{arg1}[/{arg2}]', 'LrsAgentController@option');
-      $router->get('{arg1}[/{arg2}]', 'LrsAgentController@get');
-      $router->put('{arg1}[/{arg2}]', 'LrsAgentController@put');
-      $router->delete('{arg1}[/{arg2}]', 'LrsAgentController@delete');
-    });
 
     // Leaderboard.
     $router->group(['prefix' => 'v1'], function () use ($router) {
