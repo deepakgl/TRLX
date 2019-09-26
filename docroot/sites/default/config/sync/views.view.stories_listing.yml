@@ -1870,7 +1870,7 @@ display:
           type: image_url
           settings:
             url_type: '0'
-            image_style: stories_details_mov_375_340_
+            image_style: stories_details_1440_398
             image_link: ''
           group_column: ''
           group_columns: {  }
