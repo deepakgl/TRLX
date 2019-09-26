@@ -127,10 +127,10 @@ function trlx_utility_form_alter(&$form, FormStateInterface $form_state, $form_i
         foreach ($form['#fieldgroups']['group_insider_corner']->children as $field) {
           $form[$field]['#states'] = [
             'visible' => [
-              ["input[name='field_content_section[{$insiderCornerTermId}]']" => ['checked' => TRUE]],
+              ["input[name='field_content_section']" => ['value' => $insiderCornerTermId]],
             ],
-            'disabled' => [
-              ["input[name='field_content_section[{$insiderCornerTermId}]']" => ['checked' => FALSE]],
+            'enabled' => [
+              ["input[name='field_content_section']" => ['value' => $insiderCornerTermId]],
             ],
           ];
         }
@@ -150,7 +150,7 @@ function trlx_utility_form_alter(&$form, FormStateInterface $form_state, $form_i
               // Textfield.
               if (!empty($form[$field]['widget'][0]['value'])) {
                 $form[$field]['widget'][0]['value']['#states']['required'] = [
-                  ["input[name='field_content_section[{$insiderCornerTermId}]']" => ['checked' => TRUE]],
+                  ["input[name='field_content_section']" => ['value' => $insiderCornerTermId]],
                 ];
               }
 
@@ -159,14 +159,14 @@ function trlx_utility_form_alter(&$form, FormStateInterface $form_state, $form_i
                 // Check for social media title field.
                 if (!empty($form[$field]['widget'][0]['subform']['field_social_media_title']['widget'][0]['value'])) {
                   $form[$field]['widget'][0]['subform']['field_social_media_title']['widget'][0]['value']['#states']['required'] = [
-                    ["input[name='field_content_section[{$insiderCornerTermId}]']" => ['checked' => TRUE]],
+                    ["input[name='field_content_section']" => ['value' => $insiderCornerTermId]],
                   ];
                 }
 
                 // Check for social media handle field.
                 if (!empty($form[$field]['widget'][0]['subform']['field_social_media_handle']['widget'][0]['value'])) {
                   $form[$field]['widget'][0]['subform']['field_social_media_handle']['widget'][0]['value']['#states']['required'] = [
-                    ["input[name='field_content_section[{$insiderCornerTermId}]']" => ['checked' => TRUE]],
+                    ["input[name='field_content_section']" => ['value' => $insiderCornerTermId]],
                   ];
                 }
               }
@@ -277,18 +277,18 @@ function trlx_utility_field_group_build_pre_render_alter(&$element) {
   // Fetch Insider Corner Taxonomy Term Id.
   $insiderCornerTermId = isset($insiderConerTerm['tid'][0]['value']) ? $insiderConerTerm['tid'][0]['value'] : 0;
 
-  // Add #states: visible, disabled & required.
+  // Add #states: visible, enabled & required.
   $form_id = $element['#form_id'];
-  if ('node_stories_form' == $form_id && isset($element['group_insider_corner']) && !empty($insiderCornerTermId)) {
+  if (in_array($form_id, ['node_stories_form', 'node_stories_edit_form']) && isset($element['group_insider_corner']) && !empty($insiderCornerTermId)) {
     $element['group_insider_corner']['#states'] = [
       'visible' => [
-        ["input[name='field_content_section[{$insiderCornerTermId}]']" => ['checked' => TRUE]],
+        ["input[name='field_content_section']" => ['value' => $insiderCornerTermId]],
       ],
-      'disabled' => [
-        ["input[name='field_content_section[{$insiderCornerTermId}]']" => ['checked' => FALSE]],
+      'enabled' => [
+        ["input[name='field_content_section']" => ['value' => $insiderCornerTermId]],
       ],
       'required' => [
-        ["input[name='field_content_section[{$insiderCornerTermId}]']" => ['checked' => TRUE]],
+        ["input[name='field_content_section']" => ['value' => $insiderCornerTermId]],
       ],
     ];
   }
