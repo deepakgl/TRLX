@@ -25,6 +25,7 @@ permissions:
   - 'restful get insiderCorner_listing'
   - 'restful get learning_levels'
   - 'restful get main_navigation_menu'
+  - 'restful get module_details'
   - 'restful get modules_listing'
   - 'restful get primary_navigation_menu'
   - 'restful get product_details'
