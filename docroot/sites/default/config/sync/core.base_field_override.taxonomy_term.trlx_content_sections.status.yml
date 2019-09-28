@@ -1,0 +1,22 @@
+uuid: ad3ed5ba-d82f-40d4-b26c-0d69b81f7890
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.trlx_content_sections
+id: taxonomy_term.trlx_content_sections.status
+field_name: status
+entity_type: taxonomy_term
+bundle: trlx_content_sections
+label: Published
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 1
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

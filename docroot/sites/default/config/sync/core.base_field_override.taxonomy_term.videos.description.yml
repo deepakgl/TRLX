@@ -1,0 +1,20 @@
+uuid: 9105ea90-7b1c-4017-9530-9201dd1113db
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.videos
+  module:
+    - text
+id: taxonomy_term.videos.description
+field_name: description
+entity_type: taxonomy_term
+bundle: videos
+label: Description
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long

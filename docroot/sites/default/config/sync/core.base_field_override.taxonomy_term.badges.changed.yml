@@ -1,0 +1,18 @@
+uuid: d5a88d8a-2247-4b74-9214-cefcd996860b
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.badges
+id: taxonomy_term.badges.changed
+field_name: changed
+entity_type: taxonomy_term
+bundle: badges
+label: Changed
+description: 'The time that the term was last edited.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: changed

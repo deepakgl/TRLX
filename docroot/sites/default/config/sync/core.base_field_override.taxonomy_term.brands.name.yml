@@ -1,0 +1,18 @@
+uuid: f605d294-2538-42e8-8091-112e07009a70
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.brands
+id: taxonomy_term.brands.name
+field_name: name
+entity_type: taxonomy_term
+bundle: brands
+label: Name
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

@@ -1,0 +1,18 @@
+uuid: bf958d30-205c-45bd-a403-92dce6fe88c7
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.markets
+id: taxonomy_term.markets.name
+field_name: name
+entity_type: taxonomy_term
+bundle: markets
+label: Name
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

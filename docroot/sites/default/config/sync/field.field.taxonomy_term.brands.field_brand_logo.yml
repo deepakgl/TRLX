@@ -6,14 +6,7 @@ dependencies:
     - field.storage.taxonomy_term.field_brand_logo
     - taxonomy.vocabulary.brands
   module:
-    - content_translation
     - image
-third_party_settings:
-  content_translation:
-    translation_sync:
-      alt: alt
-      title: title
-      file: '0'
 id: taxonomy_term.brands.field_brand_logo
 field_name: field_brand_logo
 entity_type: taxonomy_term
@@ -21,7 +14,7 @@ bundle: brands
 label: 'Brand Logo'
 description: 'Allowed file types:<b> jpg, jpeg and png.</b>'
 required: true
-translatable: true
+translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
