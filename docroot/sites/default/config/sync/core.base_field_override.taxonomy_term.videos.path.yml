@@ -1,0 +1,20 @@
+uuid: 23f91d34-5519-454f-8316-fa3919052683
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.videos
+  module:
+    - path
+id: taxonomy_term.videos.path
+field_name: path
+entity_type: taxonomy_term
+bundle: videos
+label: 'URL alias'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: path

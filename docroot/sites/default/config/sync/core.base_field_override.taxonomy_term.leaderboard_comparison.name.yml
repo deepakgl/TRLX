@@ -1,0 +1,18 @@
+uuid: 497d9cc7-810f-469a-8858-504ecabaf24d
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.leaderboard_comparison
+id: taxonomy_term.leaderboard_comparison.name
+field_name: name
+entity_type: taxonomy_term
+bundle: leaderboard_comparison
+label: Name
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string
