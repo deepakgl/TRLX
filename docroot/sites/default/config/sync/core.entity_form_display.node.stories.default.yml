@@ -55,9 +55,10 @@ third_party_settings:
       weight: 5
       format_type: fieldset
       format_settings:
+        label: 'Insider Corner'
+        description: ''
         id: ''
         classes: ''
-        description: 'Group of fields for Insider Corner Section.'
         required_fields: false
       label: 'Insider Corner'
       region: content
