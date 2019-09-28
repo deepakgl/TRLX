@@ -57,3 +57,16 @@ function trlx_comment_schema() {
   return $schema;
 
 }
+
+/**
+ * Implements hook_update_n().
+ *
+ * Create the table without re-installing the module.
+ */
+function trlx_comment_update_8504() {
+
+  $schema = trlx_comment_schema();
+  if (!db_table_exists('trlx_comment')) {
+    db_create_table('trlx_comment', $schema['trlx_comment']);
+  }
+}
