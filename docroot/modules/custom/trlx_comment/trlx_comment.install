@@ -1,0 +1,59 @@
+<?php
+
+/**
+ * @file
+ * Create and update table.
+ */
+
+/**
+ * Create new table in the database.
+ *
+ * @return array
+ *   New tables.
+ */
+function trlx_comment_schema() {
+  $schema['trlx_comment'] = [
+    'fields' => [
+      'id' => [
+        'type' => 'serial',
+        'not null' => TRUE,
+      ],
+      'user_id' => [
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'The user ID of the author who posted a comment on the node.',
+      ],
+      'entity_id' => [
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'The entity_id of the entity for which the statistics are compiled.',
+      ],
+      'pid' => [
+        'type' => 'int',
+        'not null' => FALSE,
+        'default' => 0,
+        'description' => 'The parent comment id if it is a reply to the existing comment.',
+      ],
+      'comment_body' => [
+        'type' => 'text',
+        'not null' => FALSE,
+        'size' => 'big',
+      ],
+      'comment_timestamp' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'The Unix timestamp of the comment that was posted within the node.',
+      ],
+    ],
+    'primary key' => ['id'],
+    'mysql_character_set' => 'utf8mb4',
+  ];
+
+  return $schema;
+
+}

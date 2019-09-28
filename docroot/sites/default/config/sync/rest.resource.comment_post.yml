@@ -1,0 +1,20 @@
+uuid: b987c5af-ef5a-4650-911a-c5fcdf40b92f
+langcode: en
+status: true
+dependencies:
+  module:
+    - serialization
+    - trlx_comment
+    - trlx_utility
+    - user
+id: comment_post
+plugin_id: comment_post
+granularity: resource
+configuration:
+  methods:
+    - POST
+  formats:
+    - json
+  authentication:
+    - jwt_Auth
+    - cookie
