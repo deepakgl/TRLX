@@ -64,6 +64,19 @@ function trlx_utility_form_alter(&$form, FormStateInterface $form_state, $form_i
     case 'node_stories_edit_form':
       $form['#attached']['library'][] = 'trlx_market_hierarchy/trlx_market';
 
+      // Change value of point value based on selected content section.
+      $form['field_point_value']['widget']['#prefix'] = '<div id="field-point-value-no-ajax-wrapper">';
+      $form['field_point_value']['widget']['#suffix'] = '</div>';
+      $form['field_content_section']['widget']['#ajax'] = [
+        'callback' => 'set_section_based_point_value',
+        'wrapper' => 'field-point-value-no-ajax-wrapper',
+        'method' => 'replace',
+        'progress' => [
+          'type' => 'throbber',
+          'message' => t('Updating Point Value...'),
+        ],
+      ];
+
       // Stories Content Type node edit form alteration.
       // Alter form to show only Bundle mapped sections for selection.
       // Show/Hide fields based on section selection.
@@ -180,6 +193,21 @@ function trlx_utility_form_alter(&$form, FormStateInterface $form_state, $form_i
 
     default:
   }
+}
+
+/**
+ * To update point value in stories content type based on section selection.
+ */
+function set_section_based_point_value(array &$form, FormStateInterface $form_state) {
+  // Load module config.
+  $config = \Drupal::config('trlx_utility.settings');
+  $sectionTermId = $form_state->getValue('field_content_section');
+  $term = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($sectionTermId[0]['target_id']);
+  $sectionKey = $term->get('field_content_section_key')->getValue()[0]['value'];
+  $point_field_value = $config->get("point_value_" . $sectionKey);
+  $form['field_point_value']['widget'][0]['value']['#value'] = $point_field_value;
+  $form['field_point_value']['widget'][0]['value']['#default_value'] = $point_field_value;
+  return $form['field_point_value'];
 }
 
 /**
