@@ -56,7 +56,7 @@ class EntityUtility {
           $$key = $argument;
         }
         else {
-          $args[] = (count($argument) > 1) ? implode("+", $argument) : $argument;
+          $args[] = (is_array($argument) && count($argument) > 1) ? implode("+", $argument) : $argument;
         }
       }
       $arguments = $args;
@@ -222,6 +222,14 @@ class EntityUtility {
           elseif ($value == 'point_value_' . $this->commonUtility::TREND) {
             $pointValue = $this->configuration->get($value);
             $output['results'][$view_key][$key] = !empty($pointValue) ? $pointValue : $result[$key];
+          }
+          // Calculate point value for "Learning Level".
+          // Based on associated "Level Interactive Content".
+          elseif ($value == 'point_value_level') {
+            if (isset($output['results'][$view_key][$key])) {
+              // Calculate aggregate point value.
+              $output['results'][$view_key][$key] = $this->commonUtility->getLearningLevelPointValue($result[$key]);
+            }
           }
           else {
             $output['results'][$view_key] = $result;

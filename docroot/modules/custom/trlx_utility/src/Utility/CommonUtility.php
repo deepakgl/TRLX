@@ -408,4 +408,28 @@ class CommonUtility {
     return $socialMediaHandles;
   }
 
+  /**
+   * Fetch aggregate Point Value for each Learning Level.
+   *
+   * @param int $levelTermId
+   *   Learning Level Term Id.
+   *
+   * @return int
+   *   Aggregate Point Value.
+   */
+  public function getLearningLevelPointValue($levelTermId) {
+    $nodes = \Drupal::entityTypeManager()->getStorage('node')->loadByProperties([
+      'field_learning_category' => $levelTermId,
+    ]);
+
+    $pointValue = 0;
+    if (!empty($nodes)) {
+      foreach ($nodes as $nid => $node) {
+        $pointValue += $node->get('field_point_value')->value;
+      }
+    }
+
+    return $pointValue;
+  }
+
 }
