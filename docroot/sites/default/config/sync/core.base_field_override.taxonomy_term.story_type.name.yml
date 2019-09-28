@@ -1,0 +1,18 @@
+uuid: cee7c2dc-b31d-427a-8b44-5d91f885b292
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.story_type
+id: taxonomy_term.story_type.name
+field_name: name
+entity_type: taxonomy_term
+bundle: story_type
+label: Name
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

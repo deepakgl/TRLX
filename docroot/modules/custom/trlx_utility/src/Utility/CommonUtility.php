@@ -171,7 +171,6 @@ class CommonUtility {
     $param = implode(',', $param);
     $logger = \Drupal::service('logger.stdout');
     $logger->log(RfcLogLevel::ERROR, 'Following parameters is/are required: ' . $param, [
-      'user' => \Drupal::currentUser(),
       'request_uri' => $request_uri,
       'data' => $param,
     ]);
@@ -192,7 +191,7 @@ class CommonUtility {
    * @return bool
    *   True or false.
    */
-  public function isValidNid($nid, $langcode, $type = '') {
+  public function isValidNid($nid, $langcode = 'en', $type = '') {
     if (!is_numeric($nid)) {
       return FALSE;
     }
@@ -213,7 +212,6 @@ class CommonUtility {
       $logger = \Drupal::service('logger.stdout');
       $logger->log(RfcLogLevel::ERROR, 'Node Id @nid does not exist in database or is invalid.', [
         '@nid' => $nid,
-        'user' => \Drupal::currentUser(),
         'request_uri' => $request_uri,
         'data' => $nid,
       ]);
@@ -268,6 +266,23 @@ class CommonUtility {
     }
 
     return $this->errorResponse(t('Please enter positive integer value.'), Response::HTTP_UNPROCESSABLE_ENTITY);
+  }
+
+  /**
+   * Validate positive value.
+   *
+   * @param int $num
+   *   Integer number.
+   *
+   * @return \Symfony\Component\HttpFoundation\JsonResponse
+   *   Json response.
+   */
+  public function validatePositiveValue($num) {
+    if (preg_match("/^[0-9]\d*$/", $num)) {
+      return $this->successResponse();
+    }
+
+    return $this->errorResponse(t('Please enter positive value.'), Response::HTTP_UNPROCESSABLE_ENTITY);
   }
 
   /**
