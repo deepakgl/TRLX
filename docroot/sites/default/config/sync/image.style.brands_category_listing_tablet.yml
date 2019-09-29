@@ -1,0 +1,15 @@
+uuid: 222ceb66-7fa3-420a-9e6d-e63800f9a005
+langcode: en
+status: true
+dependencies: {  }
+name: brands_category_listing_tablet
+label: 'Brands Category Listing Tablet (345X85)'
+effects:
+  eafe3d09-43b2-40b1-b221-924a91282914:
+    uuid: eafe3d09-43b2-40b1-b221-924a91282914
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 345
+      height: 85
+      anchor: center-center

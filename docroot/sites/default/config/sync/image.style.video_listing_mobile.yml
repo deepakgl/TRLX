@@ -1,0 +1,15 @@
+uuid: e88e090d-2673-4942-8aa7-ee808bfba033
+langcode: en
+status: true
+dependencies: {  }
+name: video_listing_mobile
+label: 'Video Listing Mobile (345X150)'
+effects:
+  11664538-db66-40e6-a5eb-988aa17b4787:
+    uuid: 11664538-db66-40e6-a5eb-988aa17b4787
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 345
+      height: 150
+      anchor: center-center

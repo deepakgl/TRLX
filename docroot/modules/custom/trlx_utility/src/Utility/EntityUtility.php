@@ -201,7 +201,9 @@ class EntityUtility {
             $output['results'][$view_key][$key] = Html::decodeEntities($result[$key]);
           }
           elseif ($value == 'int') {
-            $output['results'][$view_key][$key] = (int) $result[$key];
+            if (isset($result[$key])) {
+              $output['results'][$view_key][$key] = (int) $result[$key];
+            }
           }
           elseif ($value == 'string_replace') {
             $output['results'][$view_key][$key] = $this->stringReplace($result[$key]);

@@ -66,13 +66,6 @@ class SellingTipsListing extends ResourceBase {
       return $response;
     }
 
-    // Prepare array of keys for alteration in response.
-    $data = [
-      'nid' => 'int',
-      'body' => 'decode',
-      'pointValue' => 'point_value_' . $commonUtility::SELLING_TIPS,
-    ];
-
     list($limit, $offset, $errorResponse) = $commonUtility->getPagerParam($request);
     if (!empty($errorResponse)) {
       return $errorResponse;
@@ -83,7 +76,7 @@ class SellingTipsListing extends ResourceBase {
       '',
       'selling_tips_learning_level_vocabulary',
       'rest_export_selling_tips_learning_level_listing',
-      $data,
+      '',
       ['language' => $language]
     );
 
@@ -92,7 +85,7 @@ class SellingTipsListing extends ResourceBase {
       '',
       'selling_tips',
       'rest_export_selling_tips_content_listing',
-      $data,
+      '',
       ['language' => $language]
     );
 
