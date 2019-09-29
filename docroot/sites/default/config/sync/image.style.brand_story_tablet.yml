@@ -1,0 +1,15 @@
+uuid: 6ae882c2-93f9-44c7-a97d-16be548b591f
+langcode: en
+status: true
+dependencies: {  }
+name: brand_story_tablet
+label: 'Brand Story Tablet (345X200)'
+effects:
+  12d0968b-2a58-4f17-89b5-96538ebb8dc8:
+    uuid: 12d0968b-2a58-4f17-89b5-96538ebb8dc8
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 345
+      height: 200
+      anchor: center-center

@@ -12,7 +12,7 @@ bundle: badges
 label: 'Manual Badge'
 description: ''
 required: false
-translatable: true
+translatable: false
 default_value:
   -
     value: 0

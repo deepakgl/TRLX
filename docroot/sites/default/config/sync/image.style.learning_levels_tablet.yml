@@ -1,0 +1,15 @@
+uuid: 87a9b905-091b-4399-b7b6-aa534d3c99e5
+langcode: en
+status: true
+dependencies: {  }
+name: learning_levels_tablet
+label: 'Learning Levels Tablet (170×160)'
+effects:
+  217c8cd8-a786-4c55-96a7-2e367d09af33:
+    uuid: 217c8cd8-a786-4c55-96a7-2e367d09af33
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 170
+      height: 160
+      anchor: center-center

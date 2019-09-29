@@ -329,7 +329,7 @@ display:
           type: image_url
           settings:
             url_type: '0'
-            image_style: levels_module_414_256
+            image_style: levels_module_desktop
             image_link: ''
           group_column: ''
           group_columns: {  }
@@ -394,7 +394,7 @@ display:
           type: image_url
           settings:
             url_type: '0'
-            image_style: levels_tablet_module_209_129_
+            image_style: levels_module_tablet
             image_link: ''
           group_column: ''
           group_columns: {  }
@@ -459,7 +459,7 @@ display:
           type: image_url
           settings:
             url_type: '0'
-            image_style: levels_mobile_module_65_40_
+            image_style: levels_mobile_module
             image_link: ''
           group_column: ''
           group_columns: {  }

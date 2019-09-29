@@ -1,0 +1,18 @@
+uuid: f733495c-771f-490b-930c-11ed3e90af91
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.product_family
+id: taxonomy_term.product_family.name
+field_name: name
+entity_type: taxonomy_term
+bundle: product_family
+label: Name
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

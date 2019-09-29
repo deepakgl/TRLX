@@ -1,0 +1,15 @@
+uuid: 6f03a807-faf0-4525-bb05-35b8095be422
+langcode: en
+status: true
+dependencies: {  }
+name: levels_module_desktop
+label: 'Levels Module Desktop (150×150)'
+effects:
+  fafe0e7a-ac1d-49e2-8a15-3b89ec0c2ba4:
+    uuid: fafe0e7a-ac1d-49e2-8a15-3b89ec0c2ba4
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 150
+      height: 150
+      anchor: center-center

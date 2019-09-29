@@ -1,0 +1,18 @@
+uuid: 08e26b96-c5c4-4466-ba67-84c47a21ef85
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.leaderboard_comparison
+id: taxonomy_term.leaderboard_comparison.changed
+field_name: changed
+entity_type: taxonomy_term
+bundle: leaderboard_comparison
+label: Changed
+description: 'The time that the term was last edited.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: changed
