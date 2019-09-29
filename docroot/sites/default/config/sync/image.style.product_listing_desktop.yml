@@ -2,14 +2,14 @@ uuid: 9fed5f2d-d7d3-4ea9-8a22-d9512410929e
 langcode: en
 status: true
 dependencies: {  }
-name: product_listing_310_425
-label: 'Product Listings Desktop (310×425)'
+name: product_listing_desktop
+label: 'Product Listings Desktop (150×151)'
 effects:
   1d653cf8-a8a2-4aee-a13d-277be67bf9ef:
     uuid: 1d653cf8-a8a2-4aee-a13d-277be67bf9ef
     id: image_scale_and_crop
     weight: 2
     data:
-      width: 310
-      height: 425
+      width: 150
+      height: 151
       anchor: center-center

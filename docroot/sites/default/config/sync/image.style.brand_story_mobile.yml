@@ -1,0 +1,15 @@
+uuid: 5b0af1bb-04df-4907-8e76-7d755ac2611a
+langcode: en
+status: true
+dependencies: {  }
+name: brand_story_mobile
+label: 'Brand Story Mobile (345X200)'
+effects:
+  c4709948-0879-4d9b-bb9f-b321fb8b7d4d:
+    uuid: c4709948-0879-4d9b-bb9f-b321fb8b7d4d
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 345
+      height: 200
+      anchor: center-center

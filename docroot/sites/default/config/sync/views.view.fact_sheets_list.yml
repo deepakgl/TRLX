@@ -458,7 +458,7 @@ display:
           type: image_url
           settings:
             url_type: '0'
-            image_style: product_listings_mobile_300_410
+            image_style: product_listings_mobile
             image_link: ''
           group_column: ''
           group_columns: {  }
@@ -523,7 +523,7 @@ display:
           type: image_url
           settings:
             url_type: '0'
-            image_style: product_listings_tablet_180_245
+            image_style: product_listings_tablet
             image_link: ''
           group_column: ''
           group_columns: {  }
@@ -588,7 +588,7 @@ display:
           type: image_url
           settings:
             url_type: '0'
-            image_style: product_listing_310_425
+            image_style: product_listing_desktop
             image_link: ''
           group_column: ''
           group_columns: {  }
