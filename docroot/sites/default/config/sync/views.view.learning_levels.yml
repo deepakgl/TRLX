@@ -2273,7 +2273,7 @@ display:
           type: image_url
           settings:
             url_type: '0'
-            image_style: learning_levels_desktop_715_370
+            image_style: learning_levels_desktop
             image_link: ''
           group_column: entity_id
           group_columns: {  }
@@ -2338,7 +2338,7 @@ display:
           type: image_url
           settings:
             url_type: '0'
-            image_style: learning_levels_tablet_380_200
+            image_style: learning_levels_tablet
             image_link: ''
           group_column: entity_id
           group_columns: {  }
@@ -2403,7 +2403,7 @@ display:
           type: image_url
           settings:
             url_type: '0'
-            image_style: learning_levels_mobile_375_200_
+            image_style: learning_levels_mobile
             image_link: ''
           group_column: entity_id
           group_columns: {  }

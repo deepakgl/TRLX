@@ -2,14 +2,14 @@ uuid: 8bcd1105-238a-4b5f-bb2b-d01393e2d5c9
 langcode: en
 status: true
 dependencies: {  }
-name: learning_levels_desktop_715_370
-label: 'Learning Levels Desktop (715×370)'
+name: learning_levels_desktop
+label: 'Learning Levels Desktop (170×160)'
 effects:
   2cf1f617-d734-4ecc-9151-7f37a4791171:
     uuid: 2cf1f617-d734-4ecc-9151-7f37a4791171
     id: image_scale_and_crop
     weight: 1
     data:
-      width: 715
-      height: 370
+      width: 170
+      height: 160
       anchor: center-center

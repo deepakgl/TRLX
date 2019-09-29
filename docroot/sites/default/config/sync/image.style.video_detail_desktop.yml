@@ -1,0 +1,15 @@
+uuid: c91e86d1-c5da-4e7d-8a68-52228d046ebb
+langcode: en
+status: true
+dependencies: {  }
+name: video_detail_desktop
+label: 'Video Detail Desktop (375X200)'
+effects:
+  98852728-b704-41c0-ad8a-3414f590a256:
+    uuid: 98852728-b704-41c0-ad8a-3414f590a256
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 375
+      height: 200
+      anchor: center-center

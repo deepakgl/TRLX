@@ -331,7 +331,7 @@ display:
           type: image_url
           settings:
             url_type: '0'
-            image_style: video_listing_375_210_
+            image_style: video_detail_desktop
             image_link: ''
           group_column: ''
           group_columns: {  }
@@ -396,7 +396,7 @@ display:
           type: image_url
           settings:
             url_type: '0'
-            image_style: video_listing_375_210_
+            image_style: video_detail_tablet
             image_link: ''
           group_column: ''
           group_columns: {  }
@@ -461,7 +461,7 @@ display:
           type: image_url
           settings:
             url_type: '0'
-            image_style: video_listing_375_210_
+            image_style: video_detail_mobile
             image_link: ''
           group_column: ''
           group_columns: {  }

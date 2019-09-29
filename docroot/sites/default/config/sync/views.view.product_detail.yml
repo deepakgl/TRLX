@@ -1853,7 +1853,7 @@ display:
           id: field_media_image
           table: media__field_media_image
           field: field_media_image
-          relationship: field_field_product_image
+          relationship: field_featured_image
           group_type: group
           admin_label: ''
           label: ''
@@ -1901,7 +1901,7 @@ display:
           type: image_url
           settings:
             url_type: '0'
-            image_style: product_details_desktop_340_466_
+            image_style: product_details_desktop
             image_link: ''
           group_column: ''
           group_columns: {  }
@@ -1918,7 +1918,7 @@ display:
           id: field_media_image_2
           table: media__field_media_image
           field: field_media_image
-          relationship: field_field_product_image
+          relationship: field_featured_image
           group_type: group
           admin_label: ''
           label: ''
@@ -1966,7 +1966,7 @@ display:
           type: image_url
           settings:
             url_type: '0'
-            image_style: product_details_tablet_215_320_
+            image_style: product_details_tablet
             image_link: ''
           group_column: ''
           group_columns: {  }
@@ -1983,7 +1983,7 @@ display:
           id: field_media_image_3
           table: media__field_media_image
           field: field_media_image
-          relationship: field_field_product_image
+          relationship: field_featured_image
           group_type: group
           admin_label: ''
           label: ''
@@ -2031,7 +2031,7 @@ display:
           type: image_url
           settings:
             url_type: '0'
-            image_style: product_details_mobile_128_188_
+            image_style: product_details_mobile
             image_link: ''
           group_column: ''
           group_columns: {  }
@@ -2374,6 +2374,15 @@ display:
           group_type: group
           admin_label: 'field_product_video: Media'
           required: false
+          plugin_id: standard
+        field_featured_image:
+          id: field_featured_image
+          table: node__field_featured_image
+          field: field_featured_image
+          relationship: none
+          group_type: group
+          admin_label: 'field_featured_image: Media'
+          required: true
           plugin_id: standard
       title: 'TRLX Product Details'
     cache_metadata:
