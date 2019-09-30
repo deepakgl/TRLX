@@ -63,7 +63,7 @@ class LearningLevels extends ResourceBase {
     if (!($response->getStatusCode() === Response::HTTP_OK)) {
       return $response;
     }
-
+    $content_section = '';
     $brandId = $request->query->get('brandId');
     if (!empty($brandId)) {
       // Prepare view response for valid brand key.
@@ -79,6 +79,7 @@ class LearningLevels extends ResourceBase {
       if (empty($view_results)) {
         return $commonUtility->errorResponse($this->t('Brand Id (@brandId) does not exist.', ['@brandId' => $brandId]), Response::HTTP_UNPROCESSABLE_ENTITY);
       }
+      $content_section = 'brandLevel';
     }
 
     // Prepare array of keys for alteration in response.
@@ -99,7 +100,7 @@ class LearningLevels extends ResourceBase {
         NULL,
         'learning_levels',
         'rest_export_learning_levels',
-        $data, ['language' => $language, 'brand' => $brandId],
+        $data, ['language' => $language, 'brand' => $brandId, 'section' => $content_section],
         'level_listing'
       );
 
