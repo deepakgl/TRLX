@@ -59,6 +59,7 @@ class ContentConfigForm extends ConfigFormBase {
       foreach ($sectionTerms as $tid => $term) {
         // Section key.
         $sectionKey = $term->get('field_content_section_key')->getValue()[0]['value'];
+        $term_name[$term->id()] = $term->get('name')->getValue()[0]['value'];
         // Section title.
         $sectionTitle = $term->get('name')->getValue()[0]['value'];
 
@@ -76,6 +77,23 @@ class ContentConfigForm extends ConfigFormBase {
           '#default_value' => $config->get($pointValueField),
         ];
       }
+
+      // Fieldset for learning levels.
+      $form['level_content_section'] = [
+        '#type' => 'fieldset',
+        '#title' => $this->t('Learning levels'),
+        '#collapsible' => TRUE,
+        '#collapsed' => TRUE,
+      ];
+
+      // Field to select sections for learning levels.
+      $form['level_content_section']['learning_levels'] = [
+        '#type' => 'select',
+        '#multiple' => TRUE,
+        '#title' => $this->t("Select Content Section(s) for Learning Levels."),
+        '#options' => $term_name,
+        '#default_value' => $config->get('learning_levels'),
+      ];
 
       // Fieldset for faq values.
       $form['faq_values'] = [

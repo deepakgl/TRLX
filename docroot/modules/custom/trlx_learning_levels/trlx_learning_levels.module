@@ -63,6 +63,23 @@ function trlx_learning_levels_form_alter(&$form, FormStateInterface $form_state,
     case 'node_level_interactive_content_edit_form':
       // Add custom validation for intractive content.
       $form['#validate'][] = 'trlx_learning_levels_validate';
+      break;
+
+    case 'taxonomy_term_learning_category_form':
+    case 'taxonomy_term_learning_category_form':
+      // Fetch content section mapped sections from config.
+      $config = \Drupal::config('trlx_utility.settings');
+      $content_section = $config->get('learning_levels');
+      foreach ($form['field_content_section']['widget']['#options'] as $id => $value) {
+        $term_id[] = $id;
+      }
+      foreach ($term_id as $key => $value) {
+        if (!in_array($value, array_keys($content_section))) {
+          unset($form['field_content_section']['widget']['#options'][$value]);
+        }
+      }
+      break;
+
     default:
   }
 }

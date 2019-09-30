@@ -87,6 +87,7 @@ class VideoListings extends ResourceBase {
       'pointValue' => 'int',
       'video' => 'append_host',
       'videoSubtitle' => 'append_host',
+      'body' => 'string_replace',
     ];
 
     list($limit, $offset, $errorResponse) = $commonUtility->getPagerParam($request);
