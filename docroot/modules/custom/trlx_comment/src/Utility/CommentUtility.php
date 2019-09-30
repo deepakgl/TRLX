@@ -86,4 +86,27 @@ class CommentUtility {
     return $result;
   }
 
+  /**
+   * To get comments reply ids of the selected node.
+   *
+   * @param int $nid
+   *   Node id.
+   *
+   * @return array
+   *   Comment replies id.
+   */
+  public function getReplyCommentIds($nid) {
+    $query = \Drupal::database();
+    $result = $query->select('trlx_comment', 'tc')
+      ->fields('tc', [
+        'id',
+        'pid',
+      ])
+      ->condition('tc.entity_id', $nid, '=')
+      ->condition('tc.pid', '0', '!=')
+      ->orderBy('tc.comment_timestamp', 'DESC')
+      ->execute()->fetchAll();
+    return array_column($result, 'id');
+  }
+
 }
