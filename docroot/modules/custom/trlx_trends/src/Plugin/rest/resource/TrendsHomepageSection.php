@@ -71,7 +71,7 @@ class TrendsHomepageSection extends ResourceBase {
       'nid' => 'int',
       'displayTitle' => 'decode',
       'subTitle' => 'decode',
-      'body' => 'decode',
+      'body' => 'string_replace',
       'pointValue' => 'int',
     ];
 

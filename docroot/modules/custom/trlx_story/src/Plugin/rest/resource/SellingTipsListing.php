@@ -141,6 +141,7 @@ class SellingTipsListing extends ResourceBase {
         'subTitle' => 'decode',
         'pointValue' => 'int',
         'pointValueLevel' => 'point_value_level',
+        'body' => 'string_replace',
       ];
 
       $view_results = $entityUtility->buildListingResponse($view_results, $data, ['pointValue' => 'pointValueLevel']);
