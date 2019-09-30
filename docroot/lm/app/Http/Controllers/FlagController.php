@@ -371,7 +371,7 @@ class FlagController extends Controller {
       // Unique faq id summed with respective brand id.
       $nid = $nid + $brand_id;
     }
-    if ($pageType != 'faq') {
+    if (isset($pageType) && $pageType != 'faq') {
       return $this->errorResponse('Type param value must only be faq', Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
