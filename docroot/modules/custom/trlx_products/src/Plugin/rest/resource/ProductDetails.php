@@ -79,7 +79,7 @@ class ProductDetails extends ResourceBase {
       'subTitle' => 'decode',
       'nid' => 'int',
       'pointValue' => 'int',
-      'body' => 'decode',
+      'body' => 'string_replace',
       'video' => 'append_host',
     ];
 
