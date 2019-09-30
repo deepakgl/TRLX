@@ -224,6 +224,11 @@ class EntityUtility {
             $pointValue = $this->configuration->get($value);
             $output['results'][$view_key][$key] = !empty($pointValue) ? $pointValue : $result[$key];
           }
+          // Set point value specific to section from config.
+          elseif ($value == 'point_value_' . $this->commonUtility::SELLING_TIPS) {
+            $pointValue = $this->configuration->get($value);
+            $output['results'][$view_key][$key] = !empty($pointValue) ? $pointValue : $result[$key];
+          }
           // Calculate point value for "Learning Level".
           // Based on associated "Level Interactive Content".
           elseif ($value == 'point_value_level') {
@@ -313,6 +318,11 @@ class EntityUtility {
           }
           // Set point value specific to section from config.
           elseif ($value == 'point_value_' . $this->commonUtility::TREND) {
+            $pointValue = $this->configuration->get($value);
+            $output[$view_key][$key] = !empty($pointValue) ? $pointValue : $result[$key];
+          }
+          // Set point value specific to section from config.
+          elseif ($value == 'point_value_' . $this->commonUtility::SELLING_TIPS) {
             $pointValue = $this->configuration->get($value);
             $output[$view_key][$key] = !empty($pointValue) ? $pointValue : $result[$key];
           }
