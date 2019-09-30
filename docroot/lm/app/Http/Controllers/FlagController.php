@@ -59,6 +59,7 @@ class FlagController extends Controller {
     ]);
     $this->uid = $_userData->userId;
     $pageType = $request->get('type');
+    $brand_id = 0;
     // Get brand id if faq is part of brand section.
     if (isset($validatedData['brandId'])) {
       $brand_id = $validatedData['brandId'];
@@ -85,7 +86,7 @@ class FlagController extends Controller {
     $flag = $validatedData['flag'];
     $status = $validatedData['status'];
 
-    if ($pageType != 'faq') {
+    if (isset($pageType) && $pageType != 'faq') {
       return $this->errorResponse('Type param value must only be faq', Response::HTTP_UNPROCESSABLE_ENTITY);
     }
     $this->elasticClient = Helper::checkElasticClient();
