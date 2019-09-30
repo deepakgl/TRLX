@@ -9,7 +9,6 @@ use Drupal\trlx_utility\RedisClientBuilder;
 // fixMe.
 use Drupal\elx_user\Utility\UserUtility;
 use Symfony\Component\HttpFoundation\Response;
-use Drupal\trlx_utility\Utility\CommonUtility;
 
 /**
  * Purpose is to build view response, fetch & set the view. Response in redis.
