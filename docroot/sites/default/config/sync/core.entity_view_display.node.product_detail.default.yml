@@ -12,7 +12,6 @@ dependencies:
     - field.field.node.product_detail.field_customer_questions
     - field.field.node.product_detail.field_demonstration
     - field.field.node.product_detail.field_display_title
-    - field.field.node.product_detail.field_downloadable
     - field.field.node.product_detail.field_end_date
     - field.field.node.product_detail.field_featured_image
     - field.field.node.product_detail.field_field_product_image
@@ -120,16 +119,6 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     type: string
-    region: content
-  field_downloadable:
-    weight: 37
-    label: above
-    settings:
-      format: default
-      format_custom_false: ''
-      format_custom_true: ''
-    third_party_settings: {  }
-    type: boolean
     region: content
   field_end_date:
     weight: 18
