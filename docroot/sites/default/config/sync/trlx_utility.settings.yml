@@ -24,8 +24,8 @@ tools_sections: {  }
 tools-pdf_sections: {  }
 welcome_message_sections: {  }
 submit: 'Save configuration'
-form_build_id: form-QilhZ8ZSEniYHD2a4AMOBpnBMtgdeUhQnDsm09B9KT0
-form_token: mZvskhIQgxPnW8oDcS4vIfBk9qY2nECIHz1GV7Dm7Pw
+form_build_id: form--sPaBLH2CyW63tCLRT7i_QKRyal-RQwk_xS9wbGPxdw
+form_token: uYOlcofONDBZjPlXHWpTlLEMrYgH44V9nH-2g8Mtk-Q
 form_id: trlx_content_config
 op: 'Save configuration'
 insiderCorner_req_fields:
@@ -43,3 +43,6 @@ insider_corner_req_fields:
   field_occupation: field_occupation
   field_social_media_handles: field_social_media_handles
   field_sub_title: field_sub_title
+point_value: '50'
+faq_points: '50'
+faq_id: '9999999'

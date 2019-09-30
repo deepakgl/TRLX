@@ -1,0 +1,22 @@
+uuid: e05dae3f-5a18-4ea3-a110-b15ff1b6f5bf
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.markets
+id: taxonomy_term.markets.status
+field_name: status
+entity_type: taxonomy_term
+bundle: markets
+label: Published
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 1
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

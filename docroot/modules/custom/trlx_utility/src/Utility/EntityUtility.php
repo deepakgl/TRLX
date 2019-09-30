@@ -9,6 +9,7 @@ use Drupal\trlx_utility\RedisClientBuilder;
 // fixMe.
 use Drupal\elx_user\Utility\UserUtility;
 use Symfony\Component\HttpFoundation\Response;
+use Drupal\trlx_utility\Utility\CommonUtility;
 
 /**
  * Purpose is to build view response, fetch & set the view. Response in redis.
@@ -22,6 +23,8 @@ class EntityUtility {
     $this->userUtility = new UserUtility();
     // fixMe.
     $this->config = \Drupal::config('elx_utility.settings');
+    $this->configuration = \Drupal::config('trlx_utility.settings');
+    $this->commonUtility = new CommonUtility();
   }
 
   /**
@@ -53,7 +56,7 @@ class EntityUtility {
           $$key = $argument;
         }
         else {
-          $args[] = (count($argument) > 1) ? implode("+", $argument) : $argument;
+          $args[] = (is_array($argument) && count($argument) > 1) ? implode("+", $argument) : $argument;
         }
       }
       $arguments = $args;
@@ -79,7 +82,7 @@ class EntityUtility {
 
     $view->execute();
     $view_result = \Drupal::service('renderer')->renderRoot($view->render());
-    $view_results = JSON::decode($view_result->jsonSerialize(), TRUE);
+    $view_results = (is_object($view_result)) ? JSON::decode($view_result->jsonSerialize(), TRUE) : [];
     if ((isset($view_results['results']) && empty($view_results['results']))
     || empty($view_results)) {
       // No results found.
@@ -198,7 +201,9 @@ class EntityUtility {
             $output['results'][$view_key][$key] = Html::decodeEntities($result[$key]);
           }
           elseif ($value == 'int') {
-            $output['results'][$view_key][$key] = (int) $result[$key];
+            if (isset($result[$key])) {
+              $output['results'][$view_key][$key] = (int) $result[$key];
+            }
           }
           elseif ($value == 'string_replace') {
             $output['results'][$view_key][$key] = $this->stringReplace($result[$key]);
@@ -209,6 +214,24 @@ class EntityUtility {
           // Set value for boolean by default unselected fields.
           elseif ($value == 'boolean') {
             $output['results'][$view_key][$key] = empty($result[$key]) ? FALSE : TRUE;
+          }
+          // Set point value specific to section from config.
+          elseif ($value == 'point_value_' . $this->commonUtility::INSIDER_CORNER) {
+            $pointValue = $this->configuration->get($value);
+            $output['results'][$view_key][$key] = !empty($pointValue) ? $pointValue : $result[$key];
+          }
+          // Set point value specific to section from config.
+          elseif ($value == 'point_value_' . $this->commonUtility::TREND) {
+            $pointValue = $this->configuration->get($value);
+            $output['results'][$view_key][$key] = !empty($pointValue) ? $pointValue : $result[$key];
+          }
+          // Calculate point value for "Learning Level".
+          // Based on associated "Level Interactive Content".
+          elseif ($value == 'point_value_level') {
+            if (isset($output['results'][$view_key][$key])) {
+              // Calculate aggregate point value.
+              $output['results'][$view_key][$key] = $this->commonUtility->getLearningLevelPointValue($result[$key]);
+            }
           }
           else {
             $output['results'][$view_key] = $result;
@@ -273,6 +296,21 @@ class EntityUtility {
           // Set value for boolean by default unselected fields.
           elseif ($value == 'boolean') {
             $output[$view_key][$key] = empty($result[$key]) ? FALSE : TRUE;
+          }
+          // Set point value specific to section from config.
+          elseif ($value == 'point_value_' . $this->commonUtility::INSIDER_CORNER) {
+            $pointValue = $this->configuration->get($value);
+            $output[$view_key][$key] = !empty($pointValue) ? $pointValue : $result[$key];
+          }
+          // Set point value specific to section from config.
+          elseif ($value == 'point_value_' . $this->commonUtility::TREND) {
+            $pointValue = $this->configuration->get($value);
+            $output[$view_key][$key] = !empty($pointValue) ? $pointValue : $result[$key];
+          }
+          elseif ($value == 'social_media_handles') {
+            // Fetch social media handles for Insider Corner section.
+            $socialMediaHandles = $this->commonUtility->getSocialMediaHandles($result[$key]);
+            $output[$view_key][$key] = $socialMediaHandles;
           }
           else {
             $output[$view_key] = $result;

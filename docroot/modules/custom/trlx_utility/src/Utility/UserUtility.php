@@ -24,4 +24,33 @@ class UserUtility {
     return $query->execute()->fetchAll();
   }
 
+  /**
+   * Fetch user market by user object.
+   *
+   * @param mixed $userData
+   *   User object.
+   *
+   * @return array
+   *   User market.
+   */
+  public function getMarketByUserData($userData) {
+    $regions = $userData->region;
+    $subregions = $userData->subregion;
+    $country = $userData->country;
+    // Get region, subregion or country from token if array is not empty.
+    if (!empty($country)) {
+      $ref_keys = $country;
+    }
+    elseif (!empty($subregions)) {
+      $ref_keys = $subregions;
+    }
+    elseif (!empty($regions)) {
+      $ref_keys = $regions;
+    }
+    // Get current user markets.
+    $markets = array_column(self::getMarketByReferenceId($ref_keys), 'entity_id');
+
+    return $markets;
+  }
+
 }

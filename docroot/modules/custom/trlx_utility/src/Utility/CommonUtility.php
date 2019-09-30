@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Drupal\Core\Logger\RfcLogLevel;
 use Symfony\Component\HttpFoundation\Request;
+use Drupal\paragraphs\Entity\Paragraph;
 
 /**
  * Purpose of this class is to build common object.
@@ -13,6 +14,8 @@ use Symfony\Component\HttpFoundation\Request;
 class CommonUtility {
 
   const INSIDER_CORNER = 'insiderCorner';
+  const TREND = 'trend';
+  const SELLING_TIPS = 'sellingTips';
 
   /**
    * Build success response.
@@ -168,7 +171,6 @@ class CommonUtility {
     $param = implode(',', $param);
     $logger = \Drupal::service('logger.stdout');
     $logger->log(RfcLogLevel::ERROR, 'Following parameters is/are required: ' . $param, [
-      'user' => \Drupal::currentUser(),
       'request_uri' => $request_uri,
       'data' => $param,
     ]);
@@ -183,11 +185,13 @@ class CommonUtility {
    *   Node id.
    * @param string $langcode
    *   Two characters long language code.
+   * @param string $type
+   *   Content Type/Type of node.
    *
    * @return bool
    *   True or false.
    */
-  public function isValidNid($nid, $langcode) {
+  public function isValidNid($nid, $langcode = 'en', $type = '') {
     if (!is_numeric($nid)) {
       return FALSE;
     }
@@ -196,8 +200,11 @@ class CommonUtility {
     $query->fields('n', ['nid'])
       ->condition('n.nid', $nid, '=')
       ->condition('n.langcode', $langcode, '=')
-      ->condition('n.status', 1, '=')
-      ->range(0, 1);
+      ->condition('n.status', 1, '=');
+    if (!empty($type)) {
+      $query->condition('n.type', $type);
+    }
+    $query->range(0, 1);
     $result = $query->execute()->fetchAll();
     if (empty($result)) {
       global $base_url;
@@ -205,7 +212,6 @@ class CommonUtility {
       $logger = \Drupal::service('logger.stdout');
       $logger->log(RfcLogLevel::ERROR, 'Node Id @nid does not exist in database or is invalid.', [
         '@nid' => $nid,
-        'user' => \Drupal::currentUser(),
         'request_uri' => $request_uri,
         'data' => $nid,
       ]);
@@ -263,6 +269,23 @@ class CommonUtility {
   }
 
   /**
+   * Validate positive value.
+   *
+   * @param int $num
+   *   Integer number.
+   *
+   * @return \Symfony\Component\HttpFoundation\JsonResponse
+   *   Json response.
+   */
+  public function validatePositiveValue($num) {
+    if (preg_match("/^[0-9]\d*$/", $num)) {
+      return $this->successResponse();
+    }
+
+    return $this->errorResponse(t('Please enter positive value.'), Response::HTTP_UNPROCESSABLE_ENTITY);
+  }
+
+  /**
    * Validate story section.
    *
    * @param string $name
@@ -277,7 +300,7 @@ class CommonUtility {
     if (!$request->query->has('section') || empty($name)) {
       return $this->errorResponse(t('Section parameter is required.'), Response::HTTP_BAD_REQUEST);
     }
-    $section = ['trend', 'sellingTips', 'insiderCorner'];
+    $section = [self::TREND, self::SELLING_TIPS, self::INSIDER_CORNER];
     if (!preg_match("/^[A-Za-z\\- \']+$/", $name) || !in_array($name, $section)) {
       return $this->errorResponse(t('Please enter valid section name.'), Response::HTTP_UNPROCESSABLE_ENTITY);
     }
@@ -357,18 +380,71 @@ class CommonUtility {
     $sectionTerms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadTree('trlx_content_sections', 0, NULL, TRUE);
 
     if (!empty($sectionTerms)) {
-      foreach ($sectionTerms as $tid => $term) {
+      foreach ($sectionTerms as $delta => $term) {
         // Convert Object to Array.
         $term = $term->toArray();
         // Section key.
         $sectionKey = $term['field_content_section_key'][0]['value'];
         if (self::INSIDER_CORNER == $sectionKey) {
-          return $term;
+          return [$term['tid'][0]['value'], $term];
         }
       }
     }
 
-    return [];
+    return ['', ''];
+  }
+
+  /**
+   * Fetch social media handles for Insider Corner section.
+   *
+   * @param int $nid
+   *   Nid to which the social media handle is associated.
+   *
+   * @return array
+   *   Array objects for social media handles.
+   */
+  public function getSocialMediaHandles(int $nid) {
+    $node = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
+    $paragraph = $node->field_social_media_handles->getValue();
+
+    $socialMediaHandles = [];
+    if (!empty($paragraph)) {
+      // Loop through the result set.
+      foreach ($paragraph as $element) {
+        $socialMediaPara = Paragraph::load($element['target_id']);
+        // Social Media Title.
+        $title = $socialMediaPara->field_social_media_title->getValue()[0]['value'];
+        // Social Media Handle.
+        $handle = $socialMediaPara->field_social_media_handle->getValue()[0]['value'];
+        $socialMediaHandles[] = json_encode(['title' => $title, 'handle' => $handle]);
+      }
+    }
+
+    return $socialMediaHandles;
+  }
+
+  /**
+   * Fetch aggregate Point Value for each Learning Level.
+   *
+   * @param int $levelTermId
+   *   Learning Level Term Id.
+   *
+   * @return int
+   *   Aggregate Point Value.
+   */
+  public function getLearningLevelPointValue($levelTermId) {
+    $nodes = \Drupal::entityTypeManager()->getStorage('node')->loadByProperties([
+      'field_learning_category' => $levelTermId,
+    ]);
+
+    $pointValue = 0;
+    if (!empty($nodes)) {
+      foreach ($nodes as $nid => $node) {
+        $pointValue += $node->get('field_point_value')->value;
+      }
+    }
+
+    return $pointValue;
   }
 
 }

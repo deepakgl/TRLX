@@ -1,0 +1,18 @@
+uuid: 14faf28b-13f0-49d8-a79f-cde49db8fb4d
+langcode: en
+status: true
+dependencies:
+  module:
+    - serialization
+    - trlx_story
+    - trlx_utility
+id: insiderCorner_listing
+plugin_id: insiderCorner_listing
+granularity: resource
+configuration:
+  methods:
+    - GET
+  formats:
+    - json
+  authentication:
+    - jwt_Auth

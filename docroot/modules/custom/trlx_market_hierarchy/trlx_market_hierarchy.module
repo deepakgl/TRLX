@@ -35,6 +35,7 @@ function trlx_market_hierarchy_views_query_alter($view, $query) {
     'product_details_rest_export',
     'rest_export_spotlight_section',
     'rest_export_level_interactive_content',
+    'rest_export_tr_trends_homepage',
   ];
   if (in_array($view->id(), $view_id) && in_array($view->current_display, $current_display)) {
     global $_userData;

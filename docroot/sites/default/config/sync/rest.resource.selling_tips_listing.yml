@@ -1,0 +1,18 @@
+uuid: e993a4e3-e643-482e-8b30-6f03d1450066
+langcode: en
+status: true
+dependencies:
+  module:
+    - serialization
+    - trlx_story
+    - trlx_utility
+id: selling_tips_listing
+plugin_id: selling_tips_listing
+granularity: resource
+configuration:
+  methods:
+    - GET
+  formats:
+    - json
+  authentication:
+    - jwt_Auth

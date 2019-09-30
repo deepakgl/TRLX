@@ -89,7 +89,6 @@ class FactsheetsListing extends ResourceBase {
       'displayTitle' => 'decode',
       'subTitle' => 'decode',
       'pointValue' => 'int',
-      'downloadable' => 'boolean',
     ];
 
     list($limit, $offset, $errorResponse) = $commonUtility->getPagerParam($request);

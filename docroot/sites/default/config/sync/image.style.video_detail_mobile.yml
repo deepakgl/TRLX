@@ -1,0 +1,15 @@
+uuid: 0e40e2d0-2f62-459d-bfe5-f3abb95ef718
+langcode: en
+status: true
+dependencies: {  }
+name: video_detail_mobile
+label: 'Video Detail Mobile (375X200)'
+effects:
+  490a6bd7-ac19-45bf-ac36-3effaf3231c8:
+    uuid: 490a6bd7-ac19-45bf-ac36-3effaf3231c8
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 375
+      height: 200
+      anchor: center-center

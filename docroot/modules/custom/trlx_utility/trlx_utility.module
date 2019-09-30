@@ -64,6 +64,19 @@ function trlx_utility_form_alter(&$form, FormStateInterface $form_state, $form_i
     case 'node_stories_edit_form':
       $form['#attached']['library'][] = 'trlx_market_hierarchy/trlx_market';
 
+      // Change value of point value based on selected content section.
+      $form['field_point_value']['widget']['#prefix'] = '<div id="field-point-value-no-ajax-wrapper">';
+      $form['field_point_value']['widget']['#suffix'] = '</div>';
+      $form['field_content_section']['widget']['#ajax'] = [
+        'callback' => 'set_section_based_point_value',
+        'wrapper' => 'field-point-value-no-ajax-wrapper',
+        'method' => 'replace',
+        'progress' => [
+          'type' => 'throbber',
+          'message' => t('Updating Point Value...'),
+        ],
+      ];
+
       // Stories Content Type node edit form alteration.
       // Alter form to show only Bundle mapped sections for selection.
       // Show/Hide fields based on section selection.
@@ -127,10 +140,10 @@ function trlx_utility_form_alter(&$form, FormStateInterface $form_state, $form_i
         foreach ($form['#fieldgroups']['group_insider_corner']->children as $field) {
           $form[$field]['#states'] = [
             'visible' => [
-              ["input[name='field_content_section[{$insiderCornerTermId}]']" => ['checked' => TRUE]],
+              ["input[name='field_content_section']" => ['value' => $insiderCornerTermId]],
             ],
-            'disabled' => [
-              ["input[name='field_content_section[{$insiderCornerTermId}]']" => ['checked' => FALSE]],
+            'enabled' => [
+              ["input[name='field_content_section']" => ['value' => $insiderCornerTermId]],
             ],
           ];
         }
@@ -146,39 +159,79 @@ function trlx_utility_form_alter(&$form, FormStateInterface $form_state, $form_i
           foreach ($insiderCornerReqFields as $field) {
             // Check if the current field is required for Insider Corner.
             if (isset($insiderCornerReqFields[$field])) {
-
-              // Textfield.
-              if (!empty($form[$field]['widget'][0]['value'])) {
-                $form[$field]['widget'][0]['value']['#states']['required'] = [
-                  ["input[name='field_content_section[{$insiderCornerTermId}]']" => ['checked' => TRUE]],
-                ];
+              if ('field_social_media_handles' == $field) {
+                // Custom validate handler for Social Media required validation.
+                $form['#validate'][] = 'stories_validate';
               }
-
-              // Check for social media Paragraph field.
-              if (!empty($form[$field]['widget'][0]['subform']) && ('field_social_media_handles' == $field)) {
-                // Check for social media title field.
-                if (!empty($form[$field]['widget'][0]['subform']['field_social_media_title']['widget'][0]['value'])) {
-                  $form[$field]['widget'][0]['subform']['field_social_media_title']['widget'][0]['value']['#states']['required'] = [
-                    ["input[name='field_content_section[{$insiderCornerTermId}]']" => ['checked' => TRUE]],
-                  ];
-                }
-
-                // Check for social media handle field.
-                if (!empty($form[$field]['widget'][0]['subform']['field_social_media_handle']['widget'][0]['value'])) {
-                  $form[$field]['widget'][0]['subform']['field_social_media_handle']['widget'][0]['value']['#states']['required'] = [
-                    ["input[name='field_content_section[{$insiderCornerTermId}]']" => ['checked' => TRUE]],
+              else {
+                if (!empty($form[$field]['widget'][0]['value'])) {
+                  $form[$field]['widget'][0]['value']['#states']['required'] = [
+                    ["input[name='field_content_section']" => ['value' => $insiderCornerTermId]],
                   ];
                 }
               }
-
             }
-            /*** Add Required Validation for Insider Corner - END ***/
           }
         }
+        /*** Add Required Validation for Insider Corner - END ***/
       }
       break;
 
     default:
+  }
+}
+
+/**
+ * To update point value in stories content type based on section selection.
+ */
+function set_section_based_point_value(array &$form, FormStateInterface $form_state) {
+  // Load module config.
+  $config = \Drupal::config('trlx_utility.settings');
+  $sectionTermId = $form_state->getValue('field_content_section');
+  $term = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($sectionTermId[0]['target_id']);
+  $sectionKey = $term->get('field_content_section_key')->getValue()[0]['value'];
+  $point_field_value = $config->get("point_value_" . $sectionKey);
+  $form['field_point_value']['widget'][0]['value']['#value'] = $point_field_value;
+  $form['field_point_value']['widget'][0]['value']['#default_value'] = $point_field_value;
+  return $form['field_point_value'];
+}
+
+/**
+ * Custom validate handler to handle Social Media.
+ */
+function stories_validate(array &$form, FormStateInterface $form_state) {
+  // Load module config.
+  $config = \Drupal::config('trlx_utility.settings');
+  // Fetch content type mapped sections from config.
+  $insiderCornerReqFields = $config->get('insider_corner_req_fields');
+
+  $commonUtility = new CommonUtility();
+  // Fetch Insider Corner Taxonomy Term.
+  list($insiderCornerTermId) = $commonUtility->getInsiderCornerTerm();
+
+  $insiderCornerSection = FALSE;
+  // Get selected section.
+  $section = $form_state->getValue('field_content_section')[0]['target_id'];
+  if ($section == $insiderCornerTermId) {
+    $insiderCornerSection = TRUE;
+  };
+
+  // Get Social Media field value.
+  $socialMedia = $form_state->getValue('field_social_media_handles');
+
+  $socialMediaDataExists = FALSE;
+  foreach ($socialMedia as $delta => $fields) {
+    if (is_int($delta)) {
+      if (!empty($socialMedia[$delta]['subform']['field_social_media_title'][0]['value']) && !empty($socialMedia[$delta]['subform']['field_social_media_handle'][0]['value'])) {
+        $socialMediaDataExists = TRUE;
+        break;
+      }
+    }
+  }
+
+  // Check for show validation.
+  if (!empty($insiderCornerSection) && isset($insiderCornerReqFields['field_social_media_handles']) && empty($socialMediaDataExists)) {
+    $form_state->setErrorByName('field_social_media_handles', t('At least one set of Social Media (Title & Url) is required.'));
   }
 }
 
@@ -242,6 +295,9 @@ function trlx_utility_views_query_alter(ViewExecutable $view, $query) {
     'video_details',
     'fact_sheets_list',
     'learning_levels',
+    'insider_corner',
+    'selling_tips_learning_level_vocabulary',
+    'selling_tips',
   ];
   $current_display = [
     'rest_export_product_listings',
@@ -254,10 +310,13 @@ function trlx_utility_views_query_alter(ViewExecutable $view, $query) {
     'rest_export_tools_listing',
     'rest_export_fact_sheets_list',
     'rest_export_learning_levels',
+    'rest_export_insider_corner_listing',
+    'rest_export_selling_tips_learning_level_listing',
+    'rest_export_selling_tips_content_listing',
   ];
   if (in_array($view->id(), $view_id)) {
     if (in_array($view->current_display, $current_display)) {
-      $limit = $_GET['limit'] != 0 ? (int) $_GET['limit'] : 10;
+      $limit = isset($_GET['limit']) ? (int) $_GET['limit'] : 10;
       $offset = isset($_GET['offset']) ? (int) $_GET['offset'] : 0;
       $view->setOffset($offset);
       $view->setItemsPerPage($limit);
@@ -271,22 +330,17 @@ function trlx_utility_views_query_alter(ViewExecutable $view, $query) {
 function trlx_utility_field_group_build_pre_render_alter(&$element) {
   $commonUtility = new CommonUtility();
   // Fetch Insider Corner Taxonomy Term.
-  $insiderConerTerm = $commonUtility->getInsiderCornerTerm();
-  // Fetch Insider Corner Taxonomy Term Id.
-  $insiderCornerTermId = isset($insiderConerTerm['tid'][0]['value']) ? $insiderConerTerm['tid'][0]['value'] : 0;
+  list($insiderCornerTermId) = $commonUtility->getInsiderCornerTerm();
 
-  // Add #states: visible, disabled & required.
+  // Add #states: visible, enabled & required.
   $form_id = $element['#form_id'];
-  if ('node_stories_form' == $form_id && isset($element['group_insider_corner']) && !empty($insiderCornerTermId)) {
+  if (in_array($form_id, ['node_stories_form', 'node_stories_edit_form']) && isset($element['group_insider_corner']) && !empty($insiderCornerTermId)) {
     $element['group_insider_corner']['#states'] = [
       'visible' => [
-        ["input[name='field_content_section[{$insiderCornerTermId}]']" => ['checked' => TRUE]],
+        ["input[name='field_content_section']" => ['value' => $insiderCornerTermId]],
       ],
-      'disabled' => [
-        ["input[name='field_content_section[{$insiderCornerTermId}]']" => ['checked' => FALSE]],
-      ],
-      'required' => [
-        ["input[name='field_content_section[{$insiderCornerTermId}]']" => ['checked' => TRUE]],
+      'enabled' => [
+        ["input[name='field_content_section']" => ['value' => $insiderCornerTermId]],
       ],
     ];
   }
