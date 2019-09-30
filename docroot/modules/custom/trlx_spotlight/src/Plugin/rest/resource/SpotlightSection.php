@@ -71,7 +71,7 @@ class SpotlightSection extends ResourceBase {
       'nid' => 'int',
       'displayTitle' => 'decode',
       'displayTitle_dup' => 'decode',
-      'body' => 'decode',
+      'body' => 'string_replace',
       'pointValue' => 'int',
     ];
 

@@ -69,7 +69,7 @@ class InsiderCornerListing extends ResourceBase {
     // Prepare array of keys for alteration in response.
     $data = [
       'nid' => 'int',
-      'body' => 'decode',
+      'body' => 'string_replace',
       'pointValue' => 'point_value_insiderCorner',
     ];
 

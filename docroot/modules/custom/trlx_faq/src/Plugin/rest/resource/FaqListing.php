@@ -59,7 +59,7 @@ class FaqListing extends ResourceBase {
     $data = [
       'nid' => 'int',
       'question' => 'decode',
-      'answer' => 'decode',
+      'answer' => 'string_replace',
     ];
 
     // To show the brand FAQs.
