@@ -2382,7 +2382,7 @@ display:
           relationship: none
           group_type: group
           admin_label: 'field_featured_image: Media'
-          required: true
+          required: false
           plugin_id: standard
       title: 'TRLX Product Details'
     cache_metadata:

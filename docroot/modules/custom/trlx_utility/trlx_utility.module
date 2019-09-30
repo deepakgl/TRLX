@@ -64,6 +64,9 @@ function trlx_utility_form_alter(&$form, FormStateInterface $form_state, $form_i
     case 'node_stories_edit_form':
       $form['#attached']['library'][] = 'trlx_market_hierarchy/trlx_market';
 
+      // Load module config.
+      $config = \Drupal::config('trlx_utility.settings');
+
       // Change value of point value based on selected content section.
       $form['field_point_value']['widget']['#prefix'] = '<div id="field-point-value-no-ajax-wrapper">';
       $form['field_point_value']['widget']['#suffix'] = '</div>';
@@ -119,6 +122,16 @@ function trlx_utility_form_alter(&$form, FormStateInterface $form_state, $form_i
             $insiderCornerTermId = $tid;
           }
 
+          // Insider Corner Term Id to hide/show Insider Corner fields.
+          if (CommonUtility::SELLING_TIPS == $sectionKey) {
+            $sellingTipsTermId = $tid;
+          }
+
+          // Insider Corner Term Id to hide/show Insider Corner fields.
+          if (CommonUtility::TREND == $sectionKey) {
+            $trendTermId = $tid;
+          }
+
           // Check if section key is mapped to current content type.
           if (!in_array($sectionKey, $bundleMappedSections)) {
             $inValidSections[$tid] = $tid;
@@ -150,8 +163,6 @@ function trlx_utility_form_alter(&$form, FormStateInterface $form_state, $form_i
         /*** Show/Hide Insider Corner related fields - END ***/
 
         /*** Add Required Validation for Insider Corner - START ***/
-        // Load module config.
-        $config = \Drupal::config('trlx_utility.settings');
         // Fetch content type mapped sections from config.
         $insiderCornerReqFields = $config->get('insider_corner_req_fields');
 
@@ -175,6 +186,25 @@ function trlx_utility_form_alter(&$form, FormStateInterface $form_state, $form_i
         }
         /*** Add Required Validation for Insider Corner - END ***/
       }
+
+      /*** Change Point Value as per selected section on edit page - START ***/
+      if ($form_id == 'node_stories_edit_form') {
+        if ($insiderCornerTermId && ($form['field_content_section']['widget']['#default_value'] == $insiderCornerTermId)) {
+          $point_field_value = $config->get("point_value_" . $commonUtility::INSIDER_CORNER);
+        }
+        if ($sellingTipsTermId && ($form['field_content_section']['widget']['#default_value'] == $sellingTipsTermId)) {
+          $point_field_value = $config->get("point_value_" . $commonUtility::SELLING_TIPS);
+        }
+        if ($trendTermId && ($form['field_content_section']['widget']['#default_value'] == $trendTermId)) {
+          $point_field_value = $config->get("point_value_" . $commonUtility::TREND);
+        }
+
+        if (!empty($point_field_value)) {
+          $form['field_point_value']['widget'][0]['value']['#value'] = $point_field_value;
+          $form['field_point_value']['widget'][0]['value']['#default_value'] = $point_field_value;
+        }
+      }
+      /*** Change Point Value as per selected section on edit page - END ***/
       break;
 
     default:
