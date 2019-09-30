@@ -1,0 +1,15 @@
+uuid: 51d89d2e-cb5d-4971-a25b-ae1709741e5e
+langcode: en
+status: true
+dependencies: {  }
+name: product_listings_tablet
+label: 'Product Listings Tablet (150×151)'
+effects:
+  268a3a5c-3ef7-42ec-8ab0-d90233365bf1:
+    uuid: 268a3a5c-3ef7-42ec-8ab0-d90233365bf1
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 150
+      height: 151
+      anchor: center-center

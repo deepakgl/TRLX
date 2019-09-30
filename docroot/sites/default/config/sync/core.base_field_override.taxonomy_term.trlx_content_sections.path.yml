@@ -1,0 +1,20 @@
+uuid: 3d013eec-c83b-4a75-821d-7b35027e6a88
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.trlx_content_sections
+  module:
+    - path
+id: taxonomy_term.trlx_content_sections.path
+field_name: path
+entity_type: taxonomy_term
+bundle: trlx_content_sections
+label: 'URL alias'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: path

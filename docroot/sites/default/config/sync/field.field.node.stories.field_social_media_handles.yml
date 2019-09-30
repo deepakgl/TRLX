@@ -12,7 +12,7 @@ id: node.stories.field_social_media_handles
 field_name: field_social_media_handles
 entity_type: node
 bundle: stories
-label: 'Social Media Handles'
+label: 'Social Media'
 description: ''
 required: false
 translatable: false

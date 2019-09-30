@@ -1,0 +1,15 @@
+uuid: f5978874-2741-4c94-a02e-15869b23ecbe
+langcode: en
+status: true
+dependencies: {  }
+name: story_detail_mobile
+label: 'Story Detail Mobile (375X375)'
+effects:
+  5950a083-5b76-4bd8-a9e7-ab63faf62b7e:
+    uuid: 5950a083-5b76-4bd8-a9e7-ab63faf62b7e
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 375
+      height: 375
+      anchor: center-center

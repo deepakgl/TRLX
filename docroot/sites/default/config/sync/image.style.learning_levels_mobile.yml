@@ -1,0 +1,15 @@
+uuid: a46bb471-2386-480f-859b-ece83a287ab0
+langcode: en
+status: true
+dependencies: {  }
+name: learning_levels_mobile
+label: 'Learning Levels Mobile (170×160)'
+effects:
+  55554959-bdc3-4f7e-b334-817dc23ef342:
+    uuid: 55554959-bdc3-4f7e-b334-817dc23ef342
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 170
+      height: 160
+      anchor: center-center

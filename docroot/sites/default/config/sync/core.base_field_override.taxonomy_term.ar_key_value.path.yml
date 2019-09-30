@@ -1,0 +1,20 @@
+uuid: 6cda39c1-36a0-4713-bd04-e09a85fadd80
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.ar_key_value
+  module:
+    - path
+id: taxonomy_term.ar_key_value.path
+field_name: path
+entity_type: taxonomy_term
+bundle: ar_key_value
+label: 'URL alias'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: path

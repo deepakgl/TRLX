@@ -1,0 +1,15 @@
+uuid: fdd5dd9f-1c7b-400a-9909-a0e891223a4c
+langcode: en
+status: true
+dependencies: {  }
+name: video_listing_desktop
+label: 'Video Listing Desktop (345X150)'
+effects:
+  a0834b91-2af4-4ba4-95fd-ed4e4bcb59a3:
+    uuid: a0834b91-2af4-4ba4-95fd-ed4e4bcb59a3
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 345
+      height: 150
+      anchor: center-center

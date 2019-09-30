@@ -1,0 +1,18 @@
+uuid: 9b595a42-05b8-4ad2-9e08-78a626c82f89
+langcode: en
+status: true
+dependencies:
+  module:
+    - serialization
+    - trlx_comment
+    - trlx_utility
+id: comments_listing
+plugin_id: comments_listing
+granularity: resource
+configuration:
+  methods:
+    - GET
+  formats:
+    - json
+  authentication:
+    - jwt_Auth

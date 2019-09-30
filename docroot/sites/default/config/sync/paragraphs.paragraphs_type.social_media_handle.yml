@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 id: social_media_handle
-label: 'Social Media Handle'
+label: 'Social Media'
 icon_uuid: null
 description: 'Social Media Handle Type for Insider Corner Section (Stories Content Type)'
 behavior_plugins: {  }

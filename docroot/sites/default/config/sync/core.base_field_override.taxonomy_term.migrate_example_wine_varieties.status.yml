@@ -1,0 +1,22 @@
+uuid: 7080e1eb-453a-4a6f-b1de-cb52881a25be
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.migrate_example_wine_varieties
+id: taxonomy_term.migrate_example_wine_varieties.status
+field_name: status
+entity_type: taxonomy_term
+bundle: migrate_example_wine_varieties
+label: Published
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 1
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

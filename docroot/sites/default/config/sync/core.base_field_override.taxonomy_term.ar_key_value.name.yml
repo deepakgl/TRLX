@@ -1,0 +1,18 @@
+uuid: b43d131d-3a77-432c-94ed-69fd99c06d02
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.ar_key_value
+id: taxonomy_term.ar_key_value.name
+field_name: name
+entity_type: taxonomy_term
+bundle: ar_key_value
+label: Name
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

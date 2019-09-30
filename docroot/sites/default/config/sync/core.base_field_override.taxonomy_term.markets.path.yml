@@ -1,0 +1,20 @@
+uuid: 8270763f-47b6-4ea8-aec5-09c353823f79
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.markets
+  module:
+    - path
+id: taxonomy_term.markets.path
+field_name: path
+entity_type: taxonomy_term
+bundle: markets
+label: 'URL alias'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: path

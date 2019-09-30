@@ -1,0 +1,15 @@
+uuid: 06b1ff51-c656-44aa-a9c4-03c6aa488e7d
+langcode: en
+status: true
+dependencies: {  }
+name: story_detail_desktop
+label: 'Story Detail Desktop (375X375)'
+effects:
+  7d333d59-9fe1-4bb4-b653-4f514c89d3a2:
+    uuid: 7d333d59-9fe1-4bb4-b653-4f514c89d3a2
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 375
+      height: 375
+      anchor: center-center

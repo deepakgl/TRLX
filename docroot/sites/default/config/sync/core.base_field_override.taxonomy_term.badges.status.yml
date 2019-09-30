@@ -1,0 +1,22 @@
+uuid: fecb9f8a-7d36-42db-9a93-e5f4b7868344
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.badges
+id: taxonomy_term.badges.status
+field_name: status
+entity_type: taxonomy_term
+bundle: badges
+label: Published
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 1
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean
