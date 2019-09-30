@@ -57,6 +57,7 @@ permissions:
   - 'restful get product_listings'
   - 'restful get products_carousel'
   - 'restful get quiz_detail'
+  - 'restful get selling_tips_listing'
   - 'restful get spotlight_section'
   - 'restful get stories_details'
   - 'restful get stories_details_comment'
