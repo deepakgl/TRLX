@@ -380,18 +380,18 @@ class CommonUtility {
     $sectionTerms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadTree('trlx_content_sections', 0, NULL, TRUE);
 
     if (!empty($sectionTerms)) {
-      foreach ($sectionTerms as $tid => $term) {
+      foreach ($sectionTerms as $delta => $term) {
         // Convert Object to Array.
         $term = $term->toArray();
         // Section key.
         $sectionKey = $term['field_content_section_key'][0]['value'];
         if (self::INSIDER_CORNER == $sectionKey) {
-          return $term;
+          return [$term['tid'][0]['value'], $term];
         }
       }
     }
 
-    return [];
+    return ['', ''];
   }
 
   /**

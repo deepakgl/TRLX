@@ -159,35 +159,21 @@ function trlx_utility_form_alter(&$form, FormStateInterface $form_state, $form_i
           foreach ($insiderCornerReqFields as $field) {
             // Check if the current field is required for Insider Corner.
             if (isset($insiderCornerReqFields[$field])) {
-
-              // Textfield.
-              if (!empty($form[$field]['widget'][0]['value'])) {
-                $form[$field]['widget'][0]['value']['#states']['required'] = [
-                  ["input[name='field_content_section']" => ['value' => $insiderCornerTermId]],
-                ];
+              if ('field_social_media_handles' == $field) {
+                // Custom validate handler for Social Media required validation.
+                $form['#validate'][] = 'stories_validate';
               }
-
-              // Check for social media Paragraph field.
-              if (!empty($form[$field]['widget'][0]['subform']) && ('field_social_media_handles' == $field)) {
-                // Check for social media title field.
-                if (!empty($form[$field]['widget'][0]['subform']['field_social_media_title']['widget'][0]['value'])) {
-                  $form[$field]['widget'][0]['subform']['field_social_media_title']['widget'][0]['value']['#states']['required'] = [
-                    ["input[name='field_content_section']" => ['value' => $insiderCornerTermId]],
-                  ];
-                }
-
-                // Check for social media handle field.
-                if (!empty($form[$field]['widget'][0]['subform']['field_social_media_handle']['widget'][0]['value'])) {
-                  $form[$field]['widget'][0]['subform']['field_social_media_handle']['widget'][0]['value']['#states']['required'] = [
+              else {
+                if (!empty($form[$field]['widget'][0]['value'])) {
+                  $form[$field]['widget'][0]['value']['#states']['required'] = [
                     ["input[name='field_content_section']" => ['value' => $insiderCornerTermId]],
                   ];
                 }
               }
-
             }
-            /*** Add Required Validation for Insider Corner - END ***/
           }
         }
+        /*** Add Required Validation for Insider Corner - END ***/
       }
       break;
 
@@ -208,6 +194,45 @@ function set_section_based_point_value(array &$form, FormStateInterface $form_st
   $form['field_point_value']['widget'][0]['value']['#value'] = $point_field_value;
   $form['field_point_value']['widget'][0]['value']['#default_value'] = $point_field_value;
   return $form['field_point_value'];
+}
+
+/**
+ * Custom validate handler to handle Social Media.
+ */
+function stories_validate(array &$form, FormStateInterface $form_state) {
+  // Load module config.
+  $config = \Drupal::config('trlx_utility.settings');
+  // Fetch content type mapped sections from config.
+  $insiderCornerReqFields = $config->get('insider_corner_req_fields');
+
+  $commonUtility = new CommonUtility();
+  // Fetch Insider Corner Taxonomy Term.
+  list($insiderCornerTermId) = $commonUtility->getInsiderCornerTerm();
+
+  $insiderCornerSection = FALSE;
+  // Get selected section.
+  $section = $form_state->getValue('field_content_section')[0]['target_id'];
+  if ($section == $insiderCornerTermId) {
+    $insiderCornerSection = TRUE;
+  };
+
+  // Get Social Media field value.
+  $socialMedia = $form_state->getValue('field_social_media_handles');
+
+  $socialMediaDataExists = FALSE;
+  foreach ($socialMedia as $delta => $fields) {
+    if (is_int($delta)) {
+      if (!empty($socialMedia[$delta]['subform']['field_social_media_title'][0]['value']) && !empty($socialMedia[$delta]['subform']['field_social_media_handle'][0]['value'])) {
+        $socialMediaDataExists = TRUE;
+        break;
+      }
+    }
+  }
+
+  // Check for show validation.
+  if (!empty($insiderCornerSection) && isset($insiderCornerReqFields['field_social_media_handles']) && empty($socialMediaDataExists)) {
+    $form_state->setErrorByName('field_social_media_handles', t('At least one set of Social Media (Title & Url) is required.'));
+  }
 }
 
 /**
@@ -301,9 +326,7 @@ function trlx_utility_views_query_alter(ViewExecutable $view, $query) {
 function trlx_utility_field_group_build_pre_render_alter(&$element) {
   $commonUtility = new CommonUtility();
   // Fetch Insider Corner Taxonomy Term.
-  $insiderConerTerm = $commonUtility->getInsiderCornerTerm();
-  // Fetch Insider Corner Taxonomy Term Id.
-  $insiderCornerTermId = isset($insiderConerTerm['tid'][0]['value']) ? $insiderConerTerm['tid'][0]['value'] : 0;
+  list($insiderCornerTermId) = $commonUtility->getInsiderCornerTerm();
 
   // Add #states: visible, enabled & required.
   $form_id = $element['#form_id'];
@@ -313,9 +336,6 @@ function trlx_utility_field_group_build_pre_render_alter(&$element) {
         ["input[name='field_content_section']" => ['value' => $insiderCornerTermId]],
       ],
       'enabled' => [
-        ["input[name='field_content_section']" => ['value' => $insiderCornerTermId]],
-      ],
-      'required' => [
         ["input[name='field_content_section']" => ['value' => $insiderCornerTermId]],
       ],
     ];
