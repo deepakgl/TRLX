@@ -71,6 +71,7 @@ class TrendListing extends ResourceBase {
       'nid' => 'int',
       'pointValue' => 'int',
       'downloadable' => 'boolean',
+      'body' => 'string_replace',
     ];
 
     list($limit, $offset, $errorResponse) = $commonUtility->getPagerParam($request);

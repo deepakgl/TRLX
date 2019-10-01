@@ -123,7 +123,7 @@ class StoryDetails extends ResourceBase {
         'subTitle' => 'decode',
         'nid' => 'int',
         'pointValue' => $pointValAlterKey,
-        'body' => 'decode',
+        'body' => 'string_replace',
       ]
     );
 
