@@ -207,7 +207,93 @@ function trlx_utility_form_alter(&$form, FormStateInterface $form_state, $form_i
       /*** Change Point Value as per selected section on edit page - END ***/
       break;
 
+    case 'taxonomy_term_brands_form':
+    case 'taxonomy_term_learning_category_form':
     default:
+      $form['actions']['submit']['#submit'][] = 'trlx_image_style_creation_form_submit';
+  }
+}
+
+/**
+ * Method to create image style on node submit.
+ */
+function trlx_image_style_creation_form_submit(&$form, FormStateInterface $form_state) {
+
+  $image_value = $form_state->getValue('field_featured_image');
+  if (!empty($image_value[0]["image_crop"]["file-uri"])) {
+    // Brand story image.
+    set_crop_value($image_value, 'brand_story_mobile');
+    set_crop_value($image_value, 'brand_story_desktop');
+    set_crop_value($image_value, 'brand_story_tablet');
+    // Story detail image.
+    set_crop_value($image_value, 'story_detail_mobile');
+    set_crop_value($image_value, 'story_detail_desktop');
+    set_crop_value($image_value, 'story_detail_tablet');
+    // Story listing image.
+    set_crop_value($image_value, 'stories_listing_mobile');
+    set_crop_value($image_value, 'stories_listing_desktop');
+    set_crop_value($image_value, 'stories_listing_tablet');
+  }
+
+  // Product listing image.
+  $image_value = $form_state->getValue('field_field_product_image');
+  if (!empty($image_value[0]["image_crop"]["file-uri"])) {
+    set_crop_value($image_value, 'product_listings_mobile');
+    set_crop_value($image_value, 'product_listing_desktop');
+    set_crop_value($image_value, 'product_listings_tablet');
+  }
+
+  // Learning level image.
+  $image_value = $form_state->getValue('field_image');
+  if (!empty($image_value[0]["image_crop"]["file-uri"])) {
+    set_crop_value($image_value, 'learning_levels_desktop');
+    set_crop_value($image_value, 'learning_levels_tablet');
+    set_crop_value($image_value, 'learning_levels_mobile');
+    set_crop_value($image_value, 'levels_mobile_module');
+    set_crop_value($image_value, 'levels_module_desktop');
+    set_crop_value($image_value, 'levels_module_tablet');
+  }
+
+  // Video image.
+  $image_value = $form_state->getValue('field_tool_thumbnail');
+  if (!empty($image_value[0]["image_crop"]["file-uri"])) {
+    set_crop_value($image_value, 'video_listing_mobile');
+    set_crop_value($image_value, 'video_listing_desktop');
+    set_crop_value($image_value, 'video_listing_tablet');
+    set_crop_value($image_value, 'video_detail_mobile');
+    set_crop_value($image_value, 'video_detail_desktop');
+    set_crop_value($image_value, 'video_detail_tablet');
+  }
+
+  // Brand logo image.
+  $image_value = $form_state->getValue('field_brand_logo');
+  if (!empty($image_value[0]["image_crop"]["file-uri"])) {
+    set_crop_value($image_value, 'brands_category_listing_mobile');
+    set_crop_value($image_value, 'brands_category_listing_tablet');
+    set_crop_value($image_value, 'brands_category_listing_desktop');
+  }
+
+}
+
+/**
+ * Method to get file type.
+ */
+function get_file_type($fid) {
+  $query = db_select('file_managed', 'fm')
+    ->fields('fm', ['filemime'])
+    ->condition('fid', $fid);
+  return $query->execute()->fetchField();
+}
+
+/**
+ * Method to set crop value.
+ */
+function set_crop_value($image_value, $style_name) {
+  $uri = $image_value[0]["image_crop"]["file-uri"];
+  $style = \Drupal::entityTypeManager()->getStorage('image_style')->load($style_name);
+  if (!empty($style)) {
+    $build_uri = $style->buildUri($uri);
+    $style->createDerivative($uri, $build_uri);
   }
 }
 
