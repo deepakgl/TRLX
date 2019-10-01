@@ -7,6 +7,9 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Drupal\Core\Logger\RfcLogLevel;
 use Symfony\Component\HttpFoundation\Request;
 use Drupal\paragraphs\Entity\Paragraph;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\media\Entity\Media;
+use Drupal\file\Entity\File;
 
 /**
  * Purpose of this class is to build common object.
@@ -445,6 +448,38 @@ class CommonUtility {
     }
 
     return $pointValue;
+  }
+
+  /**
+   * Set Entities.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   EntityInterface object.
+   * @param string $field
+   *   Field name.
+   * @param array $styles
+   *   Image styles array for the field in the entity type.
+   */
+  public function setMediaEntity(EntityInterface $entity, string $field, array $styles) {
+    if ($entity->hasField($field)) {
+      if (!$entity->$field->isEmpty() && !empty($styles)) {
+        if ($entity->bundle() == 'user') {
+          $file_id = $entity->get($field)->getValue()[0]['target_id'];
+          $media_entity = ($file_id) ? File::Load($file_id) : '';
+          $path = $media_entity->getFileUri();
+        }
+        else {
+          $file_id = $entity->$field->getString();
+          $media_entity = ($file_id) ? Media::load($file_id) : '';
+          $path = $media_entity->field_media_image->entity->getFileUri();
+        }
+        foreach ($styles as $img_style) {
+          $style = \Drupal::entityTypeManager()->getStorage('image_style')->load($img_style);
+          $build_uri = $style->buildUri($path);
+          $style->createDerivative($path, $build_uri);
+        }
+      }
+    }
   }
 
 }
