@@ -3,13 +3,13 @@ langcode: en
 status: true
 dependencies: {  }
 name: levels_module_tablet
-label: 'Levels Module Tablet (150×150)'
+label: 'Levels Module Tablet (250×250)'
 effects:
   55b5af01-b70a-4b32-9ec0-d0ae375c3e89:
     uuid: 55b5af01-b70a-4b32-9ec0-d0ae375c3e89
     id: image_scale_and_crop
     weight: 1
     data:
-      width: 150
-      height: 150
+      width: 250
+      height: 250
       anchor: center-center

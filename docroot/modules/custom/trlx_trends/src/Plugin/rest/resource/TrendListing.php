@@ -70,7 +70,6 @@ class TrendListing extends ResourceBase {
       'subTitle' => 'decode',
       'nid' => 'int',
       'pointValue' => 'int',
-      'downloadable' => 'boolean',
       'body' => 'string_replace',
     ];
 
