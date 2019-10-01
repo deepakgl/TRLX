@@ -10,6 +10,7 @@ use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\media\Entity\Media;
 use Drupal\file\Entity\File;
+use Elasticsearch\ClientBuilder;
 
 /**
  * Purpose of this class is to build common object.
@@ -479,6 +480,73 @@ class CommonUtility {
           $style->createDerivative($path, $build_uri);
         }
       }
+    }
+  }
+
+  /**
+   * Fetch like count.
+   *
+   * @param mixed $nids
+   *   Node ids.
+   *
+   * @return json
+   *   Like count.
+   */
+  public function likeCount($nids) {
+    try {
+      global $_userData;
+      $uid = $_userData->userId;
+      $client = self::setElasticConnectivity();
+      $env = \Drupal::config('elx_utility.settings')->get('elx_environment');
+
+      $params['index'] = $env . '_node_data';
+      $params['type'] = 'node';
+      $params['body'] = ['ids' => $nids];
+      $response = $client->mget($params);
+      foreach ($response['docs'] as $key => $value) {
+        // If data found in elastic.
+        if ($value['found'] == 1) {
+          if (array_key_exists('like_by_user', $value['_source'])) {
+            $like_count[] = (int) count($value['_source']['like_by_user']);
+          }
+        }
+      }
+      return array_sum($like_count);
+    }
+    catch (RequestException $e) {
+      return FALSE;
+    }
+  }
+
+  /**
+   * Set Elastic Connectivity.
+   *
+   * @return json
+   *   Elastic Client.
+   */
+  public function setElasticConnectivity() {
+    try {
+      // Create elastic connection.
+      $hosts = [
+        [
+          'host' => \Drupal::config('elx_utility.settings')
+            ->get('elastic_host'),
+          'port' => \Drupal::config('elx_utility.settings')
+            ->get('elastic_port'),
+          'scheme' => \Drupal::config('elx_utility.settings')
+            ->get('elastic_scheme'),
+          'user' => \Drupal::config('elx_utility.settings')
+            ->get('elastic_username'),
+          'pass' => \Drupal::config('elx_utility.settings')
+            ->get('elastic_password'),
+        ],
+      ];
+      $client = ClientBuilder::create()->setHosts($hosts)->build();
+
+      return $client;
+    }
+    catch (RequestException $e) {
+      return FALSE;
     }
   }
 
