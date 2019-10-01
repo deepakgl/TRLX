@@ -65,6 +65,7 @@ class LearningLevels extends ResourceBase {
     }
     $content_section = '';
     $brandId = $request->query->get('brandId');
+    $params = ['language' => $language];
     if (!empty($brandId)) {
       // Prepare view response for valid brand key.
       list($view_results, $status_code) = $entityUtility->fetchApiResult(
@@ -80,8 +81,8 @@ class LearningLevels extends ResourceBase {
         return $commonUtility->errorResponse($this->t('Brand Id (@brandId) does not exist.', ['@brandId' => $brandId]), Response::HTTP_UNPROCESSABLE_ENTITY);
       }
       $content_section = 'brandLevel';
+      $params = ['language' => $language, 'brand' => $brandId, 'section' => $content_section];
     }
-
     // Prepare array of keys for alteration in response.
     $data = [
       'title' => 'decode',
@@ -100,7 +101,7 @@ class LearningLevels extends ResourceBase {
         NULL,
         'learning_levels',
         'rest_export_learning_levels',
-        $data, ['language' => $language, 'brand' => $brandId, 'section' => $content_section],
+        $data, $params,
         'level_listing'
       );
 
