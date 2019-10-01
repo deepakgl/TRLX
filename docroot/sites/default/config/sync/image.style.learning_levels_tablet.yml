@@ -3,13 +3,13 @@ langcode: en
 status: true
 dependencies: {  }
 name: learning_levels_tablet
-label: 'Learning Levels Tablet (170×160)'
+label: 'Learning Levels Tablet (230×195)'
 effects:
   217c8cd8-a786-4c55-96a7-2e367d09af33:
     uuid: 217c8cd8-a786-4c55-96a7-2e367d09af33
     id: image_scale_and_crop
     weight: 1
     data:
-      width: 170
-      height: 160
+      width: 230
+      height: 195
       anchor: center-center
