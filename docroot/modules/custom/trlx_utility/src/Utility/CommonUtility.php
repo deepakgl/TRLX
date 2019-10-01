@@ -416,7 +416,7 @@ class CommonUtility {
         $title = $socialMediaPara->field_social_media_title->getValue()[0]['value'];
         // Social Media Handle.
         $handle = $socialMediaPara->field_social_media_handle->getValue()[0]['value'];
-        $socialMediaHandles[] = json_encode(['title' => $title, 'handle' => $handle]);
+        $socialMediaHandles[] = ['title' => $title, 'handle' => $handle];
       }
     }
 

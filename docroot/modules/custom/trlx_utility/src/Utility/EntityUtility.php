@@ -192,7 +192,7 @@ class EntityUtility {
    * @return json
    *   API response.
    */
-  public function buildListingResponse($output, $data, $field_replace = []) {
+  public function buildListingResponse($output, $data, $field_replace = [], $field_remove = []) {
     if (!empty($data)) {
       foreach ($output['results'] as $view_key => $result) {
         foreach ($data as $key => $value) {
@@ -224,6 +224,11 @@ class EntityUtility {
             $pointValue = $this->configuration->get($value);
             $output['results'][$view_key][$key] = !empty($pointValue) ? $pointValue : $result[$key];
           }
+          // Set point value specific to section from config.
+          elseif ($value == 'point_value_' . $this->commonUtility::SELLING_TIPS) {
+            $pointValue = $this->configuration->get($value);
+            $output['results'][$view_key][$key] = !empty($pointValue) ? $pointValue : $result[$key];
+          }
           // Calculate point value for "Learning Level".
           // Based on associated "Level Interactive Content".
           elseif ($value == 'point_value_level') {
@@ -250,6 +255,16 @@ class EntityUtility {
             }
             // We don't need this data in response.
             unset($output['results'][$view_key][$replace_field]);
+          }
+        }
+      }
+      // Remove unwanted fields.
+      if (!empty($field_remove)) {
+        foreach ($field_remove as $field_key) {
+          foreach ($output['results'] as $view_key => $result) {
+            if (isset($output['results'][$view_key][$field_key])) {
+              unset($output['results'][$view_key][$field_key]);
+            }
           }
         }
       }
@@ -303,6 +318,11 @@ class EntityUtility {
           }
           // Set point value specific to section from config.
           elseif ($value == 'point_value_' . $this->commonUtility::TREND) {
+            $pointValue = $this->configuration->get($value);
+            $output[$view_key][$key] = !empty($pointValue) ? $pointValue : $result[$key];
+          }
+          // Set point value specific to section from config.
+          elseif ($value == 'point_value_' . $this->commonUtility::SELLING_TIPS) {
             $pointValue = $this->configuration->get($value);
             $output[$view_key][$key] = !empty($pointValue) ? $pointValue : $result[$key];
           }
