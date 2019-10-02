@@ -464,7 +464,7 @@ class CommonUtility {
   public function setMediaEntity(EntityInterface $entity, string $field, array $styles) {
     if ($entity->hasField($field)) {
       if (!$entity->$field->isEmpty() && !empty($styles)) {
-        if ($entity->bundle() == 'user') {
+        if (in_array($entity->bundle(), ['user', 'brands'])) {
           $file_id = $entity->get($field)->getValue()[0]['target_id'];
           $media_entity = ($file_id) ? File::Load($file_id) : '';
           $path = $media_entity->getFileUri();
