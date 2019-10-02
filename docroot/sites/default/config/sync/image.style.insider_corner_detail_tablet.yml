@@ -1,0 +1,15 @@
+uuid: 15fc028e-8165-4ae8-aba4-d6c94968e49f
+langcode: en
+status: true
+dependencies: {  }
+name: insider_corner_detail_tablet
+label: 'Insider Corner Detail Tablet (150X169)'
+effects:
+  25653478-8f86-48ad-b977-27e5041c2917:
+    uuid: 25653478-8f86-48ad-b977-27e5041c2917
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 150
+      height: 169
+      anchor: center-center

@@ -1,0 +1,15 @@
+uuid: e13dcfe0-ed95-4e01-86b0-840319319748
+langcode: en
+status: true
+dependencies: {  }
+name: insider_corner_detail_desktop
+label: 'Insider Corner Detail Desktop (150X169)'
+effects:
+  a72da08d-d322-4f37-9017-ecf5ef86e436:
+    uuid: a72da08d-d322-4f37-9017-ecf5ef86e436
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 150
+      height: 169
+      anchor: center-center
