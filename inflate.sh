@@ -5,7 +5,9 @@
 #does this happens in docker container ? 
 
 apt-get update
-apt-get install php-mongodb -y
+apt install php-pear
+pecl install mongodb
+apt install php-dev
 
 echo "Check if the path is available for dependencies installation"
 
