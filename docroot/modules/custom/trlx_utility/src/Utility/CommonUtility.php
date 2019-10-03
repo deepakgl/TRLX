@@ -316,19 +316,24 @@ class CommonUtility {
    *
    * @param int $tid
    *   Term id.
+   * @param int $vid
+   *   Vocabulary id.
    *
    * @return bool
    *   True or false.
    */
-  public function isValidTid($tid) {
+  public function isValidTid($tid, $vid = NULL) {
     if (!is_numeric($tid)) {
       return FALSE;
     }
     $query = \Drupal::database();
     $query = $query->select('taxonomy_term_data', 't');
-    $query->fields('t', ['tid'])
-      ->condition('t.tid', $tid, '=')
-      ->range(0, 1);
+    $query->fields('t', ['tid']);
+    $query->condition('t.tid', $tid, '=');
+    if (!is_null($vid)) {
+      $query->condition('t.vid', $vid, '=');
+    }
+    $query->range(0, 1);
     $result = $query->execute()->fetchAll();
     if (empty($result)) {
       global $base_url;
