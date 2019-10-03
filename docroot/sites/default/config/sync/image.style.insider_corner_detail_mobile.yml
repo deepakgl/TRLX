@@ -1,0 +1,15 @@
+uuid: 8176cced-95c8-4938-b97d-84f3afe33a4e
+langcode: en
+status: true
+dependencies: {  }
+name: insider_corner_detail_mobile
+label: 'Insider Corner Detail Mobile (150X169)'
+effects:
+  015c613c-de56-44b3-af02-823d8ddabc07:
+    uuid: 015c613c-de56-44b3-af02-823d8ddabc07
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 150
+      height: 169
+      anchor: center-center

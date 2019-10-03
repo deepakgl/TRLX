@@ -75,7 +75,8 @@
         "drupal/allowed_formats": "^1.1",
         "drupal/menu_export": "^1.2",
         "drupal/menu_per_role":"^1.0",
-        "drupal/password_encrypt": "^1.0"
+        "drupal/password_encrypt": "^1.0",
+        "mongodb/mongodb": "^1.5"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
