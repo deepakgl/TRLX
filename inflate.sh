@@ -4,6 +4,8 @@
 #Then it installs all the relavent packages required for the code (composer install)
 #does this happens in docker container ? 
 
+apt-get update
+apt-get install php-mongodb
 
 echo "Check if the path is available for dependencies installation"
 
