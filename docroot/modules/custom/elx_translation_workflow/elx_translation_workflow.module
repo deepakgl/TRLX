@@ -8,6 +8,7 @@
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 use Drupal\elx_user\Utility\UserUtility;
+use Drupal\trlx_utility\Utility\CommonUtility;
 
 /**
  * Implements hook_form_alter().
@@ -122,6 +123,7 @@ FormStateInterface &$form_state) {
       break;
   }
   $entity->save();
+  elx_translation_workflow_generate_img_styles($entity);
   // Remove the query destination if any.
   \Drupal::request()->query->remove('destination');
   // Redirect to the dashboard page, after entity creation/updation.
@@ -133,4 +135,68 @@ FormStateInterface &$form_state) {
     $url = Url::fromRoute('view.dashboard.dashboard_published');
   }
   $form_state->setRedirectUrl($url);
+}
+
+function elx_translation_workflow_generate_img_styles($entity) {
+  $commonUtility = new CommonUtility();
+  // Product image
+  if ($entity->hasField('field_field_product_image')) {
+    $commonUtility->setMediaEntity($entity, 'field_field_product_image' ,array(
+      'product_details_mobile',
+      'product_details_desktop',
+      'product_listings_tablet',
+      'product_listings_mobile',
+      'product_listing_desktop',
+      'product_details_tablet',
+    )
+  );
+}
+
+if ($entity->hasField('field_featured_image')) {
+  $commonUtility->setMediaEntity($entity, 'field_featured_image' ,array(
+    'brand_story_mobile',
+    'brand_story_desktop',
+    'brand_story_tablet',
+    'story_detail_mobile',
+    'story_detail_desktop',
+    'story_detail_tablet',
+    'stories_listing_mobile',
+    'stories_listing_desktop',
+    'stories_listing_tablet',
+  )
+);
+}
+
+if ($entity->hasField('field_image')) {
+  $commonUtility->setMediaEntity($entity, 'field_image' ,array(
+    'learning_levels_desktop',
+    'learning_levels_tablet',
+    'learning_levels_mobile',
+    'levels_mobile_module',
+    'levels_module_desktop',
+    'levels_module_tablet',
+  )
+);
+}
+
+if ($entity->hasField('field_tool_thumbnail')) {
+  $commonUtility->setMediaEntity($entity, 'field_tool_thumbnail' ,array(
+    'video_listing_mobile',
+    'video_listing_desktop',
+    'video_listing_tablet',
+    'video_detail_mobile',
+    'video_detail_desktop',
+    'video_detail_tablet',
+  )
+);
+}
+
+if ($entity->hasField('field_brand_logo')) {
+  $commonUtility->setMediaEntity($entity, 'field_brand_logo' ,array(
+    'brands_category_listing_mobile',
+    'brands_category_listing_tablet',
+    'brands_category_listing_desktop',
+  )
+);
+}
 }

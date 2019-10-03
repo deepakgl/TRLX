@@ -3,6 +3,7 @@
 namespace Drupal\trlx_learning_levels\Utility;
 
 use Drupal\trlx_utility\Utility\UserUtility;
+use Drupal\trlx_utility\Utility\CommonUtility;
 
 /**
  * Purpose of this class is to build learning levels object.
@@ -119,6 +120,65 @@ class LevelUtility {
     $next = isset($arr[$interactive_content + 1]) ? intval($arr[$interactive_content + 1]) : "";
 
     return [$previous, $next];
+  }
+
+  /**
+   * Fetch level activity information.
+   *
+   * @param int $_userData
+   *   User object.
+   * @param int $tid
+   *   Term id.
+   * @param int $nid
+   *   Node id.
+   * @param string $lang
+   *   Language code.
+   *
+   * @return json
+   *   Level activity.
+   */
+  public function getLevelActivity($_userData, $tid, $nid, $lang) {
+    $commonUtility = new CommonUtility();
+    $uid = $_userData->userId;
+    $query = \Drupal::database();
+    $query = $query->select('lm_lrs_records', 'records');
+    $query->fields('records', ['statement_status', 'nid']);
+    $query->condition('records.uid', $uid);
+    if (!empty($tid)) {
+      $query->condition('records.tid', $tid);
+    }
+    $query->condition('records.nid', $nid, 'IN');
+    $results = $query->execute()->fetchAll();
+    foreach ($results as $key => $result) {
+      $data[$result->nid] = $result;
+    }
+    $incomplete_status = ['progress', NULL];
+    foreach ($nid as $key => $value) {
+      $status = (isset($data[$value]) && !in_array($data[$value]->statement_status, $incomplete_status)) ? (int) 1 : (int) 0;
+      $response[$value] = [
+        "nid" => (int) $value,
+        "status" => $status,
+      ];
+    }
+    $total_count = count($nid);
+    $completed = 0;
+    foreach ($response as $key => $module_detail) {
+      if ($module_detail['status'] == 1) {
+        $completed = $completed + 1;
+      }
+    }
+    $percentage = ceil($completed / $total_count * 100);
+    $category_name = $commonUtility->getTermName($tid);
+    $like_count = $commonUtility->likeCount($nid);
+    $arr = [
+      'name' => $category_name,
+      'categoryId' => (int) $tid,
+      'percentageCompleted' => $percentage,
+      'completedCount' => $completed,
+      'totalCount' => $total_count,
+      'likeCount' => $like_count,
+    ];
+    return $arr;
   }
 
 }

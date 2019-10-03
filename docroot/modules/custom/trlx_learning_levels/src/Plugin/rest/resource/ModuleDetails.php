@@ -16,7 +16,7 @@ use Drupal\trlx_learning_levels\Utility\LevelUtility;
  *   id = "module_details",
  *   label = @Translation("Module Details"),
  *   uri_paths = {
- *     "canonical" = "/api/v1/moduledetails"
+ *     "canonical" = "/api/v1/moduleDetails"
  *   }
  * )
  */
