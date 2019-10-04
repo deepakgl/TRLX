@@ -70,15 +70,7 @@ class ConsumerCategoryListing extends ResourceBase {
     $data = [
       'id' => 'int',
       'title' => 'decode',
-      'imageSmall' => 'image',
-      'imageMedium' => 'image',
-      'imageLarge' => 'image',
     ];
-
-    list($limit, $offset, $errorResponse) = $commonUtility->getPagerParam($request);
-    if (!empty($errorResponse)) {
-      return $errorResponse;
-    }
 
     // Prepare view response.
     list($view_results, $status_code) = $entityUtility->fetchApiResult(
