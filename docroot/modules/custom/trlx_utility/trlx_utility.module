@@ -108,7 +108,7 @@ function trlx_utility_form_alter(&$form, FormStateInterface $form_state, $form_i
 
       // Collect in valid term ids.
       $inValidSections = [];
-      $insiderCornerTermId = 0;
+      $insiderCornerTermId = $consumerTermId = 0;
       if ($sectionTerms) {
         foreach ($sectionTerms as $tid => $term) {
           // Convert $term object to array.
@@ -122,14 +122,19 @@ function trlx_utility_form_alter(&$form, FormStateInterface $form_state, $form_i
             $insiderCornerTermId = $tid;
           }
 
-          // Insider Corner Term Id to hide/show Insider Corner fields.
+          // Selling Tips Term Id to hide/show Selling Tips fields.
           if (CommonUtility::SELLING_TIPS == $sectionKey) {
             $sellingTipsTermId = $tid;
           }
 
-          // Insider Corner Term Id to hide/show Insider Corner fields.
+          // Trend Term Id to hide/show Trend fields.
           if (CommonUtility::TREND == $sectionKey) {
             $trendTermId = $tid;
+          }
+
+          // Consumer Term Id to hide/show Consumer fields.
+          if (CommonUtility::CONSUMER == $sectionKey) {
+            $consumerTermId = $tid;
           }
 
           // Check if section key is mapped to current content type.
@@ -187,6 +192,29 @@ function trlx_utility_form_alter(&$form, FormStateInterface $form_state, $form_i
         /*** Add Required Validation for Insider Corner - END ***/
       }
 
+      /*** Show/Hide/Required Consumer Category based on section selection - START ***/
+      if (!empty($consumerTermId)) {
+        // Visible state.
+        $form['field_consumer_category']['widget']['#states']['visible'] = [
+          ["input[name='field_content_section']" => ['value' => $consumerTermId]],
+        ];
+
+        // Enabled state.
+        $form['field_consumer_category']['widget']['#states']['enabled'] = [
+          ["input[name='field_content_section']" => ['value' => $consumerTermId]],
+        ];
+
+        // Required state.
+        $form['field_consumer_category']['widget']['#states']['required'] = [
+          ["input[name='field_content_section']" => ['value' => $consumerTermId]],
+        ];
+
+        // Unset option "N/A".
+        unset($form['field_consumer_category']['widget']['#options']['_none']);
+        $form['#validate'][] = 'stories_validate';
+      }
+      /*** Show/Hide/Required Consumer Category based on section selection - END ***/
+
       /*** Change Point Value as per selected section on edit page - START ***/
       if ($form_id == 'node_stories_edit_form') {
         if ($insiderCornerTermId && ($form['field_content_section']['widget']['#default_value'] == $insiderCornerTermId)) {
@@ -197,6 +225,9 @@ function trlx_utility_form_alter(&$form, FormStateInterface $form_state, $form_i
         }
         if ($trendTermId && ($form['field_content_section']['widget']['#default_value'] == $trendTermId)) {
           $point_field_value = $config->get("point_value_" . $commonUtility::TREND);
+        }
+        if ($consumerTermId && ($form['field_content_section']['widget']['#default_value'] == $consumerTermId)) {
+          $point_field_value = $config->get("point_value_" . $commonUtility::CONSUMER);
         }
 
         if (!empty($point_field_value)) {
@@ -293,7 +324,12 @@ function stories_validate(array &$form, FormStateInterface $form_state) {
 
   // Check for show validation.
   if (!empty($insiderCornerSection) && isset($insiderCornerReqFields['field_social_media_handles']) && empty($socialMediaDataExists)) {
-    $form_state->setErrorByName('field_social_media_handles', t('At least one set of Social Media (Title & Url) is required.'));
+    $form_state->setErrorByName('field_social_media_handles', t('At least one set of Social Media (Title & Url) is required!'));
+  }
+
+  // Check for Consumer Category required validation.
+  if (empty($form_state->getValue('field_consumer_category')[0]['target_id'])) {
+    $form_state->setErrorByName('field_consumer_category', t('@title is required!', ['@title' => $form['field_consumer_category']['widget']['#title']]));
   }
 }
 
