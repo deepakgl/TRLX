@@ -1,0 +1,18 @@
+uuid: 038262ee-cb4e-4813-8ac3-a69eb4215ad3
+langcode: en
+status: true
+dependencies:
+  config:
+    - paragraphs.paragraphs_type.social_media_handle
+  module:
+    - content_translation
+third_party_settings:
+  content_translation:
+    enabled: true
+    bundle_settings:
+      untranslatable_fields_hide: '0'
+id: paragraph.social_media_handle
+target_entity_type_id: paragraph
+target_bundle: social_media_handle
+default_langcode: site_default
+language_alterable: false
