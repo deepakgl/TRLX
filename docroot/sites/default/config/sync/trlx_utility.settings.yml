@@ -24,8 +24,8 @@ tools_sections: {  }
 tools-pdf_sections: {  }
 welcome_message_sections: {  }
 submit: 'Save configuration'
-form_build_id: form--sPaBLH2CyW63tCLRT7i_QKRyal-RQwk_xS9wbGPxdw
-form_token: uYOlcofONDBZjPlXHWpTlLEMrYgH44V9nH-2g8Mtk-Q
+form_build_id: form-XFFeQVLym285ijST9GpZ-l84PTtxymKq6mkEHE3j4io
+form_token: PcRnmnhvT1vFbUP190dRmA3Fwyy0JYxnbFDLA7snBJI
 form_id: trlx_content_config
 op: 'Save configuration'
 insiderCorner_req_fields:
@@ -46,3 +46,11 @@ insider_corner_req_fields:
 point_value: '50'
 faq_points: '50'
 faq_id: '9999999'
+point_value_FAQ: ''
+'point_value_Insider''s Corner': ''
+'point_value_Selling Tips': ''
+learning_levels:
+  86519: '86519'
+  86481: '86481'
+  86485: '86485'
+point_value_brandLevel: ''
