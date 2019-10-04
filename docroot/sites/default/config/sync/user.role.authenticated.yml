@@ -39,6 +39,7 @@ permissions:
   - 'get own binary files'
   - 'restful get ar_key_value'
   - 'restful get browse_products'
+  - 'restful get consumer_category_listing'
   - 'restful get explore_learning_levels'
   - 'restful get factsheets_listing'
   - 'restful get footer_menu'
