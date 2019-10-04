@@ -37,6 +37,7 @@ permissions:
   - 'flag test_rpu174'
   - 'flag the_night_ritual_refresh'
   - 'get own binary files'
+  - 'manipulate entityqueues'
   - 'restful get ar_key_value'
   - 'restful get browse_products'
   - 'restful get explore_learning_levels'

@@ -1,0 +1,15 @@
+uuid: c4b1c9ed-4446-4211-950b-013467b4b866
+langcode: en
+status: true
+dependencies: {  }
+name: spotlight_desktop_1194_357
+label: 'Spotlight Desktop (1194×357)'
+effects:
+  0cd3d6e7-dc1e-4b19-8225-24fd70423304:
+    uuid: 0cd3d6e7-dc1e-4b19-8225-24fd70423304
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 1194
+      height: 375
+      anchor: center-center
