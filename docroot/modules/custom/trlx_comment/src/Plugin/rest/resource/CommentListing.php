@@ -86,7 +86,12 @@ class CommentListing extends ResourceBase {
     $pager['items_per_page'] = (int) $limit;
     $pager['current_page'] = 0;
     $pager['next_page'] = 0;
-    return $commonUtility->successResponse($slicedCommentArray, Response::HTTP_OK, $pager);
+    if (!empty($slicedCommentArray)) {
+      return $commonUtility->successResponse($slicedCommentArray, Response::HTTP_OK, $pager);
+    }
+    else {
+      return $commonUtility->successResponse($slicedCommentArray, Response::HTTP_OK);
+    }
   }
 
   /**
