@@ -37,6 +37,7 @@ class ExternalIntegrationConfigForm extends ConfigFormBase {
       'Elastic Password' => 'elastic_password',
       'ELastic Environment' => 'elx_environment',
       'LRS statement id' => 'lrs_statement_id',
+      'Lumen Url' => 'lumen_url',
       'Redis Host' => 'redis_host',
       'Redis Port' => 'redis_port',
       'Redis Password' => 'redis_password',

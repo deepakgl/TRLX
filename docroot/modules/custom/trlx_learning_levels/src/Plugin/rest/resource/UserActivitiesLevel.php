@@ -68,19 +68,21 @@ class UserActivitiesLevel extends ResourceBase {
     // @todo Will remove foreach.
     foreach ($categoryId as $key => $value) {
       // Checkfor valid category id.
-      if (empty($commonUtility->isValidTid($value))) {
+      if (empty($commonUtility->isValidTid($value, 'learning_category'))) {
         return $commonUtility->errorResponse($this->t('Category id does not exist.'), Response::HTTP_UNPROCESSABLE_ENTITY);
       }
     }
 
     // Get level intreactive node ids assosiated with level.
     $term_nodes = $levelUtility->getTermNodes($categoryId, $_userData, $language);
-
-    // Get Level activity.
-    foreach ($categoryId as $key => $value) {
-      $module_details[] = $levelUtility
-        ->getLevelActivity($_userData,
-       $value, array_column($term_nodes[$value], 'nid'), $language);
+    $module_details = [];
+    if (!empty($term_nodes)) {
+      // Get Level activity.
+      foreach ($categoryId as $key => $value) {
+        $module_details[] = $levelUtility
+          ->getLevelActivity($_userData,
+         $value, array_column($term_nodes[$value], 'nid'), $language);
+      }
     }
 
     return $commonUtility->successResponse($module_details, Response::HTTP_OK);

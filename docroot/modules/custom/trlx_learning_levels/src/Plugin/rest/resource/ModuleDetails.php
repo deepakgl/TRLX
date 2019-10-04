@@ -115,6 +115,8 @@ class ModuleDetails extends ResourceBase {
     $levelUtility = new LevelUtility();
     global $_userData;
     global $base_url;
+    $lumen_url = \Drupal::config('elx_utility.settings')
+      ->get('lumen_url');
     // @todo will add dynamic data once user repository work done.
     // $base_url = Settings::get('file_public_root_base_url');
     // Get all user information from user repository.
@@ -136,7 +138,7 @@ class ModuleDetails extends ResourceBase {
 
     $learning_category = $levelUtility->getLevelCategory($nid);
     $decode['articulateFile'] = $base_url . $decode['articulateFile']
-      . '?tincan=true&endpoint=' . $base_url . '/lm/api/v1/slrsa&auth='
+      . '?tincan=true&endpoint=' . $lumen_url . '/lm/api/v1/slrsa&auth='
       . $statement_id . '&actor=' . $actor . '&registration=' .
           $uuid . '&uid='
       . $_userData->userId . '&tid=' . $learning_category . '&nid=' . $nid;
