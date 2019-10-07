@@ -4,7 +4,7 @@
  use Drupal\Core\Routing\RouteMatchInterface;
  use Drupal\Core\Url;
  use Symfony\Component\DependencyInjection\ContainerInterface;
-+use Drupal\elx_lang_translation\Utility\LangUtility;
++use Drupal\trlx_lang_translation\Utility\LangUtility;
 
  /**
   * Base class for entity translation controllers.
