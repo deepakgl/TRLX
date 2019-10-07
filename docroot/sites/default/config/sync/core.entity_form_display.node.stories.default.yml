@@ -8,6 +8,7 @@ dependencies:
     - field.field.node.stories.field_access_by_role
     - field.field.node.stories.field_archive_and_unarchive
     - field.field.node.stories.field_comment
+    - field.field.node.stories.field_consumer_category
     - field.field.node.stories.field_content_section
     - field.field.node.stories.field_country
     - field.field.node.stories.field_department
@@ -69,7 +70,7 @@ mode: default
 content:
   body:
     type: text_textarea_with_summary
-    weight: 6
+    weight: 7
     settings:
       rows: 9
       summary_rows: 3
@@ -77,10 +78,16 @@ content:
     third_party_settings: {  }
     region: content
   field_comment:
-    weight: 14
+    weight: 15
     settings: {  }
     third_party_settings: {  }
     type: comment_default
+    region: content
+  field_consumer_category:
+    weight: 6
+    settings: {  }
+    third_party_settings: {  }
+    type: options_buttons
     region: content
   field_content_section:
     weight: 0
@@ -113,7 +120,7 @@ content:
     type: string_textfield
     region: content
   field_featured_image:
-    weight: 7
+    weight: 8
     settings:
       entity_browser: media_entity_browser
       field_widget_display: rendered_entity
@@ -136,7 +143,7 @@ content:
     type: string_textfield
     region: content
   field_hero_image:
-    weight: 9
+    weight: 10
     settings:
       entity_browser: media_entity_browser
       field_widget_display: rendered_entity
@@ -159,7 +166,7 @@ content:
     type: string_textfield
     region: content
   field_markets:
-    weight: 13
+    weight: 14
     settings:
       start_minimized: true
       leaves_only: false
@@ -178,7 +185,7 @@ content:
     type: string_textfield
     region: content
   field_point_value:
-    weight: 12
+    weight: 13
     settings:
       size: 60
       placeholder: ''
@@ -207,12 +214,12 @@ content:
     region: content
   field_translation:
     type: options_buttons
-    weight: 17
+    weight: 18
     region: content
     settings: {  }
     third_party_settings: {  }
   field_video:
-    weight: 10
+    weight: 11
     settings:
       entity_browser: video_entity_browser
       field_widget_display: rendered_entity
@@ -227,7 +234,7 @@ content:
     type: entity_browser_entity_reference
     region: content
   field_video_thumbnail:
-    weight: 11
+    weight: 12
     settings:
       entity_browser: media_entity_browser
       field_widget_display: rendered_entity
@@ -250,13 +257,13 @@ content:
     third_party_settings: {  }
   path:
     type: path
-    weight: 15
+    weight: 16
     region: content
     settings: {  }
     third_party_settings: {  }
   status:
     type: boolean_checkbox
-    weight: 16
+    weight: 17
     region: content
     settings:
       display_label: true
@@ -270,7 +277,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
   translation:
-    weight: 8
+    weight: 9
     region: content
     settings: {  }
     third_party_settings: {  }

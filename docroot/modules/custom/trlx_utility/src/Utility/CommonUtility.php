@@ -305,7 +305,12 @@ class CommonUtility {
     if (!$request->query->has('section') || empty($name)) {
       return $this->errorResponse(t('Section parameter is required.'), Response::HTTP_BAD_REQUEST);
     }
-    $section = [self::TREND, self::SELLING_TIPS, self::INSIDER_CORNER];
+    $section = [
+      self::TREND,
+      self::SELLING_TIPS,
+      self::INSIDER_CORNER,
+      self::CONSUMER,
+    ];
     if (!preg_match("/^[A-Za-z\\- \']+$/", $name) || !in_array($name, $section)) {
       return $this->errorResponse(t('Please enter valid section name.'), Response::HTTP_UNPROCESSABLE_ENTITY);
     }
@@ -380,12 +385,15 @@ class CommonUtility {
   }
 
   /**
-   * Function to Insider Corner Section Taxonomy Term.
+   * Function to fetch Section Taxonomy Term.
+   *
+   * @param string $sectionKey
+   *   Section key of the section.
    *
    * @return array
    *   Taxonomy Term array for Insider Corner.
    */
-  public function getInsiderCornerTerm() {
+  public function getSectionTerm(string $sectionKey) {
     // Load all Section taxonomy terms.
     $sectionTerms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadTree('trlx_content_sections', 0, NULL, TRUE);
 
@@ -394,8 +402,8 @@ class CommonUtility {
         // Convert Object to Array.
         $term = $term->toArray();
         // Section key.
-        $sectionKey = $term['field_content_section_key'][0]['value'];
-        if (self::INSIDER_CORNER == $sectionKey) {
+        $termSectionKey = $term['field_content_section_key'][0]['value'];
+        if ($sectionKey == $termSectionKey) {
           return [$term['tid'][0]['value'], $term];
         }
       }
@@ -554,6 +562,34 @@ class CommonUtility {
     catch (RequestException $e) {
       return FALSE;
     }
+  }
+
+  /**
+   * Function to fetch Section tid by section key.
+   *
+   * @param int $sectionTid
+   *   Term id of the section.
+   *
+   * @return string
+   *   Section key associated with the term id.
+   */
+  public function getSectionKeyByTermId(int $sectionTid) {
+    // Load all Section taxonomy terms.
+    $sectionTerms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadTree('trlx_content_sections', 0, NULL, TRUE);
+
+    $sectionKey = '';
+    if (!empty($sectionTerms)) {
+      foreach ($sectionTerms as $delta => $term) {
+        // Convert Object to Array.
+        $term = $term->toArray();
+
+        if ($sectionTid == $term['tid'][0]['value']) {
+          $sectionKey = $term['field_content_section_key'][0]['value'];
+        }
+      }
+    }
+
+    return $sectionKey;
   }
 
 }

@@ -196,6 +196,8 @@ class EntityUtility {
    *   Response key value pair.
    * @param array $field_replace
    *   Fields to replace.
+   * @param array $field_remove
+   *   Fields to remove.
    *
    * @return json
    *   API response.
