@@ -1,11 +1,11 @@
-uuid: 83f46c67-ef79-4c21-ae39-b0aa5526a1ff
+uuid: c087a515-a07c-47dd-9296-fd01f84a5d00
 langcode: en
 status: true
 dependencies:
   module:
-    - elx_lang_translation
     - serialization
-    - simple_oauth
+    - trlx_lang_translation
+    - trlx_utility
 id: language_list
 plugin_id: language_list
 granularity: resource
@@ -15,4 +15,4 @@ configuration:
   formats:
     - json
   authentication:
-    - oauth2
+    - jwt_Auth

@@ -25,6 +25,7 @@ module:
   csv_serialization: 0
   ctools: 0
   datetime: 0
+  dblog: 0
   delete_all: 0
   draggableviews: 0
   dropzonejs: 0
@@ -40,7 +41,6 @@ module:
   elx_dashboard: 0
   elx_elastic_user: 0
   elx_entityqueue_alter: 0
-  elx_lang_translation: 0
   elx_menu: 0
   elx_products: 0
   elx_redis_purge: 0
@@ -130,6 +130,7 @@ module:
   trlx_dashboard: 0
   trlx_factsheets: 0
   trlx_faq: 0
+  trlx_lang_translation: 0
   trlx_learning_levels: 0
   trlx_market_hierarchy: 0
   trlx_products: 0

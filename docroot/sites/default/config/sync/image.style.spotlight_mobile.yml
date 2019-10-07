@@ -2,7 +2,7 @@ uuid: 962bc816-2e7e-4bb3-82ac-9dd4d90098f6
 langcode: en
 status: true
 dependencies: {  }
-name: spotlight_mobile_375_x_270
+name: spotlight_mobile
 label: 'Spotlight Mobile (375 X 270)'
 effects:
   5871cb83-c48d-4e37-bddb-b47cd896dce7:
