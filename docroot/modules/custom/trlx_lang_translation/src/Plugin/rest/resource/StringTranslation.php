@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\elx_lang_translation\Plugin\rest\resource;
+namespace Drupal\trlx_lang_translation\Plugin\rest\resource;
 
 use Drupal\rest\Plugin\ResourceBase;
 use Symfony\Component\HttpFoundation\JsonResponse;
