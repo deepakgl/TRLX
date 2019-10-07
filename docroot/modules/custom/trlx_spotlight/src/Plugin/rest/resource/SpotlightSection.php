@@ -89,7 +89,6 @@ class SpotlightSection extends ResourceBase {
 
     $result = [];
     foreach ($view_results['results'] as $key => $value ) {
-
       switch ($value['type']) {
         case 'product_detail':
           $node = $this->getNodeData($value, $language);
@@ -102,9 +101,9 @@ class SpotlightSection extends ResourceBase {
             $image = array_shift($thumbnail)->get(field_media_image)->referencedEntities();
             $uri = (!empty($image)) ? (array_shift($image)->get(uri)->value) : '';
             if (!empty($uri)) {
-              $result[$key]['imageSmall'] = $this->getImageUri($uri,'spotlight_mobile_375_x_270');
-              $result[$key]['imageMedium'] = $this->getImageUri($uri,'spotlight_tablet_770_x_355_');
-              $result[$key]['imageLarge'] = $this->getImageUri($uri,'spotlight_desktop_1194_357');
+              $result[$key]['imageSmall'] = $this->getImageUri($uri,'spotlight_mobile');
+              $result[$key]['imageMedium'] = $this->getImageUri($uri,'spotlight_tablet');
+              $result[$key]['imageLarge'] = $this->getImageUri($uri,'spotlight_desktop');
             }
           }
           $result[$key]['pointValue'] = $node->get('field_point_value')->value;
@@ -121,9 +120,9 @@ class SpotlightSection extends ResourceBase {
             $image = array_shift($thumbnail)->get(field_media_image)->referencedEntities();
             $uri = (!empty($image)) ? (array_shift($image)->get(uri)->value) : '';
             if (!empty($uri)) {
-              $result[$key]['imageSmall'] = $this->getImageUri($uri,'spotlight_mobile_375_x_270');
-              $result[$key]['imageMedium'] = $this->getImageUri($uri,'spotlight_tablet_770_x_355_');
-              $result[$key]['imageLarge'] = $this->getImageUri($uri,'spotlight_desktop_1194_357');
+              $result[$key]['imageSmall'] = $this->getImageUri($uri,'spotlight_mobile');
+              $result[$key]['imageMedium'] = $this->getImageUri($uri,'spotlight_tablet');
+              $result[$key]['imageLarge'] = $this->getImageUri($uri,'spotlight_desktop');
             }
           }
           $result[$key]['pointValue'] = $node->get('field_point_value')->value;
@@ -142,9 +141,9 @@ class SpotlightSection extends ResourceBase {
             $image = array_shift($thumbnail)->get(field_media_image)->referencedEntities();
             $uri = (!empty($image)) ? (array_shift($image)->get(uri)->value) : '';
             if (!empty($uri)) {
-              $result[$key]['imageSmall'] = $this->getImageUri($uri,'spotlight_mobile_375_x_270');
-              $result[$key]['imageMedium'] = $this->getImageUri($uri,'spotlight_tablet_770_x_355_');
-              $result[$key]['imageLarge'] = $this->getImageUri($uri,'spotlight_desktop_1194_357');
+              $result[$key]['imageSmall'] = $this->getImageUri($uri,'spotlight_mobile');
+              $result[$key]['imageMedium'] = $this->getImageUri($uri,'spotlight_tablet');
+              $result[$key]['imageLarge'] = $this->getImageUri($uri,'spotlight_desktop');
             }
           }
           $result[$key]['pointValue'] = $node->get('field_point_value')->value;
@@ -162,9 +161,9 @@ class SpotlightSection extends ResourceBase {
             $image = array_shift($thumbnail)->get(field_media_image)->referencedEntities();
             $uri = (!empty($image)) ? (array_shift($image)->get(uri)->value) : '';
             if (!empty($uri)) {
-              $result[$key]['imageSmall'] = $this->getImageUri($uri,'spotlight_mobile_375_x_270');
-              $result[$key]['imageMedium'] = $this->getImageUri($uri,'spotlight_tablet_770_x_355_');
-              $result[$key]['imageLarge'] = $this->getImageUri($uri,'spotlight_desktop_1194_357');
+              $result[$key]['imageSmall'] = $this->getImageUri($uri,'spotlight_mobile');
+              $result[$key]['imageMedium'] = $this->getImageUri($uri,'spotlight_tablet');
+              $result[$key]['imageLarge'] = $this->getImageUri($uri,'spotlight_desktop');
             }
           }
           $result[$key]['pointValue'] = $node->get('field_point_value')->value;
@@ -182,9 +181,9 @@ class SpotlightSection extends ResourceBase {
             $uri = (!empty($image)) ? (array_shift($image)->get(uri)->value) : '';
             if (!empty($uri)) {
 
-              $result[$key]['imageSmall'] = $this->getImageUri($uri,'spotlight_mobile_375_x_270');
-              $result[$key]['imageMedium'] = $this->getImageUri($uri,'spotlight_tablet_770_x_355_');
-              $result[$key]['imageLarge'] = $this->getImageUri($uri,'spotlight_desktop_1194_357');
+              $result[$key]['imageSmall'] = $this->getImageUri($uri,'spotlight_mobile');
+              $result[$key]['imageMedium'] = $this->getImageUri($uri,'spotlight_tablet');
+              $result[$key]['imageLarge'] = $this->getImageUri($uri,'spotlight_desktop');
             }
           }
           $result[$key]['pointValue'] = $node->get('field_point_value')->value;
