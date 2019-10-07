@@ -2213,13 +2213,13 @@ display:
               alias: body
               raw_output: false
             field_media_image:
-              alias: imageLarge
+              alias: imageSmall
               raw_output: false
             field_media_image_1:
               alias: imageMedium
               raw_output: false
             field_media_image_2:
-              alias: imageSmall
+              alias: imageLarge
               raw_output: false
             field_point_value:
               alias: pointValue
@@ -2531,7 +2531,7 @@ display:
           type: image_url
           settings:
             url_type: '0'
-            image_style: stories_listing_280_280
+            image_style: product_details_mobile
             image_link: ''
           group_column: ''
           group_columns: {  }
@@ -2596,7 +2596,7 @@ display:
           type: image_url
           settings:
             url_type: '0'
-            image_style: stories_listing_tablet_160_160
+            image_style: trends_homepage_tablet
             image_link: ''
           group_column: ''
           group_columns: {  }
@@ -2661,7 +2661,7 @@ display:
           type: image_url
           settings:
             url_type: '0'
-            image_style: stories_listing_mobile_300_300
+            image_style: trends_homepage_desktop
             image_link: ''
           group_column: ''
           group_columns: {  }
