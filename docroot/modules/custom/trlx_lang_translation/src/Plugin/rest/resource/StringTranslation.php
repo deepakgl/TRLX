@@ -5,7 +5,7 @@ namespace Drupal\trlx_lang_translation\Plugin\rest\resource;
 use Drupal\rest\Plugin\ResourceBase;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Drupal\elx_lang_translation\Utility\LangUtility;
+use Drupal\trlx_lang_translation\Utility\LangUtility;
 use Drupal\Component\Serialization\Json;
 
 /**
