@@ -87,6 +87,14 @@ class EntityUtility {
       // No results found.
       return [[], Response::HTTP_NO_CONTENT];
     }
+
+    // Views listing response without pager e.g. /api/v1/consumerCategories.
+    if (!empty($view_results) && (count($view_results) > 1) && !isset($view_results['results']) && !isset($view_results['pager'])) {
+      $view_results_without_pager = $view_results;
+      unset($view_results);
+      $view_results['results'] = $view_results_without_pager;
+    }
+
     // Build the response of listings and details respectively.
     $response = isset($view_results['results']) ? $this
       ->buildListingResponse($view_results, $data, $field_replace) : $this

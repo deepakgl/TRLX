@@ -25,7 +25,6 @@ module:
   csv_serialization: 0
   ctools: 0
   datetime: 0
-  dblog: 0
   delete_all: 0
   draggableviews: 0
   dropzonejs: 0
@@ -88,14 +87,12 @@ module:
   menu_ui: 0
   migrate: 0
   migrate_drupal: 0
-  migrate_drupal_ui: 0
   migrate_example: 0
   migrate_example_advanced: 0
   migrate_example_advanced_setup: 0
   migrate_example_setup: 0
   migrate_plus: 0
   migrate_tools: 0
-  migrate_upgrade: 0
   multiselect: 0
   node: 0
   notification: 0
@@ -129,6 +126,7 @@ module:
   trlx_brand: 0
   trlx_brand_story: 0
   trlx_comment: 0
+  trlx_consumer: 0
   trlx_dashboard: 0
   trlx_factsheets: 0
   trlx_faq: 0

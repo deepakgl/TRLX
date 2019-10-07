@@ -1,0 +1,28 @@
+uuid: dfba032e-4af7-485e-8258-b35dfe83de1b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_featured_image
+    - media.type.image
+    - taxonomy.vocabulary.consumer_category
+id: taxonomy_term.consumer_category.field_featured_image
+field_name: field_featured_image
+entity_type: taxonomy_term
+bundle: consumer_category
+label: 'Featured Image'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      image: image
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

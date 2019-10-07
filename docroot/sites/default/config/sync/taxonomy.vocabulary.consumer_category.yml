@@ -1,0 +1,9 @@
+uuid: f58a8403-c938-445d-bbc5-09ea6d579873
+langcode: en
+status: true
+dependencies: {  }
+name: 'Consumer Category'
+vid: consumer_category
+description: ''
+hierarchy: 0
+weight: 0
