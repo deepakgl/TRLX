@@ -3,13 +3,13 @@ langcode: en
 status: true
 dependencies: {  }
 name: learning_levels_desktop
-label: 'Learning Levels Desktop (170×160)'
+label: 'Learning Levels Desktop (188×200)'
 effects:
   2cf1f617-d734-4ecc-9151-7f37a4791171:
     uuid: 2cf1f617-d734-4ecc-9151-7f37a4791171
     id: image_scale_and_crop
     weight: 1
     data:
-      width: 170
-      height: 160
+      width: 188
+      height: 200
       anchor: center-center

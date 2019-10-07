@@ -11,7 +11,7 @@ use Drupal\Core\Link;
 use Drupal\Core\Entity\ContentEntityForm;
 use Drupal\views\ViewExecutable;
 use Drupal\elx_user\Utility\UserUtility;
-use Drupal\elx_lang_translation\Utility\LangUtility;
+use Drupal\trlx_lang_translation\Utility\LangUtility;
 use Drupal\elx_utility\Utility\CommonUtility;
 
 /**
@@ -37,8 +37,7 @@ function elx_dashboard_form_alter(&$form, FormStateInterface $form_state, $form_
     case 'views_form_user_admin_people_page_1':
       $roles = $user_utility->getUserRoles(\Drupal::currentUser()->id(), 'all');
       if (in_array('el_regional_market_admin', $roles)) {
-        unset($form['header']['user_bulk_form']['action']['#options']
-        ['user_cancel_user_action']);
+        unset($form['header']['user_bulk_form']['action']['#options']['user_cancel_user_action']);
       }
       break;
 

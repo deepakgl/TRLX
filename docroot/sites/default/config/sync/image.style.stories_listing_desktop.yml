@@ -3,13 +3,13 @@ langcode: en
 status: true
 dependencies: {  }
 name: stories_listing_desktop
-label: 'Stories Listing Desktop (150×150)'
+label: 'Stories Listing Desktop (188×200)'
 effects:
   c0bf5db6-e08d-48b7-94be-f8828fa7d5bf:
     uuid: c0bf5db6-e08d-48b7-94be-f8828fa7d5bf
     id: image_scale_and_crop
     weight: 1
     data:
-      width: 150
-      height: 150
+      width: 188
+      height: 200
       anchor: center-center
