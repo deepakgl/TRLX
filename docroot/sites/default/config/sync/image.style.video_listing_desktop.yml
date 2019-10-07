@@ -3,13 +3,13 @@ langcode: en
 status: true
 dependencies: {  }
 name: video_listing_desktop
-label: 'Video Listing Desktop (345X150)'
+label: 'Video Listing Desktop (640X227)'
 effects:
   a0834b91-2af4-4ba4-95fd-ed4e4bcb59a3:
     uuid: a0834b91-2af4-4ba4-95fd-ed4e4bcb59a3
     id: image_scale_and_crop
     weight: 1
     data:
-      width: 345
-      height: 150
+      width: 640
+      height: 227
       anchor: center-center

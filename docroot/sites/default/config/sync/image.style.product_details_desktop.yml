@@ -3,13 +3,13 @@ langcode: en
 status: true
 dependencies: {  }
 name: product_details_desktop
-label: 'Product Details Desktop (375×375)'
+label: 'Product Details Desktop (1440×437)'
 effects:
   429f2d0b-4662-4b47-999f-56b2e91e2e99:
     uuid: 429f2d0b-4662-4b47-999f-56b2e91e2e99
     id: image_scale_and_crop
     weight: 1
     data:
-      width: 375
-      height: 375
+      width: 1440
+      height: 437
       anchor: center-center
