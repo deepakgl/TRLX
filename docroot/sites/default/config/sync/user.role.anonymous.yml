@@ -17,6 +17,7 @@ permissions:
   - 'create og_user_node'
   - 'diff view changes'
   - 'display EU Cookie Compliance popup'
+  - 'manipulate entityqueues'
   - 'restful get '
   - 'restful get brand_story_details'
   - 'restful get brands_category_listing'
