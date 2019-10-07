@@ -2,6 +2,8 @@
 
 namespace Drupal\trlx_lang_translation\Utility;
 
+use Drupal\elx_user\Utility\UserUtility;
+
 /**
  * Purpose of this class is to build language object.
  */
