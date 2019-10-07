@@ -20,6 +20,7 @@ class CommonUtility {
   const INSIDER_CORNER = 'insiderCorner';
   const TREND = 'trend';
   const SELLING_TIPS = 'sellingTips';
+  const CONSUMER = 'consumer';
 
   /**
    * Build success response.

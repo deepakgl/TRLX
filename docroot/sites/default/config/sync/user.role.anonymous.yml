@@ -21,6 +21,7 @@ permissions:
   - 'restful get brand_story_details'
   - 'restful get brands_category_listing'
   - 'restful get comments_listing'
+  - 'restful get consumer_category_listing'
   - 'restful get factsheets_listing'
   - 'restful get faq_listing'
   - 'restful get insiderCorner_listing'
