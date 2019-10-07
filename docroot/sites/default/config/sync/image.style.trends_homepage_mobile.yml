@@ -1,0 +1,15 @@
+uuid: f3898fea-047d-4596-8cc1-40da466fddcf
+langcode: en
+status: true
+dependencies: {  }
+name: trends_homepage_mobile
+label: 'Trends Homepage Mobile (375 X 270)'
+effects:
+  ec736164-f1f3-4f05-af0b-32d503b13e89:
+    uuid: ec736164-f1f3-4f05-af0b-32d503b13e89
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 375
+      height: 270
+      anchor: center-center

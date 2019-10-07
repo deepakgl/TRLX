@@ -1,0 +1,15 @@
+uuid: d1847841-1b9f-47b6-9d86-5607f1378b50
+langcode: en
+status: true
+dependencies: {  }
+name: trends_homepage_desktop
+label: 'Trends Homepage Desktop (1194X357)'
+effects:
+  c48b723a-0a9f-41a6-ac9c-7eb9c092b747:
+    uuid: c48b723a-0a9f-41a6-ac9c-7eb9c092b747
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 1194
+      height: 1194
+      anchor: center-center

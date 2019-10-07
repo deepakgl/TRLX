@@ -28,8 +28,10 @@ class SpotlightSection extends ResourceBase {
    * @param \Symfony\Component\HttpFoundation\Request $request
    *   Rest resource query parameters.
    *
-   * @return \Drupal\rest\ResourceResponse
+   * @return array|\Drupal\trlx_utility\Utility\Illuminate\Http\JsonResponse|\Symfony\Component\HttpFoundation\JsonResponse Resource response.
    *   Resource response.
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
   public function get(Request $request) {
     $commonUtility = new CommonUtility();
