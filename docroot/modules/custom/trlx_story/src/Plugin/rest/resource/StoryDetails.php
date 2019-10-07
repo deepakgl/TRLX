@@ -106,6 +106,13 @@ class StoryDetails extends ResourceBase {
         $data['video'] = 'append_host';
         break;
 
+      case $commonUtility::CONSUMER:
+        $views = 'consumer';
+        $viewsDisplay = 'rest_export_consumer_details';
+        $type = $commonUtility::CONSUMER;
+        $pointValAlterKey = 'point_value_' . $commonUtility::CONSUMER;
+        break;
+
       default:
         $views = 'stories_listing';
         $viewsDisplay = 'rest_export_story_details';
