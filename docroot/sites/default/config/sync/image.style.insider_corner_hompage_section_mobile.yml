@@ -1,0 +1,15 @@
+uuid: 00c26f2f-9257-47fa-8a12-5dd5c446fc4a
+langcode: en
+status: true
+dependencies: {  }
+name: insider_corner_hompage_section_mobile
+label: 'Insider Corner Hompage Section Mobile (375 X 270) '
+effects:
+  6bcd8c43-ef76-402a-9cf4-c351db37f827:
+    uuid: 6bcd8c43-ef76-402a-9cf4-c351db37f827
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 375
+      height: 270
+      anchor: center-center
