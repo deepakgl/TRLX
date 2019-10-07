@@ -146,6 +146,9 @@
             },
             "drupal/password_encrypt": {
                 "Password decryption": "patches/password_encrypt/password_decryption.patch"
+            },
+            "drupal/dropzonejs": {
+                "Zero timeout setting": "patches/dropzonejs/dropzonejs-upload-timeout--2977463-17.patch"
             }
         },
         "installer-paths": {
