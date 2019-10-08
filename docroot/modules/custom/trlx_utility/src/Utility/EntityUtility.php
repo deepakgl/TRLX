@@ -245,6 +245,7 @@ class EntityUtility {
             if (isset($output['results'][$view_key][$key])) {
               // Calculate aggregate point value.
               $output['results'][$view_key][$key] = $this->commonUtility->getLearningLevelPointValue($result[$key]);
+              $output['results'][$view_key]['pointValue'] = $output['results'][$view_key][$key];
             }
           }
           else {

@@ -439,6 +439,8 @@ function trlx_utility_views_query_alter(ViewExecutable $view, $query) {
     'insider_corner',
     'selling_tips_learning_level_vocabulary',
     'selling_tips',
+    'consumer_categories',
+    'consumer',
   ];
   $current_display = [
     'rest_export_product_listings',
@@ -454,6 +456,8 @@ function trlx_utility_views_query_alter(ViewExecutable $view, $query) {
     'rest_export_insider_corner_listing',
     'rest_export_selling_tips_learning_level_listing',
     'rest_export_selling_tips_content_listing',
+    'rest_export_consumer_learning_level_listing',
+    'rest_export_consumer_stories_listing',
   ];
   if (in_array($view->id(), $view_id)) {
     if (in_array($view->current_display, $current_display)) {
