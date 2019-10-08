@@ -92,107 +92,66 @@ class SpotlightSection extends ResourceBase {
     $result = [];
     foreach ($view_results['results'] as $key => $value ) {
       switch ($value['type']) {
-        case 'product_detail':
+        case 'stories':
+          $result[$key]['nid'] = $value['nid'];
           $node = $this->getNodeData($value, $language);
-          $result[$key]['nid'] = $node->id();
           $result[$key]['displayTitle'] = $node->get('field_display_title')->value;
-          $result[$key]['type'] = '';
+          $content_section = $node->get(field_content_section)->referencedEntities();
+          $result[$key]['type'] = (!empty($content_section)) ? (array_shift($content_section)->get('field_content_section_key')->value) : '';
           $result[$key]['body'] = strip_tags($node->get('body')->value);
-          $thumbnail = $node->get(field_field_product_image)->referencedEntities();
-          if (!empty($thumbnail)) {
-            $image = array_shift($thumbnail)->get(field_media_image)->referencedEntities();
-            $uri = (!empty($image)) ? (array_shift($image)->get(uri)->value) : '';
-            if (!empty($uri)) {
-              $result[$key]['imageSmall'] = $this->getImageUri($uri,'spotlight_mobile');
-              $result[$key]['imageMedium'] = $this->getImageUri($uri,'spotlight_tablet');
-              $result[$key]['imageLarge'] = $this->getImageUri($uri,'spotlight_desktop');
-            }
-          }
-          $result[$key]['pointValue'] = $node->get('field_point_value')->value;
+          $result[$key]['imageSmall'] = $value['imageSmall'];
+          $result[$key]['imageMedium'] = $value['imageMedium'];
+          $result[$key]['imageLarge'] = $value['imageLarge'];
+          $result[$key]['pointValue'] = $value['pointValue'];
           break;
-
         case 'brand_story':
+          $result[$key]['nid'] = $value['nid'];
           $node = $this->getNodeData($value, $language);
-          $result[$key]['nid'] = $node->id();
           $result[$key]['displayTitle'] = $node->get('field_display_title')->value;
           $result[$key]['type'] = '';
           $result[$key]['body'] = strip_tags($node->get('body')->value);
-          $thumbnail = $node->get(field_featured_image)->referencedEntities();
-          if (!empty($thumbnail)) {
-            $image = array_shift($thumbnail)->get(field_media_image)->referencedEntities();
-            $uri = (!empty($image)) ? (array_shift($image)->get(uri)->value) : '';
-            if (!empty($uri)) {
-              $result[$key]['imageSmall'] = $this->getImageUri($uri,'spotlight_mobile');
-              $result[$key]['imageMedium'] = $this->getImageUri($uri,'spotlight_tablet');
-              $result[$key]['imageLarge'] = $this->getImageUri($uri,'spotlight_desktop');
-            }
-          }
-          $result[$key]['pointValue'] = $node->get('field_point_value')->value;
+          $result[$key]['imageSmall'] = $value['imageSmall'];
+          $result[$key]['imageMedium'] = $value['imageMedium'];
+          $result[$key]['imageLarge'] = $value['imageLarge'];
+          $result[$key]['pointValue'] = $value['pointValue'];
           break;
-
-        case 'level_interactive_content':
+        case 'tools':
+          $result[$key]['nid'] = $value['nid'];
           $node = $this->getNodeData($value, $language);
-          $result[$key]['nid'] = $node->id();
+          $result[$key]['displayTitle'] = $node->get('field_display_title')->value;
+          $result[$key]['type'] = '';
+          $result[$key]['body'] = strip_tags($node->get('field_tool_description')->value);
+          $result[$key]['imageSmall'] = $value['imageSmall'];
+          $result[$key]['imageMedium'] = $value['imageMedium'];
+          $result[$key]['imageLarge'] = $value['imageLarge'];
+          $result[$key]['pointValue'] = $value['pointValue'];
+          break;
+        case 'product_detail':
+          $result[$key]['nid'] = $value['nid'];
+          $node = $this->getNodeData($value, $language);
+          $result[$key]['displayTitle'] = $node->get('field_display_title')->value;
+          $result[$key]['type'] = '';
+          $result[$key]['body'] = strip_tags($node->get('body')->value);
+          $result[$key]['imageSmall'] = $value['imageSmall'];
+          $result[$key]['imageMedium'] = $value['imageMedium'];
+          $result[$key]['imageLarge'] = $value['imageLarge'];
+          $result[$key]['pointValue'] = $value['pointValue'];
+          break;
+        case 'level_interactive_content':
+          $result[$key]['nid'] = $value['nid'];
+          $node = $this->getNodeData($value, $language);
           $result[$key]['displayTitle'] = $node->get('field_headline')->value;
           $result[$key]['type'] = '';
           $intro_text = $node->get(field_interactive_content)->referencedEntities();
           $body = (!empty($intro_text)) ? (array_shift($intro_text)->get('field_intro_text')->value) : '';
           $result[$key]['body'] = strip_tags($body);
-          $thumbnail = $node->get(field_hero_image)->referencedEntities();
-          if (!empty($thumbnail)) {
-            $image = array_shift($thumbnail)->get(field_media_image)->referencedEntities();
-            $uri = (!empty($image)) ? (array_shift($image)->get(uri)->value) : '';
-            if (!empty($uri)) {
-              $result[$key]['imageSmall'] = $this->getImageUri($uri,'spotlight_mobile');
-              $result[$key]['imageMedium'] = $this->getImageUri($uri,'spotlight_tablet');
-              $result[$key]['imageLarge'] = $this->getImageUri($uri,'spotlight_desktop');
-            }
-          }
-          $result[$key]['pointValue'] = $node->get('field_point_value')->value;
-          break;
-
-        case 'stories':
-          $node = $this->getNodeData($value, $language);
-          $result[$key]['nid'] = $node->id();
-          $result[$key]['displayTitle'] = $node->get('field_display_title')->value;
-          $content_section = $node->get(field_content_section)->referencedEntities();
-          $result[$key]['type'] = (!empty($content_section)) ? (array_shift($content_section)->get('field_content_section_key')->value) : '';
-          $result[$key]['body'] = strip_tags($node->get('body')->value);
-          $thumbnail = $node->get(field_hero_image)->referencedEntities();
-          if (!empty($thumbnail)) {
-            $image = array_shift($thumbnail)->get(field_media_image)->referencedEntities();
-            $uri = (!empty($image)) ? (array_shift($image)->get(uri)->value) : '';
-            if (!empty($uri)) {
-              $result[$key]['imageSmall'] = $this->getImageUri($uri,'spotlight_mobile');
-              $result[$key]['imageMedium'] = $this->getImageUri($uri,'spotlight_tablet');
-              $result[$key]['imageLarge'] = $this->getImageUri($uri,'spotlight_desktop');
-            }
-          }
-          $result[$key]['pointValue'] = $node->get('field_point_value')->value;
-          break;
-
-        case 'tools':
-          $node = $this->getNodeData($value, $language);
-          $result[$key]['nid'] = $node->id();
-          $result[$key]['displayTitle'] = $node->get('field_display_title')->value;
-          $result[$key]['type'] = '';
-          $result[$key]['body'] = strip_tags($node->get('field_tool_description')->value);
-          $thumbnail = $node->get(field_tool_thumbnail)->referencedEntities();
-          if (!empty($thumbnail)) {
-            $image = array_shift($thumbnail)->get(field_media_image)->referencedEntities();
-            $uri = (!empty($image)) ? (array_shift($image)->get(uri)->value) : '';
-            if (!empty($uri)) {
-
-              $result[$key]['imageSmall'] = $this->getImageUri($uri,'spotlight_mobile');
-              $result[$key]['imageMedium'] = $this->getImageUri($uri,'spotlight_tablet');
-              $result[$key]['imageLarge'] = $this->getImageUri($uri,'spotlight_desktop');
-            }
-          }
-          $result[$key]['pointValue'] = $node->get('field_point_value')->value;
+          $result[$key]['imageSmall'] = $value['imageSmall'];
+          $result[$key]['imageMedium'] = $value['imageMedium'];
+          $result[$key]['imageLarge'] = $value['imageLarge'];
+          $result[$key]['pointValue'] = $value['pointValue'];
           break;
       }
     }
-
     $response = [];
     $response['results'] = $result;
     if (empty($response['results'])) {
@@ -215,15 +174,5 @@ class SpotlightSection extends ResourceBase {
     if ($node->hasTranslation($language)) {
       return $node->getTranslation($language);
     }
-  }
-
-  /**
-   * @param $uri
-   * @param $style
-   * @return mixed
-   */
-  public function getImageUri($uri, $style) {
-    $url = ImageStyle::load($style)->buildUrl($uri);
-    return $url;
   }
 }
