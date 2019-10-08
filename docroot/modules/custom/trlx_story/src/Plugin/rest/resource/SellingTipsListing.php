@@ -144,7 +144,7 @@ class SellingTipsListing extends ResourceBase {
         'body' => 'string_replace',
       ];
 
-      $view_results = $entityUtility->buildListingResponse($view_results, $data, ['pointValue' => 'pointValueLevel'], ['timestamp']);
+      $view_results = $entityUtility->buildListingResponse($view_results, $data, [], ['timestamp', 'pointValueLevel']);
 
       $view_results['pager'] = $pager;
       $status_code = Response::HTTP_OK;
