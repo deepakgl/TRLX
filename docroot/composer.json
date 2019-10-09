@@ -134,7 +134,7 @@
                 "status check": "patches/user/user_status_access.patch",
                 "string translation": "patches/translation/drupal_core_translatablemarkup.patch",
                 "admin people view": "patches/user/admin_people_view.patch",
-                "content translation": "patches/translation/content_translation.patch",
+                "content translation": "patches/translation/content_translation_dependency.patch",
                 "content translation temp": "patches/translation/content_translation_temp.patch",
                 "Update user validation messages": "patches/user/user_login_link.patch"
             },

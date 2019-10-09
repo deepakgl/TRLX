@@ -11,7 +11,7 @@ field_name: field_featured_image
 entity_type: node
 bundle: level_interactive_content
 label: 'Featured Image'
-description: 'Allowed file types:<b> jpg, jpeg and png.</b><br>Image Resolution:<b> 1440 x 437px</b>'
+description: ''
 required: false
 translatable: true
 default_value: {  }
