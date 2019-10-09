@@ -154,6 +154,9 @@ function elx_translation_workflow_generate_img_styles($entity) {
   // Feature image.
   if ($entity->hasField('field_featured_image')) {
     $commonUtility->setMediaEntity($entity, 'field_featured_image', [
+      'level_home_page_tablet',
+      'level_home_page_mobile',
+      'level_home_page_desktop',
       'product_details_tablet',
       'product_details_mobile',
       'product_details_desktop',
