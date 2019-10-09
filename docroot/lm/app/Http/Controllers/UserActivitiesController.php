@@ -362,7 +362,7 @@ class UserActivitiesController extends Controller {
     // Array of sum of brands key and faq page id.
     $faq_ids = [];
     foreach ($brand_keys as $value) {
-      $faq_ids[] = $value + $nid;
+      $faq_ids[] = (int) $value + (int) $nid;
     }
     // Taking intersection to check if given faq page id exists in the array.
     $array_intersection = array_intersect($nids, $faq_ids);
