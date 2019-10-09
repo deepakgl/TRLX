@@ -458,7 +458,9 @@ class CommonUtility {
     $pointValue = 0;
     if (!empty($nodes)) {
       foreach ($nodes as $nid => $node) {
-        $pointValue += $node->get('field_point_value')->value;
+        if ($node->get('field_learning_category')->target_id == $levelTermId) {
+          $pointValue += $node->get('field_point_value')->value;
+        }
       }
     }
 
@@ -590,6 +592,34 @@ class CommonUtility {
     }
 
     return $sectionKey;
+  }
+
+  /**
+   * Function to fetch brand key by brand id.
+   *
+   * @param int $brandTid
+   *   Term id of the brand.
+   *
+   * @return int
+   *   Brand key associated with the term id.
+   */
+  public function getBrandKeyByTermId(int $brandTid) {
+    // Load all Section taxonomy terms.
+    $brandTerms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadTree('brands', 0, NULL, TRUE);
+
+    $brandKey = '';
+    if (!empty($brandTerms)) {
+      foreach ($brandTerms as $delta => $term) {
+        // Convert Object to Array.
+        $term = $term->toArray();
+
+        if ($brandTid == $term['tid'][0]['value']) {
+          $brandKey = $term['field_brand_key'][0]['value'];
+        }
+      }
+    }
+
+    return (int) $brandKey;
   }
 
 }
