@@ -1,0 +1,49 @@
+diff --git a/config/install/dropzonejs.settings.yml b/config/install/dropzonejs.settings.yml
+index 2bd0197..644eb44 100644
+--- a/config/install/dropzonejs.settings.yml
++++ b/config/install/dropzonejs.settings.yml
+@@ -1 +1,2 @@
+ tmp_upload_scheme: temporary
++upload_timeout_ms: 0
+diff --git a/config/schema/dropzonejs.schema.yml b/config/schema/dropzonejs.schema.yml
+index 35eb9d7..de76d9c 100644
+--- a/config/schema/dropzonejs.schema.yml
++++ b/config/schema/dropzonejs.schema.yml
+@@ -5,3 +5,6 @@ dropzonejs.settings:
+     tmp_upload_scheme:
+       type: string
+       label: 'Upload scheme'
++    upload_timeout_ms:
++      type: integer
++      label: 'Upload timeout'
+diff --git a/dropzonejs.install b/dropzonejs.install
+index 18e43fd..6a32c63 100644
+--- a/dropzonejs.install
++++ b/dropzonejs.install
+@@ -51,3 +51,14 @@ function dropzonejs_update_8001() {
+   $config->set('tmp_upload_scheme', 'temporary');
+   $config->save(TRUE);
+ }
++
++/**
++ * Set default value for upload timeout.
++ */
++function dropzonejs_update_8002() {
++  \Drupal::configFactory()
++    ->getEditable('dropzonejs.settings')
++    ->clear('upload_timeout_ms')
++    ->set('upload_timeout_ms', 0)
++    ->save(TRUE);
++}
+diff --git a/src/Element/DropzoneJs.php b/src/Element/DropzoneJs.php
+index ead6be0..fbfb2f1 100644
+--- a/src/Element/DropzoneJs.php
++++ b/src/Element/DropzoneJs.php
+@@ -137,6 +137,7 @@ class DropzoneJs extends FormElement {
+           'dictDefaultMessage' => Html::escape($element['#dropzone_description']),
+           'acceptedFiles' => '.' . str_replace(' ', ',.', self::getValidExtensions($element)),
+           'maxFiles' => $element['#max_files'],
++          'timeout' => \Drupal::configFactory()->get('dropzonejs.settings')->get('upload_timeout_ms'),
+         ],
+       ],
+     ];
