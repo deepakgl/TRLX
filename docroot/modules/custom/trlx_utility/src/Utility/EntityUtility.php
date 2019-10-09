@@ -89,7 +89,7 @@ class EntityUtility {
     }
 
     // Views listing response without pager e.g. /api/v1/consumerCategories.
-    if (!empty($view_results) && (count($view_results) > 1) && !isset($view_results['results']) && !isset($view_results['pager'])) {
+    if (!empty($view_results) && ($view->getItemsPerPage() == 0) && !isset($view_results['results']) && !isset($view_results['pager'])) {
       $view_results_without_pager = $view_results;
       unset($view_results);
       $view_results['results'] = $view_results_without_pager;

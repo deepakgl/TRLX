@@ -95,7 +95,6 @@ class NotificationConfigurationForm extends ConfigFormBase {
       '#options' => $nodes_list,
       '#multiple' => TRUE,
       self::HASH_REQUIRED => TRUE,
-      '#description' => t('Select the node types'),
       self::HASH_DEFAULT_VALUE => $config->get(self::NODE_TYPE),
     ];
     return parent::buildForm($form, $form_state);

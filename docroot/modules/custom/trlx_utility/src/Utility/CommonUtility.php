@@ -458,7 +458,9 @@ class CommonUtility {
     $pointValue = 0;
     if (!empty($nodes)) {
       foreach ($nodes as $nid => $node) {
-        $pointValue += $node->get('field_point_value')->value;
+        if ($node->get('field_learning_category')->target_id == $levelTermId) {
+          $pointValue += $node->get('field_point_value')->value;
+        }
       }
     }
 
