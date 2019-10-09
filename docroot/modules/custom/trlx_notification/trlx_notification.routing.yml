@@ -1,0 +1,7 @@
+trlx_notification.admin_settings:
+  path: '/admin/config/notifications'
+  defaults:
+    _form: '\Drupal\trlx_notification\Form\NotificationConfigurationForm'
+    _title: 'Notification configurations'
+  requirements:
+    _permission: 'administer site configuration'

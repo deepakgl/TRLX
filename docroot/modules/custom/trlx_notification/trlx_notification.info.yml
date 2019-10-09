@@ -1,0 +1,7 @@
+name: TRLX Notifications
+type: module
+description: 'This module is used to send notifications to user.'
+package: TRLX
+core: 8.x
+project: 'notification'
+configure: trlx_notification.admin_settings

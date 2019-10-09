@@ -102,6 +102,7 @@ module:
   password_encrypt: 0
   path: 0
   persistent_login: 0
+  queue_ui: 0
   rdf: 0
   rest: 0
   rest_password: 0
@@ -134,6 +135,7 @@ module:
   trlx_lang_translation: 0
   trlx_learning_levels: 0
   trlx_market_hierarchy: 0
+  trlx_notification: 0
   trlx_products: 0
   trlx_spotlight: 0
   trlx_story: 0

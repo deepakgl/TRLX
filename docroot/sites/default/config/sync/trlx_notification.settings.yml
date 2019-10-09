@@ -1,0 +1,24 @@
+scheme: http
+host: 172.18.0.2
+port: '9200'
+search_index: trlx_notification
+search_index_type: notification
+delete_notifications: '-1'
+cron_requirement_notifications: 0
+nodetype:
+  brand_story: brand_story
+  article: 0
+  best_sellers: 0
+  faq: 0
+  level_interactive_content: 0
+  multiple_choice_question: 0
+  page: 0
+  product_detail: 0
+  products_carousel: 0
+  quiz: 0
+  stories: 0
+  t_c: 0
+  tools: 0
+  tools-pdf: 0
+  welcome_message: 0
+notificationFlag: 1
