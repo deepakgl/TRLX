@@ -594,4 +594,33 @@ class CommonUtility {
     return $sectionKey;
   }
 
+ /**
+  * @param $value
+  * @param $language
+  * @return mixed
+  * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+  * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+  */
+  public function getNodeData($nid, $language) {
+    // Load node by nid and language code
+    $node = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
+    if ($node->hasTranslation($language)) {
+      return $node->getTranslation($language);
+    }
+  }
+
+
+ /**
+  * @param $style_name
+  * @param $file_uri
+  * @return mixed
+  * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+  * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+  */
+ public function loadImageStyle($style_name, $file_uri) {
+   $image_style = \Drupal::entityTypeManager()->getStorage('image_style')->load($style_name);
+   $result = $image_style->buildUrl($file_uri);
+
+   return $result;
+ }
 }
