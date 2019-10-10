@@ -7,6 +7,9 @@ use App\Model\Elastic\ElasticUserModel;
 use App\Support\Helper;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Validator;
+use Mockery\Exception;
 
 class UserController extends Controller
 {
@@ -28,18 +31,48 @@ class UserController extends Controller
 		}
 	}
 
-	public function updateUserIndex(Request $request)
+	/**
+	 * @param Request $request
+	 * @return \App\Support\json
+	 */
+	public function updateUsersIndex(Request $request)
+	{
+		try{
+			$data = $request->all();
+			unset($data['/v1/users']);
+
+			$rules['*.uid'] = 'required|integer|min:1';
+			$rules['*.email'] = 'required|email';
+
+			$message['*.uid.required'] = 'The field uid is required.';
+			$message['*.email.required'] = 'The field email is required.';
+			$message['*.email.email'] = 'The field email should be valid email id.';
+
+			$validator = Validator::make($data, $rules, $message);
+			if ($validator->fails())
+			{
+				return Helper::jsonError($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
+			}
+
+			if(is_array($data)){
+				foreach ($data as $key=>$user){
+					$this->updateUserIndex($user);
+				}
+			}else{
+				$this->updateUserIndex($data);
+			}
+			return Helper::jsonSuccess(TRUE);
+		}catch (Exception $e){
+			return Helper::jsonError($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	/**
+	 * @param $data
+	 */
+	private function updateUserIndex($data)
 	{
 		$params = [];
-		$validatedData = $this->validate($request, [
-			'uid' => 'required|integer',
-			'email' => 'required|email',
-			'status' => 'required'
-		]);
-		$data = $request->all();
-
-		$elastic_data = ElasticUserModel::fetchElasticUserData($data['uid'], $this->elasticClient);
-		echo json_encode($elastic_data);exit;
 		$exist = ElasticUserModel::checkElasticUserIndex($data['uid'], $this->elasticClient);
 		// If index not exist, create new index.
 		if ($exist) {
@@ -51,15 +84,20 @@ class UserController extends Controller
 		$elastic_arr = $this->getEmptyUserDataArr();
 		$params['body'] = $this->createUserBody($elastic_arr, $data, 'add');
 		ElasticUserModel::createElasticUserIndex($params, $data['uid'], $this->elasticClient);
-		return Helper::jsonSuccess(TRUE);
+		$dataa = ElasticUserModel::fetchElasticUserData($data['uid'], $this->elasticClient);
+		\Log::info($dataa);
 	}
 
+	/**
+	 * @param $elastic_arr
+	 * @param $data
+	 * @param string $action
+	 * @return mixed
+	 */
 	private function createUserBody($elastic_arr, $data, $action = 'add')
 	{
-		if ($action == 'add') {
-			$elastic_arr['uid'] = $data['uid'];
-			$elastic_arr['email'] = $data['email'];
-		}
+		$elastic_arr['uid'] = isset($data['uid']) && !empty($data['uid']) ? $data['uid'] : $elastic_arr['uid'];
+		$elastic_arr['email'] = isset($data['email']) && !empty($data['email']) ? $data['email'] : $elastic_arr['email'];
 		$elastic_arr['status'] = isset($data['status']) && !empty($data['status']) ? $data['status'] : $elastic_arr['status'];
 		$elastic_arr['region'] = isset($data['region']) && !empty($data['region']) ? $data['region'] : $elastic_arr['region'];
 		$elastic_arr['subRegion'] = isset($data['subRegion']) && !empty($data['subRegion']) ? $data['subRegion'] : $elastic_arr['subRegion'];
@@ -74,7 +112,7 @@ class UserController extends Controller
 		$elastic_arr['node_views_best_sellers'] = isset($data['node_views_best_sellers']) && !empty($data['node_views_best_sellers']) ? $data['node_views_best_sellers'] : $elastic_arr['node_views_best_sellers'];
 		$elastic_arr['node_views_tools'] = isset($data['node_views_tools']) && !empty($data['node_views_tools']) ? $data['node_views_tools'] : $elastic_arr['node_views_tools'];
 		$elastic_arr['node_views_t_c'] = isset($data['node_views_t_c']) && !empty($data['node_views_t_c']) ? $data['node_views_t_c'] : $elastic_arr['node_views_t_c'];
-		$elastic_arr['node_views_tools-pdf'] = isset($data['node_views_tools-pdf']) && !empty($data['node_views_tools-pdf']) ? $data['node_views_tools-pdf'] : $elastic_arr['node_views_tools-pdf'];
+		$elastic_arr['node_views_tools_pdf'] = isset($data['node_views_tools_pdf']) && !empty($data['node_views_tools_pdf']) ? $data['node_views_tools_pdf'] : $elastic_arr['node_views_tools_pdf'];
 		$elastic_arr['like'] = isset($data['like']) && !empty($data['like']) ? $data['like'] : $elastic_arr['like'];
 		$elastic_arr['bookmark'] = isset($data['bookmark']) && !empty($data['bookmark']) ? $data['bookmark'] : $elastic_arr['bookmark'];
 		$elastic_arr['total_points'] = isset($data['total_points']) && !empty($data['total_points']) ? $data['total_points'] : $elastic_arr['total_points'];
@@ -106,7 +144,7 @@ class UserController extends Controller
 			'node_views_best_sellers' => [],
 			'node_views_tools' => [],
 			'node_views_t_c' => [],
-			'node_views_tools-pdf' => [],
+			'node_views_tools_pdf' => [],
 			'like' => [],
 			'bookmark' => [],
 			'total_points' => 0,
