@@ -152,14 +152,14 @@ class EntityUtility {
     // Get current user roles.
     // fixMe.
     $roles = $this->userUtility->getUserRoles(\Drupal::currentUser()->id());
-    if ($roles && !empty($redis_key[1])) {
+    if (!empty($redis_key[1])) {
       try {
         // Creating Redis connection object.
         list($cached_data, $redis_client) =
         RedisClientBuilder::getRedisClientObject($key);
         // Get the data from the redis cache with key value.
         if (!empty($cached_data)) {
-          return [$cached_data, 200];
+          return [JSON::decode($cached_data), 200];
         }
       }
       catch (\Exception $e) {
@@ -172,8 +172,12 @@ class EntityUtility {
       list($view_results, $status_code) = $this->getViewContent($view_name, $current_display, $filter, $data, $type, $field_replace);
       // Only set redis cache if there is some data.
       $decode = array_filter(JSON::decode($view_results, TRUE));
-      if (!empty($decode) && !empty($redis_key[1])) {
-        $redis_client->set($view_results, $redis_key[0], $redis_key[1], $redis_key[2]);
+      if (!empty($redis_key[1])) {
+        $response = JSON::encode($view_results);
+        if (is_object($response)) {
+          $response = $response->getContent();
+        }
+        $redis_client->set($response, $redis_key[0], $redis_key[1], $redis_key[2]);
       }
 
       return [$view_results, $status_code];
@@ -351,6 +355,7 @@ class EntityUtility {
         }
       }
     }
+
     $response = (isset($output[0])) ? $output[0] : $output;
 
     return $response;
