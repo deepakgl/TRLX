@@ -4,6 +4,7 @@ namespace Drupal\trlx_utility;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Drupal\Core\Logger\RfcLogLevel;
+use Drupal\Component\Serialization\Json;
 
 /**
  * Builds the redis client.

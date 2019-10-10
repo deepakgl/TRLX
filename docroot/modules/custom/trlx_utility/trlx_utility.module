@@ -239,6 +239,10 @@ function trlx_utility_form_alter(&$form, FormStateInterface $form_state, $form_i
       break;
 
     case 'taxonomy_term_brands_form':
+      $entity = $form_state->getFormObject()->getEntity();
+      $form['actions']['submit']['#submit'][] = 'trlx_utility_taxonomy_submit';
+      break;
+
     case 'taxonomy_term_learning_category_form':
       $entity = $form_state->getFormObject()->getEntity();
       $form['actions']['submit']['#submit'][] = 'trlx_utility_taxonomy_submit';
@@ -336,7 +340,9 @@ function stories_validate(array &$form, FormStateInterface $form_state) {
   $sectionTid = $form_state->getValue('field_content_section')[0]['target_id'];
 
   // Fetch section for selected section.
-  $sectionKey = $commonUtility->getSectionKeyByTermId($sectionTid);
+  if ($sectionTid) {
+    $sectionKey = $commonUtility->getSectionKeyByTermId($sectionTid);
+  }
 
   switch ($sectionKey) {
     case $commonUtility::INSIDER_CORNER:
