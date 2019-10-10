@@ -90,4 +90,8 @@ $router->group(
       $router->get('userActivity', 'UserActivitiesController@userActivity');
       $router->get('globalActivity', 'UserActivitiesController@globalActivity');
     });
-  });
+});
+// index users in elastic.
+$router->group(['prefix' => 'v1'], function () use ($router) {
+	$router->post('users', 'UserController@updateUsersIndex');
+});
