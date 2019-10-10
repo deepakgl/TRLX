@@ -12,7 +12,7 @@ field_name: field_brand_logo
 entity_type: taxonomy_term
 bundle: brands
 label: 'Brand Logo'
-description: 'Allowed file types:<b> jpg, jpeg and png.</b>'
+description: ''
 required: true
 translatable: false
 default_value: {  }
