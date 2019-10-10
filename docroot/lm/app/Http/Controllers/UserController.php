@@ -102,6 +102,7 @@ class UserController extends Controller
 		$elastic_arr['region'] = isset($data['region']) && !empty($data['region']) ? $data['region'] : $elastic_arr['region'];
 		$elastic_arr['subRegion'] = isset($data['subRegion']) && !empty($data['subRegion']) ? $data['subRegion'] : $elastic_arr['subRegion'];
 		$elastic_arr['country'] = isset($data['country']) && !empty($data['country']) ? $data['country'] : $elastic_arr['country'];
+		$elastic_arr['market'] = array_merge($elastic_arr['region'], $elastic_arr['subRegion'], $elastic_arr['country']);
 		$elastic_arr['locations'] = isset($data['locations']) && !empty($data['locations']) ? $data['locations'] : $elastic_arr['locations'];
 		$elastic_arr['store'] = isset($data['store']) && !empty($data['store']) ? $data['store'] : $elastic_arr['store'];
 		$elastic_arr['brands'] = isset($data['brands']) && !empty($data['brands']) ? $data['brands'] : $elastic_arr['brands'];
@@ -134,6 +135,7 @@ class UserController extends Controller
 			'region' => [],
 			'subRegion' => [],
 			'country' => [],
+			'market' => [],
 			'locations' => [],
 			'store' => [],
 			'brands' => [],
@@ -153,7 +155,7 @@ class UserController extends Controller
 			'is_external' => 0,
 			'account' => [],
 			'access_permission' => 0,
-			'ignore' => 0
+			'ignore' => 0,
 		];
 	}
 }
