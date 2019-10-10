@@ -1,0 +1,15 @@
+uuid: 0f0c333f-f71a-4ca7-9686-80296ea2cf59
+langcode: en
+status: true
+dependencies: {  }
+name: level_home_page_tablet
+label: 'Level Home Page Tablet'
+effects:
+  2ee9894a-7b68-4560-8a36-02fa5da19ca8:
+    uuid: 2ee9894a-7b68-4560-8a36-02fa5da19ca8
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 770
+      height: 355
+      anchor: center-center

@@ -30,6 +30,7 @@ permissions:
   - 'restful get insider_corner_homepage_section'
   - 'restful get language_list'
   - 'restful get learning_levels'
+  - 'restful get learning_levels_homepage_section'
   - 'restful get main_navigation_menu'
   - 'restful get module_details'
   - 'restful get modules_listing'
