@@ -1,0 +1,230 @@
+<?php
+
+/**
+ * @file
+ * Allows users to create, process and organize notifications.
+ */
+
+use Drupal\file\Entity\File;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\node\Entity\Node;
+use Drupal\node\NodeInterface;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\trlx_notification\Controller\NotificationController;
+use Drupal\trlx_notification\Controller\ImportDataFromQueue;
+
+const NOTIFICATIONS_SETTING = 'trlx_notification.settings';
+const NOTIFICATION_FLAG = 'notificationFlag';
+const TARGET_ID = 'target_id';
+const NOTIFICATION_TYPE = 'notificationType';
+const NOTIFICATION_USER_ID = 'userId';
+const NOTIFICATION_HEADING = 'notificationHeading';
+const NOTIFICATION_TEXT = 'notificationText';
+const NOTIFICATION_ICON = 'notificationIcon';
+const NOTIFICATION_LEVEL_ID = 'notificationClassroomLevelId';
+const NOTIFICATION_LINK = 'notificationLink';
+const NOTIFICATION_LINK_TYPE = 'notificationLinkType';
+const NOTIFICATIONS_LANGUAGE = 'notificationLanguage';
+const CONTENT = 'content';
+const VALUE = 'value';
+
+/**
+ * Implements hook_ENTITY_TYPE_insert().
+ */
+function trlx_notification_node_insert(Node $node) {
+  trlx_notification_send_notification($node);
+}
+
+/**
+ * Function to send notification to specified content types.
+ */
+function trlx_notification_send_notification(EntityInterface $node) {
+  $config = \Drupal::config(NOTIFICATIONS_SETTING);
+  // Checking notification flag value.
+  $send_notification_value = $config->get(NOTIFICATION_FLAG);
+
+  if ($send_notification_value === 1) {
+    $nodeType = $node->bundle();
+
+    switch ($nodeType) {
+      // Notification to system users related to brand story content.
+      case brand_story:
+        $notification_index = trlx_notification_brand_story_related_content($node);
+        // Send data to the queue.
+        save_data_in_queue($notification_index);
+        break;
+
+      default:
+        break;
+    }
+  }
+}
+
+/**
+ * Notification to system users related to featured content.
+ */
+function trlx_notification_brand_story_related_content($node) {
+  $userIds = [1, 2, 3, 12];
+  $notification_index = [];
+  if (!empty(userIds)) {
+    foreach ($userIds as $id) {
+      $notificationArray[NOTIFICATION_TYPE] = t('BRANDS');
+      $notificationArray[NOTIFICATION_USER_ID] = $id;
+      $notificationArray[NOTIFICATION_HEADING] = t('New Brand Stroy content.');
+      $notificationArray[NOTIFICATION_TEXT] = $node->getTitle();
+      $notificationArray[NOTIFICATION_ICON] = NULL;
+      $notificationArray[NOTIFICATION_LEVEL_ID] = NULL;
+      $notificationArray[NOTIFICATION_LINK] = NULL;
+      $notificationArray[NOTIFICATION_LINK_TYPE] = NULL;
+      $notificationArray[NOTIFICATIONS_LANGUAGE] = $node->langcode->value;
+      $notification_index[] = process_notification($notificationArray);
+    }
+  }
+  return ($notification_index);
+}
+
+/**
+ * Notification to system users related to brand content.
+ */
+function trlx_notification_brands_related_content($brandId, $node) {
+  // Get groups values.
+  $groups_select_all = get_groups_select_all_value($node);
+  $groups_target_id = get_selected_groups_target_id($node);
+  $brandName = get_brand_name_by_id($brandId);
+  $tabName = $node->type->entity->label();
+
+  // Get user ids based on group logic.
+  $userIdsBasedAccountGroup = get_user_ids_based_on_groups($groups_target_id, $groups_select_all);
+  // Get user ids based on selected brand.
+  $userIdsBasedBrandId = get_user_ids_under_brand($brandId);
+  // Get common user ids to send notification.
+  $userIds = array_intersect($userIdsBasedAccountGroup, $userIdsBasedBrandId);
+
+  $uploadedFile = get_document_link_and_type($node->id());
+
+  $notification_index = [];
+  foreach ($userIds as $userId) {
+    $notificationArray[NOTIFICATION_TYPE] = t('brand_content');
+    $notificationArray[NOTIFICATION_USER_ID] = $userId;
+    $notificationArray[NOTIFICATION_HEADING] = t('Trending News In - @brandName | @tabName', ['@brandName' => $brandName, '@tabName' => $tabName]);
+    $notificationArray[NOTIFICATION_TEXT] = $node->getTitle();
+    $notificationArray[NOTIFICATION_ICON] = NULL;
+    $notificationArray[NOTIFICATION_LEVEL_ID] = NULL;
+    $notificationArray[NOTIFICATION_LINK] = $node->id();
+    $notificationArray[NOTIFICATION_LINK_TYPE] = $uploadedFile[FILE_TYPE];
+    $notificationArray['notificationBrandId'] = $brandId;
+    $notificationArray[NOTIFICATIONS_LANGUAGE] = $node->langcode->value;
+    $notification_index[] = process_notification($notificationArray);
+  }
+
+  return ($notification_index);
+}
+
+/**
+ * Create send notification checkbox in content forms.
+ */
+function trlx_notification_form_node_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $config = \Drupal::config(NOTIFICATIONS_SETTING);
+  $nodeTypes = $config->get('nodetype');
+  $form_ids = [];
+  // To get form ids of content types which are selected to add field.
+  foreach ($nodeTypes as $key => $value) {
+    $form_ids[] = 'node_' . $key . '_form';
+  }
+  // To get edit form ids of content types which are selected to add field.
+  foreach ($nodeTypes as $key => $value) {
+    $form_ids[] = 'node_' . $key . '_edit_form';
+  }
+  if (in_array($form_id, $form_ids)) {
+    $form['send_notifications'] = [
+      '#type' => 'checkbox',
+      '#title' => t("Send notification to system users"),
+      '#weight' => '100',
+    ];
+    // For entity builders.
+    $form['#entity_builders'][] = 'trlx_notification_node_builder';
+  }
+}
+
+/**
+ * Entity form builder to add the notification flag value in session.
+ */
+function trlx_notification_node_builder($entity_type, NodeInterface $node, &$form, FormStateInterface $form_state) {
+  $config = \Drupal::service('config.factory')->getEditable(NOTIFICATIONS_SETTING);
+  // Setting notification flag value.
+  $config->set(NOTIFICATION_FLAG, $form_state->getValue('send_notifications'))->save();
+}
+
+/**
+ * Process notifications operation.
+ *
+ * @param array $notificationArray
+ *   Array containing all the data related to notifications.
+ *
+ * @return notification_index
+ *   Return notification array.
+ */
+function process_notification(array $notificationArray) {
+  $notification_index = [];
+  $notification_index[NOTIFICATION_TYPE] = $notificationArray[NOTIFICATION_TYPE];
+  $notification_index[NOTIFICATION_USER_ID] = $notificationArray[NOTIFICATION_USER_ID];
+  $notification_index[NOTIFICATION_HEADING] = $notificationArray[NOTIFICATION_HEADING];
+  $notification_index[NOTIFICATION_TEXT] = $notificationArray[NOTIFICATION_TEXT];
+  $notification_index[NOTIFICATION_ICON] = $notificationArray[NOTIFICATION_ICON];
+  $notification_index['notificationDate'] = \Drupal::time()->getCurrentTime();
+  $notification_index[NOTIFICATION_LEVEL_ID] = $notificationArray[NOTIFICATION_LEVEL_ID];
+  $notification_index[NOTIFICATION_LINK] = $notificationArray[NOTIFICATION_LINK];
+  $notification_index[NOTIFICATION_LINK_TYPE] = $notificationArray[NOTIFICATION_LINK_TYPE];
+  $notification_index[NOTIFICATIONS_LANGUAGE] = $notificationArray[NOTIFICATIONS_LANGUAGE];
+  $notification_index['notificationClassroomContentId'] = $notificationArray['notificationClassroomContentId'];
+  $notification_index['notificationBrandId'] = isset($notificationArray['notificationBrandId']) ? $notificationArray['notificationBrandId'] : NULL;
+
+  return $notification_index;
+}
+
+/**
+ * To get file url if target Id is known.
+ *
+ * @param int $targetId
+ *   File target id.
+ *
+ * @return file_url
+ *   Return file url.
+ */
+function get_file_url($targetId) {
+  $file_url = NULL;
+  if (!empty($targetId)) {
+    $file = File::load($targetId);
+    if ($file) {
+      $file_url = file_create_url($file->getFileUri());
+    }
+  }
+
+  return $file_url;
+}
+
+/**
+ * To save data in notification queue.
+ */
+function save_data_in_queue($notification_index) {
+  if (!empty($notification_index)) {
+    foreach ($notification_index as $value) {
+      ImportDataFromQueue::getDataToSaveInNotificationQueueFrequently($value);
+    }
+  }
+}
+
+/**
+ * Implements hook_cron().
+ *
+ * Cron for consuming data from notification queue and saving to elastic server.
+ */
+function trlx_notification_cron() {
+  // Get last cron timestamp.
+  $cron_last = \Drupal::state()->get('system.cron_last');
+  $config = \Drupal::config('trlx_notification.settings');
+
+  $notification_helpers = new NotificationController();
+  // Call this method to purge notifications after 30 days of generation.
+  $notification_helpers->purgeNotifications();
+}

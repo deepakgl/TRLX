@@ -1,0 +1,29 @@
+uuid: 26935d93-1720-4d48-8978-e9effd8fb0ee
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_consumer_category
+    - node.type.stories
+    - taxonomy.vocabulary.consumer_category
+id: node.stories.field_consumer_category
+field_name: field_consumer_category
+entity_type: node
+bundle: stories
+label: 'Consumer Category'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      consumer_category: consumer_category
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

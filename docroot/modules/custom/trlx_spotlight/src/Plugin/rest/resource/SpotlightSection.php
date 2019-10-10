@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Drupal\trlx_utility\Utility\CommonUtility;
 use Drupal\trlx_utility\Utility\EntityUtility;
+use Drupal\image\Entity\ImageStyle;
 
 /**
  * Provides a spotlight section resource.
@@ -27,8 +28,10 @@ class SpotlightSection extends ResourceBase {
    * @param \Symfony\Component\HttpFoundation\Request $request
    *   Rest resource query parameters.
    *
-   * @return \Drupal\rest\ResourceResponse
+   * @return array|\Drupal\trlx_utility\Utility\Illuminate\Http\JsonResponse|\Symfony\Component\HttpFoundation\JsonResponse Resource response.
    *   Resource response.
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
   public function get(Request $request) {
     $commonUtility = new CommonUtility();
@@ -66,18 +69,9 @@ class SpotlightSection extends ResourceBase {
       return $response;
     }
 
-    // Prepare array of keys for alteration in response.
+    // Prepare array for fields that need to be replaced.
     $data = [
       'nid' => 'int',
-      'displayTitle' => 'decode',
-      'displayTitle_dup' => 'decode',
-      'body' => 'string_replace',
-      'pointValue' => 'int',
-    ];
-
-    // Prepare array for fields that need to be replaced.
-    $field_replace = [
-      'displayTitle' => 'displayTitle_dup',
     ];
 
     // Prepare view response.
@@ -87,8 +81,7 @@ class SpotlightSection extends ResourceBase {
       'rest_export_spotlight_section',
       $data,
       ['language' => $language],
-      NULL,
-      $field_replace
+      NULL
     );
 
     // Check for empty / no result from views.
@@ -96,7 +89,90 @@ class SpotlightSection extends ResourceBase {
       return $commonUtility->successResponse([], Response::HTTP_OK);
     }
 
-    return $commonUtility->successResponse($view_results['results'], $status_code);
+    $result = [];
+    foreach ($view_results['results'] as $key => $value ) {
+      switch ($value['type']) {
+        case 'stories':
+          $result[$key]['nid'] = $value['nid'];
+          $node = $this->getNodeData($value, $language);
+          $result[$key]['displayTitle'] = $node->get('field_display_title')->value;
+          $content_section = $node->get(field_content_section)->referencedEntities();
+          $result[$key]['type'] = (!empty($content_section)) ? (array_shift($content_section)->get('field_content_section_key')->value) : '';
+          $result[$key]['body'] = strip_tags($node->get('body')->value);
+          $result[$key]['imageSmall'] = $value['imageSmall'];
+          $result[$key]['imageMedium'] = $value['imageMedium'];
+          $result[$key]['imageLarge'] = $value['imageLarge'];
+          $result[$key]['pointValue'] = $value['pointValue'];
+          break;
+        case 'brand_story':
+          $result[$key]['nid'] = $value['nid'];
+          $node = $this->getNodeData($value, $language);
+          $result[$key]['displayTitle'] = $node->get('field_display_title')->value;
+          $result[$key]['type'] = '';
+          $result[$key]['body'] = strip_tags($node->get('body')->value);
+          $result[$key]['imageSmall'] = $value['imageSmall'];
+          $result[$key]['imageMedium'] = $value['imageMedium'];
+          $result[$key]['imageLarge'] = $value['imageLarge'];
+          $result[$key]['pointValue'] = $value['pointValue'];
+          break;
+        case 'tools':
+          $result[$key]['nid'] = $value['nid'];
+          $node = $this->getNodeData($value, $language);
+          $result[$key]['displayTitle'] = $node->get('field_display_title')->value;
+          $result[$key]['type'] = '';
+          $result[$key]['body'] = strip_tags($node->get('field_tool_description')->value);
+          $result[$key]['imageSmall'] = $value['imageSmall'];
+          $result[$key]['imageMedium'] = $value['imageMedium'];
+          $result[$key]['imageLarge'] = $value['imageLarge'];
+          $result[$key]['pointValue'] = $value['pointValue'];
+          break;
+        case 'product_detail':
+          $result[$key]['nid'] = $value['nid'];
+          $node = $this->getNodeData($value, $language);
+          $result[$key]['displayTitle'] = $node->get('field_display_title')->value;
+          $result[$key]['type'] = '';
+          $result[$key]['body'] = strip_tags($node->get('body')->value);
+          $result[$key]['imageSmall'] = $value['imageSmall'];
+          $result[$key]['imageMedium'] = $value['imageMedium'];
+          $result[$key]['imageLarge'] = $value['imageLarge'];
+          $result[$key]['pointValue'] = $value['pointValue'];
+          break;
+        case 'level_interactive_content':
+          $result[$key]['nid'] = $value['nid'];
+          $node = $this->getNodeData($value, $language);
+          $result[$key]['displayTitle'] = $node->get('field_headline')->value;
+          $result[$key]['type'] = '';
+          $intro_text = $node->get(field_interactive_content)->referencedEntities();
+          $body = (!empty($intro_text)) ? (array_shift($intro_text)->get('field_intro_text')->value) : '';
+          $result[$key]['body'] = strip_tags($body);
+          $result[$key]['imageSmall'] = $value['imageSmall'];
+          $result[$key]['imageMedium'] = $value['imageMedium'];
+          $result[$key]['imageLarge'] = $value['imageLarge'];
+          $result[$key]['pointValue'] = $value['pointValue'];
+          break;
+      }
+    }
+    $response = [];
+    $response['results'] = $result;
+    if (empty($response['results'])) {
+      return $commonUtility->successResponse([], Response::HTTP_OK);
+    }
+
+    return $commonUtility->successResponse($response['results'], $status_code);
   }
 
+  /**
+   * @param $value
+   * @param $language
+   * @return mixed
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   */
+  public function getNodeData($value, $language) {
+    $nid = $value['nid'];
+    $node = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
+    if ($node->hasTranslation($language)) {
+      return $node->getTranslation($language);
+    }
+  }
 }

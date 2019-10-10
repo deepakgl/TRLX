@@ -91,5 +91,4 @@ class TrendsHomepageSection extends ResourceBase {
 
     return $commonUtility->successResponse($view_results['results'], $status_code);
   }
-
 }

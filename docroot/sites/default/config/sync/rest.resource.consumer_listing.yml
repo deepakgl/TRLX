@@ -1,0 +1,18 @@
+uuid: 204ae8b0-1be9-4bd8-88a7-3b05444cedfa
+langcode: en
+status: true
+dependencies:
+  module:
+    - serialization
+    - trlx_consumer
+    - trlx_utility
+id: consumer_listing
+plugin_id: consumer_listing
+granularity: resource
+configuration:
+  methods:
+    - GET
+  formats:
+    - json
+  authentication:
+    - jwt_Auth

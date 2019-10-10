@@ -1,0 +1,29 @@
+uuid: d3c7904e-63c1-491c-9ce0-f7d81cb9869a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_consumer_category
+    - taxonomy.vocabulary.consumer_category
+    - taxonomy.vocabulary.learning_category
+id: taxonomy_term.learning_category.field_consumer_category
+field_name: field_consumer_category
+entity_type: taxonomy_term
+bundle: learning_category
+label: 'Consumer Category'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      consumer_category: consumer_category
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

@@ -107,8 +107,7 @@ function elx_entityqueue_alter_views_query_alter(ViewExecutable $view, $query) {
   $view_id = [
     'browse_products',
     'stories_listing',
-    'learning_levels',
-    'spotlight_section'
+    'learning_levels'
   ];
   // Array of market wise entityqueue.
   $display = [
@@ -120,7 +119,6 @@ function elx_entityqueue_alter_views_query_alter(ViewExecutable $view, $query) {
   // Array of global entityqueue.
   $global_queue = [
     'rest_export_browse_products',
-    'rest_export_spotlight_section',
     'rest_export_trending_section',
     'rest_export_explore_learning_levels',
   ];

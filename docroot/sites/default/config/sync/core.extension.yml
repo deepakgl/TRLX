@@ -25,6 +25,7 @@ module:
   csv_serialization: 0
   ctools: 0
   datetime: 0
+  dblog: 0
   delete_all: 0
   draggableviews: 0
   dropzonejs: 0
@@ -40,7 +41,6 @@ module:
   elx_dashboard: 0
   elx_elastic_user: 0
   elx_entityqueue_alter: 0
-  elx_lang_translation: 0
   elx_menu: 0
   elx_products: 0
   elx_redis_purge: 0
@@ -102,6 +102,7 @@ module:
   password_encrypt: 0
   path: 0
   persistent_login: 0
+  queue_ui: 0
   rdf: 0
   rest: 0
   rest_password: 0
@@ -126,11 +127,15 @@ module:
   trlx_brand: 0
   trlx_brand_story: 0
   trlx_comment: 0
+  trlx_consumer: 0
   trlx_dashboard: 0
   trlx_factsheets: 0
   trlx_faq: 0
+  trlx_insider_corner: 0
+  trlx_lang_translation: 0
   trlx_learning_levels: 0
   trlx_market_hierarchy: 0
+  trlx_notification: 0
   trlx_products: 0
   trlx_spotlight: 0
   trlx_story: 0

@@ -20,6 +20,7 @@ class CommonUtility {
   const INSIDER_CORNER = 'insiderCorner';
   const TREND = 'trend';
   const SELLING_TIPS = 'sellingTips';
+  const CONSUMER = 'consumer';
 
   /**
    * Build success response.
@@ -304,7 +305,12 @@ class CommonUtility {
     if (!$request->query->has('section') || empty($name)) {
       return $this->errorResponse(t('Section parameter is required.'), Response::HTTP_BAD_REQUEST);
     }
-    $section = [self::TREND, self::SELLING_TIPS, self::INSIDER_CORNER];
+    $section = [
+      self::TREND,
+      self::SELLING_TIPS,
+      self::INSIDER_CORNER,
+      self::CONSUMER,
+    ];
     if (!preg_match("/^[A-Za-z\\- \']+$/", $name) || !in_array($name, $section)) {
       return $this->errorResponse(t('Please enter valid section name.'), Response::HTTP_UNPROCESSABLE_ENTITY);
     }
@@ -379,12 +385,15 @@ class CommonUtility {
   }
 
   /**
-   * Function to Insider Corner Section Taxonomy Term.
+   * Function to fetch Section Taxonomy Term.
+   *
+   * @param string $sectionKey
+   *   Section key of the section.
    *
    * @return array
    *   Taxonomy Term array for Insider Corner.
    */
-  public function getInsiderCornerTerm() {
+  public function getSectionTerm(string $sectionKey) {
     // Load all Section taxonomy terms.
     $sectionTerms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadTree('trlx_content_sections', 0, NULL, TRUE);
 
@@ -393,8 +402,8 @@ class CommonUtility {
         // Convert Object to Array.
         $term = $term->toArray();
         // Section key.
-        $sectionKey = $term['field_content_section_key'][0]['value'];
-        if (self::INSIDER_CORNER == $sectionKey) {
+        $termSectionKey = $term['field_content_section_key'][0]['value'];
+        if ($sectionKey == $termSectionKey) {
           return [$term['tid'][0]['value'], $term];
         }
       }
@@ -449,7 +458,9 @@ class CommonUtility {
     $pointValue = 0;
     if (!empty($nodes)) {
       foreach ($nodes as $nid => $node) {
-        $pointValue += $node->get('field_point_value')->value;
+        if ($node->get('field_learning_category')->target_id == $levelTermId) {
+          $pointValue += $node->get('field_point_value')->value;
+        }
       }
     }
 
@@ -555,4 +566,61 @@ class CommonUtility {
     }
   }
 
+  /**
+   * Function to fetch Section tid by section key.
+   *
+   * @param int $sectionTid
+   *   Term id of the section.
+   *
+   * @return string
+   *   Section key associated with the term id.
+   */
+  public function getSectionKeyByTermId(int $sectionTid) {
+    // Load all Section taxonomy terms.
+    $sectionTerms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadTree('trlx_content_sections', 0, NULL, TRUE);
+
+    $sectionKey = '';
+    if (!empty($sectionTerms)) {
+      foreach ($sectionTerms as $delta => $term) {
+        // Convert Object to Array.
+        $term = $term->toArray();
+
+        if ($sectionTid == $term['tid'][0]['value']) {
+          $sectionKey = $term['field_content_section_key'][0]['value'];
+        }
+      }
+    }
+
+    return $sectionKey;
+  }
+
+ /**
+  * @param $value
+  * @param $language
+  * @return mixed
+  * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+  * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+  */
+  public function getNodeData($nid, $language) {
+    // Load node by nid and language code
+    $node = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
+    if ($node->hasTranslation($language)) {
+      return $node->getTranslation($language);
+    }
+  }
+
+
+ /**
+  * @param $style_name
+  * @param $file_uri
+  * @return mixed
+  * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+  * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+  */
+ public function loadImageStyle($style_name, $file_uri) {
+   $image_style = \Drupal::entityTypeManager()->getStorage('image_style')->load($style_name);
+   $result = $image_style->buildUrl($file_uri);
+
+   return $result;
+ }
 }
