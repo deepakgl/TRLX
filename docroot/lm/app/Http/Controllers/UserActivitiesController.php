@@ -10,6 +10,7 @@ use App\Model\Mysql\ContentModel;
 use App\Traits\ApiResponser;
 use App\Model\Mysql\UserModel;
 use Illuminate\Support\Facades\DB;
+use App\Model\Elastic\ElasticUserModel;
 
 /**
  * Purpose of this class is to build and fetch user actitivities.
@@ -371,6 +372,33 @@ class UserActivitiesController extends Controller {
       array_push($nodes_status, ["nid" => (int) $value, "status" => 1]);
     }
     return $nodes_status;
+  }
+
+  /**
+   * To update user Elastic body.
+   */
+  public function updateUserElasticBody(Request $request) {
+    $uid = $request->get('uid');
+    $region = $request->get('region');
+    $subRegion = $request->get('subRegion');
+    $country = $request->get('country');
+    $brands = $request->get('brands');
+    $market = $request->get('market');
+    $client = Helper::checkElasticClient();
+    $params['body'] = [
+      'doc' => [
+        'uid' => $uid,
+        'region' => $region,
+        'subRegion' => $subRegion,
+        'country' => $country,
+        'brands' => $brands,
+        'market' => $market,
+      ],
+      'doc_as_upsert' => TRUE,
+    ];
+    ElasticUserModel::updateElasticUserData($params, $uid, $client);
+
+    return Helper::jsonSuccess(TRUE);
   }
 
 }
