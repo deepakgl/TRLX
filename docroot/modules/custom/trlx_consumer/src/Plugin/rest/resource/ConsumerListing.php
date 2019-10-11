@@ -38,6 +38,7 @@ class ConsumerListing extends ResourceBase {
     $requiredParams = [
       '_format',
       'language',
+      'categoryId',
     ];
 
     // Check for required parameters.
@@ -66,6 +67,11 @@ class ConsumerListing extends ResourceBase {
       return $response;
     }
 
+    // Checkfor valid category id.
+    if (empty($commonUtility->isValidTid($categoryId))) {
+      return $commonUtility->errorResponse($this->t('Category id does not exist.'), Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
+
     list($limit, $offset, $errorResponse) = $commonUtility->getPagerParam($request);
     if (!empty($errorResponse)) {
       return $errorResponse;
@@ -77,7 +83,7 @@ class ConsumerListing extends ResourceBase {
       'consumer_categories',
       'rest_export_consumer_learning_level_listing',
       '',
-      ['language' => $language]
+      ['language' => $language, 'categoryId' => $categoryId]
     );
 
     // Fetch stories bundle content response.
@@ -86,7 +92,7 @@ class ConsumerListing extends ResourceBase {
       'consumer',
       'rest_export_consumer_stories_listing',
       '',
-      ['language' => $language]
+      ['language' => $language, 'categoryId' => $categoryId]
     );
 
     // Intialize variables.
