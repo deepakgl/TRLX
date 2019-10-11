@@ -180,7 +180,7 @@ function trlx_utility_form_alter(&$form, FormStateInterface $form_state, $form_i
                 $form['#validate'][] = 'stories_validate';
               }
               else {
-                if (!empty($form[$field]['widget'][0]['value'])) {
+                if (!empty($form[$field]['widget'][0]['value']) && empty($form[$field]['widget']['#required'])) {
                   $form[$field]['widget'][0]['value']['#states']['required'] = [
                     ["input[name='field_content_section']" => ['value' => $insiderCornerTermId]],
                   ];
@@ -500,17 +500,47 @@ function trlx_utility_field_group_build_pre_render_alter(&$element) {
   $commonUtility = new CommonUtility();
   // Fetch Insider Corner Taxonomy Term.
   list($insiderCornerTermId) = $commonUtility->getSectionTerm($commonUtility::INSIDER_CORNER);
+  // Fetch Selling Tips Taxonomy Term.
+  list($sellingTipsTermId) = $commonUtility->getSectionTerm($commonUtility::SELLING_TIPS);
+  // Fetch Trend Taxonomy Term.
+  list($trendTermId) = $commonUtility->getSectionTerm($commonUtility::TREND);
 
   // Add #states: visible, enabled & required.
   $form_id = $element['#form_id'];
-  if (in_array($form_id, ['node_stories_form', 'node_stories_edit_form']) && isset($element['group_insider_corner']) && !empty($insiderCornerTermId)) {
-    $element['group_insider_corner']['#states'] = [
-      'visible' => [
-        ["input[name='field_content_section']" => ['value' => $insiderCornerTermId]],
-      ],
-      'enabled' => [
-        ["input[name='field_content_section']" => ['value' => $insiderCornerTermId]],
-      ],
-    ];
+  if (in_array($form_id, ['node_stories_form', 'node_stories_edit_form'])) {
+
+    // Show & enable Insider Corner group.
+    if (isset($element['group_insider_corner']) && !empty($insiderCornerTermId)) {
+      $element['group_insider_corner']['#states'] = [
+        'visible' => [
+          ["input[name='field_content_section']" => ['value' => $insiderCornerTermId]],
+        ],
+        'enabled' => [
+          ["input[name='field_content_section']" => ['value' => $insiderCornerTermId]],
+        ],
+      ];
+    }
+
+    // Show & enable Product Carousel group.
+    if (isset($element['group_product_carousel']) && !empty($insiderCornerTermId)) {
+      $element['group_product_carousel']['#states'] = [
+        'visible' => [
+          ["input[name='field_content_section']" => ['value' => $insiderCornerTermId]],
+          'or',
+          ["input[name='field_content_section']" => ['value' => $sellingTipsTermId]],
+          'or',
+          ["input[name='field_content_section']" => ['value' => $trendTermId]],
+        ],
+        'enabled' => [
+          ["input[name='field_content_section']" => ['value' => $insiderCornerTermId]],
+          'or',
+          ["input[name='field_content_section']" => ['value' => $sellingTipsTermId]],
+          'or',
+          ["input[name='field_content_section']" => ['value' => $trendTermId]],
+        ],
+      ];
+    }
+
+
   }
 }
