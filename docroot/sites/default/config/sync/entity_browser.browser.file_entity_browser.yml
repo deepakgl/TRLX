@@ -25,7 +25,7 @@ widgets:
   e58fa848-ee93-46b6-ac6e-683245b373d8:
     settings:
       view: media_entity_browser
-      view_display: entity_browser_1
+      view_display: entity_browser_file
       submit_text: Upload
       auto_select: false
     uuid: e58fa848-ee93-46b6-ac6e-683245b373d8

@@ -1,0 +1,19 @@
+uuid: 5b1b805c-7a9a-4580-84af-63a48134d741
+langcode: en
+status: true
+dependencies:
+  module:
+    - taxonomy
+id: taxonomy_term.field_consumer_category
+field_name: field_consumer_category
+entity_type: taxonomy_term
+type: entity_reference
+settings:
+  target_type: taxonomy_term
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

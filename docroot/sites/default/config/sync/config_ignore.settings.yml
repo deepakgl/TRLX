@@ -12,5 +12,6 @@ ignored_config_entities:
   20: 'elasticsearch_connector.*'
   22: system.file
   24: trlx_utility.settings
+  26: trlx_notification.settings
 _core:
   default_config_hash: UVH1aJ4b44UM-VdPVN7hNNuuVqfReJxwfVeDQH1Hvsk

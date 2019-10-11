@@ -154,6 +154,9 @@ function elx_translation_workflow_generate_img_styles($entity) {
   // Feature image.
   if ($entity->hasField('field_featured_image')) {
     $commonUtility->setMediaEntity($entity, 'field_featured_image', [
+      'level_home_page_tablet',
+      'level_home_page_mobile',
+      'level_home_page_desktop',
       'product_details_tablet',
       'product_details_mobile',
       'product_details_desktop',
@@ -166,12 +169,21 @@ function elx_translation_workflow_generate_img_styles($entity) {
       'insider_corner_detail_mobile',
       'insider_corner_detail_desktop',
       'insider_corner_detail_tablet',
+      'spotlight_mobile',
+      'spotlight_desktop',
+      'spotlight_tablet',
     ]
     );
   }
   // Hero image.
   if ($entity->hasField('field_hero_image')) {
     $commonUtility->setMediaEntity($entity, 'field_hero_image', [
+      'trends_homepage_tablet',
+      'trends_homepage_mobile',
+      'trends_homepage_desktop',
+      'insider_corner_hompage_section_mobile',
+      'insider_corner_hompage_section_tablet',
+      'insider_corner_hompage_section_desktop',
       'stories_listing_mobile',
       'stories_listing_desktop',
       'stories_listing_tablet',

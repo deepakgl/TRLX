@@ -39,6 +39,7 @@ class LearningLevels extends ResourceBase {
     $requiredParams = [
       '_format',
       'language',
+      'brandId',
     ];
 
     // Check for required parameters.

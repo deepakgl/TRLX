@@ -108,7 +108,7 @@ function trlx_utility_form_alter(&$form, FormStateInterface $form_state, $form_i
 
       // Collect in valid term ids.
       $inValidSections = [];
-      $insiderCornerTermId = 0;
+      $insiderCornerTermId = $consumerTermId = 0;
       if ($sectionTerms) {
         foreach ($sectionTerms as $tid => $term) {
           // Convert $term object to array.
@@ -122,14 +122,19 @@ function trlx_utility_form_alter(&$form, FormStateInterface $form_state, $form_i
             $insiderCornerTermId = $tid;
           }
 
-          // Insider Corner Term Id to hide/show Insider Corner fields.
+          // Selling Tips Term Id to hide/show Selling Tips fields.
           if (CommonUtility::SELLING_TIPS == $sectionKey) {
             $sellingTipsTermId = $tid;
           }
 
-          // Insider Corner Term Id to hide/show Insider Corner fields.
+          // Trend Term Id to hide/show Trend fields.
           if (CommonUtility::TREND == $sectionKey) {
             $trendTermId = $tid;
+          }
+
+          // Consumer Term Id to hide/show Consumer fields.
+          if (CommonUtility::CONSUMER == $sectionKey) {
+            $consumerTermId = $tid;
           }
 
           // Check if section key is mapped to current content type.
@@ -187,6 +192,29 @@ function trlx_utility_form_alter(&$form, FormStateInterface $form_state, $form_i
         /*** Add Required Validation for Insider Corner - END ***/
       }
 
+      /*** Show/Hide/Required Consumer Category based on section selection - START ***/
+      if (!empty($consumerTermId)) {
+        // Visible state.
+        $form['field_consumer_category']['widget']['#states']['visible'] = [
+          ["input[name='field_content_section']" => ['value' => $consumerTermId]],
+        ];
+
+        // Enabled state.
+        $form['field_consumer_category']['widget']['#states']['enabled'] = [
+          ["input[name='field_content_section']" => ['value' => $consumerTermId]],
+        ];
+
+        // Required state.
+        $form['field_consumer_category']['widget']['#states']['required'] = [
+          ["input[name='field_content_section']" => ['value' => $consumerTermId]],
+        ];
+
+        // Unset option "N/A".
+        unset($form['field_consumer_category']['widget']['#options']['_none']);
+        $form['#validate'][] = 'stories_validate';
+      }
+      /*** Show/Hide/Required Consumer Category based on section selection - END ***/
+
       /*** Change Point Value as per selected section on edit page - START ***/
       if ($form_id == 'node_stories_edit_form') {
         if ($insiderCornerTermId && ($form['field_content_section']['widget']['#default_value'] == $insiderCornerTermId)) {
@@ -198,6 +226,9 @@ function trlx_utility_form_alter(&$form, FormStateInterface $form_state, $form_i
         if ($trendTermId && ($form['field_content_section']['widget']['#default_value'] == $trendTermId)) {
           $point_field_value = $config->get("point_value_" . $commonUtility::TREND);
         }
+        if ($consumerTermId && ($form['field_content_section']['widget']['#default_value'] == $consumerTermId)) {
+          $point_field_value = $config->get("point_value_" . $commonUtility::CONSUMER);
+        }
 
         if (!empty($point_field_value)) {
           $form['field_point_value']['widget'][0]['value']['#value'] = $point_field_value;
@@ -208,9 +239,50 @@ function trlx_utility_form_alter(&$form, FormStateInterface $form_state, $form_i
       break;
 
     case 'taxonomy_term_brands_form':
+      $entity = $form_state->getFormObject()->getEntity();
+      $form['actions']['submit']['#submit'][] = 'trlx_utility_taxonomy_submit';
+      break;
+
     case 'taxonomy_term_learning_category_form':
       $entity = $form_state->getFormObject()->getEntity();
       $form['actions']['submit']['#submit'][] = 'trlx_utility_taxonomy_submit';
+
+      // Create CommonUtility Object.
+      $commonUtility = new CommonUtility();
+      // Fetch Consumer Section Term Id.
+      list($consumerTermId) = $commonUtility->getSectionTerm($commonUtility::CONSUMER);
+
+      /*** Show/Hide/Required Consumer Category based on section selection - START ***/
+      if (!empty($consumerTermId)) {
+        // Visible state.
+        $form['field_consumer_category']['widget']['#states']['visible'] = [
+          // If Content Section is checkbox.
+          ["input[name='field_content_section[{$consumerTermId}]']" => ['checked' => TRUE]],
+          // If Content Section is radio button.
+          // ["input[name='field_content_section']" => ['value' => $consumerTermId]],
+        ];
+
+        // Enabled state.
+        $form['field_consumer_category']['widget']['#states']['enabled'] = [
+          // If Content Section is checkbox.
+          ["input[name='field_content_section[{$consumerTermId}]']" => ['checked' => TRUE]],
+          // If Content Section is radio button.
+          // ["input[name='field_content_section']" => ['value' => $consumerTermId]],
+        ];
+
+        // Required state.
+        $form['field_consumer_category']['widget']['#states']['required'] = [
+          // If Content Section is checkbox.
+          ["input[name='field_content_section[{$consumerTermId}]']" => ['checked' => TRUE]],
+          // If Content Section is radio button.
+          // ["input[name='field_content_section']" => ['value' => $consumerTermId]],
+        ];
+
+        // Unset option "N/A".
+        unset($form['field_consumer_category']['widget']['#options']['_none']);
+        $form['#validate'][] = 'stories_validate';
+      }
+      /*** Show/Hide/Required Consumer Category based on section selection - END ***/
       break;
 
     default:
@@ -259,41 +331,54 @@ function set_section_based_point_value(array &$form, FormStateInterface $form_st
 }
 
 /**
- * Custom validate handler to handle Social Media.
+ * Custom validate handler for Section related validation(s).
  */
 function stories_validate(array &$form, FormStateInterface $form_state) {
-  // Load module config.
-  $config = \Drupal::config('trlx_utility.settings');
-  // Fetch content type mapped sections from config.
-  $insiderCornerReqFields = $config->get('insider_corner_req_fields');
-
   $commonUtility = new CommonUtility();
-  // Fetch Insider Corner Taxonomy Term.
-  list($insiderCornerTermId) = $commonUtility->getInsiderCornerTerm();
 
-  $insiderCornerSection = FALSE;
   // Get selected section.
-  $section = $form_state->getValue('field_content_section')[0]['target_id'];
-  if ($section == $insiderCornerTermId) {
-    $insiderCornerSection = TRUE;
-  };
+  $sectionTid = $form_state->getValue('field_content_section')[0]['target_id'];
 
-  // Get Social Media field value.
-  $socialMedia = $form_state->getValue('field_social_media_handles');
-
-  $socialMediaDataExists = FALSE;
-  foreach ($socialMedia as $delta => $fields) {
-    if (is_int($delta)) {
-      if (!empty($socialMedia[$delta]['subform']['field_social_media_title'][0]['value']) && !empty($socialMedia[$delta]['subform']['field_social_media_handle'][0]['value'])) {
-        $socialMediaDataExists = TRUE;
-        break;
-      }
-    }
+  // Fetch section for selected section.
+  if ($sectionTid) {
+    $sectionKey = $commonUtility->getSectionKeyByTermId($sectionTid);
   }
 
-  // Check for show validation.
-  if (!empty($insiderCornerSection) && isset($insiderCornerReqFields['field_social_media_handles']) && empty($socialMediaDataExists)) {
-    $form_state->setErrorByName('field_social_media_handles', t('At least one set of Social Media (Title & Url) is required.'));
+  switch ($sectionKey) {
+    case $commonUtility::INSIDER_CORNER:
+      // Load module config.
+      $config = \Drupal::config('trlx_utility.settings');
+      // Fetch content type mapped sections from config.
+      $insiderCornerReqFields = $config->get('insider_corner_req_fields');
+
+      // Get Social Media field value.
+      $socialMedia = $form_state->getValue('field_social_media_handles');
+
+      $socialMediaDataExists = FALSE;
+      foreach ($socialMedia as $delta => $fields) {
+        if (is_int($delta)) {
+          if (!empty($socialMedia[$delta]['subform']['field_social_media_title'][0]['value']) && !empty($socialMedia[$delta]['subform']['field_social_media_handle'][0]['value'])) {
+            $socialMediaDataExists = TRUE;
+            break;
+          }
+        }
+      }
+
+      // Check for show validation.
+      if (isset($insiderCornerReqFields['field_social_media_handles']) && empty($socialMediaDataExists)) {
+        $form_state->setErrorByName('field_social_media_handles', t('At least one set of Social Media (Title & Url) is required!'));
+      }
+      break;
+
+    case $commonUtility::CONSUMER:
+      // Check for Consumer Category required validation.
+      if (empty($form_state->getValue('field_consumer_category')[0]['target_id'])) {
+        $form_state->setErrorByName('field_consumer_category', t('@title is required!', ['@title' => $form['field_consumer_category']['widget']['#title']]));
+      }
+      break;
+
+    default:
+      break;
   }
 }
 
@@ -360,6 +445,8 @@ function trlx_utility_views_query_alter(ViewExecutable $view, $query) {
     'insider_corner',
     'selling_tips_learning_level_vocabulary',
     'selling_tips',
+    'consumer_categories',
+    'consumer',
   ];
   $current_display = [
     'rest_export_product_listings',
@@ -375,6 +462,8 @@ function trlx_utility_views_query_alter(ViewExecutable $view, $query) {
     'rest_export_insider_corner_listing',
     'rest_export_selling_tips_learning_level_listing',
     'rest_export_selling_tips_content_listing',
+    'rest_export_consumer_learning_level_listing',
+    'rest_export_consumer_stories_listing',
   ];
   if (in_array($view->id(), $view_id)) {
     if (in_array($view->current_display, $current_display)) {
@@ -392,7 +481,7 @@ function trlx_utility_views_query_alter(ViewExecutable $view, $query) {
 function trlx_utility_field_group_build_pre_render_alter(&$element) {
   $commonUtility = new CommonUtility();
   // Fetch Insider Corner Taxonomy Term.
-  list($insiderCornerTermId) = $commonUtility->getInsiderCornerTerm();
+  list($insiderCornerTermId) = $commonUtility->getSectionTerm($commonUtility::INSIDER_CORNER);
 
   // Add #states: visible, enabled & required.
   $form_id = $element['#form_id'];

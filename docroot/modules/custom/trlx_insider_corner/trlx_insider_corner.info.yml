@@ -1,0 +1,8 @@
+name: TRLX Insider Corner
+type: module
+description: TRLX custom module for Insider Corner.
+core: 8.x
+package: TRLX
+
+dependencies:
+  - trlx_utility

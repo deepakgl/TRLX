@@ -55,10 +55,13 @@ class FlagController extends Controller {
       'flag' => 'required|likebookmarkflag',
       'status' => 'required|boolean',
       '_format' => 'required|format',
-      'brandId' => 'sometimes|positiveinteger|brandid',
+      'brandId' => 'sometimes|required|positiveinteger|brandid',
     ]);
     $this->uid = $_userData->userId;
     $pageType = $request->get('type');
+    if (isset($pageType) && empty($pageType)) {
+      return $this->errorResponse('Valid page type is required.', Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
     $brand_id = 0;
     // Get brand id if faq is part of brand section.
     if (isset($validatedData['brandId'])) {
