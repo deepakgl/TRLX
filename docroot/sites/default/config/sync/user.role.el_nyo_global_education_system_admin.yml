@@ -29,7 +29,6 @@ permissions:
   - 'access statistics'
   - 'access taxonomy overview'
   - 'access user contact forms'
-  - 'access user profiles'
   - 'access video_entity_browser entity browser pages'
   - 'add JS snippets for google analytics'
   - 'add userpoints'
