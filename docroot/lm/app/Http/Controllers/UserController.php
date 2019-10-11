@@ -199,7 +199,7 @@ class UserController extends Controller
 			"current_page" => 0,
 			"next_page" => 1,
 		];
-		$response['users'] = array_pluck($searchResult['hits']['hits'], '_source') ?: [];
+		$response['results'] = array_pluck($searchResult['hits']['hits'], '_source') ?: [];
 		return new Response($response, Response::HTTP_OK);
 	}
 }
