@@ -181,4 +181,57 @@ class LevelUtility {
     return $arr;
   }
 
+  /**
+   * Fetch level data by tid.
+   *
+   * @param int $tid
+   *   Term Id.
+   *
+   * @return array
+   *   Level data.
+   */
+  public function getLevelData($tid) {
+    $query = \Drupal::database()->select('taxonomy_term_field_data', 'ttfd');
+    $query->fields('ttfd', ['name', 'langcode']);
+    $query->condition('ttfd.tid', $tid);
+    $results = $query->execute()->fetchAll();
+    return $results[0];
+  }
+
+  /**
+   * Fetch brands associated with particular level.
+   *
+   * @param int $tid
+   *   Term Id.
+   *
+   * @return array
+   *   Brands.
+   */
+  public function getLevelBrands($tid) {
+    $query = \Drupal::database()->select('taxonomy_term__field_brands', 'ttfb');
+    $query->fields('ttfb', ['field_brands_target_id']);
+    $query->join('taxonomy_term__field_brand_key', 'ttfbk', 'ttfbk.entity_id = ttfb.field_brands_target_id');
+    $query->fields('ttfbk', ['field_brand_key_value']);
+    $query->condition('ttfb.entity_id', $tid);
+    return $query->execute()->fetchAll();
+  }
+
+  /**
+   * Fetch content sections associated with particular level.
+   *
+   * @param int $tid
+   *   Term Id.
+   *
+   * @return array
+   *   Brands.
+   */
+  public function getLevelContentSection($tid) {
+    $query = \Drupal::database()->select('taxonomy_term__field_content_section', 'ttfcs');
+    $query->fields('ttfcs', ['field_content_section_target_id']);
+    $query->join('taxonomy_term__field_content_section_key', 'ttfcsk', 'ttfcsk.entity_id = ttfcs.field_content_section_target_id');
+    $query->fields('ttfcsk', ['field_content_section_key_value']);
+    $query->condition('ttfcs.entity_id', $tid);
+    return $query->execute()->fetchAll();
+  }
+
 }

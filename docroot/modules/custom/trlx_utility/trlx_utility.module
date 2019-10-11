@@ -313,6 +313,24 @@ function trlx_utility_taxonomy_submit(array &$form, FormStateInterface $form_sta
     ]
     );
   }
+  // Consumer Category Feature Image.
+  if ($entity->hasField('field_featured_image')) {
+    $commonUtility->setMediaEntity($entity, 'field_featured_image', [
+      'consumer_category_desktop',
+      'consumer_category_tablet',
+      'consumer_category_mobile',
+    ]
+    );
+  }
+  // Consumer Category Hero Image.
+  if ($entity->hasField('field_hero_image')) {
+    $commonUtility->setMediaEntity($entity, 'field_hero_image', [
+      'consumer_category_listing_desktop',
+      'consumer_category_listing_tablet',
+      'consumer_category_listing_mobile',
+    ]
+    );
+  }
 }
 
 /**
