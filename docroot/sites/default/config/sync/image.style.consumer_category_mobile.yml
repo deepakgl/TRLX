@@ -1,0 +1,15 @@
+uuid: 16beff4f-6325-4725-bdc0-7c43fed8efca
+langcode: en
+status: true
+dependencies: {  }
+name: consumer_category_mobile
+label: 'Consumer Category Mobile (375×375)'
+effects:
+  7e851a62-31bf-42d9-b8c9-53f7feccb4b3:
+    uuid: 7e851a62-31bf-42d9-b8c9-53f7feccb4b3
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 375
+      height: 375
+      anchor: center-center

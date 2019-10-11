@@ -1,0 +1,15 @@
+uuid: 2be03916-51a9-4611-973f-2ed2b3388334
+langcode: en
+status: true
+dependencies: {  }
+name: consumer_category_listing_desktop
+label: 'Consumer Category Listing Desktop (560x250)'
+effects:
+  16dd8f07-f04f-422e-87da-d06925d2c51f:
+    uuid: 16dd8f07-f04f-422e-87da-d06925d2c51f
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 560
+      height: 250
+      anchor: center-center
