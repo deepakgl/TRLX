@@ -1,0 +1,15 @@
+uuid: 07e400b4-fa07-4d48-a7d2-5b2a9d5a1e60
+langcode: en
+status: true
+dependencies: {  }
+name: search_listings_mobile
+label: 'Search Listings Mobile (150×151)'
+effects:
+  539b5169-56cd-4e5a-977d-7164f8afd0e5:
+    uuid: 539b5169-56cd-4e5a-977d-7164f8afd0e5
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 150
+      height: 151
+      anchor: center-center
