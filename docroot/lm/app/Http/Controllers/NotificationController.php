@@ -215,6 +215,8 @@ class NotificationController extends Controller {
    *
    * @param int $userId
    *   User ID.
+   * @param string $langcode
+   *   Selected language code.
    *
    * @return int
    *   The index ID.
