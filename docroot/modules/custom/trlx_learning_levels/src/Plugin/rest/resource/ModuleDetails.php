@@ -125,9 +125,9 @@ class ModuleDetails extends ResourceBase {
     // 'all_roles');
     // $user_email = \Drupal::currentUser()->getEmail();
     // $user_name = \Drupal::currentUser()->getUsername();
-    $user_roles = ['Administrator'];
-    $user_email = 'lmx@mailinator.com';
-    $user_name = 'superadmin';
+    $user_roles = ['beauty_advisor'];
+    $user_email = 'trlx@mailinator.com';
+    $user_name = 'beauty_advisor';
 
     $actor = '"mbox":"' . $user_email . '","name":"' .
       $user_name . '","objectType":"' .
@@ -136,12 +136,16 @@ class ModuleDetails extends ResourceBase {
     $statement_id = \Drupal::config('elx_utility.settings')
       ->get('lrs_statement_id');
 
+    $user = \Drupal\user\Entity\User::load(\Drupal::currentUser()->id());
+    $uuid = $user->uuid();
+    //$uuid = '66f93bc8-befc-4586-a935-84cb2dc636ba';
     $learning_category = $levelUtility->getLevelCategory($nid);
     $decode['articulateFile'] = $base_url . $decode['articulateFile']
-      . '?tincan=true&endpoint=' . $lumen_url . '/lm/api/v1/slrsa&auth='
-      . $statement_id . '&actor=' . $actor . '&registration=' .
-          $uuid . '&uid='
-      . $_userData->userId . '&tid=' . $learning_category . '&nid=' . $nid;
+     . '?tincan=true&endpoint=' . $lumen_url . '/lm/api/v1/slrsa&auth='
+     . $statement_id . '&actor=' . $actor . '&registration=' .
+     $uuid . '&uid='
+     . $_userData->userId . '&tid=' . $learning_category . '&nid=' . $nid;
+
     // Fetch previous and next level.
     list($previous, $next) = $levelUtility
       ->fetchPreviousAndNextLevel($_userData, $language, $learning_category, $nid);
@@ -154,5 +158,4 @@ class ModuleDetails extends ResourceBase {
 
     return $decode;
   }
-
 }

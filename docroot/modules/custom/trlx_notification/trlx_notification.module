@@ -165,7 +165,7 @@ function trlx_notification_modules_related_content($node) {
       }
     }
   }
-  if (in_array('insiderCorner', $content_sections)) {
+  if (in_array($commonUtility::INSIDER_CORNER, $content_sections)) {
     $insiderCornerUserIds = NotificationUtility::getUsersBasedOnBrandsAndMarkets($market_ref_keys);
     if (!empty($insiderCornerUserIds)) {
       foreach ($insiderCornerUserIds as $id) {
@@ -180,7 +180,7 @@ function trlx_notification_modules_related_content($node) {
       }
     }
   }
-  if (in_array('sellingTips', $content_sections)) {
+  if (in_array($commonUtility::SELLING_TIPS, $content_sections)) {
     $sellingTipsUserIds = NotificationUtility::getUsersBasedOnBrandsAndMarkets($market_ref_keys);
     if (!empty($sellingTipsUserIds)) {
       foreach ($sellingTipsUserIds as $id) {
@@ -195,7 +195,7 @@ function trlx_notification_modules_related_content($node) {
       }
     }
   }
-  if (in_array('consumer', $content_sections)) {
+  if (in_array($commonUtility::CONSUMER, $content_sections)) {
     $consumerUserIds = NotificationUtility::getUsersBasedOnBrandsAndMarkets($market_ref_keys);
     if (!empty(userIds)) {
       foreach ($userIds as $id) {
@@ -259,7 +259,7 @@ function trlx_notification_stories_related_content($node) {
   $content_section_id = $node->get('field_content_section')->first()->getValue()['target_id'];
   $content_section = $commonUtility->getSectionKeyByTermId($content_section_id);
   $notification_index = [];
-  if ($content_section == 'trend') {
+  if ($content_section == $commonUtility::TREND) {
     $trendUserIds = NotificationUtility::getUsersBasedOnBrandsAndMarkets($market_ref_keys);
     if (!empty($trendUserIds)) {
       foreach ($trendUserIds as $id) {
@@ -274,7 +274,7 @@ function trlx_notification_stories_related_content($node) {
       }
     }
   }
-  if ($content_section == 'insiderCorner') {
+  if ($content_section == $commonUtility::INSIDER_CORNER) {
     $insiderCornerUserIds = NotificationUtility::getUsersBasedOnBrandsAndMarkets($market_ref_keys);
     if (!empty($insiderCornerUserIds)) {
       foreach ($insiderCornerUserIds as $id) {
@@ -289,7 +289,7 @@ function trlx_notification_stories_related_content($node) {
       }
     }
   }
-  if ($content_section == 'sellingTips') {
+  if ($content_section == $commonUtility::SELLING_TIPS) {
     $sellingTipsUserIds = NotificationUtility::getUsersBasedOnBrandsAndMarkets($market_ref_keys);
     if (!empty($sellingTipsUserIds)) {
       foreach ($sellingTipsUserIds as $id) {
@@ -304,7 +304,7 @@ function trlx_notification_stories_related_content($node) {
       }
     }
   }
-  if ($content_section == 'consumer') {
+  if ($content_section == $commonUtility::CONSUMER) {
     $consumerUserIds = NotificationUtility::getUsersBasedOnBrandsAndMarkets($market_ref_keys);
     if (!empty(userIds)) {
       foreach ($userIds as $id) {

@@ -11,7 +11,7 @@ field_name: field_hero_image
 entity_type: node
 bundle: level_interactive_content
 label: 'Hero Image'
-description: 'Allowed file types:<b> jpg, jpeg and png.</b><br>Image Resolution:<b> 303 x 303px</b>'
+description: ''
 required: false
 translatable: true
 default_value: {  }

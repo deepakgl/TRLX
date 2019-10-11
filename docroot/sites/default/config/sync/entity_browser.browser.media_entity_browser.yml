@@ -27,7 +27,7 @@ widgets:
   6586703a-6976-4124-8a49-cbb07ceaa3b1:
     settings:
       view: media_entity_browser
-      view_display: entity_browser_1
+      view_display: entity_browser_image
       submit_text: Upload
       auto_select: false
     uuid: 6586703a-6976-4124-8a49-cbb07ceaa3b1

@@ -11,7 +11,7 @@ field_name: field_image
 entity_type: taxonomy_term
 bundle: learning_category
 label: Image
-description: 'Allowed file types:<b> png, jpg, jpeg.</b><br>Image Resolution:<b> 188 x 200px</b>'
+description: ''
 required: false
 translatable: true
 default_value: {  }

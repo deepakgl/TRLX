@@ -1,0 +1,5 @@
+services:
+  trlx_security.response_header:
+    class: '\Drupal\trlx_security\HttpResponseHeader\HeaderResponseSubscriber'
+    tags:
+      - { name: event_subscriber }

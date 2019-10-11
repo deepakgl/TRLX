@@ -98,4 +98,10 @@ $router->group(
       $router->get('notification', 'NotificationController@getByUserId');
       $router->post('notification/status/save', 'NotificationController@updateNotificationsFlag');
     });
+
+    // Index users in elastic.
+    $router->group(['prefix' => 'v1'], function () use ($router) {
+      $router->post('users', 'UserController@updateUsersIndex');
+    });
+
   });
