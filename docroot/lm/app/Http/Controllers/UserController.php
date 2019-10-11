@@ -61,7 +61,10 @@ class UserController extends Controller
 			}else{
 				$this->updateUserIndex($data);
 			}
-			return Helper::jsonSuccess(TRUE);
+			$response['results'] = [
+				'message' => 'Users data updated successfully.',
+			];
+			return new Response($response, 200);
 		}catch (Exception $e){
 			return Helper::jsonError($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
 		}
@@ -84,8 +87,6 @@ class UserController extends Controller
 		$elastic_arr = $this->getEmptyUserDataArr();
 		$params['body'] = $this->createUserBody($elastic_arr, $data, 'add');
 		ElasticUserModel::createElasticUserIndex($params, $data['uid'], $this->elasticClient);
-		$dataa = ElasticUserModel::fetchElasticUserData($data['uid'], $this->elasticClient);
-		\Log::info($dataa);
 	}
 
 	/**
