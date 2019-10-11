@@ -94,4 +94,5 @@ $router->group(
 // index users in elastic.
 $router->group(['prefix' => 'v1'], function () use ($router) {
 	$router->post('users', 'UserController@updateUsersIndex');
+	$router->get('users', 'UserController@getUsersListing');
 });
