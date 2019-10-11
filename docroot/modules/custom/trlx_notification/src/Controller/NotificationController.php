@@ -12,6 +12,7 @@ class NotificationController extends ControllerBase {
 
   const NOTIFICATION_SETTINGS = 'trlx_notification.settings';
   const DATE_FORMAT = 'Y-m-d';
+  const NOTIFICATION_DATE = 'notificationDate';
 
   /**
    * Notifications purge after 30 days of generation of the notification.

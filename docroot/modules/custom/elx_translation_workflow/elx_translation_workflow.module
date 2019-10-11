@@ -178,6 +178,9 @@ function elx_translation_workflow_generate_img_styles($entity) {
   // Hero image.
   if ($entity->hasField('field_hero_image')) {
     $commonUtility->setMediaEntity($entity, 'field_hero_image', [
+      'listing_image_mobile',
+      'listing_image_tablet',
+      'listing_image_desktop',
       'trends_homepage_tablet',
       'trends_homepage_mobile',
       'trends_homepage_desktop',
