@@ -606,7 +606,6 @@ class CommonUtility {
   public function getBrandKeyByTermId(int $brandTid) {
     // Load all Section taxonomy terms.
     $brandTerms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadTree('brands', 0, NULL, TRUE);
-
     $brandKey = '';
     if (!empty($brandTerms)) {
       foreach ($brandTerms as $delta => $term) {
@@ -618,37 +617,43 @@ class CommonUtility {
         }
       }
     }
-
     return (int) $brandKey;
   }
 
- /**
-  * @param $value
-  * @param $language
-  * @return mixed
-  * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
-  * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
-  */
+  /**
+   * Method to get node data.
+   *
+   * @param int $nid
+   *   Node id.
+   * @param string $language
+   *   Language code.
+   *
+   * @return mixed
+   *   Node data.
+   */
   public function getNodeData($nid, $language) {
-    // Load node by nid and language code
+    // Load node by nid and language code.
     $node = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
     if ($node->hasTranslation($language)) {
       return $node->getTranslation($language);
     }
   }
 
+  /**
+   * Method to load image style.
+   *
+   * @param string $style_name
+   *   Style name.
+   * @param string $file_uri
+   *   File uri.
+   *
+   * @return mixed
+   *   Image style url.
+   */
+  public function loadImageStyle($style_name, $file_uri) {
+    $image_style = \Drupal::entityTypeManager()->getStorage('image_style')->load($style_name);
+    $result = $image_style->buildUrl($file_uri);
+    return $result;
+  }
 
- /**
-  * @param $style_name
-  * @param $file_uri
-  * @return mixed
-  * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
-  * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
-  */
- public function loadImageStyle($style_name, $file_uri) {
-   $image_style = \Drupal::entityTypeManager()->getStorage('image_style')->load($style_name);
-   $result = $image_style->buildUrl($file_uri);
-
-   return $result;
- }
 }
