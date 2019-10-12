@@ -1,0 +1,15 @@
+uuid: ff639b1b-df14-4c00-92e6-89789bb39872
+langcode: en
+status: true
+dependencies: {  }
+name: consumer_category_listing_tablet
+label: 'Consumer Category Listing Tablet (560x250)'
+effects:
+  574366cb-9088-47ac-a5d4-740ebb6de6a8:
+    uuid: 574366cb-9088-47ac-a5d4-740ebb6de6a8
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 560
+      height: 250
+      anchor: center-center

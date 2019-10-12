@@ -1,0 +1,15 @@
+uuid: 30c9f613-ca3e-40db-a379-843923eb08d2
+langcode: en
+status: true
+dependencies: {  }
+name: consumer_category_desktop
+label: 'Consumer Category Desktop (1194x357)'
+effects:
+  04c45087-55f6-4920-b716-7a8d07fbea49:
+    uuid: 04c45087-55f6-4920-b716-7a8d07fbea49
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 1194
+      height: 357
+      anchor: center-center

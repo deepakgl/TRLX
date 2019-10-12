@@ -21,7 +21,6 @@ permissions:
   - 'access resource user'
   - 'access resource wysiwyg_profile'
   - 'access selected languages'
-  - 'access user profiles'
   - 'clone node'
   - 'create field_employment_status'
   - 'create field_first_name'
