@@ -7,12 +7,24 @@ use App\Model\Elastic\ElasticUserModel;
 use App\Support\Helper;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Validator;
 use Mockery\Exception;
 
 class UserController extends Controller
 {
+	/**
+	 * Elastic search limit.
+	 *
+	 * @var limit
+	 */
+	private $limit = NULL;
+	/**
+	 * Elastic search offset.
+	 *
+	 * @var offset
+	 */
+	private $offset = NULL;
+
 	/**
 	 * Elastic client.
 	 */
@@ -29,6 +41,8 @@ class UserController extends Controller
 		if (!$this->elasticClient) {
 			return $this->errorResponse('No alive nodes found in cluster.', Response::HTTP_INTERNAL_SERVER_ERROR);
 		}
+		$this->limit = 10;
+		$this->offset = 0;
 	}
 
 	/**
@@ -61,7 +75,10 @@ class UserController extends Controller
 			}else{
 				$this->updateUserIndex($data);
 			}
-			return Helper::jsonSuccess(TRUE);
+			$response['results'] = [
+				'message' => 'Users data updated successfully.',
+			];
+			return new Response($response, 200);
 		}catch (Exception $e){
 			return Helper::jsonError($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
 		}
@@ -84,8 +101,6 @@ class UserController extends Controller
 		$elastic_arr = $this->getEmptyUserDataArr();
 		$params['body'] = $this->createUserBody($elastic_arr, $data, 'add');
 		ElasticUserModel::createElasticUserIndex($params, $data['uid'], $this->elasticClient);
-		$dataa = ElasticUserModel::fetchElasticUserData($data['uid'], $this->elasticClient);
-		\Log::info($dataa);
 	}
 
 	/**
@@ -157,5 +172,34 @@ class UserController extends Controller
 			'access_permission' => 0,
 			'ignore' => 0,
 		];
+	}
+
+	/**
+	 * @param Request $request
+	 * @return array|Response
+	 */
+	public function getUsersListing(Request $request)
+	{
+		$this->limit = !empty($request->input('limit')) ? $request->input('limit') : $this->limit;
+		$this->offset = !empty($request->input('offset')) ? $request->input('offset') : $this->offset;
+		$queryParams = ElasticUserModel::getElasticSearchParam('email', '', $this->limit, $this->offset);
+		$searchResult = ElasticUserModel::search($this->elasticClient, $queryParams);
+		if (empty($searchResult)) {
+			return new Response(NULL, Response::HTTP_NO_CONTENT);
+		}
+		if (isset($searchResult['success']) && $searchResult['success'] == FALSE) {
+			return Helper::jsonError($searchResult['error'], $searchResult['code']);
+		}
+		$total_count = $searchResult['hits']['total']['value'] - $this->offset;
+		// Build pagination.
+		$response['pager'] = [
+			"count" => ($total_count > 0) ? $total_count : 0,
+			"pages" => intval(ceil($total_count / $this->limit)),
+			"items_per_page" => $this->limit,
+			"current_page" => 0,
+			"next_page" => 1,
+		];
+		$response['results'] = array_pluck($searchResult['hits']['hits'], '_source') ?: [];
+		return new Response($response, Response::HTTP_OK);
 	}
 }

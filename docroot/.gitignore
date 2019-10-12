@@ -1,0 +1,7 @@
+composer.lock
+core/
+libraries/superfish/
+modules/contrib/
+sites/default/settings.php
+themes/contrib/
+vendor/

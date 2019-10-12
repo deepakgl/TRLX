@@ -92,16 +92,20 @@ $router->group(
       $router->get('userActivity', 'UserActivitiesController@userActivity');
       $router->get('globalActivity', 'UserActivitiesController@globalActivity');
     });
+	// Notification Routes.
+	$router->group(['prefix' => 'v1'], function () use ($router) {
+		$router->get('notification', 'NotificationController@getByUserId');
+		$router->post('notification/status/save', 'NotificationController@updateNotificationsFlag');
+	});
 
-    // Notification Routes.
-    $router->group(['prefix' => 'v1'], function () use ($router) {
-      $router->get('notification', 'NotificationController@getByUserId');
-      $router->post('notification/status/save', 'NotificationController@updateNotificationsFlag');
-    });
+	// Index users in elastic.
+	$router->group(['prefix' => 'v1'], function () use ($router) {
+		$router->post('users', 'UserController@updateUsersIndex');
+	});
+});
 
-    // Index users in elastic.
-    $router->group(['prefix' => 'v1'], function () use ($router) {
-      $router->post('users', 'UserController@updateUsersIndex');
-    });
-
-  });
+// index users in elastic.
+$router->group(['prefix' => 'v1'], function () use ($router) {
+	$router->post('users', 'UserController@updateUsersIndex');
+	$router->get('users', 'UserController@getUsersListing');
+});
