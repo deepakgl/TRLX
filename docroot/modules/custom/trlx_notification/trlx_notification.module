@@ -119,7 +119,9 @@ function trlx_notification_brand_story_related_content($node) {
       $notificationArray[NOTIFICATION_USER_ID] = $id;
       $notificationArray[NOTIFICATION_HEADING] = t('New Brand Stroy content.');
       $notificationArray[NOTIFICATION_TEXT] = t('Check out new brand story:') . ' ' . $node->get('field_display_title')->first()->getValue()['value'];
-      $notificationArray[NOTIFICATION_BRAND_KEY] = $brandKey;
+      $notificationArray[NOTIFICATION_LINK] = NULL;
+      $notificationArray[NOTIFICATION_LINK_TYPE] = t('brandStory');
+      $notificationArray[NOTIFICATION_BRAND_KEY] = reset($brand_key);
       $notificationArray[NOTIFICATIONS_LANGUAGE] = $node->langcode->value;
       $notification_index[] = process_notification($notificationArray);
     }
@@ -165,21 +167,6 @@ function trlx_notification_modules_related_content($node) {
       }
     }
   }
-  if (in_array($commonUtility::INSIDER_CORNER, $content_sections)) {
-    $insiderCornerUserIds = NotificationUtility::getUsersBasedOnBrandsAndMarkets($market_ref_keys);
-    if (!empty($insiderCornerUserIds)) {
-      foreach ($insiderCornerUserIds as $id) {
-        $notificationArray[NOTIFICATION_TYPE] = t('INSIDERCORNER');
-        $notificationArray[NOTIFICATION_USER_ID] = $id;
-        $notificationArray[NOTIFICATION_HEADING] = t('New Insider Corner learning lesson added in level:') . ' ' . $level_data->name;
-        $notificationArray[NOTIFICATION_TEXT] = t('Checkout new lesson:') . ' ' . $node->get('field_headline')->first()->getValue()['value'];
-        $notificationArray[NOTIFICATION_LINK] = $node->id();
-        $notificationArray[NOTIFICATION_LINK_TYPE] = t('insiderCorner');
-        $notificationArray[NOTIFICATIONS_LANGUAGE] = $node->langcode->value;
-        $notification_index[] = process_notification($notificationArray);
-      }
-    }
-  }
   if (in_array($commonUtility::SELLING_TIPS, $content_sections)) {
     $sellingTipsUserIds = NotificationUtility::getUsersBasedOnBrandsAndMarkets($market_ref_keys);
     if (!empty($sellingTipsUserIds)) {
@@ -197,8 +184,8 @@ function trlx_notification_modules_related_content($node) {
   }
   if (in_array($commonUtility::CONSUMER, $content_sections)) {
     $consumerUserIds = NotificationUtility::getUsersBasedOnBrandsAndMarkets($market_ref_keys);
-    if (!empty(userIds)) {
-      foreach ($userIds as $id) {
+    if (!empty($consumerUserIds)) {
+      foreach ($consumerUserIds as $id) {
         $notificationArray[NOTIFICATION_TYPE] = t('CONSUMER');
         $notificationArray[NOTIFICATION_USER_ID] = $id;
         $notificationArray[NOTIFICATION_HEADING] = t('New Consumer learning lesson added in level:') . ' ' . $level_data->name;
@@ -280,7 +267,7 @@ function trlx_notification_stories_related_content($node) {
       foreach ($insiderCornerUserIds as $id) {
         $notificationArray[NOTIFICATION_TYPE] = t('INSIDERCORNER');
         $notificationArray[NOTIFICATION_USER_ID] = $id;
-        $notificationArray[NOTIFICATION_HEADING] = t('New trending story added.');
+        $notificationArray[NOTIFICATION_HEADING] = t('New insider corner added.');
         $notificationArray[NOTIFICATION_TEXT] = t('Checkout new story:') . ' ' . $node->get('field_display_title')->first()->getValue()['value'];
         $notificationArray[NOTIFICATION_LINK] = $node->id();
         $notificationArray[NOTIFICATION_LINK_TYPE] = t('insiderCorner');
@@ -295,7 +282,7 @@ function trlx_notification_stories_related_content($node) {
       foreach ($sellingTipsUserIds as $id) {
         $notificationArray[NOTIFICATION_TYPE] = t('SELLINGTIPS');
         $notificationArray[NOTIFICATION_USER_ID] = $id;
-        $notificationArray[NOTIFICATION_HEADING] = t('New trending story added.');
+        $notificationArray[NOTIFICATION_HEADING] = t('New selling tips added.');
         $notificationArray[NOTIFICATION_TEXT] = t('Checkout new story:') . ' ' . $node->get('field_display_title')->first()->getValue()['value'];
         $notificationArray[NOTIFICATION_LINK] = $node->id();
         $notificationArray[NOTIFICATION_LINK_TYPE] = t('sellingTips');
@@ -306,11 +293,11 @@ function trlx_notification_stories_related_content($node) {
   }
   if ($content_section == $commonUtility::CONSUMER) {
     $consumerUserIds = NotificationUtility::getUsersBasedOnBrandsAndMarkets($market_ref_keys);
-    if (!empty(userIds)) {
-      foreach ($userIds as $id) {
+    if (!empty($consumerUserIds)) {
+      foreach ($consumerUserIds as $id) {
         $notificationArray[NOTIFICATION_TYPE] = t('CONSUMER');
         $notificationArray[NOTIFICATION_USER_ID] = $id;
-        $notificationArray[NOTIFICATION_HEADING] = t('New trending story added.');
+        $notificationArray[NOTIFICATION_HEADING] = t('New consumer story added.');
         $notificationArray[NOTIFICATION_TEXT] = t('Checkout new story:') . ' ' . $node->get('field_display_title')->first()->getValue()['value'];
         $notificationArray[NOTIFICATION_LINK] = $node->id();
         $notificationArray[NOTIFICATION_LINK_TYPE] = t('consumer');
@@ -335,7 +322,7 @@ function trlx_notification_video_related_content($node) {
   $market_ref_keys = array_column($user_utility->getMarketKeyByCategoryId($markets), 'field_region_subreg_country_id_value');
   $userIds = NotificationUtility::getUsersBasedOnBrandsAndMarkets($market_ref_keys, $brand_key);
   $notification_index = [];
-  if (!empty(userIds)) {
+  if (!empty($userIds)) {
     foreach ($userIds as $id) {
       $notificationArray[NOTIFICATION_TYPE] = t('BRAND');
       $notificationArray[NOTIFICATION_USER_ID] = $id;
@@ -397,14 +384,14 @@ function trlx_notification_node_builder($entity_type, NodeInterface $node, &$for
 function process_notification(array $notificationArray) {
   $notification_index = [];
   $notification_index[NOTIFICATION_TYPE] = $notificationArray[NOTIFICATION_TYPE];
-  $notification_index[NOTIFICATION_USER_ID] = $notificationArray[NOTIFICATION_USER_ID];
+  $notification_index[NOTIFICATION_USER_ID] = (int) $notificationArray[NOTIFICATION_USER_ID];
   $notification_index[NOTIFICATION_HEADING] = $notificationArray[NOTIFICATION_HEADING];
   $notification_index[NOTIFICATION_TEXT] = $notificationArray[NOTIFICATION_TEXT];
-  $notification_index['notificationDate'] = \Drupal::time()->getCurrentTime();
-  $notification_index[NOTIFICATION_LINK] = $notificationArray[NOTIFICATION_LINK];
+  $notification_index['notificationDate'] = (int) \Drupal::time()->getCurrentTime();
+  $notification_index[NOTIFICATION_LINK] = (int) $notificationArray[NOTIFICATION_LINK];
   $notification_index[NOTIFICATION_LINK_TYPE] = $notificationArray[NOTIFICATION_LINK_TYPE];
   $notification_index[NOTIFICATIONS_LANGUAGE] = $notificationArray[NOTIFICATIONS_LANGUAGE];
-  $notification_index[NOTIFICATION_BRAND_KEY] = $notificationArray[NOTIFICATION_BRAND_KEY];
+  $notification_index[NOTIFICATION_BRAND_KEY] = (int) $notificationArray[NOTIFICATION_BRAND_KEY];
 
   return $notification_index;
 }
