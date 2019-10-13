@@ -80,7 +80,7 @@ class StoryDetails extends ResourceBase {
     // Prepare redis key.
     $key = ":storyDetail:_{$nid}_{$language}";
 
-    $views = $viewsDisplay = $type = $pointValAlterKey = '';
+    $views = $viewsDisplay = $type = $pointValAlterKey = $productCarousel = '';
     $data = [];
 
     // Switch case to specify section specific views & variables.
@@ -94,6 +94,8 @@ class StoryDetails extends ResourceBase {
         // Section specific keys for alteration.
         $data['socialMediaHandles'] = 'social_media_handles';
         $data['video'] = 'append_host';
+        $data['productCarouselTitle'] = 'decode';
+        $productCarousel = TRUE;
         break;
 
       case $commonUtility::SELLING_TIPS:
@@ -104,6 +106,8 @@ class StoryDetails extends ResourceBase {
 
         // Section specific keys for alteration.
         $data['video'] = 'append_host';
+        $data['productCarouselTitle'] = 'decode';
+        $productCarousel = TRUE;
         break;
 
       case $commonUtility::CONSUMER:
@@ -118,6 +122,10 @@ class StoryDetails extends ResourceBase {
         $viewsDisplay = 'rest_export_story_details';
         $type = 'trend_detail';
         $pointValAlterKey = 'point_value_' . $commonUtility::TREND;
+
+        // Section specific keys for alteration.
+        $data['productCarouselTitle'] = 'decode';
+        $productCarousel = TRUE;
         break;
     }
 
@@ -147,6 +155,19 @@ class StoryDetails extends ResourceBase {
     // Check for empty / no result from views.
     if (empty($view_results)) {
       return $commonUtility->successResponse([], Response::HTTP_OK);
+    }
+
+    // Load Product Carousel.
+    if ($productCarousel) {
+      $productCarousel = $commonUtility->fetchProductCarouselByNodeId($nid, $language);
+      if (!empty($productCarousel)) {
+        $view_results['productCarousel'] = $productCarousel;
+      }
+      else {
+        if (isset($view_results['productCarouselTitle'])) {
+          unset($view_results['productCarouselTitle']);
+        }
+      }
     }
 
     return $commonUtility->successResponse($view_results, $status_code);

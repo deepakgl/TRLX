@@ -25,7 +25,6 @@ module:
   csv_serialization: 0
   ctools: 0
   datetime: 0
-  dblog: 0
   delete_all: 0
   draggableviews: 0
   dropzonejs: 0
@@ -87,10 +86,6 @@ module:
   menu_ui: 0
   migrate: 0
   migrate_drupal: 0
-  migrate_example: 0
-  migrate_example_advanced: 0
-  migrate_example_advanced_setup: 0
-  migrate_example_setup: 0
   migrate_plus: 0
   migrate_tools: 0
   multiselect: 0
