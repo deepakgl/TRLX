@@ -1,11 +1,11 @@
-uuid: 1ebb5d60-8e5e-4fed-9581-ffab44201026
+uuid: f3f0622c-0a9f-4c43-be3f-940a729b284b
 langcode: en
 status: true
 dependencies:
   module:
     - node
-id: spotlight
-label: 'Global Spotlight'
+id: spotlight_section
+label: Spotlight
 handler: simple
 handler_configuration: {  }
 entity_settings:
@@ -19,12 +19,11 @@ entity_settings:
       stories: stories
       tools: tools
     sort:
-      field: created
-      direction: DESC
+      field: _none
     auto_create: false
     auto_create_bundle: level_interactive_content
 queue_settings:
   min_size: 0
-  max_size: 4
+  max_size: 0
   act_as_queue: false
   reverse_in_admin: false

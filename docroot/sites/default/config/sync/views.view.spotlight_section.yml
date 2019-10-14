@@ -3,8 +3,8 @@ langcode: en
 status: true
 dependencies:
   config:
-    - entityqueue.entity_queue.spotlight
     - entityqueue.entity_queue.spotlight_market_wise
+    - entityqueue.entity_queue.spotlight_section
     - field.storage.media.field_media_image
     - field.storage.node.body
     - field.storage.node.field_display_title
@@ -1528,7 +1528,7 @@ display:
           group_type: group
           admin_label: 'Content queue'
           required: true
-          limit_queue: spotlight
+          limit_queue: spotlight_section
           entity_type: node
           plugin_id: entity_queue
         field_featured_image:
@@ -1610,7 +1610,7 @@ display:
         - 'user.node_grants:view'
         - user.permissions
       tags:
-        - 'config:entityqueue.entity_queue.spotlight'
+        - 'config:entityqueue.entity_queue.spotlight_section'
         - 'config:field.storage.media.field_media_image'
         - 'config:field.storage.node.field_point_value'
         - entity_field_info
