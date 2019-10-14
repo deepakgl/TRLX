@@ -7,7 +7,6 @@
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
-use Drupal\elx_user\Utility\UserUtility;
 use Drupal\trlx_utility\Utility\CommonUtility;
 
 /**
@@ -56,13 +55,13 @@ function elx_translation_workflow_form_alter(&$form,
  *   Form Object.
  */
 function _prepare_content_states(array &$form, $translation_state) {
-  // Workflow draft access
+  // Workflow draft access.
   $save_access = ($translation_state == 'draft' || empty($translation_state)) ? TRUE : FALSE;
-  // Workflow ready for translation access
+  // Workflow ready for translation access.
   $ready_access = ($translation_state == 'draft' || empty($translation_state)) ? TRUE : FALSE;
-  // Workflow published access
+  // Workflow published access.
   $pub_access = ($translation_state == 'draft' || empty($translation_state)) ? TRUE : TRUE;
-  // Workflow unpublished access
+  // Workflow unpublished access.
   $unpub_access = ($translation_state == 'draft' || empty($translation_state)) ? FALSE : TRUE;
   // Hide published and translation field.
   $form['status']['#access'] = FALSE;
@@ -148,6 +147,9 @@ function elx_translation_workflow_generate_img_styles($entity) {
       'product_listings_tablet',
       'product_listings_mobile',
       'product_listing_desktop',
+      'search_listings_tablet',
+      'search_listings_desktop',
+      'search_listings_mobile',
     ]
     );
   }
@@ -172,6 +174,9 @@ function elx_translation_workflow_generate_img_styles($entity) {
       'spotlight_mobile',
       'spotlight_desktop',
       'spotlight_tablet',
+      'search_listings_tablet',
+      'search_listings_desktop',
+      'search_listings_mobile',
     ]
     );
   }
@@ -193,6 +198,9 @@ function elx_translation_workflow_generate_img_styles($entity) {
       'levels_mobile_module',
       'levels_module_desktop',
       'levels_module_tablet',
+      'search_listings_tablet',
+      'search_listings_desktop',
+      'search_listings_mobile',
     ]
     );
   }
@@ -205,6 +213,9 @@ function elx_translation_workflow_generate_img_styles($entity) {
       'video_detail_mobile',
       'video_detail_desktop',
       'video_detail_tablet',
+      'search_listings_tablet',
+      'search_listings_desktop',
+      'search_listings_mobile',
     ]
     );
   }

@@ -1,0 +1,15 @@
+uuid: 0e34dcad-68f0-40ed-aa46-7a4913a8686d
+langcode: en
+status: true
+dependencies: {  }
+name: search_listings_tablet
+label: 'Search Listings Tablet (230×195)'
+effects:
+  f7f2b4df-adc8-4a36-9fce-6be1c63fcc1a:
+    uuid: f7f2b4df-adc8-4a36-9fce-6be1c63fcc1a
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 230
+      height: 195
+      anchor: center-center
