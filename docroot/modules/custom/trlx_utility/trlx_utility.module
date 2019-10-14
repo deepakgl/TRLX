@@ -180,7 +180,7 @@ function trlx_utility_form_alter(&$form, FormStateInterface $form_state, $form_i
                 $form['#validate'][] = 'stories_validate';
               }
               else {
-                if (!empty($form[$field]['widget'][0]['value']) && empty($form[$field]['widget']['#required'])) {
+                if (!empty($form[$field]['widget'][0]['value'])) {
                   $form[$field]['widget'][0]['value']['#states']['required'] = [
                     ["input[name='field_content_section']" => ['value' => $insiderCornerTermId]],
                   ];

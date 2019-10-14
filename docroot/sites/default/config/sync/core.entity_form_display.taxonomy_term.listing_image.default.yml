@@ -1,0 +1,72 @@
+uuid: 5153a7e8-10b7-43b1-8989-9acd8f954222
+langcode: en
+status: true
+dependencies:
+  config:
+    - entity_browser.browser.media_entity_browser
+    - field.field.taxonomy_term.listing_image.field_hero_image
+    - field.field.taxonomy_term.listing_image.field_section
+    - taxonomy.vocabulary.listing_image
+  module:
+    - entity_browser
+    - path
+    - text
+id: taxonomy_term.listing_image.default
+targetEntityType: taxonomy_term
+bundle: listing_image
+mode: default
+content:
+  description:
+    type: text_textarea
+    weight: 0
+    region: content
+    settings:
+      placeholder: ''
+      rows: 5
+    third_party_settings: {  }
+  field_hero_image:
+    weight: 32
+    settings:
+      entity_browser: media_entity_browser
+      field_widget_display: rendered_entity
+      field_widget_edit: true
+      field_widget_remove: true
+      selection_mode: selection_append
+      field_widget_display_settings:
+        view_mode: default
+      field_widget_replace: false
+      open: false
+    third_party_settings: {  }
+    type: entity_browser_entity_reference
+    region: content
+  field_section:
+    weight: 31
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  langcode:
+    type: language_select
+    weight: 2
+    region: content
+    settings:
+      include_locked: true
+    third_party_settings: {  }
+  name:
+    type: string_textfield
+    weight: -5
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  path:
+    type: path
+    weight: 30
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden: {  }

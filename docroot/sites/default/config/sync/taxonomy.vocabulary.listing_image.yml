@@ -1,0 +1,9 @@
+uuid: 45224510-7dbf-41bd-8fde-43fb45700ded
+langcode: en
+status: true
+dependencies: {  }
+name: 'Listing Image'
+vid: listing_image
+description: 'Listing image for banners'
+hierarchy: 0
+weight: 0

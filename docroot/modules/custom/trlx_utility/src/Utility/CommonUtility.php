@@ -707,4 +707,43 @@ class CommonUtility {
     return $carouselData;
   }
 
+ /**
+  * Method to get listing images
+  * @param string
+  *   expects parammeter of section key of taxonomy
+  *
+  * @return array
+  *   Listing Images
+  */
+  public function getListingImg($section) {
+    // Custom query to get image name based on section_key
+    $query = \Drupal::database()->select('taxonomy_term_field_data', 't1');
+    $query->fields('t1');
+    $query->join('taxonomy_term__field_section', 't2', 't1.tid = t2.entity_id');
+    $query->fields('t2');
+    $query->join('taxonomy_term__field_content_section_key', 't3', 't2.field_section_target_id = t3.entity_id');
+    $query->fields('t3');
+    $query->condition('t1.vid', "listing_image", "=");
+    $query->condition('t1.status', 1, "=");
+    $query->range(0, 1);
+    $query->condition('t3.field_content_section_key_value', $section, "=");
+    $query->orderBy('t1.content_translation_created', 'DESC');
+    $query->join('taxonomy_term__field_hero_image', 't4', 't1.tid = t4.entity_id');
+    $query->fields('t4');
+    $query->join('media__field_media_image', 't5', 't4.field_hero_image_target_id = t5.entity_id');
+    $query->fields('t5');
+    $query->join('file_managed', 't6', 't6.fid = t5.field_media_image_target_id');
+    $query->fields('t6');
+    $entries = $query->execute()->fetchAll();
+
+    $result = [];
+    if (!empty($entries)) {
+     $result['image'] = array_shift($entries)->uri;
+    } else {
+     $result['image'] = '';
+    }
+
+    return $result;
+  }
+
 }
