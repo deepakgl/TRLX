@@ -358,6 +358,8 @@ class UserActivitiesController extends Controller {
     $query = DB::table('node_field_data as n')
       ->select('n.nid', 'n.status')
       ->whereIn('n.nid', $nids)
+      ->where('n.langcode', '=', 'en')
+      ->where('n.status', '=', 1)
       ->get()->all();
     $nodes_status = json_decode(json_encode($query), TRUE);
     // To get brands key.

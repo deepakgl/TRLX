@@ -512,7 +512,20 @@ display:
       sorts: {  }
       header: {  }
       footer: {  }
-      empty: {  }
+      empty:
+        area:
+          id: area
+          table: views
+          field: area
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: true
+          tokenize: false
+          content:
+            value: 'No content available.'
+            format: full_html
+          plugin_id: text
       relationships: {  }
       arguments: {  }
       display_extenders: {  }
@@ -536,6 +549,195 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
+      filters:
+        status:
+          id: status
+          table: media_field_data
+          field: status
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: '='
+          value: '0'
+          group: 1
+          exposed: true
+          expose:
+            operator_id: ''
+            label: 'True'
+            description: null
+            use_operator: false
+            operator: status_op
+            identifier: status
+            required: true
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+          is_grouped: true
+          group_info:
+            label: 'Publishing status'
+            description: ''
+            identifier: status
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items:
+              1:
+                title: Published
+                operator: '='
+                value: '1'
+              2:
+                title: Unpublished
+                operator: '='
+                value: '0'
+          entity_type: media
+          entity_field: status
+          plugin_id: boolean
+        bundle:
+          id: bundle
+          table: media_field_data
+          field: bundle
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: in
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: bundle_op
+            label: 'Media type'
+            description: ''
+            use_operator: false
+            operator: bundle_op
+            identifier: bundle
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              administrator: '0'
+              beauty_advisor: '0'
+              store_management: '0'
+              multi_brand_sales_associate: '0'
+              brand_management_and_field: '0'
+              el_regional_market_admin: '0'
+              el_nyo_global_education_system_admin: '0'
+              el_regional_market_translator: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          entity_type: media
+          entity_field: bundle
+          plugin_id: bundle
+        name:
+          id: name
+          table: media_field_data
+          field: name
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: contains
+          value: ''
+          group: 1
+          exposed: true
+          expose:
+            operator_id: name_op
+            label: 'Media name'
+            description: ''
+            use_operator: false
+            operator: name_op
+            identifier: name
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          entity_type: media
+          entity_field: name
+          plugin_id: string
+        langcode:
+          id: langcode
+          table: media_field_data
+          field: langcode
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: in
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: langcode_op
+            label: Language
+            description: ''
+            use_operator: false
+            operator: langcode_op
+            identifier: langcode
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              administrator: '0'
+              beauty_advisor: '0'
+              store_management: '0'
+              multi_brand_sales_associate: '0'
+              brand_management_and_field: '0'
+              el_regional_market_admin: '0'
+              el_nyo_global_education_system_admin: '0'
+              el_regional_market_translator: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          entity_type: media
+          entity_field: langcode
+          plugin_id: language
+      defaults:
+        filters: false
+        filter_groups: false
+      filter_groups:
+        operator: AND
+        groups:
+          1: AND
     cache_metadata:
       max-age: -1
       contexts:
@@ -562,9 +764,9 @@ display:
           group_type: group
           admin_label: ''
           operator: '='
-          value: '0'
+          value: '1'
           group: 1
-          exposed: true
+          exposed: false
           expose:
             operator_id: ''
             label: 'True'
@@ -688,7 +890,9 @@ display:
           group_type: group
           admin_label: ''
           operator: in
-          value: {  }
+          value:
+            '***LANGUAGE_site_default***': '***LANGUAGE_site_default***'
+            zh-hans: zh-hans
           group: 1
           exposed: true
           expose:
@@ -704,7 +908,15 @@ display:
             remember_roles:
               authenticated: authenticated
               anonymous: '0'
-            reduce: false
+              administrator: '0'
+              beauty_advisor: '0'
+              store_management: '0'
+              multi_brand_sales_associate: '0'
+              brand_management_and_field: '0'
+              el_regional_market_admin: '0'
+              el_nyo_global_education_system_admin: '0'
+              el_regional_market_translator: '0'
+            reduce: true
           is_grouped: false
           group_info:
             label: ''
@@ -753,9 +965,9 @@ display:
           group_type: group
           admin_label: ''
           operator: '='
-          value: '0'
+          value: '1'
           group: 1
-          exposed: true
+          exposed: false
           expose:
             operator_id: ''
             label: 'True'
@@ -879,7 +1091,9 @@ display:
           group_type: group
           admin_label: ''
           operator: in
-          value: {  }
+          value:
+            '***LANGUAGE_site_default***': '***LANGUAGE_site_default***'
+            zh-hans: zh-hans
           group: 1
           exposed: true
           expose:
@@ -895,7 +1109,15 @@ display:
             remember_roles:
               authenticated: authenticated
               anonymous: '0'
-            reduce: false
+              administrator: '0'
+              beauty_advisor: '0'
+              store_management: '0'
+              multi_brand_sales_associate: '0'
+              brand_management_and_field: '0'
+              el_regional_market_admin: '0'
+              el_nyo_global_education_system_admin: '0'
+              el_regional_market_translator: '0'
+            reduce: true
           is_grouped: false
           group_info:
             label: ''
@@ -944,9 +1166,9 @@ display:
           group_type: group
           admin_label: ''
           operator: '='
-          value: '0'
+          value: '1'
           group: 1
-          exposed: true
+          exposed: false
           expose:
             operator_id: ''
             label: 'True'
@@ -1070,7 +1292,9 @@ display:
           group_type: group
           admin_label: ''
           operator: in
-          value: {  }
+          value:
+            '***LANGUAGE_site_default***': '***LANGUAGE_site_default***'
+            zh-hans: zh-hans
           group: 1
           exposed: true
           expose:
@@ -1086,7 +1310,15 @@ display:
             remember_roles:
               authenticated: authenticated
               anonymous: '0'
-            reduce: false
+              administrator: '0'
+              beauty_advisor: '0'
+              store_management: '0'
+              multi_brand_sales_associate: '0'
+              brand_management_and_field: '0'
+              el_regional_market_admin: '0'
+              el_nyo_global_education_system_admin: '0'
+              el_regional_market_translator: '0'
+            reduce: true
           is_grouped: false
           group_info:
             label: ''
