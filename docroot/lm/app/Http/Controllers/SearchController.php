@@ -87,6 +87,8 @@ class SearchController extends Controller {
     $this->elasticSearchIndex = getenv('ELASTIC_SEARCH_INDEX');
     $this->elasticSearchType = getenv('ELASTIC_SEARCH_TYPE');
     $this->searchFields = [
+      'name',
+      'field_sub_title_1',
       'field_display_title',
       'field_subtitle',
       'field_sub_title',
@@ -107,17 +109,25 @@ class SearchController extends Controller {
    */
   public function search(Request $request) {
     // Fetch user id from jwt token.
+    $lang = $request->input('langcode');
+    if (!$lang) {
+      return Helper::jsonError('Please provide language code.', 400);
+    }
+    $all_lang = ['en', 'zh-hans'];
+    if (!in_array($lang, $all_lang)) {
+      return Helper::jsonError('Please provide valid language code.', 422);
+    }
     global $_userData;
     $uid = $_userData->userId;
     if (!$uid) {
-      return Helper::jsonError('Please provide user id.', 422);
+      return Helper::jsonError('Please provide user id.', 400);
     }
     // Check elastic client.
     $client = Helper::checkElasticClient();
     if (!$client) {
       return FALSE;
     }
-    $this->buildQuery($request, $uid);
+    $this->buildQuery($request, $lang);
     if (empty($this->search)) {
       return Helper::jsonError('Please enter search keyword.', 400);
     }
@@ -126,14 +136,16 @@ class SearchController extends Controller {
     }
     // Fetch the search response from elastic.
     $data = $client->search($this->query);
-
     if (!isset($data['hits']['hits'][0])) {
       return new Response(NULL, Response::HTTP_NO_CONTENT);
     }
     $result = $response = [];
     // Build array of node id with image id.
     foreach ($data['hits']['hits'] as $key => $value) {
-      if ($value['_source']['type'][0] == 'tools') {
+      if (!empty($value['_source']['vid'][0])) {
+        $image_id = !empty($value['_source']['field_image']) ? $value['_source']['field_image'][0] : '';
+      }
+      elseif ($value['_source']['type'][0] == 'tools') {
         $image_id = !empty($value['_source']['field_tool_thumbnail']) ? $value['_source']['field_tool_thumbnail'][0] : '';
       }
       elseif ($value['_source']['type'][0] == 'product_detail') {
@@ -145,9 +157,8 @@ class SearchController extends Controller {
       else {
         $image_id = !empty($value['_source']['field_hero_image']) ? $value['_source']['field_hero_image'][0] : '';
       }
-
       $fids[] = [
-        'nid' => $value['_source']['nid'][0],
+        'nid' => isset($value['_source']['nid'][0]) ? $value['_source']['nid'][0] : '',
         'imageId' => $image_id,
       ];
     }
@@ -156,10 +167,13 @@ class SearchController extends Controller {
     $result = Helper::buildImageStyles($fids, $image_uris);
     // Prepare the search response.
     foreach ($data['hits']['hits'] as $key => $value) {
-      $nid = $value['_source']['nid'][0];
+      $nid = isset($value['_source']['nid'][0]) ? $value['_source']['nid'][0] : '';
       $image_style = Helper::buildImageResponse($result, $nid);
       // Get displaytitle on based on content type.
-      if ($value['_source']['type'][0] == 'level_interactive_content') {
+      if (!empty($value['_source']['vid'][0])) {
+        $display_title = isset($value['_source']['name'][0]) ? $value['_source']['name'][0] : '';
+      }
+      elseif ($value['_source']['type'][0] == 'level_interactive_content') {
         $display_title = isset($value['_source']['field_headline'][0]) ? $value['_source']['field_headline'][0] : '';
       }
       elseif ($value['_source']['type'][0] == 'faq') {
@@ -179,8 +193,23 @@ class SearchController extends Controller {
         $key = ContentModel::getContentSectionKeyByTid($value['_source']['field_content_section'][0]);
         $category = ['key' => $key, 'value' => implode(" ", $category_name)];
       }
+      elseif (isset($value['_source']['field_brands_1'][0])) {
+        $category_name = ContentModel::getTermName([$value['_source']['field_brands_1'][0]]);
+        $category = ['key' => 'brands', 'value' => implode(" ", $category_name)];
+      }
+      elseif (isset($value['_source']['field_content_section_1'][0])) {
+        $category_name = ContentModel::getTermName([$value['_source']['field_content_section_1'][0]]);
+        $key = ContentModel::getContentSectionKeyByTid($value['_source']['field_content_section_1'][0]);
+        $category = ['key' => $key, 'value' => implode(" ", $category_name)];
+      }
       // Get subtitle on based on content type.
-      if ($value['_source']['type'][0] == 'stories') {
+      $type = isset($value['_source']['type'][0]) ? $value['_source']['type'][0] : '';
+      $tid = isset($value['_source']['tid'][0]) ? $value['_source']['tid'][0] : '';
+      if (!empty($value['_source']['vid'][0])) {
+        $sub_title = isset($value['_source']['field_sub_title_1'][0]) ? $value['_source']['field_sub_title_1'][0] : '';
+        $type = $value['_source']['vid'][0];
+      }
+      elseif ($value['_source']['type'][0] == 'stories') {
         $sub_title = isset($value['_source']['field_sub_title'][0]) ? $value['_source']['field_sub_title'][0] : '';
       }
       else {
@@ -188,14 +217,15 @@ class SearchController extends Controller {
       }
 
       $response['results'][] = [
-        'nid' => $nid,
+        'nid' => isset($nid) ? $nid : '',
+        'tid' => $tid,
         'imageLarge' => $image_style['imageLarge'],
         'imageMedium' => $image_style['imageMedium'],
         'imageSmall' => $image_style['imageSmall'],
         'displayTitle' => $display_title,
         'subTitle' => $sub_title,
-        'type' => $value['_source']['type'][0],
-        'pointValue' => isset($value['_source']['field_point_value'][0]) ? $value['_source']['field_point_value'][0] : '',
+        'type' => $type,
+        'pointValue' => isset($value['_source']['field_point_value'][0]) ? (int) $value['_source']['field_point_value'][0] : '',
         'category' => $category,
       ];
     }
@@ -217,12 +247,12 @@ class SearchController extends Controller {
    *
    * @param mixed $request
    *   Rest resource query parameters.
-   * @param int $uid
-   *   User uid.
+   * @param int $lang
+   *   User language.
    */
-  protected function buildQuery($request, $uid) {
+  protected function buildQuery($request, $lang) {
     // Fetch search filter parameters.
-    $this->getSearchParams($request, $uid);
+    $this->getSearchParams($request, $lang);
     // Build elastic query filters.
     $this->buildFilter();
   }
@@ -232,11 +262,11 @@ class SearchController extends Controller {
    *
    * @param mixed $request
    *   Rest resource query parameters.
-   * @param int $uid
-   *   User uid.
+   * @param int $lang
+   *   User langcode.
    */
-  protected function getSearchParams($request, $uid) {
-    $this->userLanguage = 'en';
+  protected function getSearchParams($request, $lang) {
+    $this->userLanguage = $lang;
     $this->search = $request->input('searchTerm');
     $this->limit = !empty($request->input('limit')) ? $request->input('limit') : $this->limit;
     $this->offset = !empty($request->input('offset')) ? $request->input('offset') : $this->offset;
@@ -264,10 +294,10 @@ class SearchController extends Controller {
                 ],
               ],
               1 => [
-                'match' => ['langcode' => $this->userLanguage],
+                'match' => ['lang' => $this->userLanguage],
               ],
               2 => [
-                'match' => ['status' => "1"],
+                'match' => ['statuscode' => "1"],
               ],
             ],
           ],
