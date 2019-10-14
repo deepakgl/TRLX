@@ -1,0 +1,19 @@
+uuid: 8840b038-62b8-4430-a595-a0cf754bf344
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_product_summary
+    - paragraphs.paragraphs_type.product_carousel
+id: paragraph.product_carousel.field_product_summary
+field_name: field_product_summary
+entity_type: paragraph
+bundle: product_carousel
+label: 'Product Summary'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

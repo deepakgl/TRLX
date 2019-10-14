@@ -68,6 +68,12 @@ class UserActivitiesController extends Controller {
    */
   public function userActivities(Request $request) {
     global $_userData;
+    if ($request->has('nid')) {
+      $nids = array_filter($request->get('nid'));
+      if (empty($nids)) {
+        return $this->errorResponse('Node id is required.', Response::HTTP_BAD_REQUEST);
+      }
+    }
     $validatedData = $this->validate($request, [
       'nid' => 'required|numericarray',
       '_format' => 'required|format',
@@ -352,6 +358,8 @@ class UserActivitiesController extends Controller {
     $query = DB::table('node_field_data as n')
       ->select('n.nid', 'n.status')
       ->whereIn('n.nid', $nids)
+      ->where('n.langcode', '=', 'en')
+      ->where('n.status', '=', 1)
       ->get()->all();
     $nodes_status = json_decode(json_encode($query), TRUE);
     // To get brands key.

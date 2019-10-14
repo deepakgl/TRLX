@@ -1,0 +1,19 @@
+uuid: 700e95cf-4ff8-4b45-b14c-3b769cbe52e7
+langcode: en
+status: true
+dependencies:
+  module:
+    - paragraphs
+id: paragraph.field_product_summary
+field_name: field_product_summary
+entity_type: paragraph
+type: string_long
+settings:
+  case_sensitive: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -1,0 +1,15 @@
+uuid: 86e52287-71ab-466a-a12d-7db63944b2fb
+langcode: en
+status: true
+dependencies: {  }
+name: listing_image_tablet
+label: 'Listing Image Tablet (770 X 355)'
+effects:
+  4b0bc758-2485-4c80-8845-bf11114807a2:
+    uuid: 4b0bc758-2485-4c80-8845-bf11114807a2
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 770
+      height: 355
+      anchor: center-center

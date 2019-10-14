@@ -78,10 +78,10 @@ class UserActivitiesLevel extends ResourceBase {
     $module_details = [];
     if (!empty($term_nodes)) {
       // Get Level activity.
-      foreach ($categoryId as $key => $value) {
+      foreach ($term_nodes as $key => $value) {
         $module_details[] = $levelUtility
           ->getLevelActivity($_userData,
-         $value, array_column($term_nodes[$value], 'nid'), $language);
+         $key, array_column($term_nodes[$key], 'nid'), $language);
       }
     }
 

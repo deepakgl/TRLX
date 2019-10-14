@@ -13,6 +13,7 @@ class ValidatorExtended extends IlluminateValidator {
     'likebookmarkflag' => 'The :attribute must be either like or bookmark.',
     'format' => 'The :attribute must be json',
     'brandid' => 'Brand Id (:input) does not exist.',
+    'languagecode' => 'The :attribute is not valid',
   ];
 
   public function __construct($translator, $data, $rules, $messages = array(), $customAttributes = []) {
@@ -146,6 +147,29 @@ class ValidatorExtended extends IlluminateValidator {
     $brands_terms_ids = ContentModel::getBrandTermIds();
     $brand_keys = array_column($brands_terms_ids, 'field_brand_key_value');
     if (in_array($value, $brand_keys)) {
+      return TRUE;
+    }
+
+    return FALSE;
+  }
+
+  /**
+   * Validate language code.
+   *
+   * @param mixed $attribute
+   *   Attribute.
+   * @param mixed $value
+   *   Value.
+   * @param mixed $parameters
+   *   Parameters.
+   * @param mixed $validator
+   *   Validator.
+   *
+   * @return bool
+   *   True/False.
+   */
+  protected function validateLanguageCode($attribute, $value, $parameters, $validator) {
+    if (in_array($value, ['en', 'zh-hans'])) {
       return TRUE;
     }
 

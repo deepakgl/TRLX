@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - entityqueue.entity_queue.insider_corner_hompage
     - field.storage.media.field_media_image
     - field.storage.media.field_media_video_file
     - field.storage.node.body
@@ -10,12 +11,14 @@ dependencies:
     - field.storage.node.field_department
     - field.storage.node.field_display_title
     - field.storage.node.field_first_name
+    - field.storage.node.field_headline
     - field.storage.node.field_last_name
     - field.storage.node.field_occupation
     - field.storage.node.field_point_value
     - field.storage.node.field_sub_title
     - node.type.stories
   module:
+    - entityqueue
     - file
     - image_url_formatter
     - media
@@ -1634,7 +1637,53 @@ display:
       defaults:
         fields: false
         title: false
+        relationships: false
+        sorts: false
       title: 'Insider Corner Homepage Section Api'
+      relationships:
+        field_hero_image:
+          id: field_hero_image
+          table: node__field_hero_image
+          field: field_hero_image
+          relationship: none
+          group_type: group
+          admin_label: 'field_hero_image: Media'
+          required: false
+          plugin_id: standard
+        field_content_section:
+          id: field_content_section
+          table: node__field_content_section
+          field: field_content_section
+          relationship: none
+          group_type: group
+          admin_label: 'field_content_section: Taxonomy term'
+          required: false
+          plugin_id: standard
+        entityqueue_relationship:
+          id: entityqueue_relationship
+          table: node_field_data
+          field: entityqueue_relationship
+          relationship: none
+          group_type: group
+          admin_label: 'Content queue'
+          required: true
+          limit_queue: insider_corner_hompage
+          entity_type: node
+          plugin_id: entity_queue
+      sorts:
+        entityqueue_relationship:
+          id: entityqueue_relationship
+          table: node_field_data
+          field: entityqueue_relationship
+          relationship: none
+          group_type: group
+          admin_label: ''
+          order: ASC
+          exposed: false
+          expose:
+            label: ''
+          entity_type: node
+          plugin_id: entity_queue_position
     cache_metadata:
       max-age: -1
       contexts:
@@ -1646,6 +1695,7 @@ display:
         - 'user.node_grants:view'
         - user.permissions
       tags:
+        - 'config:entityqueue.entity_queue.insider_corner_hompage'
         - 'config:field.storage.media.field_media_image'
         - 'config:field.storage.node.body'
         - 'config:field.storage.node.field_department'
@@ -1653,7 +1703,9 @@ display:
         - 'config:field.storage.node.field_last_name'
         - 'config:field.storage.node.field_point_value'
         - 'config:field.storage.node.field_sub_title'
+        - entity_field_info
         - extensions
+        - views_data
   rest_export_insider_corner_details:
     display_plugin: rest_export
     id: rest_export_insider_corner_details
@@ -1723,6 +1775,12 @@ display:
               raw_output: false
             field_point_value:
               alias: pointValue
+              raw_output: false
+            field_headline:
+              alias: productCarouselTitle
+              raw_output: false
+            field_product_carousel:
+              alias: productCarouselEntity
               raw_output: false
       display_description: ''
       title: 'Insider Corner Details API'
@@ -2833,6 +2891,69 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
+        field_headline:
+          id: field_headline
+          table: node__field_headline
+          field: field_headline
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: ''
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: string
+          settings:
+            link_to_entity: false
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
       relationships:
         field_hero_image:
           id: field_hero_image
@@ -2887,6 +3008,7 @@ display:
         - 'config:field.storage.node.field_department'
         - 'config:field.storage.node.field_display_title'
         - 'config:field.storage.node.field_first_name'
+        - 'config:field.storage.node.field_headline'
         - 'config:field.storage.node.field_last_name'
         - 'config:field.storage.node.field_occupation'
         - 'config:field.storage.node.field_point_value'

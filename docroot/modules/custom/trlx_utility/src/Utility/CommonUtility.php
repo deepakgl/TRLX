@@ -11,6 +11,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\media\Entity\Media;
 use Drupal\file\Entity\File;
 use Elasticsearch\ClientBuilder;
+use Drupal\trlx_utility\Utility\EntityUtility;
 
 /**
  * Purpose of this class is to build common object.
@@ -606,7 +607,6 @@ class CommonUtility {
   public function getBrandKeyByTermId(int $brandTid) {
     // Load all Section taxonomy terms.
     $brandTerms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadTree('brands', 0, NULL, TRUE);
-
     $brandKey = '';
     if (!empty($brandTerms)) {
       foreach ($brandTerms as $delta => $term) {
@@ -618,37 +618,132 @@ class CommonUtility {
         }
       }
     }
-
     return (int) $brandKey;
   }
 
- /**
-  * @param $value
-  * @param $language
-  * @return mixed
-  * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
-  * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
-  */
+  /**
+   * Method to get node data.
+   *
+   * @param int $nid
+   *   Node id.
+   * @param string $language
+   *   Language code.
+   *
+   * @return mixed
+   *   Node data.
+   */
   public function getNodeData($nid, $language) {
-    // Load node by nid and language code
+    // Load node by nid and language code.
     $node = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
     if ($node->hasTranslation($language)) {
       return $node->getTranslation($language);
     }
   }
 
+  /**
+   * Method to load image style.
+   *
+   * @param string $style_name
+   *   Style name.
+   * @param string $file_uri
+   *   File uri.
+   *
+   * @return mixed
+   *   Image style url.
+   */
+  public function loadImageStyle($style_name, $file_uri) {
+    $image_style = \Drupal::entityTypeManager()->getStorage('image_style')->load($style_name);
+    $result = $image_style->buildUrl($file_uri);
+    return $result;
+  }
+
+  /**
+   * Function to fetch Product Carousel from nid.
+   *
+   * @param int $nid
+   *   Node Id.
+   * @param string $language
+   *   Language code.
+   *
+   * @return array
+   *   Array of product carousel data.
+   */
+  public function fetchProductCarouselByNodeId(int $nid, string $language) {
+    $carouselData = [];
+    if (!is_numeric($nid)) {
+      return $carouselData;
+    }
+
+    // Query to fetch respective Paragraph Entities.
+    $query = \Drupal::database();
+    $query = $query->select('node__field_product_carousel', 'fpc');
+    $query->join('paragraphs_item_field_data', 'pifd', 'pifd.id = fpc.field_product_carousel_target_id');
+    $query->condition('fpc.entity_id', $nid);
+    $query->condition('fpc.langcode', $language);
+    $query->condition('pifd.type', 'product_carousel');
+    $query->condition('pifd.langcode', $language);
+    $query->condition('pifd.status', 1);
+    $query->condition('pifd.parent_type', 'node');
+    $query->fields('fpc', ['field_product_carousel_target_id']);
+    $result = $query->execute()->fetchAllAssoc('field_product_carousel_target_id');
+
+    if (!empty($result)) {
+      $entityUtility = new EntityUtility();
+
+      // Fetch paragraph data from views.
+      list($view_results) = $entityUtility->fetchApiResult(
+        '',
+        'paragraph_product_carousel',
+        'rest_export_paragraph_product_carousel',
+        ['title' => 'decode', 'subTitle' => 'decode'],
+        ['id' => implode(",", array_keys($result)), 'language' => $language]
+      );
+    }
+
+    if (!empty($view_results['results'])) {
+      $carouselData = $view_results['results'];
+    }
+
+    return $carouselData;
+  }
 
  /**
-  * @param $style_name
-  * @param $file_uri
-  * @return mixed
-  * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
-  * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+  * Method to get listing images
+  * @param string
+  *   expects parammeter of section key of taxonomy
+  *
+  * @return array
+  *   Listing Images
   */
- public function loadImageStyle($style_name, $file_uri) {
-   $image_style = \Drupal::entityTypeManager()->getStorage('image_style')->load($style_name);
-   $result = $image_style->buildUrl($file_uri);
+  public function getListingImg($section) {
+    // Custom query to get image name based on section_key
+    $query = \Drupal::database()->select('taxonomy_term_field_data', 't1');
+    $query->fields('t1');
+    $query->join('taxonomy_term__field_section', 't2', 't1.tid = t2.entity_id');
+    $query->fields('t2');
+    $query->join('taxonomy_term__field_content_section_key', 't3', 't2.field_section_target_id = t3.entity_id');
+    $query->fields('t3');
+    $query->condition('t1.vid', "listing_image", "=");
+    $query->condition('t1.status', 1, "=");
+    $query->range(0, 1);
+    $query->condition('t3.field_content_section_key_value', $section, "=");
+    $query->orderBy('t1.content_translation_created', 'DESC');
+    $query->join('taxonomy_term__field_hero_image', 't4', 't1.tid = t4.entity_id');
+    $query->fields('t4');
+    $query->join('media__field_media_image', 't5', 't4.field_hero_image_target_id = t5.entity_id');
+    $query->fields('t5');
+    $query->join('file_managed', 't6', 't6.fid = t5.field_media_image_target_id');
+    $query->fields('t6');
+    $entries = $query->execute()->fetchAll();
 
-   return $result;
- }
+    $result = [];
+    if (!empty($entries)) {
+     $result['image'] = array_shift($entries)->uri;
+    } else {
+     $result['image'] = '';
+    }
+
+    return $result;
+  }
+
 }

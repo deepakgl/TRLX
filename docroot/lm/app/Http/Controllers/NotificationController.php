@@ -88,7 +88,7 @@ class NotificationController extends Controller {
       'limit' => 'sometimes|required|positiveinteger',
       'offset' => 'sometimes|required|positiveinteger',
       '_format' => 'required|format',
-      'language' => 'required',
+      'language' => 'required|languagecode',
     ]);
     $langcode = $validatedData['language'];
     $this->limit = isset($validatedData['limit']) ? $validatedData['limit'] : 10;
@@ -137,25 +137,36 @@ class NotificationController extends Controller {
 
         foreach ($result as $key => $value) {
           $notificationArray[$key]['notificationType'] = $value['notificationType'];
-          $notificationArray[$key][self::USER_ID] = $value[self::USER_ID];
           $notificationArray[$key]['notificationHeading'] = $value['notificationHeading'];
           $notificationArray[$key]['notificationText'] = $value['notificationText'];
-          $notificationArray[$key][self::NOTIFICATION_DATE] = $value[self::NOTIFICATION_DATE];
-          $notificationArray[$key]['notificationLink'] = $value['notificationLink'];
+          $notificationArray[$key][self::NOTIFICATION_DATE] = (int) $value[self::NOTIFICATION_DATE];
+          $notificationArray[$key]['notificationLink'] = (int) $value['notificationLink'];
           $notificationArray[$key]['notificationLinkType'] = $value['notificationLinkType'];
-          $notificationArray[$key][self::NOTIFICATION_FLAG] = $value[self::NOTIFICATION_FLAG];
+          $notificationArray[$key]['notificationBrandKey'] = (int) $value['notificationBrandKey'];
+          $notificationArray[$key][self::NOTIFICATION_FLAG] = (int) $value[self::NOTIFICATION_FLAG];
         }
 
         // Get notification count.
         $notificationsCount = $this->notificationsCount($this->userId, $langcode);
+        // Total count.
+        $total = count($notificationArray);
+        // How many pages will there be.
+        $pages = ceil($total / $this->limit);
+        $notificationArray = array_slice($notificationArray, $this->offset, $this->limit);
         $notifications['notificationsCount'] = $notificationsCount;
         $notifications[self::NOTIFICATION_KEY] = $notificationArray;
-        return $this->successResponse($notifications, Response::HTTP_CREATED);
+        $pager = [];
+        $pager['count'] = $total;
+        $pager['pages'] = $pages;
+        $pager['items_per_page'] = $this->limit;
+        $pager['current_page'] = 0;
+        $pager['next_page'] = 0;
+        return $this->successResponse($notifications, Response::HTTP_OK, $pager);
       }
       else {
         $notifications['notificationsCount'] = 0;
         $notifications[self::NOTIFICATION_KEY] = [];
-        return $this->successResponse($notifications, Response::HTTP_CREATED);
+        return $this->successResponse($notifications, Response::HTTP_OK);
       }
     }
   }
@@ -279,7 +290,7 @@ class NotificationController extends Controller {
     $uid = $_userData->userId;
     $validatedData = $this->validate($request, [
       '_format' => 'required|format',
-      'language' => 'required',
+      'language' => 'required|languagecode',
     ]);
     $langcode = $validatedData['language'];
     // Get user id from jwt token.

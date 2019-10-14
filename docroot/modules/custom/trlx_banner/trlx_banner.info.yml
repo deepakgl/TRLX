@@ -1,0 +1,8 @@
+name: TRLX Banner
+type: module
+description: TRLX custom module for Banners.
+core: 8.x
+package: TRLX
+
+dependencies:
+  - trlx_utility
