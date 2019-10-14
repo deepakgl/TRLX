@@ -11,6 +11,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\media\Entity\Media;
 use Drupal\file\Entity\File;
 use Elasticsearch\ClientBuilder;
+use Drupal\trlx_utility\Utility\EntityUtility;
 
 /**
  * Purpose of this class is to build common object.
@@ -656,6 +657,56 @@ class CommonUtility {
     return $result;
   }
 
+  /**
+   * Function to fetch Product Carousel from nid.
+   *
+   * @param int $nid
+   *   Node Id.
+   * @param string $language
+   *   Language code.
+   *
+   * @return array
+   *   Array of product carousel data.
+   */
+  public function fetchProductCarouselByNodeId(int $nid, string $language) {
+    $carouselData = [];
+    if (!is_numeric($nid)) {
+      return $carouselData;
+    }
+
+    // Query to fetch respective Paragraph Entities.
+    $query = \Drupal::database();
+    $query = $query->select('node__field_product_carousel', 'fpc');
+    $query->join('paragraphs_item_field_data', 'pifd', 'pifd.id = fpc.field_product_carousel_target_id');
+    $query->condition('fpc.entity_id', $nid);
+    $query->condition('fpc.langcode', $language);
+    $query->condition('pifd.type', 'product_carousel');
+    $query->condition('pifd.langcode', $language);
+    $query->condition('pifd.status', 1);
+    $query->condition('pifd.parent_type', 'node');
+    $query->fields('fpc', ['field_product_carousel_target_id']);
+    $result = $query->execute()->fetchAllAssoc('field_product_carousel_target_id');
+
+    if (!empty($result)) {
+      $entityUtility = new EntityUtility();
+
+      // Fetch paragraph data from views.
+      list($view_results) = $entityUtility->fetchApiResult(
+        '',
+        'paragraph_product_carousel',
+        'rest_export_paragraph_product_carousel',
+        ['title' => 'decode', 'subTitle' => 'decode'],
+        ['id' => implode(",", array_keys($result)), 'language' => $language]
+      );
+    }
+
+    if (!empty($view_results['results'])) {
+      $carouselData = $view_results['results'];
+    }
+
+    return $carouselData;
+  }
+
  /**
   * Method to get listing images
   * @param string
@@ -694,4 +745,5 @@ class CommonUtility {
 
     return $result;
   }
+
 }
