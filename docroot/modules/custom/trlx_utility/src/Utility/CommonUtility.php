@@ -655,7 +655,7 @@ class CommonUtility {
     $result = $image_style->buildUrl($file_uri);
     return $result;
   }
-  
+
  /**
   * Method to get listing images
   * @param string
