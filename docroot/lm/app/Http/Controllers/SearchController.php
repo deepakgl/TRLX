@@ -183,10 +183,16 @@ class SearchController extends Controller {
         $display_title = isset($value['_source']['field_display_title'][0]) ? $value['_source']['field_display_title'][0] : '';
       }
       // Get category on based on brand and content section.
-      $category = '';
+      $category = $brand_key = '';
+      $brandinfo = ContentModel::getBrandTermIds();
       if (isset($value['_source']['field_brands'][0])) {
         $category_name = ContentModel::getTermName([$value['_source']['field_brands'][0]]);
         $category = ['key' => 'brands', 'value' => implode(" ", $category_name)];
+        foreach ($brandinfo as $key => $brand) {
+          if ($brand['entity_id'] == $value['_source']['field_brands'][0]) {
+            $brand_key = (int) $brand['field_brand_key_value'];
+          }
+        }
       }
       elseif (isset($value['_source']['field_content_section'][0])) {
         $category_name = ContentModel::getTermName([$value['_source']['field_content_section'][0]]);
@@ -196,12 +202,18 @@ class SearchController extends Controller {
       elseif (isset($value['_source']['field_brands_1'][0])) {
         $category_name = ContentModel::getTermName([$value['_source']['field_brands_1'][0]]);
         $category = ['key' => 'brands', 'value' => implode(" ", $category_name)];
+        foreach ($brandinfo as $key => $brand) {
+          if ($brand['entity_id'] == $value['_source']['field_brands_1'][0]) {
+            $brand_key = (int) $brand['field_brand_key_value'];
+          }
+        }
       }
       elseif (isset($value['_source']['field_content_section_1'][0])) {
         $category_name = ContentModel::getTermName([$value['_source']['field_content_section_1'][0]]);
         $key = ContentModel::getContentSectionKeyByTid($value['_source']['field_content_section_1'][0]);
         $category = ['key' => $key, 'value' => implode(" ", $category_name)];
       }
+
       // Get subtitle on based on content type.
       $type = isset($value['_source']['type'][0]) ? $value['_source']['type'][0] : '';
       $tid = isset($value['_source']['tid'][0]) ? $value['_source']['tid'][0] : '';
@@ -224,6 +236,7 @@ class SearchController extends Controller {
         'imageSmall' => $image_style['imageSmall'],
         'displayTitle' => $display_title,
         'subTitle' => $sub_title,
+        'brandKey' => $brand_key,
         'type' => $type,
         'pointValue' => isset($value['_source']['field_point_value'][0]) ? (int) $value['_source']['field_point_value'][0] : '',
         'category' => $category,
