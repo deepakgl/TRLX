@@ -655,14 +655,14 @@ class CommonUtility {
     $result = $image_style->buildUrl($file_uri);
     return $result;
   }
-
+  
  /**
   * Method to get listing images
   * @param string
   *   expects parammeter of section key of taxonomy
   *
   * @return array
-  *   one dimensional array of image
+  *   Listing Images
   */
   public function getListingImg($section) {
     // Custom query to get image name based on section_key

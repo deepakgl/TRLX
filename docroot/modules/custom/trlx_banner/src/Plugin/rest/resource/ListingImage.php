@@ -74,3 +74,5 @@ class ListingImage extends ResourceBase {
     return new JsonResponse($result, 200);
   }
 }
+
+
