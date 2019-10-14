@@ -103,22 +103,12 @@ class LangUtility {
    *   User primary and secondary language.
    */
   public function getMarketLanguageByUserId() {
-    $user_utility = new UserUtility();
-    $roles = $user_utility->getUserRoles(\Drupal::currentUser()->id());
     // Return all languages for global admin role.
-    if (!$roles) {
-      $language = \Drupal::languageManager()->getLanguages();
-      foreach ($language as $key => $value) {
+    $language = \Drupal::languageManager()->getLanguages();
+    foreach ($language as $key => $value) {
+      if (in_array($value->getId(), ['en', 'zh-hans'])) {
         $lang[$value->getId()] = $value->getName();
       }
-    }
-    else {
-      // Fetch market by user id.
-      $market = $user_utility->getMarketByUserId(\Drupal::currentUser()->id(),
-       'all');
-      // Fetch primary and secondary languages by market id.
-      $lang = $this->getMarketPrimaryAndSecondaryLanguage(array_column(
-        $market, 'field_default_market_target_id'));
     }
 
     return $lang;
