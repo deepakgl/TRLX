@@ -70,4 +70,15 @@ class UserUtility {
     return $query->execute()->fetchAll();
   }
 
+ /**
+  * Fetch user brand key for current user.
+  *
+  * @return array
+  *   User brand keys
+  */
+ public function getUserBrandIds() {
+    global $_userData;
+
+    return $_userData->brands;
+  }
 }
