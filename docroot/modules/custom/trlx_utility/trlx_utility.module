@@ -216,7 +216,7 @@ function trlx_utility_form_alter(&$form, FormStateInterface $form_state, $form_i
       /*** Show/Hide/Required Consumer Category based on section selection - END ***/
 
       /*** Change Point Value as per selected section on edit page - START ***/
-      if ($form_id == 'node_stories_edit_form') {
+      /*if ($form_id == 'node_stories_edit_form') {
         if ($insiderCornerTermId && ($form['field_content_section']['widget']['#default_value'] == $insiderCornerTermId)) {
           $point_field_value = $config->get("point_value_" . $commonUtility::INSIDER_CORNER);
         }
@@ -234,7 +234,7 @@ function trlx_utility_form_alter(&$form, FormStateInterface $form_state, $form_i
           $form['field_point_value']['widget'][0]['value']['#value'] = $point_field_value;
           $form['field_point_value']['widget'][0]['value']['#default_value'] = $point_field_value;
         }
-      }
+      }*/
       /*** Change Point Value as per selected section on edit page - END ***/
       break;
 
