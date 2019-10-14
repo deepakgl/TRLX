@@ -1,0 +1,29 @@
+uuid: e35d6afc-faa1-46de-9908-42bc0727e2fd
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_section
+    - taxonomy.vocabulary.listing_image
+    - taxonomy.vocabulary.trlx_content_sections
+id: taxonomy_term.listing_image.field_section
+field_name: field_section
+entity_type: taxonomy_term
+bundle: listing_image
+label: Section
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      trlx_content_sections: trlx_content_sections
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference
