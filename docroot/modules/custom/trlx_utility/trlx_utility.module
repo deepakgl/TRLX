@@ -259,7 +259,7 @@ function trlx_utility_form_alter(&$form, FormStateInterface $form_state, $form_i
           // If Content Section is checkbox.
           ["input[name='field_content_section[{$consumerTermId}]']" => ['checked' => TRUE]],
           // If Content Section is radio button.
-          // ["input[name='field_content_section']" => ['value' => $consumerTermId]],
+          // ["input[name='field_content_section']" => ['value' => $consumerTermId]],.
         ];
 
         // Enabled state.
@@ -267,7 +267,7 @@ function trlx_utility_form_alter(&$form, FormStateInterface $form_state, $form_i
           // If Content Section is checkbox.
           ["input[name='field_content_section[{$consumerTermId}]']" => ['checked' => TRUE]],
           // If Content Section is radio button.
-          // ["input[name='field_content_section']" => ['value' => $consumerTermId]],
+          // ["input[name='field_content_section']" => ['value' => $consumerTermId]],.
         ];
 
         // Required state.
@@ -275,7 +275,7 @@ function trlx_utility_form_alter(&$form, FormStateInterface $form_state, $form_i
           // If Content Section is checkbox.
           ["input[name='field_content_section[{$consumerTermId}]']" => ['checked' => TRUE]],
           // If Content Section is radio button.
-          // ["input[name='field_content_section']" => ['value' => $consumerTermId]],
+          // ["input[name='field_content_section']" => ['value' => $consumerTermId]],.
         ];
 
         // Unset option "N/A".
@@ -310,6 +310,9 @@ function trlx_utility_taxonomy_submit(array &$form, FormStateInterface $form_sta
       'learning_levels_desktop',
       'learning_levels_tablet',
       'learning_levels_mobile',
+      'search_listings_tablet',
+      'search_listings_desktop',
+      'search_listings_mobile',
     ]
     );
   }
