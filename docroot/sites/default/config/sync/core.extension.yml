@@ -34,6 +34,7 @@ module:
   editor_file: 0
   elasticsearch_connector: 0
   elasticsearch_connector_views: 0
+  elc_password_policy: 0
   elx_audit_log: 0
   elx_bulk_mail: 0
   elx_custom_service: 0
@@ -109,6 +110,7 @@ module:
   simple_menu_icons: 0
   simple_oauth: 0
   simple_oauth_extras: 0
+  simpleautologout: 0
   superfish: 0
   svg_image: 0
   system: 0

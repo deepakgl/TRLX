@@ -67,18 +67,25 @@ class LearningLevelHomepageSection extends ResourceBase {
       foreach ($nids as $key => $nid) {
         $node = $commonUtility->getNodeData($nid->nid, $language);
         $result[$key]['id'] = $node->id();
-        $result[$key]['displayTitle'] = $node->get('field_headline')->value;
-        $result[$key]['subTitle'] = $node->get('field_subtitle')->value;
-        $articulate_content = $node->get(field_interactive_content)->referencedEntities();
-        $result[$key]['body'] = (!empty($articulate_content)) ? (array_shift($articulate_content)->get('field_intro_text')->value) : '';
-        $featured_image = $node->get(field_featured_image)->referencedEntities();
+        $result[$key]['displayTitle'] = $node->hasTranslation($language) ? $node->getTranslation($language)->get('field_headline')->value : '';
+        $result[$key]['subTitle'] = $node->hasTranslation($language) ? $node->getTranslation($language)->get('field_subtitle')->value : '';
+        $articulate_content = $node->get('field_interactive_content')->referencedEntities();
+        if (!empty($articulate_content)) {
+          $articulate_content = array_shift($articulate_content);
+          $result[$key]['body'] = $articulate_content->hasTranslation($language) ? $articulate_content->getTranslation($language)->get('field_intro_text')->value : '';
+        } else {
+          $result[$key]['body'] = '';
+        }
+
+        $featured_image = $node->get('field_featured_image')->referencedEntities();
         if (!empty($featured_image)) {
           $image = array_shift($featured_image)->get(field_media_image)->referencedEntities();
           $uri = (!empty($image)) ? (array_shift($image)->get(uri)->value) : '';
           $result[$key]['imageSmall'] = (!empty($uri)) ? ($commonUtility->loadImageStyle('level_home_page_mobile', $uri)) : '';
           $result[$key]['imageMedium'] = (!empty($uri)) ? ($commonUtility->loadImageStyle('level_home_page_tablet', $uri)) : '';
           $result[$key]['imageLarge'] = (!empty($uri)) ? ($commonUtility->loadImageStyle('level_home_page_desktop', $uri)) : '';
-        } else {
+        }
+        else {
           $result[$key]['imageSmall'] = '';
           $result[$key]['imageMedium'] = '';
           $result[$key]['imageLarge'] = '';
@@ -110,7 +117,7 @@ class LearningLevelHomepageSection extends ResourceBase {
       ->condition('statement_status', db_like("passed"), 'LIKE')
       ->distinct()
       ->execute()
-      ->fetchAllKeyed(0,0);
+      ->fetchAllKeyed(0, 0);
 
     $query = $database->select('lm_lrs_records', 't');
     $query->fields('t',array('nid','id'));
@@ -120,7 +127,8 @@ class LearningLevelHomepageSection extends ResourceBase {
     $query->distinct();
     $query->orderBy("id", 'DESC');
     $query->range(0, 4);
-    
+
     return $query->execute()->fetchAll();
   }
+
 }

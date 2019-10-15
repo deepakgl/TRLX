@@ -117,7 +117,6 @@ class SellingTipsListing extends ResourceBase {
     }
 
     if (!empty($results)) {
-      // print_r($results);exit;
       // Sort merged array in DESC order using "timestamp" key.
       usort($results, function ($timestamp1, $timestamp2) {
         return $timestamp2['timestamp'] <=> $timestamp1['timestamp'];

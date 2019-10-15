@@ -11,7 +11,6 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\media\Entity\Media;
 use Drupal\file\Entity\File;
 use Elasticsearch\ClientBuilder;
-use Drupal\trlx_utility\Utility\EntityUtility;
 
 /**
  * Purpose of this class is to build common object.
@@ -236,8 +235,7 @@ class CommonUtility {
    * @return string
    *   Term name.
    */
-  public function getTermName($tid) {
-    $lang = \Drupal::currentUser()->getPreferredLangcode();
+  public function getTermName($tid, $lang = NULL) {
     $query = \Drupal::database()->select('taxonomy_term_field_data', 'ttfd');
     $query->fields('ttfd', ['name', 'tid', 'langcode']);
     $query->condition('ttfd.tid', $tid);
@@ -707,16 +705,17 @@ class CommonUtility {
     return $carouselData;
   }
 
- /**
-  * Method to get listing images
-  * @param string
-  *   expects parammeter of section key of taxonomy
-  *
-  * @return array
-  *   Listing Images
-  */
+  /**
+   * Method to get listing images.
+   *
+   * @param string
+   *   expects parammeter of section key of taxonomy
+   *
+   * @return array
+   *   Listing Images
+   */
   public function getListingImg($section) {
-    // Custom query to get image name based on section_key
+    // Custom query to get image name based on section_key.
     $query = \Drupal::database()->select('taxonomy_term_field_data', 't1');
     $query->fields('t1');
     $query->join('taxonomy_term__field_section', 't2', 't1.tid = t2.entity_id');
@@ -738,9 +737,10 @@ class CommonUtility {
 
     $result = [];
     if (!empty($entries)) {
-     $result['image'] = array_shift($entries)->uri;
-    } else {
-     $result['image'] = '';
+      $result['image'] = array_shift($entries)->uri;
+    }
+    else {
+      $result['image'] = '';
     }
 
     return $result;
