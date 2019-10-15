@@ -21,15 +21,13 @@ use Drupal\trlx_utility\Utility\CommonUtility;
 class LearningLevelHomepageSection extends ResourceBase {
 
  /**
-  * Fetch learning levels.
+  * Fetch Learning Level Section.
   *
   * @param \Symfony\Component\HttpFoundation\Request $request
   *   Rest resource query parameters.
   *
-  * @return array|\Drupal\trlx_utility\Utility\Illuminate\Http\JsonResponse|\Symfony\Component\HttpFoundation\JsonResponse Resource response.
-  *   Resource response.
-  * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
-  * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+  * @return \Drupal\rest\ResourceResponse
+  *   Learning Level Section.
   */
   public function get(Request $request) {
     $commonUtility = new CommonUtility();
@@ -98,8 +96,11 @@ class LearningLevelHomepageSection extends ResourceBase {
     return $commonUtility->successResponse($response['results'], 200);
   }
 
-  /**
-  * @return mixed
+ /**
+  * Method to get node data.
+  *
+  * @return array
+  *   Node data.
   */
   public function getNids() {
     // Query to get the nid for in-progress learning level content.
@@ -112,7 +113,7 @@ class LearningLevelHomepageSection extends ResourceBase {
       ->fetchAllKeyed(0,0);
 
     $query = $database->select('lm_lrs_records', 't');
-    $query->fields('t', ['nid']);
+    $query->fields('t',array('nid','id'));
     if (!empty($passed_nid)) {
       $query->condition('nid', $passed_nid, 'NOT IN');
     }
