@@ -84,7 +84,8 @@ class LearningLevelHomepageSection extends ResourceBase {
           $result[$key]['imageSmall'] = (!empty($uri)) ? ($commonUtility->loadImageStyle('level_home_page_mobile', $uri)) : '';
           $result[$key]['imageMedium'] = (!empty($uri)) ? ($commonUtility->loadImageStyle('level_home_page_tablet', $uri)) : '';
           $result[$key]['imageLarge'] = (!empty($uri)) ? ($commonUtility->loadImageStyle('level_home_page_desktop', $uri)) : '';
-        } else {
+        }
+        else {
           $result[$key]['imageSmall'] = '';
           $result[$key]['imageMedium'] = '';
           $result[$key]['imageLarge'] = '';
@@ -116,7 +117,7 @@ class LearningLevelHomepageSection extends ResourceBase {
       ->condition('statement_status', db_like("passed"), 'LIKE')
       ->distinct()
       ->execute()
-      ->fetchAllKeyed(0,0);
+      ->fetchAllKeyed(0, 0);
 
     $query = $database->select('lm_lrs_records', 't');
     $query->fields('t',array('nid','id'));
@@ -126,7 +127,8 @@ class LearningLevelHomepageSection extends ResourceBase {
     $query->distinct();
     $query->orderBy("id", 'DESC');
     $query->range(0, 4);
-    
+
     return $query->execute()->fetchAll();
   }
+
 }
