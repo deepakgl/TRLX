@@ -49,7 +49,7 @@ class FlagController extends Controller {
    */
   public function setFlag(Request $request) {
     global $_userData;
-    $faq_config_data = ContentModel::getFaqValues();
+    $faq_config_data = ContentModel::getTrlxUtilityConfigValues();
     $validatedData = $this->validate($request, [
       'nid' => 'sometimes|required|positiveinteger|exists:node,nid',
       'flag' => 'required|likebookmarkflag',
@@ -348,7 +348,7 @@ class FlagController extends Controller {
    */
   public function contentViewFlag(Request $request) {
     global $_userData;
-    $faq_config_data = ContentModel::getFaqValues();
+    $faq_config_data = ContentModel::getTrlxUtilityConfigValues();
     $validatedData = $this->validate($request, [
       'nid' => 'sometimes|required|positiveinteger|exists:node,nid',
       'brandId' => 'sometimes|required|positiveinteger|brandid',

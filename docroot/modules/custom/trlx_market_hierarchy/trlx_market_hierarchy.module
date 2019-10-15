@@ -22,6 +22,7 @@ function trlx_market_hierarchy_views_query_alter($view, $query) {
     'product_detail',
     'spotlight_section',
     'level_interactive_content',
+    'insider_corner',
   ];
   $current_display = [
     'rest_export_brand_story_details',
@@ -36,6 +37,7 @@ function trlx_market_hierarchy_views_query_alter($view, $query) {
     'rest_export_spotlight_section',
     'rest_export_level_interactive_content',
     'rest_export_tr_trends_homepage',
+    'rest_export_homepage_insider_corner_section',
   ];
   if (in_array($view->id(), $view_id) && in_array($view->current_display, $current_display)) {
     global $_userData;

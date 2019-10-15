@@ -1380,7 +1380,7 @@ display:
           id: field_media_image
           table: media__field_media_image
           field: field_media_image
-          relationship: field_hero_image
+          relationship: field_featured_image
           group_type: group
           admin_label: ''
           label: ''
@@ -1445,7 +1445,7 @@ display:
           id: field_media_image_1
           table: media__field_media_image
           field: field_media_image
-          relationship: field_hero_image
+          relationship: field_featured_image
           group_type: group
           admin_label: ''
           label: ''
@@ -1510,7 +1510,7 @@ display:
           id: field_media_image_2
           table: media__field_media_image
           field: field_media_image
-          relationship: field_hero_image
+          relationship: field_featured_image
           group_type: group
           admin_label: ''
           label: ''
@@ -1670,6 +1670,15 @@ display:
           limit_queue: insider_corner_hompage
           entity_type: node
           plugin_id: entity_queue
+        field_featured_image:
+          id: field_featured_image
+          table: node__field_featured_image
+          field: field_featured_image
+          relationship: none
+          group_type: group
+          admin_label: 'field_featured_image: Media'
+          required: false
+          plugin_id: standard
       sorts:
         entityqueue_relationship:
           id: entityqueue_relationship

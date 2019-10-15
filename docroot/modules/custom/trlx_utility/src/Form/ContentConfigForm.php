@@ -178,6 +178,20 @@ class ContentConfigForm extends ConfigFormBase {
       }
     }
 
+    // Return all languages for global admin role.
+    $language = \Drupal::languageManager()->getLanguages();
+    foreach ($language as $key => $value) {
+      $lang[$value->getId()] = $value->getName();
+    }
+
+    // Add field to select required site languages.
+    $form['site_languages'] = [
+      '#type' => 'select',
+      '#multiple' => TRUE,
+      '#title' => $this->t("Select required site languages."),
+      '#options' => $lang,
+      '#default_value' => $config->get('site_languages'),
+    ];
     return parent::buildForm($form, $form_state);
   }
 
@@ -187,7 +201,6 @@ class ContentConfigForm extends ConfigFormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     // Load module config for editing.
     $config = $this->configFactory->getEditable(static::SETTINGS);
-
     // Iterate through form fields.
     foreach ($form_state->getValues() as $key => $value) {
       // Set config value.
