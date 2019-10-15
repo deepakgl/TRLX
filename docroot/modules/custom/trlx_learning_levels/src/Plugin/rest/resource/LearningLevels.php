@@ -145,7 +145,6 @@ class LearningLevels extends ResourceBase {
         // Remove level from listing in no module belongs to user market and.
         // language.
         unset($value);
-        $value['pointValue'] = count($value['pointValue']);
         $decode['results'][$key] = $value;
         $tmp++;
       }
