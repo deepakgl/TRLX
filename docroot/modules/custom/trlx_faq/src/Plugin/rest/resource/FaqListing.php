@@ -61,6 +61,9 @@ class FaqListing extends ResourceBase {
       'question' => 'decode',
       'answer' => 'string_replace',
     ];
+    // Get FAQ default id.
+    $config = \Drupal::config('trlx_utility.settings');
+    $faqId = $config->get('faq_id') == 0 ? 9999999 : (int) $config->get('faq_id');
 
     // To show the brand FAQs.
     if (isset($brand_id)) {
@@ -96,7 +99,7 @@ class FaqListing extends ResourceBase {
       if (empty($view_results)) {
         return $commonUtility->successResponse([], Response::HTTP_OK);
       }
-      return $commonUtility->successResponse($view_results['results'], $status_code, $view_results['pager']);
+      return $commonUtility->successResponse($view_results['results'], $status_code, $view_results['pager'], NULL, $faqId);
     }
     // To show the global help FAQs.
     // Prepare view response.
@@ -112,7 +115,7 @@ class FaqListing extends ResourceBase {
     if (empty($view_results)) {
       return $commonUtility->successResponse([], Response::HTTP_OK);
     }
-    return $commonUtility->successResponse($view_results['results'], $status_code, $view_results['pager']);
+    return $commonUtility->successResponse($view_results['results'], $status_code, $view_results['pager'], NULL, $faqId);
   }
 
 }

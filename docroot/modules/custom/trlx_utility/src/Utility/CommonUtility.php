@@ -33,17 +33,22 @@ class CommonUtility {
    *   Response if pager is there.
    * @param string $res
    *   Param if result is from view.
+   * @param array $faq_id
+   *   Param if faq id is there.
    *
    * @return Illuminate\Http\JsonResponse
    *   Success json response.
    */
-  public function successResponse($data = [], $code = Response::HTTP_OK, $pager = [], $res = NULL, $extraData = []) {
+  public function successResponse($data = [], $code = Response::HTTP_OK, $pager = [], $res = NULL, $faq_id = [], $extraData = []) {
     $responseArr = $data;
     if (empty($res)) {
       $responseArr = ['results' => $data];
     }
     if (!empty($pager)) {
       $responseArr['pager'] = $pager;
+    }
+    if (!empty($faq_id)) {
+      $responseArr['faqId'] = $faq_id;
     }
     if (!empty($extraData)) {
       $responseArr = array_merge($responseArr, $extraData);
