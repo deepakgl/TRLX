@@ -170,6 +170,7 @@ class SellingTipsListing extends ResourceBase {
    *   Language code.
    *
    * @return array
+   *   Array or levels data.
    */
   private function fetchSellingTipsLevels(string $sectionKey, string $language) {
 
@@ -188,14 +189,16 @@ class SellingTipsListing extends ResourceBase {
     $query->addJoin('LEFT', 'file_managed', 'fm', 'fm.fid = tfi.field_image_target_id');
 
     // Conditions.
-    $query->condition('tfd.vid', 'learning_category'); // learning level vocabulary
+    // Learning level vocabulary.
+    $query->condition('tfd.vid', 'learning_category');
     $query->condition('tfd.langcode', $language);
     $query->condition('tfd.status', 1);
     $query->condition('fst.langcode', $language);
     $query->condition('fcs.langcode', $language);
     $query->condition('fcsk.deleted', 0);
     $query->condition('fcsk.field_content_section_key_value', $sectionKey);
-    $query->condition('flc.bundle', 'level_interactive_content'); // content type
+    // Level associated content type.
+    $query->condition('flc.bundle', 'level_interactive_content');
     $query->condition('flc.langcode', $language);
     $query->condition('fd.status', 1);
     $query->condition('fpv.langcode', $language);
