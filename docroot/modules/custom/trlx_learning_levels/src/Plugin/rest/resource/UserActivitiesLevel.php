@@ -67,6 +67,9 @@ class UserActivitiesLevel extends ResourceBase {
 
     // @todo Will remove foreach.
     foreach ($categoryId as $key => $value) {
+      if (empty($value)) {
+        return $commonUtility->errorResponse($this->t('Please provide Category id .'), Response::HTTP_BAD_REQUEST);
+      }
       // Checkfor valid category id.
       if (empty($commonUtility->isValidTid($value, 'learning_category'))) {
         return $commonUtility->errorResponse($this->t('Category id does not exist.'), Response::HTTP_UNPROCESSABLE_ENTITY);
