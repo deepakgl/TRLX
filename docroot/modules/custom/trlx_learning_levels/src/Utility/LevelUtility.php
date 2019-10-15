@@ -168,7 +168,7 @@ class LevelUtility {
       }
     }
     $percentage = ceil($completed / $total_count * 100);
-    $category_name = $commonUtility->getTermName($tid);
+    $category_name = $commonUtility->getTermName($tid, $lang);
     $like_count = $commonUtility->likeCount($nid);
     $arr = [
       'name' => $category_name,
