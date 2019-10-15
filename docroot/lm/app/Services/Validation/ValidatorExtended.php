@@ -169,7 +169,9 @@ class ValidatorExtended extends IlluminateValidator {
    *   True/False.
    */
   protected function validateLanguageCode($attribute, $value, $parameters, $validator) {
-    if (in_array($value, ['en', 'zh-hans'])) {
+    $trlxUtilityConfig = ContentModel::getTrlxUtilityConfigValues();
+    $languages = $trlxUtilityConfig['site_languages'];
+    if (array_key_exists($value, $languages)) {
       return TRUE;
     }
 

@@ -366,7 +366,7 @@ class UserActivitiesController extends Controller {
     $brands_terms_ids = ContentModel::getBrandTermIds();
     $brand_keys = array_column($brands_terms_ids, 'field_brand_key_value');
     // To get faq page id.
-    $faq_config_data = ContentModel::getFaqValues();
+    $faq_config_data = ContentModel::getTrlxUtilityConfigValues();
     $nid = !empty($faq_config_data['faq_id']) ? (int) $faq_config_data['faq_id'] : 9999999;
     // Array of sum of brands key and faq page id.
     $faq_ids = [];
