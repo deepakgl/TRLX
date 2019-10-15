@@ -708,12 +708,12 @@ class ContentModel {
   }
 
   /**
-   * Get faq content config form values.
+   * Get trlx utility config form values.
    *
    * @return array
    *   Content config form data.
    */
-  public static function getFaqValues() {
+  public static function getTrlxUtilityConfigValues() {
     $query = DB::table('config')
       ->select('config.data')
       ->where('config.name', '=', 'trlx_utility.settings')
