@@ -37,13 +37,16 @@ class CommonUtility {
    * @return Illuminate\Http\JsonResponse
    *   Success json response.
    */
-  public function successResponse($data = [], $code = Response::HTTP_OK, $pager = [], $res = NULL) {
+  public function successResponse($data = [], $code = Response::HTTP_OK, $pager = [], $res = NULL, $extraData = []) {
     $responseArr = $data;
     if (empty($res)) {
       $responseArr = ['results' => $data];
     }
     if (!empty($pager)) {
       $responseArr['pager'] = $pager;
+    }
+    if (!empty($extraData)) {
+      $responseArr = array_merge($responseArr, $extraData);
     }
     return new JsonResponse($responseArr, $code);
   }
@@ -708,7 +711,7 @@ class CommonUtility {
   /**
    * Method to get listing images.
    *
-   * @param string
+   * @param string $section
    *   expects parammeter of section key of taxonomy
    *
    * @return array
@@ -744,6 +747,47 @@ class CommonUtility {
     }
 
     return $result;
+  }
+
+  /**
+   * Fetch Consumer Category Hero Image.
+   *
+   * @param int $categoryId
+   *   Consumer Category Term Id.
+   * @param string $language
+   *   Language coe.
+   *
+   * @return array
+   *   Image dimensions.
+   */
+  public function fetchConsumerCateogryImage(int $categoryId, string $language) {
+    // Database connection.
+    $connection = \Drupal::database();
+    $query = db_select('taxonomy_term_field_data', 'tfd');
+    $query->addJoin('', 'taxonomy_term__field_featured_image', 'ffi', 'ffi.entity_id = tfd.tid');
+    $query->addJoin('', 'file_managed', 'fm', 'fm.fid = ffi.field_featured_image_target_id');
+
+    $query->condition('tfd.vid', 'consumer_category');
+    $query->condition('tfd.langcode', $language);
+    $query->condition('tfd.status', 1);
+    $query->condition('ffi.bundle', 'consumer_category');
+    $query->condition('ffi.langcode', $language);
+    $query->condition('ffi.deleted', 0);
+    $query->condition('tfd.tid', $categoryId);
+
+    $query->addField('tfd', 'tid', 'tid');
+    $query->addField('fm', 'uri', 'image');
+
+    $result = $query->execute()->fetchAllKeyed(0, 1);
+
+    $imageDimensions['imageSmall'] = $imageDimensions['imageMedium'] = $imageDimensions['imageLarge'] = '';
+    if (!empty($result[$categoryId])) {
+      $imageDimensions['imageSmall'] = $this->getImageStyleBasedUrl('consumer_category_mobile', $result[$categoryId]);
+      $imageDimensions['imageMedium'] = $this->getImageStyleBasedUrl('consumer_category_tablet', $result[$categoryId]);
+      $imageDimensions['imageLarge'] = $this->getImageStyleBasedUrl('consumer_category_desktop', $result[$categoryId]);
+    }
+
+    return $imageDimensions;
   }
 
 }
