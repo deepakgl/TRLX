@@ -143,7 +143,19 @@ class ConsumerListing extends ResourceBase {
 
       // Set results, pager & status code.
       $view_results['results'] = $results;
-      $categoryImage['categoryImage'] = $commonUtility->fetchConsumerCateogryImage($categoryId, $language);
+
+      // Fetch consumer cateogory image.
+      $categoryImage = [];
+      list($category_image_view) = $entityUtility->fetchApiResult(
+        '',
+        'consumer_categories',
+        'rest_export_consumer_category_image',
+        '',
+        ['categoryId' => $categoryId, 'language' => $language]
+      );
+      if (!empty($category_image_view)) {
+        $categoryImage['categoryImage'] = $category_image_view;
+      }
 
       $data = [
         'id' => 'int',
@@ -166,7 +178,7 @@ class ConsumerListing extends ResourceBase {
       return $commonUtility->successResponse([], Response::HTTP_OK);
     }
 
-    return $commonUtility->successResponse($view_results['results'], $status_code, $view_results['pager'], '', $categoryImage);
+    return $commonUtility->successResponse($view_results['results'], $status_code, $view_results['pager'], '', [], $categoryImage);
   }
 
   /**
