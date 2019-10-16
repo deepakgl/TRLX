@@ -239,6 +239,7 @@ function trlx_utility_form_alter(&$form, FormStateInterface $form_state, $form_i
       break;
 
     case 'taxonomy_term_brands_form':
+    case 'taxonomy_term_consumer_category_form':
       $entity = $form_state->getFormObject()->getEntity();
       $form['actions']['submit']['#submit'][] = 'trlx_utility_taxonomy_submit';
       break;
@@ -466,7 +467,6 @@ function trlx_utility_views_query_alter(ViewExecutable $view, $query) {
     'insider_corner',
     'selling_tips_learning_level_vocabulary',
     'consumer_categories',
-    'consumer',
   ];
   $current_display = [
     'rest_export_product_listings',
@@ -482,7 +482,6 @@ function trlx_utility_views_query_alter(ViewExecutable $view, $query) {
     'rest_export_insider_corner_listing',
     'rest_export_selling_tips_learning_level_listing',
     'rest_export_consumer_learning_level_listing',
-    'rest_export_consumer_stories_listing',
   ];
   if (in_array($view->id(), $view_id)) {
     if (in_array($view->current_display, $current_display)) {
