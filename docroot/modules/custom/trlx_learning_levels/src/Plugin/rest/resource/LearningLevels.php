@@ -141,18 +141,18 @@ class LearningLevels extends ResourceBase {
     $user_activity = [];
     $tmp = 0;
     foreach ($decode['results'] as $key => $value) {
-
       if (!isset($term_nodes[$value['categoryId']])) {
         // Remove level from listing in no module belongs to user market and.
         // language.
         unset($value);
-        $value['pointValue'] = count($value['pointValue']);
         $decode['results'][$key] = $value;
         $tmp++;
       }
       $point = $term_nodes[$value['categoryId']];
       $point_value = array_sum(array_column($point, 'point_value'));
-      $decode['results'][$key]['pointValue'] = $point_value;
+      if (!empty($point_value)) {
+        $decode['results'][$key]['pointValue'] = $point_value;
+      }
     }
 
     $data = array_values(array_filter($decode['results']));

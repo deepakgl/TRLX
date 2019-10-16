@@ -3071,7 +3071,7 @@ display:
               alias: firstName
               raw_output: false
             field_last_name:
-              alias: LastName
+              alias: lastName
               raw_output: false
             field_occupation:
               alias: occupation
