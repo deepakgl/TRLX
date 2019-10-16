@@ -35,11 +35,13 @@ class CommonUtility {
    *   Param if result is from view.
    * @param array $faq_id
    *   Param if faq id is there.
+   * @param array $faq_point_value
+   *   Param if faq point value is there.
    *
    * @return Illuminate\Http\JsonResponse
    *   Success json response.
    */
-  public function successResponse($data = [], $code = Response::HTTP_OK, $pager = [], $res = NULL, $faq_id = [], $extraData = []) {
+  public function successResponse($data = [], $code = Response::HTTP_OK, $pager = [], $res = NULL, $faq_id = [], $faq_point_value = [], $extraData = []) {
     $responseArr = $data;
     if (empty($res)) {
       $responseArr = ['results' => $data];
@@ -49,6 +51,9 @@ class CommonUtility {
     }
     if (!empty($faq_id)) {
       $responseArr['faqId'] = $faq_id;
+    }
+    if (!empty($faq_point_value)) {
+      $responseArr['pointValue'] = $faq_point_value;
     }
     if (!empty($extraData)) {
       $responseArr = array_merge($responseArr, $extraData);

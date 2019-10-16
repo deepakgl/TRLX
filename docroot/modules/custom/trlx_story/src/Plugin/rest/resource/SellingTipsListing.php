@@ -186,7 +186,9 @@ class SellingTipsListing extends ResourceBase {
     $query->addJoin('', 'node_field_data', 'fd', 'fd.nid = flc.entity_id');
     $query->addJoin('', 'node__field_point_value', 'fpv', 'fpv.entity_id = fd.nid');
     $query->addJoin('LEFT', 'taxonomy_term__field_image', 'tfi', 'tfi.entity_id = tfd.tid');
-    $query->addJoin('LEFT', 'file_managed', 'fm', 'fm.fid = tfi.field_image_target_id');
+    $query->addJoin('LEFT', 'media_field_data', 'mfd', 'mfd.mid = tfi.field_image_target_id');
+    $query->addJoin('LEFT', 'media__field_media_image', 'mfmi', 'mfmi.entity_id = mfd.mid');
+    $query->addJoin('LEFT', 'file_managed', 'fm', 'fm.fid = mfmi.field_media_image_target_id');
 
     // Conditions.
     // Learning level vocabulary.
