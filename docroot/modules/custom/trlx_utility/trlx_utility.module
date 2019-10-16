@@ -341,14 +341,20 @@ function trlx_utility_taxonomy_submit(array &$form, FormStateInterface $form_sta
  */
 function set_section_based_point_value(array &$form, FormStateInterface $form_state) {
   // Load module config.
-  $config = \Drupal::config('trlx_utility.settings');
-  $sectionTermId = $form_state->getValue('field_content_section');
-  $term = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($sectionTermId[0]['target_id']);
-  $sectionKey = $term->get('field_content_section_key')->getValue()[0]['value'];
-  $point_field_value = $config->get("point_value_" . $sectionKey);
-  $form['field_point_value']['widget'][0]['value']['#value'] = $point_field_value;
-  $form['field_point_value']['widget'][0]['value']['#default_value'] = $point_field_value;
-  return $form['field_point_value'];
+  try {
+    $config = \Drupal::config('trlx_utility.settings');
+    $sectionTermId = $form_state->getValue('field_content_section');
+    $term = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($sectionTermId[0]['target_id']);
+    $sectionKey = $term->get('field_content_section_key')->getValue()[0]['value'];
+    $point_field_value = $config->get("point_value_" . $sectionKey);
+    $form['field_point_value']['widget'][0]['value']['#value'] = $point_field_value;
+    $form['field_point_value']['widget'][0]['value']['#default_value'] = $point_field_value;
+
+    return $form['field_point_value'];
+  } catch (\Exception $e) {
+
+    return FALSE;
+  }
 }
 
 /**
