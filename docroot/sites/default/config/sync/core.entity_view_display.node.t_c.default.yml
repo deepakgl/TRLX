@@ -5,8 +5,10 @@ dependencies:
   config:
     - field.field.node.t_c.body
     - field.field.node.t_c.field_markets
+    - field.field.node.t_c.field_translation
     - node.type.t_c
   module:
+    - options
     - text
     - user
 id: node.t_c.default
@@ -29,8 +31,16 @@ content:
     third_party_settings: {  }
     type: entity_reference_label
     region: content
+  field_translation:
+    weight: 103
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
+    region: content
   links:
     weight: 100
     region: content
 hidden:
   langcode: true
+  search_api_excerpt: true
