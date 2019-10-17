@@ -6,6 +6,7 @@ use App\Support\Helper;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Model\Mysql\ContentModel;
+use App\Model\Mysql\UserModel;
 
 /**
  * Purpose of building this class is to get the data from elastic based on the.
@@ -108,31 +109,23 @@ class SearchController extends Controller {
    *   User activity status.
    */
   public function search(Request $request) {
-    // Fetch user id from jwt token.
-    $lang = $request->input('langcode');
-    if (!$lang) {
-      return Helper::jsonError('Please provide language code.', 400);
-    }
-    $all_lang = ['en', 'zh-hans'];
-    if (!in_array($lang, $all_lang)) {
-      return Helper::jsonError('Please provide valid language code.', 422);
-    }
-    global $_userData;
-    $uid = $_userData->userId;
-    if (!$uid) {
-      return Helper::jsonError('Please provide user id.', 400);
-    }
+
+    $validatedData = $this->validate($request, [
+      '_format' => 'required|format',
+      'langcode' => 'required|languagecode',
+    ]);
     // Check elastic client.
     $client = Helper::checkElasticClient();
     if (!$client) {
       return FALSE;
     }
+    $lang = $request->input('langcode');
     $this->buildQuery($request, $lang);
     if (empty($this->search)) {
       return Helper::jsonError('Please enter search keyword.', 400);
     }
     if (strlen($this->search) < 3) {
-      return Helper::jsonError('You must include at least one positive keyword with 3 characters or more.', 400);
+      return Helper::jsonError('You must include at least one positive keyword with 3 characters or more.', 422);
     }
     // Fetch the search response from elastic.
     $data = $client->search($this->query);
@@ -166,6 +159,22 @@ class SearchController extends Controller {
     $image_uris = Helper::getUriByMediaId(array_column($fids, "imageId"));
     $result = Helper::buildImageStyles($fids, $image_uris);
     // Prepare the search response.
+    // Get created date.
+    $res = [];
+    foreach ($data['hits']['hits'] as $value) {
+      if (isset($value['_source']['type'][0]) && $value['_source']['type'][0] == 'brand_story') {
+        $res[] = $value['_source']['created'];
+      }
+    }
+    $created = [];
+    foreach ($res as $key => $value) {
+      if (is_array($value)) {
+        $created = array_merge($created, array_flatten($value));
+      }
+      else {
+        $created[$key] = $value;
+      }
+    }
     foreach ($data['hits']['hits'] as $key => $value) {
       $nid = isset($value['_source']['nid'][0]) ? $value['_source']['nid'][0] : '';
       $image_style = Helper::buildImageResponse($result, $nid);
@@ -227,20 +236,38 @@ class SearchController extends Controller {
       else {
         $sub_title = isset($value['_source']['field_subtitle'][0]) ? $value['_source']['field_subtitle'][0] : '';
       }
-
-      $response['results'][] = [
-        'nid' => isset($nid) ? $nid : '',
-        'tid' => $tid,
-        'imageLarge' => $image_style['imageLarge'],
-        'imageMedium' => $image_style['imageMedium'],
-        'imageSmall' => $image_style['imageSmall'],
-        'displayTitle' => $display_title,
-        'subTitle' => $sub_title,
-        'brandKey' => $brand_key,
-        'type' => $type,
-        'pointValue' => isset($value['_source']['field_point_value'][0]) ? (int) $value['_source']['field_point_value'][0] : '',
-        'category' => $category,
-      ];
+      if (isset($value['_source']['type'][0]) && $value['_source']['type'][0] == 'brand_story') {
+        if ($value['_source']['created'][0] == max($created)) {
+          $response['results'][] = [
+            'nid' => isset($nid) ? $nid : '',
+            'tid' => $tid,
+            'imageLarge' => $image_style['imageLarge'],
+            'imageMedium' => $image_style['imageMedium'],
+            'imageSmall' => $image_style['imageSmall'],
+            'displayTitle' => $display_title,
+            'subTitle' => $sub_title,
+            'brandKey' => $brand_key,
+            'type' => $type,
+            'pointValue' => isset($value['_source']['field_point_value'][0]) ? (int) $value['_source']['field_point_value'][0] : '',
+            'category' => $category,
+          ];
+        }
+      }
+      else {
+        $response['results'][] = [
+          'nid' => isset($nid) ? $nid : '',
+          'tid' => $tid,
+          'imageLarge' => $image_style['imageLarge'],
+          'imageMedium' => $image_style['imageMedium'],
+          'imageSmall' => $image_style['imageSmall'],
+          'displayTitle' => $display_title,
+          'subTitle' => $sub_title,
+          'brandKey' => $brand_key,
+          'type' => $type,
+          'pointValue' => isset($value['_source']['field_point_value'][0]) ? (int) $value['_source']['field_point_value'][0] : '',
+          'category' => $category,
+        ];
+      }
     }
     $total_count = $data['hits']['total'] - $this->offset;
     // Build pagination.
@@ -279,6 +306,29 @@ class SearchController extends Controller {
    *   User langcode.
    */
   protected function getSearchParams($request, $lang) {
+    global $_userData;
+    $region = UserModel::getMarketByUserData();
+    foreach ($region as $value) {
+      $this->market[] = [
+        'match' => ['field_markets' => $value],
+      ];
+    }
+    $user_brand = $_userData->brands;
+    $brandinfo = ContentModel::getBrandTermIds();
+    $brand_data = [];
+    foreach ($brandinfo as $key => $value) {
+      if (in_array($value['field_brand_key_value'], $user_brand)) {
+        array_push($brand_data, $value['entity_id']);
+      }
+    }
+    foreach ($brand_data as $value) {
+      $this->field_brands_1[] = [
+        'match' => ['field_brands_1' => $value],
+      ];
+      $this->field_brands[] = [
+        'match' => ['field_brands' => $value],
+      ];
+    }
     $this->userLanguage = $lang;
     $this->search = $request->input('searchTerm');
     $this->limit = !empty($request->input('limit')) ? $request->input('limit') : $this->limit;
@@ -311,6 +361,60 @@ class SearchController extends Controller {
               ],
               2 => [
                 'match' => ['statuscode' => "1"],
+              ],
+              3 => [
+                'bool' => [
+                  'should' => [
+                    0 => [
+                      'bool' => [
+                        'must' => $this->market,
+                      ],
+                    ],
+                    1 => [
+                      'bool' => [
+                        'must_not' => [
+                          'exists' => ['field' => 'field_markets'],
+                        ],
+                      ],
+                    ],
+                  ],
+                ],
+              ],
+              4 => [
+                'bool' => [
+                  'should' => [
+                    0 => [
+                      'bool' => [
+                        'must' => $this->field_brands,
+                      ],
+                    ],
+                    1 => [
+                      'bool' => [
+                        'must_not' => [
+                          'exists' => ['field' => 'field_brands'],
+                        ],
+                      ],
+                    ],
+                  ],
+                ],
+              ],
+              5 => [
+                'bool' => [
+                  'should' => [
+                    0 => [
+                      'bool' => [
+                        'must' => $this->field_brands_1,
+                      ],
+                    ],
+                    1 => [
+                      'bool' => [
+                        'must_not' => [
+                          'exists' => ['field' => 'field_brands_1'],
+                        ],
+                      ],
+                    ],
+                  ],
+                ],
               ],
             ],
           ],
