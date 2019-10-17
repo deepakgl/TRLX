@@ -781,14 +781,48 @@ class ContentModel {
    */
   public static function getNodeDataByNid($nid, $language) {
     $query = DB::table('node_field_data as n')
-      ->select('n.nid', 'nfdt.field_display_title_value', 'nfpv.field_point_value_value', 'nfb.field_brands_target_id', 'nfcs.field_content_section_target_id', 'nfhi.field_hero_image_target_id', 'nfpi.field_field_product_image_target_id', 'nftt.field_tool_thumbnail_target_id')
-      ->leftJoin('node__field_display_title as nfdt', 'nfdt.entity_id', '=', 'n.nid')
-      ->leftJoin('node__field_point_value as nfpv', 'nfpv.entity_id', '=', 'n.nid')
-      ->leftJoin('node__field_brands as nfb', 'nfb.entity_id', '=', 'n.nid')
-      ->leftJoin('node__field_content_section as nfcs', 'nfcs.entity_id', '=', 'n.nid')
-      ->leftJoin('node__field_hero_image as nfhi', 'nfhi.entity_id', '=', 'n.nid')
-      ->leftJoin('node__field_field_product_image as nfpi', 'nfpi.entity_id', '=', 'n.nid')
-      ->leftJoin('node__field_tool_thumbnail as nftt', 'nftt.entity_id', '=', 'n.nid')
+      ->select('n.nid',
+       'nfdt.field_display_title_value',
+       'nfh.field_headline_value',
+       'nfpv.field_point_value_value',
+        'nfb.field_brands_target_id',
+         'nfcs.field_content_section_target_id',
+          'nfhi.field_hero_image_target_id',
+           'nfpi.field_field_product_image_target_id',
+            'nftt.field_tool_thumbnail_target_id')
+      ->leftJoin('node__field_display_title as nfdt', function ($join) {
+          $join->on('n.nid', '=', 'nfdt.entity_id');
+          $join->on('n.langcode', '=', 'nfdt.langcode');
+      })
+      ->leftJoin('node__field_headline as nfh', function ($join) {
+          $join->on('n.nid', '=', 'nfh.entity_id');
+          $join->on('n.langcode', '=', 'nfh.langcode');
+      })
+      ->leftJoin('node__field_point_value as nfpv', function ($join) {
+          $join->on('n.nid', '=', 'nfpv.entity_id');
+          $join->on('n.langcode', '=', 'nfpv.langcode');
+      })
+      ->leftJoin('node__field_brands as nfb', function ($join) {
+          $join->on('n.nid', '=', 'nfpv.entity_id');
+          $join->on('n.langcode', '=', 'nfb.langcode');
+      })
+      ->leftJoin('node__field_content_section as nfcs', function ($join) {
+          $join->on('n.nid', '=', 'nfcs.entity_id');
+          $join->on('n.langcode', '=', 'nfcs.langcode');
+      })
+      ->leftJoin('node__field_hero_image as nfhi', function ($join) {
+          $join->on('n.nid', '=', 'nfhi.entity_id');
+          $join->on('n.langcode', '=', 'nfhi.langcode');
+      })
+      ->leftJoin('node__field_field_product_image as nfpi', function ($join) {
+          $join->on('n.nid', '=', 'nfpi.entity_id');
+          $join->on('n.langcode', '=', 'nfpi.langcode');
+      })
+      ->leftJoin('node__field_tool_thumbnail as nftt', function ($join) {
+          $join->on('n.nid', '=', 'nftt.entity_id');
+          $join->on('n.langcode', '=', 'nftt.langcode');
+      })
+      ->distinct('n.nid')
       ->where('n.nid', '=', $nid)
       ->where('n.status', '=', 1)
       ->where('n.langcode', '=', $language)
