@@ -1,0 +1,8 @@
+name: TRLX T&C and Privacy Policy
+type: module
+description: TRLX custom module for T&C and Privacy Policy.
+core: 8.x
+package: TRLX
+
+dependencies:
+  - trlx_utility

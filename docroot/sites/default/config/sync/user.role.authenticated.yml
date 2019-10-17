@@ -69,6 +69,7 @@ permissions:
   - 'restful get stories_listing'
   - 'restful get stories_trending_section'
   - 'restful get string_translation'
+  - 'restful get term_and_condition'
   - 'restful get terms_and_condition_anonymous'
   - 'restful get terms_and_conditions'
   - 'restful get tools_listings'
