@@ -220,7 +220,6 @@ class ConsumerListing extends ResourceBase {
       $query->condition('tfd.langcode', $language);
       $query->condition('tfd.status', 1);
       $query->condition('fst.langcode', $language);
-      $query->condition('fcs.langcode', $language);
       $query->condition('fcsk.deleted', 0);
       $query->condition('fcsk.field_content_section_key_value', $sectionKey);
       // Level associated content type.
@@ -228,7 +227,6 @@ class ConsumerListing extends ResourceBase {
       $query->condition('flc.langcode', $language);
       $query->condition('fd.status', 1);
       $query->condition('fpv.langcode', $language);
-      $query->condition('fcc.langcode', $language);
       $query->condition('fcc.field_consumer_category_target_id', $categoryId);
 
       // Fields.
