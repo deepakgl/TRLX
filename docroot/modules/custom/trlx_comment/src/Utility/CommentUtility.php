@@ -45,18 +45,24 @@ class CommentUtility {
    *   Latest comment data.
    */
   public function getLatestComment() {
-    $query = \Drupal::database();
-    $result = $query->select('trlx_comment', 'tc')
-      ->fields('tc', [
-        'id',
-        'user_id',
-        'entity_id',
-        'pid',
-        'comment_body',
-        'comment_timestamp',
-      ])
-      ->orderBy('tc.comment_timestamp', 'DESC')->range(0, 1)
-      ->execute()->fetch();
+
+    try {
+      $query = \Drupal::database();
+      $result = $query->select('trlx_comment', 'tc')
+        ->fields('tc', [
+          'id',
+          'user_id',
+          'entity_id',
+          'pid',
+          'comment_body',
+          'comment_timestamp',
+        ])
+        ->orderBy('tc.comment_timestamp', 'DESC')->range(0, 1)
+        ->execute()->fetch();
+    } catch (\Exception $e ) {
+      $result = [];
+    }
+
     return $result;
   }
 
@@ -70,19 +76,25 @@ class CommentUtility {
    *   Comment data.
    */
   public function getComments($nid) {
-    $query = \Drupal::database();
-    $result = $query->select('trlx_comment', 'tc')
-      ->fields('tc', [
-        'id',
-        'user_id',
-        'entity_id',
-        'pid',
-        'comment_body',
-        'comment_timestamp',
-      ])
-      ->condition('tc.entity_id', $nid, '=')
-      ->orderBy('tc.comment_timestamp', 'DESC')
-      ->execute()->fetchAll();
+
+    try {
+      $query = \Drupal::database();
+      $result = $query->select('trlx_comment', 'tc')
+        ->fields('tc', [
+          'id',
+          'user_id',
+          'entity_id',
+          'pid',
+          'comment_body',
+          'comment_timestamp',
+        ])
+        ->condition('tc.entity_id', $nid, '=')
+        ->orderBy('tc.comment_timestamp', 'DESC')
+        ->execute()->fetchAll();
+    } catch (\Exception $e ) {
+     $result = [];
+    }
+
     return $result;
   }
 
@@ -96,17 +108,21 @@ class CommentUtility {
    *   Comment replies id.
    */
   public function getReplyCommentIds($nid) {
-    $query = \Drupal::database();
-    $result = $query->select('trlx_comment', 'tc')
-      ->fields('tc', [
-        'id',
-        'pid',
-      ])
-      ->condition('tc.entity_id', $nid, '=')
-      ->condition('tc.pid', '0', '!=')
-      ->orderBy('tc.comment_timestamp', 'DESC')
-      ->execute()->fetchAll();
-    return array_column($result, 'id');
+    try {
+      $query = \Drupal::database();
+      $result = $query->select('trlx_comment', 'tc')
+        ->fields('tc', [
+          'id',
+          'pid',
+        ])
+        ->condition('tc.entity_id', $nid, '=')
+        ->condition('tc.pid', '0', '!=')
+        ->orderBy('tc.comment_timestamp', 'DESC')
+        ->execute()->fetchAll();
+      return array_column($result, 'id');
+    } catch (\Exception $e) {
+      return FALSE;
+    }
   }
 
 }

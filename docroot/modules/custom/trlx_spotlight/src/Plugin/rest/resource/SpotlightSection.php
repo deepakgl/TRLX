@@ -195,10 +195,15 @@ class SpotlightSection extends ResourceBase {
    *   Node data.
    */
   public function getNodeData($value, $language) {
-    $nid = $value['nid'];
-    $node = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
-    if ($node->hasTranslation($language)) {
-      return $node->getTranslation($language);
+    try {
+      $nid = $value['nid'];
+      $node = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
+      if ($node->hasTranslation($language)) {
+        return $node->getTranslation($language);
+      }
+    } catch (\Exception $e) {
+      return FALSE;
     }
   }
+
 }

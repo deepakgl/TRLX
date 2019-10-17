@@ -2,6 +2,7 @@
 
 namespace Drupal\trlx_utility\Utility;
 
+use Mockery\Exception;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Drupal\Core\Logger\RfcLogLevel;
@@ -41,7 +42,7 @@ class CommonUtility {
    * @return Illuminate\Http\JsonResponse
    *   Success json response.
    */
-  public function successResponse($data = [], $code = Response::HTTP_OK, $pager = [], $res = NULL, $faq_id = [], $faq_point_value = [], $extraData = []) {
+  public function successResponse($data = [], $code = Response::HTTP_OK, $pager = [], $res = NULL, $faq_id = [], $faq_point_value = []) {
     $responseArr = $data;
     if (empty($res)) {
       $responseArr = ['results' => $data];
@@ -54,9 +55,6 @@ class CommonUtility {
     }
     if (!empty($faq_point_value)) {
       $responseArr['pointValue'] = $faq_point_value;
-    }
-    if (!empty($extraData)) {
-      $responseArr = array_merge($responseArr, $extraData);
     }
     return new JsonResponse($responseArr, $code);
   }
@@ -134,12 +132,18 @@ class CommonUtility {
    *   Image URL.
    */
   public function getImageStyleBasedUrl($image_style, $path) {
-    $style = \Drupal::entityTypeManager()->getStorage('image_style')->load($image_style);
-    $image_url = '';
-    if ($style != NULL) {
-      $image_url = $style->buildUrl($path);
+    try {
+      $style = \Drupal::entityTypeManager()->getStorage('image_style')->load($image_style);
+      $image_url = '';
+      if ($style != NULL) {
+        $image_url = $style->buildUrl($path);
+      }
+      // Fetch Image url
+      return $image_url;
+    } catch (\Exception $e) {
+      // Return False
+      return FALSE;
     }
-    return $image_url;
   }
 
   /**
@@ -213,17 +217,23 @@ class CommonUtility {
     if (!is_numeric($nid)) {
       return FALSE;
     }
-    $query = \Drupal::database();
-    $query = $query->select('node_field_data', 'n');
-    $query->fields('n', ['nid'])
-      ->condition('n.nid', $nid, '=')
-      ->condition('n.langcode', $langcode, '=')
-      ->condition('n.status', 1, '=');
-    if (!empty($type)) {
-      $query->condition('n.type', $type);
+
+    try {
+      $query = \Drupal::database();
+      $query = $query->select('node_field_data', 'n');
+      $query->fields('n', ['nid'])
+        ->condition('n.nid', $nid, '=')
+        ->condition('n.langcode', $langcode, '=')
+        ->condition('n.status', 1, '=');
+      if (!empty($type)) {
+        $query->condition('n.type', $type);
+      }
+      $query->range(0, 1);
+      $result = $query->execute()->fetchAll();
+    } catch (\Exception $e) {
+      $result = '';
     }
-    $query->range(0, 1);
-    $result = $query->execute()->fetchAll();
+
     if (empty($result)) {
       global $base_url;
       $request_uri = $base_url . \Drupal::request()->getRequestUri();
@@ -249,23 +259,26 @@ class CommonUtility {
    *   Term name.
    */
   public function getTermName($tid, $lang = NULL) {
-    $query = \Drupal::database()->select('taxonomy_term_field_data', 'ttfd');
-    $query->fields('ttfd', ['name', 'tid', 'langcode']);
-    $query->condition('ttfd.tid', $tid);
-    $query->condition('ttfd.langcode', ['en', $lang], 'IN');
-    $results = $query->execute()->fetchAll();
-    $data = [];
-    foreach ($results as $key => $result) {
-      if (empty($data[$result->tid]) || $data[$result->tid]['lang'] == 'en') {
-        $data[$result->tid] = [
-          'name' => $result->name,
-          'lang' => $result->langcode,
-        ];
+    try {
+      $query = \Drupal::database()->select('taxonomy_term_field_data', 'ttfd');
+      $query->fields('ttfd', ['name', 'tid', 'langcode']);
+      $query->condition('ttfd.tid', $tid);
+      $query->condition('ttfd.langcode', ['en', $lang], 'IN');
+      $results = $query->execute()->fetchAll();
+      $data = [];
+      foreach ($results as $key => $result) {
+        if (empty($data[$result->tid]) || $data[$result->tid]['lang'] == 'en') {
+          $data[$result->tid] = [
+            'name' => $result->name,
+            'lang' => $result->langcode,
+          ];
+        }
       }
+      $term_name = array_column($data, 'name');
+      return $term_name[0];
+    } catch (\Exception $e) {
+      return FALSE;
     }
-    $term_name = array_column($data, 'name');
-
-    return $term_name[0];
   }
 
   /**
@@ -344,29 +357,36 @@ class CommonUtility {
     if (!is_numeric($tid)) {
       return FALSE;
     }
-    $query = \Drupal::database();
-    $query = $query->select('taxonomy_term_data', 't');
-    $query->fields('t', ['tid']);
-    $query->condition('t.tid', $tid, '=');
-    if (!is_null($vid)) {
-      $query->condition('t.vid', $vid, '=');
-    }
-    $query->range(0, 1);
-    $result = $query->execute()->fetchAll();
-    if (empty($result)) {
-      global $base_url;
-      $request_uri = $base_url . \Drupal::request()->getRequestUri();
-      $logger = \Drupal::service('logger.stdout');
-      $logger->log(RfcLogLevel::ERROR, 'Term Id @tid does not exist in database.', [
-        '@tid' => $tid,
-        'user' => \Drupal::currentUser(),
-        'request_uri' => $request_uri,
-        'data' => $tid,
-      ]);
+
+    try {
+      $query = \Drupal::database();
+      $query = $query->select('taxonomy_term_data', 't');
+      $query->fields('t', ['tid']);
+      $query->condition('t.tid', $tid, '=');
+      if (!is_null($vid)) {
+        $query->condition('t.vid', $vid, '=');
+      }
+      $query->range(0, 1);
+      $result = $query->execute()->fetchAll();
+      if (empty($result)) {
+        global $base_url;
+        $request_uri = $base_url . \Drupal::request()->getRequestUri();
+        $logger = \Drupal::service('logger.stdout');
+        $logger->log(RfcLogLevel::ERROR, 'Term Id @tid does not exist in database.', [
+          '@tid' => $tid,
+          'user' => \Drupal::currentUser(),
+          'request_uri' => $request_uri,
+          'data' => $tid,
+        ]);
+        return FALSE;
+      }
+
+      return TRUE;
+    } catch (\Exception $e) {
+      // Return FALSE;
       return FALSE;
     }
 
-    return TRUE;
   }
 
   /**
@@ -434,23 +454,28 @@ class CommonUtility {
    *   Array objects for social media handles.
    */
   public function getSocialMediaHandles(int $nid) {
-    $node = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
-    $paragraph = $node->field_social_media_handles->getValue();
+    try {
+      $node = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
+      $paragraph = $node->field_social_media_handles->getValue();
 
-    $socialMediaHandles = [];
-    if (!empty($paragraph)) {
-      // Loop through the result set.
-      foreach ($paragraph as $element) {
-        $socialMediaPara = Paragraph::load($element['target_id']);
-        // Social Media Title.
-        $title = $socialMediaPara->field_social_media_title->getValue()[0]['value'];
-        // Social Media Handle.
-        $handle = $socialMediaPara->field_social_media_handle->getValue()[0]['value'];
-        $socialMediaHandles[] = ['title' => $title, 'handle' => $handle];
+      $socialMediaHandles = [];
+      if (!empty($paragraph)) {
+        // Loop through the result set.
+        foreach ($paragraph as $element) {
+          $socialMediaPara = Paragraph::load($element['target_id']);
+          // Social Media Title.
+          $title = $socialMediaPara->field_social_media_title->getValue()[0]['value'];
+          // Social Media Handle.
+          $handle = $socialMediaPara->field_social_media_handle->getValue()[0]['value'];
+          $socialMediaHandles[] = ['title' => $title, 'handle' => $handle];
+        }
       }
-    }
 
-    return $socialMediaHandles;
+      return $socialMediaHandles;
+    } catch (\Exception $e) {
+      // Return False
+      return FALSE;
+    }
   }
 
   /**
@@ -463,20 +488,24 @@ class CommonUtility {
    *   Aggregate Point Value.
    */
   public function getLearningLevelPointValue($levelTermId) {
-    $nodes = \Drupal::entityTypeManager()->getStorage('node')->loadByProperties([
-      'field_learning_category' => $levelTermId,
-    ]);
+    try {
+      $nodes = \Drupal::entityTypeManager()->getStorage('node')->loadByProperties([
+        'field_learning_category' => $levelTermId,
+      ]);
 
-    $pointValue = 0;
-    if (!empty($nodes)) {
-      foreach ($nodes as $nid => $node) {
-        if ($node->get('field_learning_category')->target_id == $levelTermId) {
-          $pointValue += $node->get('field_point_value')->value;
+      $pointValue = 0;
+      if (!empty($nodes)) {
+        foreach ($nodes as $nid => $node) {
+          if ($node->get('field_learning_category')->target_id == $levelTermId) {
+            $pointValue += $node->get('field_point_value')->value;
+          }
         }
       }
-    }
 
-    return $pointValue;
+      return $pointValue;
+    } catch (\Exception $e) {
+      return FALSE;
+    }
   }
 
   /**
@@ -589,7 +618,11 @@ class CommonUtility {
    */
   public function getSectionKeyByTermId(int $sectionTid) {
     // Load all Section taxonomy terms.
-    $sectionTerms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadTree('trlx_content_sections', 0, NULL, TRUE);
+    try {
+      $sectionTerms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadTree('trlx_content_sections', 0, NULL, TRUE);
+    } catch (\Exception $e) {
+      $sectionTerms = '';
+    }
 
     $sectionKey = '';
     if (!empty($sectionTerms)) {
@@ -617,7 +650,12 @@ class CommonUtility {
    */
   public function getBrandKeyByTermId(int $brandTid) {
     // Load all Section taxonomy terms.
-    $brandTerms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadTree('brands', 0, NULL, TRUE);
+    try {
+      $brandTerms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadTree('brands', 0, NULL, TRUE);
+    } catch (\Exception $e) {
+      $brandTerms = '';
+    }
+
     $brandKey = '';
     if (!empty($brandTerms)) {
       foreach ($brandTerms as $delta => $term) {
@@ -645,9 +683,13 @@ class CommonUtility {
    */
   public function getNodeData($nid, $language) {
     // Load node by nid and language code.
-    $node = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
-    if ($node->hasTranslation($language)) {
-      return $node->getTranslation($language);
+    try {
+      $node = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
+      if ($node->hasTranslation($language)) {
+        return $node->getTranslation($language);
+      }
+    } catch (\Exception $e) {
+      return FALSE;
     }
   }
 
@@ -663,9 +705,15 @@ class CommonUtility {
    *   Image style url.
    */
   public function loadImageStyle($style_name, $file_uri) {
-    $image_style = \Drupal::entityTypeManager()->getStorage('image_style')->load($style_name);
-    $result = $image_style->buildUrl($file_uri);
-    return $result;
+    try {
+      $image_style = \Drupal::entityTypeManager()->getStorage('image_style')->load($style_name);
+      $result = $image_style->buildUrl($file_uri);
+      // Fetch uri
+      return $result;
+    } catch (\Exception $e) {
+      // Return false
+      return FALSE;
+    }
   }
 
   /**
@@ -685,18 +733,22 @@ class CommonUtility {
       return $carouselData;
     }
 
-    // Query to fetch respective Paragraph Entities.
-    $query = \Drupal::database();
-    $query = $query->select('node__field_product_carousel', 'fpc');
-    $query->join('paragraphs_item_field_data', 'pifd', 'pifd.id = fpc.field_product_carousel_target_id');
-    $query->condition('fpc.entity_id', $nid);
-    $query->condition('fpc.langcode', $language);
-    $query->condition('pifd.type', 'product_carousel');
-    $query->condition('pifd.langcode', $language);
-    $query->condition('pifd.status', 1);
-    $query->condition('pifd.parent_type', 'node');
-    $query->fields('fpc', ['field_product_carousel_target_id']);
-    $result = $query->execute()->fetchAllAssoc('field_product_carousel_target_id');
+    try {
+      // Query to fetch respective Paragraph Entities.
+      $query = \Drupal::database();
+      $query = $query->select('node__field_product_carousel', 'fpc');
+      $query->join('paragraphs_item_field_data', 'pifd', 'pifd.id = fpc.field_product_carousel_target_id');
+      $query->condition('fpc.entity_id', $nid);
+      $query->condition('fpc.langcode', $language);
+      $query->condition('pifd.type', 'product_carousel');
+      $query->condition('pifd.langcode', $language);
+      $query->condition('pifd.status', 1);
+      $query->condition('pifd.parent_type', 'node');
+      $query->fields('fpc', ['field_product_carousel_target_id']);
+      $result = $query->execute()->fetchAllAssoc('field_product_carousel_target_id');
+    } catch (\Exception $e) {
+      $result = '';
+    }
 
     if (!empty($result)) {
       $entityUtility = new EntityUtility();
@@ -721,42 +773,46 @@ class CommonUtility {
   /**
    * Method to get listing images.
    *
-   * @param string $section
+   * @param string
    *   expects parammeter of section key of taxonomy
    *
    * @return array
    *   Listing Images
    */
   public function getListingImg($section) {
-    // Custom query to get image name based on section_key.
-    $query = \Drupal::database()->select('taxonomy_term_field_data', 't1');
-    $query->fields('t1');
-    $query->join('taxonomy_term__field_section', 't2', 't1.tid = t2.entity_id');
-    $query->fields('t2');
-    $query->join('taxonomy_term__field_content_section_key', 't3', 't2.field_section_target_id = t3.entity_id');
-    $query->fields('t3');
-    $query->condition('t1.vid', "listing_image", "=");
-    $query->condition('t1.status', 1, "=");
-    $query->range(0, 1);
-    $query->condition('t3.field_content_section_key_value', $section, "=");
-    $query->orderBy('t1.content_translation_created', 'DESC');
-    $query->join('taxonomy_term__field_hero_image', 't4', 't1.tid = t4.entity_id');
-    $query->fields('t4');
-    $query->join('media__field_media_image', 't5', 't4.field_hero_image_target_id = t5.entity_id');
-    $query->fields('t5');
-    $query->join('file_managed', 't6', 't6.fid = t5.field_media_image_target_id');
-    $query->fields('t6');
-    $entries = $query->execute()->fetchAll();
+    try {
+      // Custom query to get image name based on section_key.
+      $query = \Drupal::database()->select('taxonomy_term_field_data', 't1');
+      $query->fields('t1');
+      $query->join('taxonomy_term__field_section', 't2', 't1.tid = t2.entity_id');
+      $query->fields('t2');
+      $query->join('taxonomy_term__field_content_section_key', 't3', 't2.field_section_target_id = t3.entity_id');
+      $query->fields('t3');
+      $query->condition('t1.vid', "listing_image", "=");
+      $query->condition('t1.status', 1, "=");
+      $query->range(0, 1);
+      $query->condition('t3.field_content_section_key_value', $section, "=");
+      $query->orderBy('t1.content_translation_created', 'DESC');
+      $query->join('taxonomy_term__field_hero_image', 't4', 't1.tid = t4.entity_id');
+      $query->fields('t4');
+      $query->join('media__field_media_image', 't5', 't4.field_hero_image_target_id = t5.entity_id');
+      $query->fields('t5');
+      $query->join('file_managed', 't6', 't6.fid = t5.field_media_image_target_id');
+      $query->fields('t6');
+      $entries = $query->execute()->fetchAll();
 
-    $result = [];
-    if (!empty($entries)) {
-      $result['image'] = array_shift($entries)->uri;
-    }
-    else {
-      $result['image'] = '';
-    }
+      $result = [];
+      if (!empty($entries)) {
+        $result['image'] = array_shift($entries)->uri;
+      }
+      else {
+        $result['image'] = '';
+      }
 
-    return $result;
+      return $result;
+    } catch (\Exception $e) {
+      return FALSE;
+    }
   }
 
 }
