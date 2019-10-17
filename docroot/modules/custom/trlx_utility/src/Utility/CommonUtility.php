@@ -42,7 +42,7 @@ class CommonUtility {
    * @return Illuminate\Http\JsonResponse
    *   Success json response.
    */
-  public function successResponse($data = [], $code = Response::HTTP_OK, $pager = [], $res = NULL, $faq_id = [], $faq_point_value = []) {
+  public function successResponse($data = [], $code = Response::HTTP_OK, $pager = [], $res = NULL, $faq_id = [], $faq_point_value = [], $extraData = []) {
     $responseArr = $data;
     if (empty($res)) {
       $responseArr = ['results' => $data];
@@ -55,6 +55,9 @@ class CommonUtility {
     }
     if (!empty($faq_point_value)) {
       $responseArr['pointValue'] = $faq_point_value;
+    }
+    if (!empty($extraData)) {
+      $responseArr = array_merge($responseArr, $extraData);
     }
     return new JsonResponse($responseArr, $code);
   }
@@ -773,7 +776,7 @@ class CommonUtility {
   /**
    * Method to get listing images.
    *
-   * @param string
+   * @param string $section
    *   expects parammeter of section key of taxonomy
    *
    * @return array

@@ -77,14 +77,17 @@ class ConsumerListing extends ResourceBase {
       return $errorResponse;
     }
 
+    // Fetch respective learning_category term(s).
+    $term_results = $this->fetchConsumerLevels($commonUtility::CONSUMER, $language, $categoryId);
+
     // Fetch learning_category term response.
-    list($term_view_results, $term_status_code) = $entityUtility->fetchApiResult(
+    /*list($term_view_results, $term_status_code) = $entityUtility->fetchApiResult(
       '',
       'consumer_categories',
       'rest_export_consumer_learning_level_listing',
       '',
       ['language' => $language, 'categoryId' => $categoryId]
-    );
+    );*/
 
     // Fetch stories bundle content response.
     list($content_view_results, $term_status_code) = $entityUtility->fetchApiResult(
@@ -108,15 +111,15 @@ class ConsumerListing extends ResourceBase {
     }
 
     // Fetch Learning Level Consumer term(s).
-    if (!empty($term_view_results['results'])) {
-      $results = $term_view_results['results'];
-      $count = $term_view_results['pager']['count'];
+    if (!empty($term_results)) {
+      $results = $term_results;
+      $count = count($term_results);
     }
 
     // Fetch Stories Consumer Content(s).
     if (!empty($content_view_results['results'])) {
       $results = array_merge($results, $content_view_results['results']);
-      $count = $count + $content_view_results['pager']['count'];
+      $count = $count + count($content_view_results['results']);
     }
 
     if (!empty($results)) {
@@ -141,6 +144,19 @@ class ConsumerListing extends ResourceBase {
       // Set results, pager & status code.
       $view_results['results'] = $results;
 
+      // Fetch consumer cateogory image.
+      $categoryImage = [];
+      list($category_image_view) = $entityUtility->fetchApiResult(
+        '',
+        'consumer_categories',
+        'rest_export_consumer_category_image',
+        '',
+        ['categoryId' => $categoryId, 'language' => $language]
+      );
+      if (!empty($category_image_view)) {
+        $categoryImage['categoryImage'] = $category_image_view;
+      }
+
       $data = [
         'id' => 'int',
         'displayTitle' => 'decode',
@@ -162,7 +178,116 @@ class ConsumerListing extends ResourceBase {
       return $commonUtility->successResponse([], Response::HTTP_OK);
     }
 
-    return $commonUtility->successResponse($view_results['results'], $status_code, $view_results['pager']);
+    return $commonUtility->successResponse($view_results['results'], $status_code, $view_results['pager'], '', [], [], $categoryImage);
+  }
+
+  /**
+   * Function to fetch consumer levels attached to content.
+   *
+   * @param string $sectionKey
+   *   Section Key.
+   * @param string $language
+   *   Language code.
+   * @param int $categoryId
+   *   Consumer Category Term Id.
+   *
+   * @return array
+   *   Array or levels data.
+   */
+  private function fetchConsumerLevels(string $sectionKey, string $language, int $categoryId) {
+
+    // Database connection.
+    $connection = \Drupal::database();
+
+    // Tables.
+    try {
+      $query = db_select('taxonomy_term_field_data', 'tfd');
+      $query->addJoin('', 'taxonomy_term__field_content_section', 'fcs', 'fcs.entity_id = tfd.tid');
+      $query->addJoin('', 'taxonomy_term__field_sub_title', 'fst', 'fst.entity_id = tfd.tid');
+      $query->addJoin('', 'taxonomy_term__field_content_section_key', 'fcsk', 'fcsk.entity_id = fcs.field_content_section_target_id');
+      $query->addJoin('', 'taxonomy_term__field_consumer_category', 'fcc', 'fcc.entity_id = tfd.tid');
+      $query->addJoin('', 'node__field_learning_category', 'flc', 'flc.field_learning_category_target_id = tfd.tid');
+      $query->addJoin('', 'node_field_data', 'fd', 'fd.nid = flc.entity_id');
+      $query->addJoin('', 'node__field_point_value', 'fpv', 'fpv.entity_id = fd.nid');
+      $query->addJoin('LEFT', 'taxonomy_term__field_image', 'tfi', 'tfi.entity_id = tfd.tid');
+      $query->addJoin('LEFT', 'media_field_data', 'mfd', 'mfd.mid = tfi.field_image_target_id');
+      $query->addJoin('LEFT', 'media__field_media_image', 'mfmi', 'mfmi.entity_id = mfd.mid');
+      $query->addJoin('LEFT', 'file_managed', 'fm', 'fm.fid = mfmi.field_media_image_target_id');
+
+      // Conditions.
+      // Learning level vocabulary.
+      $query->condition('tfd.vid', 'learning_category');
+      $query->condition('tfd.langcode', $language);
+      $query->condition('tfd.status', 1);
+      $query->condition('fst.langcode', $language);
+      $query->condition('fcs.langcode', $language);
+      $query->condition('fcsk.deleted', 0);
+      $query->condition('fcsk.field_content_section_key_value', $sectionKey);
+      // Level associated content type.
+      $query->condition('flc.bundle', 'level_interactive_content');
+      $query->condition('flc.langcode', $language);
+      $query->condition('fd.status', 1);
+      $query->condition('fpv.langcode', $language);
+      $query->condition('fcc.langcode', $language);
+      $query->condition('fcc.field_consumer_category_target_id', $categoryId);
+
+      // Fields.
+      $query->distinct();
+      $query->addField('flc', 'field_learning_category_target_id', 'id');
+      $query->addField('tfd', 'name', 'displayTitle');
+      $query->addField('fst', 'field_sub_title_value', 'subTitle');
+      $query->addField('tfd', 'description__value', 'body');
+      $query->addField('tfd', 'langcode', 'language');
+      $query->addField('tfd', 'content_translation_created', 'timestamp');
+      $query->addField('fd', 'nid', 'nid');
+      $query->addField('fpv', 'field_point_value_value', 'pointValue');
+      $query->addField('tfi', 'field_image_target_id', 'fid');
+      $query->addField('fm', 'uri', 'image');
+      $query->addField('fcc', 'field_consumer_category_target_id', 'categoryId');
+
+      // Order by.
+      $query->orderBy('timestamp');
+      $results = $query->execute()->fetchAll();
+    } catch (\Exception $e) {
+      $results = [];
+    }
+
+    $levelsListing = [];
+    if (!empty($results)) {
+
+      $commonUtility = new CommonUtility();
+      foreach ($results as $result) {
+        $result = (array) $result;
+
+        if (isset($levelsListing[$result['id']])) {
+          $levelsListing[$result['id']]['pointValue'] = $levelsListing[$result['id']]['pointValue'] + $result['pointValue'];
+        }
+        else {
+          $levelsListing[$result['id']]['id'] = $result['id'];
+          $levelsListing[$result['id']]['displayTitle'] = $result['displayTitle'];
+          $levelsListing[$result['id']]['subTitle'] = $result['subTitle'];
+          $levelsListing[$result['id']]['body'] = $result['body'];
+          $levelsListing[$result['id']]['type'] = 'level';
+          $levelsListing[$result['id']]['pointValue'] = $result['pointValue'];
+          $levelsListing[$result['id']]['timestamp'] = $result['timestamp'];
+          $levelsListing[$result['id']]['categoryId'] = $result['categoryId'];
+
+          $levelsListing[$result['id']]['imageSmall'] = $levelsListing[$result['id']]['imageMedium'] = $levelsListing[$result['id']]['imageLarge'] = '';
+
+          // Create image urls for three different display screens.
+          if (!empty($result['image'])) {
+            $levelsListing[$result['id']]['imageSmall'] = $commonUtility->getImageStyleBasedUrl('learning_levels_mobile', $result['image']);
+            $levelsListing[$result['id']]['imageMedium'] = $commonUtility->getImageStyleBasedUrl('learning_levels_tablet', $result['image']);
+            $levelsListing[$result['id']]['imageLarge'] = $commonUtility->getImageStyleBasedUrl('learning_levels_desktop', $result['image']);
+          }
+        }
+
+      } // end foreach
+
+      unset($commonUtility);
+    } // end if
+
+    return $levelsListing;
   }
 
 }
