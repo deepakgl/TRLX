@@ -150,6 +150,9 @@ function elx_translation_workflow_generate_img_styles($entity) {
       'search_listings_tablet',
       'search_listings_desktop',
       'search_listings_mobile',
+      'bookmark_image_mobile',
+      'bookmark_image_tablet',
+      'bookmark_image_desktop',
     ]
     );
   }
@@ -177,6 +180,9 @@ function elx_translation_workflow_generate_img_styles($entity) {
       'search_listings_tablet',
       'search_listings_desktop',
       'search_listings_mobile',
+      'bookmark_image_mobile',
+      'bookmark_image_tablet',
+      'bookmark_image_desktop',
     ]
     );
   }
@@ -201,6 +207,9 @@ function elx_translation_workflow_generate_img_styles($entity) {
       'search_listings_tablet',
       'search_listings_desktop',
       'search_listings_mobile',
+      'bookmark_image_mobile',
+      'bookmark_image_tablet',
+      'bookmark_image_desktop',
     ]
     );
   }
@@ -216,6 +225,9 @@ function elx_translation_workflow_generate_img_styles($entity) {
       'search_listings_tablet',
       'search_listings_desktop',
       'search_listings_mobile',
+      'bookmark_image_mobile',
+      'bookmark_image_tablet',
+      'bookmark_image_desktop',
     ]
     );
   }

@@ -10,10 +10,11 @@ class ValidatorExtended extends IlluminateValidator {
   private $_custom_messages = [
     'numericarray' => 'The :attribute must be numeric array value.',
     'positiveinteger' => 'The :attribute must be positive integer',
-    'likebookmarkflag' => 'The :attribute must be either like or bookmark.',
+    'likebookmarkflag' => 'The :attribute must be either like or bookmark',
     'format' => 'The :attribute must be json',
     'brandid' => 'Brand Id (:input) does not exist.',
     'languagecode' => 'The :attribute is not valid',
+    'bookmarklisttype' => 'The type must be either video or myLibrary',
   ];
 
   public function __construct($translator, $data, $rules, $messages = array(), $customAttributes = []) {
@@ -172,6 +173,29 @@ class ValidatorExtended extends IlluminateValidator {
     $trlxUtilityConfig = ContentModel::getTrlxUtilityConfigValues();
     $languages = $trlxUtilityConfig['site_languages'];
     if (array_key_exists($value, $languages)) {
+      return TRUE;
+    }
+
+    return FALSE;
+  }
+
+  /**
+   * Validate bookmark list type.
+   *
+   * @param mixed $attribute
+   *   Attribute.
+   * @param mixed $value
+   *   Value.
+   * @param mixed $parameters
+   *   Parameters.
+   * @param mixed $validator
+   *   Validator.
+   *
+   * @return bool
+   *   True/False.
+   */
+  protected function validateBookmarkListType($attribute, $value, $parameters, $validator) {
+    if (in_array($value, ['myLibrary', 'video'])) {
       return TRUE;
     }
 
