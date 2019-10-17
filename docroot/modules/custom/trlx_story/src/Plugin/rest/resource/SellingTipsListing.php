@@ -178,47 +178,52 @@ class SellingTipsListing extends ResourceBase {
     $connection = \Drupal::database();
 
     // Tables.
-    $query = db_select('taxonomy_term_field_data', 'tfd');
-    $query->addJoin('', 'taxonomy_term__field_content_section', 'fcs', 'fcs.entity_id = tfd.tid');
-    $query->addJoin('', 'taxonomy_term__field_sub_title', 'fst', 'fst.entity_id = tfd.tid');
-    $query->addJoin('', 'taxonomy_term__field_content_section_key', 'fcsk', 'fcsk.entity_id = fcs.field_content_section_target_id');
-    $query->addJoin('', 'node__field_learning_category', 'flc', 'flc.field_learning_category_target_id = tfd.tid');
-    $query->addJoin('', 'node_field_data', 'fd', 'fd.nid = flc.entity_id');
-    $query->addJoin('', 'node__field_point_value', 'fpv', 'fpv.entity_id = fd.nid');
-    $query->addJoin('LEFT', 'taxonomy_term__field_image', 'tfi', 'tfi.entity_id = tfd.tid');
-    $query->addJoin('LEFT', 'file_managed', 'fm', 'fm.fid = tfi.field_image_target_id');
+    try {
+      $query = db_select('taxonomy_term_field_data', 'tfd');
+      $query->addJoin('', 'taxonomy_term__field_content_section', 'fcs', 'fcs.entity_id = tfd.tid');
+      $query->addJoin('', 'taxonomy_term__field_sub_title', 'fst', 'fst.entity_id = tfd.tid');
+      $query->addJoin('', 'taxonomy_term__field_content_section_key', 'fcsk', 'fcsk.entity_id = fcs.field_content_section_target_id');
+      $query->addJoin('', 'node__field_learning_category', 'flc', 'flc.field_learning_category_target_id = tfd.tid');
+      $query->addJoin('', 'node_field_data', 'fd', 'fd.nid = flc.entity_id');
+      $query->addJoin('', 'node__field_point_value', 'fpv', 'fpv.entity_id = fd.nid');
+      $query->addJoin('LEFT', 'taxonomy_term__field_image', 'tfi', 'tfi.entity_id = tfd.tid');
+      $query->addJoin('LEFT', 'media_field_data', 'mfd', 'mfd.mid = tfi.field_image_target_id');
+      $query->addJoin('LEFT', 'media__field_media_image', 'mfmi', 'mfmi.entity_id = mfd.mid');
+      $query->addJoin('LEFT', 'file_managed', 'fm', 'fm.fid = mfmi.field_media_image_target_id');
 
-    // Conditions.
-    // Learning level vocabulary.
-    $query->condition('tfd.vid', 'learning_category');
-    $query->condition('tfd.langcode', $language);
-    $query->condition('tfd.status', 1);
-    $query->condition('fst.langcode', $language);
-    $query->condition('fcs.langcode', $language);
-    $query->condition('fcsk.deleted', 0);
-    $query->condition('fcsk.field_content_section_key_value', $sectionKey);
-    // Level associated content type.
-    $query->condition('flc.bundle', 'level_interactive_content');
-    $query->condition('flc.langcode', $language);
-    $query->condition('fd.status', 1);
-    $query->condition('fpv.langcode', $language);
+      // Conditions.
+      // Learning level vocabulary.
+      $query->condition('tfd.vid', 'learning_category');
+      $query->condition('tfd.langcode', $language);
+      $query->condition('tfd.status', 1);
+      $query->condition('fst.langcode', $language);
+      $query->condition('fcs.langcode', $language);
+      $query->condition('fcsk.deleted', 0);
+      $query->condition('fcsk.field_content_section_key_value', $sectionKey);
+      // Level associated content type.
+      $query->condition('flc.bundle', 'level_interactive_content');
+      $query->condition('flc.langcode', $language);
+      $query->condition('fd.status', 1);
+      $query->condition('fpv.langcode', $language);
 
-    // Fields.
-    $query->distinct();
-    $query->addField('flc', 'field_learning_category_target_id', 'id');
-    $query->addField('tfd', 'name', 'displayTitle');
-    $query->addField('fst', 'field_sub_title_value', 'subTitle');
-    $query->addField('tfd', 'description__value', 'body');
-    $query->addField('tfd', 'langcode', 'language');
-    $query->addField('tfd', 'content_translation_created', 'timestamp');
-    $query->addField('fd', 'nid', 'nid');
-    $query->addField('fpv', 'field_point_value_value', 'pointValue');
-    $query->addField('tfi', 'field_image_target_id', 'fid');
-    $query->addField('fm', 'uri', 'image');
-
-    // Order by.
-    $query->orderBy('timestamp');
-    $results = $query->execute()->fetchAll();
+      // Fields.
+      $query->distinct();
+      $query->addField('flc', 'field_learning_category_target_id', 'id');
+      $query->addField('tfd', 'name', 'displayTitle');
+      $query->addField('fst', 'field_sub_title_value', 'subTitle');
+      $query->addField('tfd', 'description__value', 'body');
+      $query->addField('tfd', 'langcode', 'language');
+      $query->addField('tfd', 'content_translation_created', 'timestamp');
+      $query->addField('fd', 'nid', 'nid');
+      $query->addField('fpv', 'field_point_value_value', 'pointValue');
+      $query->addField('tfi', 'field_image_target_id', 'fid');
+      $query->addField('fm', 'uri', 'image');
+      // Order by.
+      $query->orderBy('timestamp');
+      $results = $query->execute()->fetchAll();
+    } catch (\Exception $e) {
+      $results = [];
+    }
 
     $levelsListing = [];
     if (!empty($results)) {

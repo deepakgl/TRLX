@@ -93,7 +93,7 @@ class BrandStoryDetails extends ResourceBase {
       'body' => 'string_replace',
     ];
     // Prepare redis key.
-    $key = ":brandStoryDetails:_{$nid}_{$language}";
+    $key = ":brandStoryDetails:_{$brandId}_{$language}";
 
     // Prepare response.
     list($view_results, $status_code,) = $entityUtility->fetchApiResult(
