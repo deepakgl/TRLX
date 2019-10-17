@@ -1,0 +1,7 @@
+welcome_message.settings:
+  path: '/admin/config/system/header_message'
+  defaults:
+    _form: '\Drupal\trlx_banner\Form\WelcomeMessageForm'
+    _title: 'Welcome Message Form'
+  requirements:
+    _permission: 'administer site configuration'

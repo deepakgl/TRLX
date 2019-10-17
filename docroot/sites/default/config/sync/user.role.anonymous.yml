@@ -47,6 +47,7 @@ permissions:
   - 'restful get user_activities_level'
   - 'restful get video_details'
   - 'restful get video_listings'
+  - 'restful get welcome_site_message'
   - 'restful post comment_post'
   - 'restful post stories_comments_post'
   - 'use text format filtered_html'
