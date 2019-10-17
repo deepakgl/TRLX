@@ -746,4 +746,98 @@ class ContentModel {
     return $data;
   }
 
+  /**
+   * Get trlx section names.
+   *
+   * @return array
+   *   Section names.
+   */
+  public static function getTrlxSectionNames() {
+    $sectionData = [];
+    $sectionData = [
+      'trend' => 'TR TRENDS',
+      'consumer' => 'CONSUMERS',
+      'sellingTips' => 'SELLING TIPS',
+      'insiderCorner' => "INSIDER'S CORNER",
+      'tools' => 'VIDEOS',
+      'faq' => 'FAQ',
+      'product_detail' => 'FACT SHEETS',
+      'brand_story' => 'BRAND STORY',
+      'level_interactive_content' => 'MY LESSONS',
+    ];
+    return $sectionData;
+  }
+
+  /**
+   * Get node data by nid.
+   *
+   * @param int $nid
+   *   Node id.
+   * @param int $language
+   *   Language code.
+   *
+   * @return string
+   *   Node type.
+   */
+  public static function getNodeDataByNid($nid, $language) {
+    $query = DB::table('node_field_data as n')
+      ->select('n.nid', 'nfdt.field_display_title_value', 'nfpv.field_point_value_value', 'nfb.field_brands_target_id', 'nfcs.field_content_section_target_id', 'nfhi.field_hero_image_target_id', 'nfpi.field_field_product_image_target_id', 'nftt.field_tool_thumbnail_target_id')
+      ->leftJoin('node__field_display_title as nfdt', 'nfdt.entity_id', '=', 'n.nid')
+      ->leftJoin('node__field_point_value as nfpv', 'nfpv.entity_id', '=', 'n.nid')
+      ->leftJoin('node__field_brands as nfb', 'nfb.entity_id', '=', 'n.nid')
+      ->leftJoin('node__field_content_section as nfcs', 'nfcs.entity_id', '=', 'n.nid')
+      ->leftJoin('node__field_hero_image as nfhi', 'nfhi.entity_id', '=', 'n.nid')
+      ->leftJoin('node__field_field_product_image as nfpi', 'nfpi.entity_id', '=', 'n.nid')
+      ->leftJoin('node__field_tool_thumbnail as nftt', 'nftt.entity_id', '=', 'n.nid')
+      ->where('n.nid', '=', $nid)
+      ->where('n.status', '=', 1)
+      ->where('n.langcode', '=', $language)
+      ->first();
+    return $query;
+  }
+
+  /**
+   * Fetch bookmark image url by fid.
+   *
+   * @param int $fid
+   *   File Id.
+   *
+   * @return string
+   *   Image url.
+   */
+  public static function getBookmarkImageUrlByFid($fid) {
+    $small_image_url = getenv("SITE_IMAGE_URL") . 'styles/bookmark_image_mobile/public/';
+    $medium_image_url = getenv("SITE_IMAGE_URL") . 'styles/bookmark_image_tablet/public/';
+    $large_image_url = getenv("SITE_IMAGE_URL") . 'styles/bookmark_image_desktop/public/';
+    $url = [];
+    if (!empty($fid)) {
+      $query = DB::table('file_managed as fm');
+      $query->select('fm.uri');
+      $query->leftJoin('media_field_data as mfd', 'mfd.thumbnail__target_id', '=', 'fm.fid');
+      $query->where('mfd.mid', '=', $fid);
+      $result = $query->get();
+    }
+    $url[0] = isset($result[0]->uri) ? str_replace("public://", $small_image_url, $result[0]->uri) : '';
+    $url[1] = isset($result[0]->uri) ? str_replace("public://", $medium_image_url, $result[0]->uri) : '';
+    $url[2] = isset($result[0]->uri) ? str_replace("public://", $large_image_url, $result[0]->uri) : '';
+
+    return $url;
+  }
+
+  /**
+   * Get brand data from brand key.
+   *
+   * @return array
+   *   Brand data.
+   */
+  public static function getBrandDataFromBrandKey($brand_key) {
+    $query = DB::table('taxonomy_term__field_brand_key as ttfbk')
+      ->select('ttfbk.entity_id', 'ttfbk.field_brand_key_value', 'ttfd.name')
+      ->leftJoin('taxonomy_term_field_data as ttfd', 'ttfd.tid', '=', 'ttfbk.entity_id')
+      ->where('ttfbk.field_brand_key_value', '=', $brand_key)
+      ->first();
+
+    return json_decode(json_encode((array) $query), TRUE);
+  }
+
 }

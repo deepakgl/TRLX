@@ -1,0 +1,15 @@
+uuid: fabe2d85-7ed2-41d2-a7c3-bd04689c1c2b
+langcode: en
+status: true
+dependencies: {  }
+name: bookmark_image_tablet
+label: 'Bookmark Image Tablet (120X120)'
+effects:
+  94f9159a-a05b-4ad5-b60d-08301fbedc44:
+    uuid: 94f9159a-a05b-4ad5-b60d-08301fbedc44
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 120
+      height: 120
+      anchor: center-center

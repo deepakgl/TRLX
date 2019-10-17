@@ -57,7 +57,7 @@ $router->group(
     // Flag.
     $router->group(['prefix' => 'v1'], function () use ($router) {
       $router->post('flag', 'FlagController@setFlag');
-      $router->get('myFlags', 'FlagController@myFlags');
+      $router->get('bookmarksListing', 'FlagController@myBookmarks');
       $router->post('contentViewFlag', 'FlagController@contentViewFlag');
     });
 

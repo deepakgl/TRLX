@@ -75,7 +75,8 @@ class LevelUtility {
       }
 
       return $arr;
-    } catch (\Exception $e) {
+    }
+    catch (\Exception $e) {
       return FALSE;
     }
   }
@@ -117,7 +118,7 @@ class LevelUtility {
         ->orderBy('ds.weight', 'ASC');
       $result = $query->execute()->fetchAll();
       foreach ($result as $key => $value) {
-       $arr[] = $value->nid;
+        $arr[] = $value->nid;
       }
       $arr = array_values(array_unique($arr));
       $interactive_content = array_search($nid, $arr);
@@ -125,7 +126,8 @@ class LevelUtility {
       $next = isset($arr[$interactive_content + 1]) ? intval($arr[$interactive_content + 1]) : "";
 
       return [$previous, $next];
-    } catch (\Exception $e) {
+    }
+    catch (\Exception $e) {
       return FALSE;
     }
   }
@@ -190,7 +192,8 @@ class LevelUtility {
       ];
 
       return $arr;
-    } catch (\Exception $e) {
+    }
+    catch (\Exception $e) {
       return FALSE;
     }
   }
@@ -211,7 +214,8 @@ class LevelUtility {
       $query->condition('ttfd.tid', $tid);
       $results = $query->execute()->fetchAll();
       return $results[0];
-    } catch (\Exception $e) {
+    }
+    catch (\Exception $e) {
       return FALSE;
     }
   }
@@ -233,7 +237,8 @@ class LevelUtility {
       $query->fields('ttfbk', ['field_brand_key_value']);
       $query->condition('ttfb.entity_id', $tid);
       return $query->execute()->fetchAll();
-    } catch (\Exception $e) {
+    }
+    catch (\Exception $e) {
       return FALSE;
     }
   }
@@ -255,7 +260,8 @@ class LevelUtility {
       $query->fields('ttfcsk', ['field_content_section_key_value']);
       $query->condition('ttfcs.entity_id', $tid);
       return $query->execute()->fetchAll();
-    } catch (\Exception $e) {
+    }
+    catch (\Exception $e) {
       return FALSE;
     }
   }
