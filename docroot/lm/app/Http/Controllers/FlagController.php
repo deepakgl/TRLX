@@ -285,82 +285,86 @@ class FlagController extends Controller {
       foreach ($bookmark_ids as $bookmark_id) {
         if (!in_array($bookmark_id, $faq_ids)) {
           $node_data = ContentModel::getNodeDataByNid($bookmark_id, $lang);
-          $node_type = ContentModel::getTypeByNid($bookmark_id);
-          $bookmark_data[$i]['id'] = $node_data->nid;
-          $bookmark_data[$i]['title'] = $node_data->field_display_title_value;
-          $bookmark_data[$i]['brandKey'] = 0;
-          $bookmark_data[$i]['brandName'] = "";
-          $bookmark_data[$i]['sectionKey'] = "";
-          $bookmark_data[$i]['sectionName'] = array_key_exists($node_type->type, $sectionNames) ? $sectionNames[$node_type->type] : "";
-          $bookmark_data[$i]['pointValue'] = 0;
-          $bookmark_data[$i]['imageSmall'] = "";
-          $bookmark_data[$i]['imageMedium'] = "";
-          $bookmark_data[$i]['imageLarge'] = "";
-          $bookmark_data[$i]['faqId'] = 0;
-          if ($node_data->field_brands_target_id != NULL) {
-            $brandinfo = ContentModel::getBrandTermIds();
-            foreach ($brandinfo as $brand) {
-              if ($brand['entity_id'] == $node_data->field_brands_target_id) {
-                $brand_key = (int) $brand['field_brand_key_value'];
-              }
-            }
-            $bookmark_data[$i]['brandKey'] = $brand_key;
-            $bookmark_data[$i]['brandName'] = ContentModel::getTermName([$node_data->field_brands_target_id])[0];
-          }
-          if ($node_data->field_content_section_target_id != NULL) {
-            $bookmark_data[$i]['sectionKey'] = ContentModel::getContentSectionKeyByTid($node_data->field_content_section_target_id);
-            $bookmark_data[$i]['sectionName'] = array_key_exists($bookmark_data[$i]['sectionKey'], $sectionNames) ? $sectionNames[$bookmark_data[$i]['sectionKey']] : "";
-          }
-          if ($node_data->field_point_value_value != NULL) {
-            $bookmark_data[$i]['pointValue'] = (int) $node_data->field_point_value_value;
-          }
-          if ($node_data->field_hero_image_target_id != NULL) {
-            $bookmark_data[$i]['imageSmall'] = ContentModel::getBookmarkImageUrlByFid($node_data->field_hero_image_target_id)[0];
-            $bookmark_data[$i]['imageMedium'] = ContentModel::getBookmarkImageUrlByFid($node_data->field_hero_image_target_id)[1];
-            $bookmark_data[$i]['imageLarge'] = ContentModel::getBookmarkImageUrlByFid($node_data->field_hero_image_target_id)[2];
-          }
-          if ($node_data->field_field_product_image_target_id != NULL) {
-            $bookmark_data[$i]['imageSmall'] = ContentModel::getBookmarkImageUrlByFid($node_data->field_field_product_image_target_id)[0];
-            $bookmark_data[$i]['imageMedium'] = ContentModel::getBookmarkImageUrlByFid($node_data->field_field_product_image_target_id)[1];
-            $bookmark_data[$i]['imageLarge'] = ContentModel::getBookmarkImageUrlByFid($node_data->field_field_product_image_target_id)[2];
-          }
-          if ($node_data->field_tool_thumbnail_target_id != NULL) {
-            $bookmark_data[$i]['imageSmall'] = ContentModel::getBookmarkImageUrlByFid($node_data->field_tool_thumbnail_target_id)[0];
-            $bookmark_data[$i]['imageMedium'] = ContentModel::getBookmarkImageUrlByFid($node_data->field_tool_thumbnail_target_id)[1];
-            $bookmark_data[$i]['imageLarge'] = ContentModel::getBookmarkImageUrlByFid($node_data->field_tool_thumbnail_target_id)[2];
-          }
-        }
-        else {
-          $brand_key = $bookmark_id - $default_faq_id;
-          if ($brand_key != 0) {
-            $brand_data = ContentModel::getBrandDataFromBrandKey($brand_key);
-            $bookmark_data[$i]['id'] = 0;
-            $bookmark_data[$i]['title'] = mb_strtoupper($brand_data['name']) . ' CUSTOMER QUESTIONS';
-            $bookmark_data[$i]['brandKey'] = $brand_key;
-            $bookmark_data[$i]['brandName'] = $brand_data['name'];
-            $bookmark_data[$i]['sectionKey'] = "";
-            $bookmark_data[$i]['sectionName'] = $sectionNames['faq'];
-            $bookmark_data[$i]['pointValue'] = (int) $faq_config_data['faq_points'];
-            $bookmark_data[$i]['imageSmall'] = "";
-            $bookmark_data[$i]['imageMedium'] = "";
-            $bookmark_data[$i]['imageLarge'] = "";
-            $bookmark_data[$i]['faqId'] = $bookmark_id;
-          }
-          else {
-            $bookmark_data[$i]['id'] = 0;
-            $bookmark_data[$i]['title'] = 'HELP QUESTIONS';
+          if (!is_null($node_data)) {
+            $node_type = ContentModel::getTypeByNid($bookmark_id);
+            $bookmark_data[$i]['id'] = $node_data->nid;
+            $bookmark_data[$i]['title'] = ($node_type->type == 'level_interactive_content') ? $node_data->field_headline_value : $node_data->field_display_title_value;
             $bookmark_data[$i]['brandKey'] = 0;
             $bookmark_data[$i]['brandName'] = "";
             $bookmark_data[$i]['sectionKey'] = "";
-            $bookmark_data[$i]['sectionName'] = $sectionNames['faq'];
-            $bookmark_data[$i]['pointValue'] = (int) $faq_config_data['faq_points'];
+            $bookmark_data[$i]['sectionName'] = array_key_exists($node_type->type, $sectionNames) ? $sectionNames[$node_type->type] : "";
+            $bookmark_data[$i]['pointValue'] = 0;
             $bookmark_data[$i]['imageSmall'] = "";
             $bookmark_data[$i]['imageMedium'] = "";
             $bookmark_data[$i]['imageLarge'] = "";
-            $bookmark_data[$i]['faqId'] = $bookmark_id;
+            $bookmark_data[$i]['faqId'] = 0;
+            if ($node_data->field_brands_target_id != NULL) {
+              $brandinfo = ContentModel::getBrandTermIds();
+              foreach ($brandinfo as $brand) {
+                if ($brand['entity_id'] == $node_data->field_brands_target_id) {
+                  $brand_key = (int) $brand['field_brand_key_value'];
+                }
+              }
+              $bookmark_data[$i]['brandKey'] = $brand_key;
+              $bookmark_data[$i]['brandName'] = ContentModel::getTermName([$node_data->field_brands_target_id])[0];
+            }
+            if ($node_data->field_content_section_target_id != NULL) {
+              $bookmark_data[$i]['sectionKey'] = ContentModel::getContentSectionKeyByTid($node_data->field_content_section_target_id);
+              $bookmark_data[$i]['sectionName'] = array_key_exists($bookmark_data[$i]['sectionKey'], $sectionNames) ? $sectionNames[$bookmark_data[$i]['sectionKey']] : "";
+            }
+            if ($node_data->field_point_value_value != NULL) {
+              $bookmark_data[$i]['pointValue'] = (int) $node_data->field_point_value_value;
+            }
+            if ($node_data->field_hero_image_target_id != NULL) {
+              $bookmark_data[$i]['imageSmall'] = ContentModel::getBookmarkImageUrlByFid($node_data->field_hero_image_target_id)[0];
+              $bookmark_data[$i]['imageMedium'] = ContentModel::getBookmarkImageUrlByFid($node_data->field_hero_image_target_id)[1];
+              $bookmark_data[$i]['imageLarge'] = ContentModel::getBookmarkImageUrlByFid($node_data->field_hero_image_target_id)[2];
+            }
+            if ($node_data->field_field_product_image_target_id != NULL) {
+              $bookmark_data[$i]['imageSmall'] = ContentModel::getBookmarkImageUrlByFid($node_data->field_field_product_image_target_id)[0];
+              $bookmark_data[$i]['imageMedium'] = ContentModel::getBookmarkImageUrlByFid($node_data->field_field_product_image_target_id)[1];
+              $bookmark_data[$i]['imageLarge'] = ContentModel::getBookmarkImageUrlByFid($node_data->field_field_product_image_target_id)[2];
+            }
+            if ($node_data->field_tool_thumbnail_target_id != NULL) {
+              $bookmark_data[$i]['imageSmall'] = ContentModel::getBookmarkImageUrlByFid($node_data->field_tool_thumbnail_target_id)[0];
+              $bookmark_data[$i]['imageMedium'] = ContentModel::getBookmarkImageUrlByFid($node_data->field_tool_thumbnail_target_id)[1];
+              $bookmark_data[$i]['imageLarge'] = ContentModel::getBookmarkImageUrlByFid($node_data->field_tool_thumbnail_target_id)[2];
+            }
           }
+          else {
+            $brand_key = $bookmark_id - $default_faq_id;
+            if ($brand_key != 0) {
+              $brand_data = ContentModel::getBrandDataFromBrandKey($brand_key);
+              if (!empty($brand_data)) {
+                $bookmark_data[$i]['id'] = 0;
+                $bookmark_data[$i]['title'] = mb_strtoupper($brand_data['name']) . ' CUSTOMER QUESTIONS';
+                $bookmark_data[$i]['brandKey'] = $brand_key;
+                $bookmark_data[$i]['brandName'] = $brand_data['name'];
+                $bookmark_data[$i]['sectionKey'] = "";
+                $bookmark_data[$i]['sectionName'] = $sectionNames['faq'];
+                $bookmark_data[$i]['pointValue'] = (int) $faq_config_data['faq_points'];
+                $bookmark_data[$i]['imageSmall'] = "";
+                $bookmark_data[$i]['imageMedium'] = "";
+                $bookmark_data[$i]['imageLarge'] = "";
+                $bookmark_data[$i]['faqId'] = $bookmark_id;
+              }
+            }
+            else {
+              $bookmark_data[$i]['id'] = 0;
+              $bookmark_data[$i]['title'] = 'HELP QUESTIONS';
+              $bookmark_data[$i]['brandKey'] = 0;
+              $bookmark_data[$i]['brandName'] = "";
+              $bookmark_data[$i]['sectionKey'] = "";
+              $bookmark_data[$i]['sectionName'] = $sectionNames['faq'];
+              $bookmark_data[$i]['pointValue'] = (int) $faq_config_data['faq_points'];
+              $bookmark_data[$i]['imageSmall'] = "";
+              $bookmark_data[$i]['imageMedium'] = "";
+              $bookmark_data[$i]['imageLarge'] = "";
+              $bookmark_data[$i]['faqId'] = $bookmark_id;
+            }
+          }
+          $i++;
         }
-        $i++;
       }
     }
     else {
@@ -368,6 +372,7 @@ class FlagController extends Controller {
     }
     // Filter bookmark data by type value.
     $filterBy = 'VIDEOS';
+    $bookmark_data = array_values($bookmark_data);
     if ($this->type == 'video') {
       $bookmark_data = array_filter($bookmark_data, function ($var) use ($filterBy) {
           return ($var['sectionName'] == $filterBy);
@@ -391,8 +396,12 @@ class FlagController extends Controller {
       "next_page" => 0,
     ];
     header('Content-language: ' . $lang);
-
-    return $this->successResponse($results, Response::HTTP_OK, $pager);
+    if (empty($results['bookmark'])) {
+      return $this->successResponse([], Response::HTTP_OK);
+    }
+    else {
+      return $this->successResponse($results, Response::HTTP_OK, $pager);
+    }
   }
 
   /**
