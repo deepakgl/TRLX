@@ -67,6 +67,9 @@ class UserActivitiesLevel extends ResourceBase {
 
     // @todo Will remove foreach.
     foreach ($categoryId as $key => $value) {
+      if (empty($value)) {
+        return $commonUtility->errorResponse($this->t('Please provide Category id .'), Response::HTTP_BAD_REQUEST);
+      }
       // Checkfor valid category id.
       if (empty($commonUtility->isValidTid($value, 'learning_category'))) {
         return $commonUtility->errorResponse($this->t('Category id does not exist.'), Response::HTTP_UNPROCESSABLE_ENTITY);
@@ -78,10 +81,10 @@ class UserActivitiesLevel extends ResourceBase {
     $module_details = [];
     if (!empty($term_nodes)) {
       // Get Level activity.
-      foreach ($categoryId as $key => $value) {
+      foreach ($term_nodes as $key => $value) {
         $module_details[] = $levelUtility
           ->getLevelActivity($_userData,
-         $value, array_column($term_nodes[$value], 'nid'), $language);
+         $key, array_column($term_nodes[$key], 'nid'), $language);
       }
     }
 

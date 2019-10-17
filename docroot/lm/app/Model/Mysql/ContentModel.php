@@ -26,6 +26,7 @@ class ContentModel {
   public static function getTermName($tid, $vid = NULL) {
     $query = DB::table('taxonomy_term_field_data as ttfd');
     $query->whereIn('ttfd.tid', $tid);
+    $query->where('ttfd.langcode', '=', 'en');
     if (!empty($vid) && $vid == 'leaderboard_comparison') {
       $query->where('ttfd.vid', '=', $vid);
       $query->where('ttfd.langcode', '=', 'en');
@@ -707,17 +708,42 @@ class ContentModel {
   }
 
   /**
-   * Get faq content config form values.
+   * Get trlx utility config form values.
    *
    * @return array
    *   Content config form data.
    */
-  public static function getFaqValues() {
+  public static function getTrlxUtilityConfigValues() {
     $query = DB::table('config')
       ->select('config.data')
       ->where('config.name', '=', 'trlx_utility.settings')
       ->first();
     return unserialize($query->data);
+  }
+
+  /**
+   * Get content section key by tid.
+   *
+   * @param int $tid
+   *   Taxonomy id.
+   *
+   * @return string
+   *   Key name.
+   */
+  public static function getContentSectionKeyByTid($tid) {
+    $query = DB::table('taxonomy_term_data as ttfd');
+    $query->leftJoin('taxonomy_term__field_content_section_key as tk', 'tk.entity_id', '=', 'ttfd.tid');
+    $query->where('ttfd.tid', '=', $tid);
+    $query->where('ttfd.langcode', '=', 'en');
+
+    $results = $query->get();
+    if (empty($query)) {
+      return FALSE;
+    }
+    foreach ($results as $key => $result) {
+      $data = $result->field_content_section_key_value;
+    }
+    return $data;
   }
 
 }

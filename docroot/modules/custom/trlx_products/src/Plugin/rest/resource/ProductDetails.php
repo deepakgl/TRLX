@@ -81,6 +81,7 @@ class ProductDetails extends ResourceBase {
       'pointValue' => 'int',
       'body' => 'string_replace',
       'video' => 'append_host',
+      'productCarouselTitle' => 'decode',
     ];
 
     // Prepare redis key.
@@ -98,6 +99,17 @@ class ProductDetails extends ResourceBase {
     // Check for empty / no result from views.
     if (empty($view_results)) {
       return $commonUtility->successResponse([], Response::HTTP_OK);
+    }
+
+    // Load Product Carousel.
+    $productCarousel = $commonUtility->fetchProductCarouselByNodeId($nid, $language);
+    if (!empty($productCarousel)) {
+      $view_results['productCarousel'] = $productCarousel;
+    }
+    else {
+      if (isset($view_results['productCarouselTitle'])) {
+        unset($view_results['productCarouselTitle']);
+      }
     }
 
     return $commonUtility->successResponse($view_results, $status_code);

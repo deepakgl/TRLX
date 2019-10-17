@@ -55,6 +55,7 @@ permissions:
   - 'restful get learning_levels_homepage_section'
   - 'restful get level_interactive_content'
   - 'restful get level_interactive_terms_content'
+  - 'restful get listing_image'
   - 'restful get primary_navigation_menu'
   - 'restful get product_categories'
   - 'restful get product_details'

@@ -34,6 +34,7 @@ module:
   editor_file: 0
   elasticsearch_connector: 0
   elasticsearch_connector_views: 0
+  elc_password_policy: 0
   elx_audit_log: 0
   elx_bulk_mail: 0
   elx_custom_service: 0
@@ -137,6 +138,7 @@ module:
   trlx_story: 0
   trlx_trends: 0
   trlx_utility: 0
+  trlx_banner: 0
   trlx_video: 0
   user: 0
   video_embed_field: 0

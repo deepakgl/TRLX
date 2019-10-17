@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Drupal\trlx_utility\Utility\CommonUtility;
 use Drupal\trlx_utility\Utility\EntityUtility;
-use Drupal\image\Entity\ImageStyle;
+use Drupal\trlx_utility\Utility\UserUtility;
 
 /**
  * Provides a spotlight section resource.
@@ -22,20 +22,19 @@ use Drupal\image\Entity\ImageStyle;
  */
 class SpotlightSection extends ResourceBase {
 
-  /**
-   * GET resource for Spotlight Section.
-   *
-   * @param \Symfony\Component\HttpFoundation\Request $request
-   *   Rest resource query parameters.
-   *
-   * @return array|\Drupal\trlx_utility\Utility\Illuminate\Http\JsonResponse|\Symfony\Component\HttpFoundation\JsonResponse Resource response.
-   *   Resource response.
-   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
-   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
-   */
+ /**
+  * Fetch Spotlight Section.
+  *
+  * @param \Symfony\Component\HttpFoundation\Request $request
+  *   Rest resource query parameters.
+  *
+  * @return \Drupal\rest\ResourceResponse
+  *   Spotlight Section.
+  */
   public function get(Request $request) {
     $commonUtility = new CommonUtility();
     $entityUtility = new EntityUtility();
+    $userUtility = new UserUtility();
 
     // Required parameters.
     $requiredParams = [
@@ -89,62 +88,85 @@ class SpotlightSection extends ResourceBase {
       return $commonUtility->successResponse([], Response::HTTP_OK);
     }
 
+    $user_brands = $userUtility->getUserBrandIds();
     $result = [];
     foreach ($view_results['results'] as $key => $value ) {
       switch ($value['type']) {
         case 'stories':
           $result[$key]['nid'] = $value['nid'];
           $node = $this->getNodeData($value, $language);
-          $result[$key]['displayTitle'] = $node->get('field_display_title')->value;
-          $content_section = $node->get(field_content_section)->referencedEntities();
+          $result[$key]['displayTitle'] = $node->hasTranslation($language) ? $node->getTranslation($language)->get('field_display_title')->value : '';
+          $content_section = $node->get('field_content_section')->referencedEntities();
           $result[$key]['type'] = (!empty($content_section)) ? (array_shift($content_section)->get('field_content_section_key')->value) : '';
-          $result[$key]['body'] = strip_tags($node->get('body')->value);
+          $result[$key]['body'] = $node->hasTranslation($language) ? $node->getTranslation($language)->get('body')->value : '';
           $result[$key]['imageSmall'] = $value['imageSmall'];
           $result[$key]['imageMedium'] = $value['imageMedium'];
           $result[$key]['imageLarge'] = $value['imageLarge'];
           $result[$key]['pointValue'] = $value['pointValue'];
           break;
         case 'brand_story':
-          $result[$key]['nid'] = $value['nid'];
           $node = $this->getNodeData($value, $language);
-          $result[$key]['displayTitle'] = $node->get('field_display_title')->value;
-          $result[$key]['type'] = '';
-          $result[$key]['body'] = strip_tags($node->get('body')->value);
-          $result[$key]['imageSmall'] = $value['imageSmall'];
-          $result[$key]['imageMedium'] = $value['imageMedium'];
-          $result[$key]['imageLarge'] = $value['imageLarge'];
-          $result[$key]['pointValue'] = $value['pointValue'];
+          $brand = $node->get('field_brands')->referencedEntities();
+          $brand = array_shift($brand);
+          $brand_id = $brand->get('field_brand_key')->value;
+          if (in_array($brand_id, $user_brands)) {
+            $result[$key]['nid'] = $value['nid'];
+            $result[$key]['displayTitle'] = $node->hasTranslation($language) ? $node->getTranslation($language)->get('field_display_title')->value : '';
+            $result[$key]['type'] = '';
+            $result[$key]['body'] = $node->hasTranslation($language) ? $node->getTranslation($language)->get('body')->value : '';
+            $result[$key]['imageSmall'] = $value['imageSmall'];
+            $result[$key]['imageMedium'] = $value['imageMedium'];
+            $result[$key]['imageLarge'] = $value['imageLarge'];
+            $result[$key]['pointValue'] = $value['pointValue'];
+          }
           break;
         case 'tools':
-          $result[$key]['nid'] = $value['nid'];
           $node = $this->getNodeData($value, $language);
-          $result[$key]['displayTitle'] = $node->get('field_display_title')->value;
-          $result[$key]['type'] = '';
-          $result[$key]['body'] = strip_tags($node->get('field_tool_description')->value);
-          $result[$key]['imageSmall'] = $value['imageSmall'];
-          $result[$key]['imageMedium'] = $value['imageMedium'];
-          $result[$key]['imageLarge'] = $value['imageLarge'];
-          $result[$key]['pointValue'] = $value['pointValue'];
+          $brand = $node->get('field_brands')->referencedEntities();
+          $brand = array_shift($brand);
+          $brand_id = $brand->get('field_brand_key')->value;
+          if (in_array($brand_id, $user_brands)) {
+            $result[$key]['nid'] = $value['nid'];
+            $node = $this->getNodeData($value, $language);
+            $result[$key]['displayTitle'] = $node->hasTranslation($language) ? $node->getTranslation($language)->get('field_display_title')->value : '';
+            $result[$key]['type'] = '';
+            $result[$key]['body'] = $node->hasTranslation($language) ? $node->getTranslation($language)->get('field_tool_description')->value : '';
+            $result[$key]['imageSmall'] = $value['imageSmall'];
+            $result[$key]['imageMedium'] = $value['imageMedium'];
+            $result[$key]['imageLarge'] = $value['imageLarge'];
+            $result[$key]['pointValue'] = $value['pointValue'];
+          }
           break;
         case 'product_detail':
-          $result[$key]['nid'] = $value['nid'];
           $node = $this->getNodeData($value, $language);
-          $result[$key]['displayTitle'] = $node->get('field_display_title')->value;
-          $result[$key]['type'] = '';
-          $result[$key]['body'] = strip_tags($node->get('body')->value);
-          $result[$key]['imageSmall'] = $value['imageSmall'];
-          $result[$key]['imageMedium'] = $value['imageMedium'];
-          $result[$key]['imageLarge'] = $value['imageLarge'];
-          $result[$key]['pointValue'] = $value['pointValue'];
+          $brand = $node->get('field_brands')->referencedEntities();
+          $brand = array_shift($brand);
+          $brand_id = $brand->get('field_brand_key')->value;
+          if (in_array($brand_id, $user_brands)) {
+            $result[$key]['nid'] = $value['nid'];
+            $node = $this->getNodeData($value, $language);
+            $result[$key]['displayTitle'] = $node->hasTranslation($language) ? $node->getTranslation($language)->get('field_display_title')->value : '';
+            $result[$key]['type'] = '';
+            $result[$key]['body'] = $node->hasTranslation($language) ? $node->getTranslation($language)->get('body')->value : '';
+            $result[$key]['imageSmall'] = $value['imageSmall'];
+            $result[$key]['imageMedium'] = $value['imageMedium'];
+            $result[$key]['imageLarge'] = $value['imageLarge'];
+            $result[$key]['pointValue'] = $value['pointValue'];
+          }
           break;
         case 'level_interactive_content':
           $result[$key]['nid'] = $value['nid'];
           $node = $this->getNodeData($value, $language);
-          $result[$key]['displayTitle'] = $node->get('field_headline')->value;
+          $result[$key]['displayTitle'] = $node->hasTranslation($language) ? $node->getTranslation($language)->get('field_headline')->value : '';
           $result[$key]['type'] = '';
-          $intro_text = $node->get(field_interactive_content)->referencedEntities();
-          $body = (!empty($intro_text)) ? (array_shift($intro_text)->get('field_intro_text')->value) : '';
-          $result[$key]['body'] = strip_tags($body);
+          $intro_text = $node->get('field_interactive_content')->referencedEntities();
+          if (!empty($intro_text)) {
+            $interactive_content = array_shift($intro_text);
+            $body = $interactive_content->hasTranslation($language) ? $interactive_content->getTranslation($language)->get('field_intro_text')->value : '';
+            $result[$key]['body'] = strip_tags($body);
+          } else {
+            $result[$key]['body'] = '';
+          }
           $result[$key]['imageSmall'] = $value['imageSmall'];
           $result[$key]['imageMedium'] = $value['imageMedium'];
           $result[$key]['imageLarge'] = $value['imageLarge'];
@@ -162,11 +184,15 @@ class SpotlightSection extends ResourceBase {
   }
 
   /**
-   * @param $value
-   * @param $language
+   * Method to get node data.
+   *
+   * @param array $value
+   *   node object array.
+   * @param string $language
+   *   Language code.
+   *
    * @return mixed
-   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
-   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   *   Node data.
    */
   public function getNodeData($value, $language) {
     $nid = $value['nid'];

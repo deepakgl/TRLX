@@ -1,0 +1,15 @@
+uuid: a20c77aa-0386-49b6-9f93-21ab7bf50453
+langcode: en
+status: true
+dependencies: {  }
+name: search_listings_desktop
+label: 'Search Listings Desktop (188×200)'
+effects:
+  34476ab1-7d42-4929-970a-3c09f7b0a4fd:
+    uuid: 34476ab1-7d42-4929-970a-3c09f7b0a4fd
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 188
+      height: 200
+      anchor: center-center

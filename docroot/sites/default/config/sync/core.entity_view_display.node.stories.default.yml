@@ -16,11 +16,13 @@ dependencies:
     - field.field.node.stories.field_featured_image
     - field.field.node.stories.field_featured_on_elx_specialty
     - field.field.node.stories.field_first_name
+    - field.field.node.stories.field_headline
     - field.field.node.stories.field_hero_image
     - field.field.node.stories.field_last_name
     - field.field.node.stories.field_markets
     - field.field.node.stories.field_occupation
     - field.field.node.stories.field_point_value
+    - field.field.node.stories.field_product_carousel
     - field.field.node.stories.field_product_categories
     - field.field.node.stories.field_product_family
     - field.field.node.stories.field_pulsed_content
@@ -116,6 +118,14 @@ content:
     third_party_settings: {  }
     type: string
     region: content
+  field_headline:
+    weight: 24
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
   field_hero_image:
     weight: 10
     label: above
@@ -155,6 +165,15 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     type: string
+    region: content
+  field_product_carousel:
+    weight: 25
+    label: above
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    type: entity_reference_revisions_entity_view
     region: content
   field_pulsed_content:
     weight: 5

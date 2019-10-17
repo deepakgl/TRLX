@@ -2,6 +2,7 @@
 
 namespace Drupal\trlx_learning_levels\Plugin\rest\resource;
 
+use Drupal\user\Entity\User;
 use Drupal\rest\Plugin\ResourceBase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -136,9 +137,9 @@ class ModuleDetails extends ResourceBase {
     $statement_id = \Drupal::config('elx_utility.settings')
       ->get('lrs_statement_id');
 
-    $user = \Drupal\user\Entity\User::load(\Drupal::currentUser()->id());
+    $user = User::load(\Drupal::currentUser()->id());
     $uuid = $user->uuid();
-    //$uuid = '66f93bc8-befc-4586-a935-84cb2dc636ba';
+    // $uuid = '66f93bc8-befc-4586-a935-84cb2dc636ba';
     $learning_category = $levelUtility->getLevelCategory($nid);
     $decode['articulateFile'] = $base_url . $decode['articulateFile']
      . '?tincan=true&endpoint=' . $lumen_url . '/lm/api/v1/slrsa&auth='
@@ -158,4 +159,5 @@ class ModuleDetails extends ResourceBase {
 
     return $decode;
   }
+
 }

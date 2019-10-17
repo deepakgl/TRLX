@@ -43,7 +43,10 @@ class LanguageList extends ResourceBase {
     }
     $response = [];
     foreach ($language as $key => $value) {
-      if (in_array($value->getId(), ['en', 'zh-hans'])) {
+      $config = \Drupal::config('trlx_utility.settings');
+      // Return all site languages.
+      $language = $config->get('site_languages');
+      if (in_array($value->getId(), $language)) {
         $response[] = [
           'languageCode' => $value->getId(),
           'languageName' => $value->getName(),

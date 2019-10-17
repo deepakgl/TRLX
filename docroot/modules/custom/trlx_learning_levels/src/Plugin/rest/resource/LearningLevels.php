@@ -148,7 +148,13 @@ class LearningLevels extends ResourceBase {
         $decode['results'][$key] = $value;
         $tmp++;
       }
+      $point = $term_nodes[$value['categoryId']];
+      $point_value = array_sum(array_column($point, 'point_value'));
+      if (!empty($point_value)) {
+        $decode['results'][$key]['pointValue'] = $point_value;
+      }
     }
+
     $data = array_values(array_filter($decode['results']));
     $decode['results'] = array_slice($data, $offset, $limit);
     $decode['pager']['count'] = count($data) - $offset;

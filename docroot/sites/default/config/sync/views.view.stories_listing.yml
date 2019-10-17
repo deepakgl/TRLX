@@ -8,6 +8,7 @@ dependencies:
     - field.storage.media.field_media_image
     - field.storage.node.body
     - field.storage.node.field_display_title
+    - field.storage.node.field_headline
     - field.storage.node.field_point_value
     - field.storage.node.field_sub_title
     - node.type.stories
@@ -1359,8 +1360,14 @@ display:
             field_point_value:
               alias: pointValue
               raw_output: false
-            field_downloadable:
-              alias: downloadable
+            field_headline:
+              alias: productCarouselTitle
+              raw_output: false
+            field_product_carousel:
+              alias: productCarouselEntities
+              raw_output: false
+            nid_1:
+              alias: productCarouselEntity
               raw_output: false
       path: trend-details
       fields:
@@ -1941,6 +1948,69 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
+        field_headline:
+          id: field_headline
+          table: node__field_headline
+          field: field_headline
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: ''
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: string
+          settings:
+            link_to_entity: false
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
       defaults:
         fields: false
         filters: false
@@ -2159,6 +2229,7 @@ display:
         - 'config:field.storage.media.field_media_image'
         - 'config:field.storage.node.body'
         - 'config:field.storage.node.field_display_title'
+        - 'config:field.storage.node.field_headline'
         - 'config:field.storage.node.field_point_value'
         - 'config:field.storage.node.field_sub_title'
         - extensions
@@ -2483,7 +2554,7 @@ display:
           id: field_media_image
           table: media__field_media_image
           field: field_media_image
-          relationship: field_hero_image
+          relationship: field_featured_image
           group_type: group
           admin_label: ''
           label: ''
@@ -2531,7 +2602,7 @@ display:
           type: image_url
           settings:
             url_type: '0'
-            image_style: product_details_mobile
+            image_style: trends_homepage_mobile
             image_link: ''
           group_column: ''
           group_columns: {  }
@@ -2548,7 +2619,7 @@ display:
           id: field_media_image_1
           table: media__field_media_image
           field: field_media_image
-          relationship: field_hero_image
+          relationship: field_featured_image
           group_type: group
           admin_label: ''
           label: ''
@@ -2613,7 +2684,7 @@ display:
           id: field_media_image_2
           table: media__field_media_image
           field: field_media_image
-          relationship: field_hero_image
+          relationship: field_featured_image
           group_type: group
           admin_label: ''
           label: ''
@@ -2769,6 +2840,15 @@ display:
           relationship: none
           group_type: group
           admin_label: 'field_content_section: Taxonomy term'
+          required: false
+          plugin_id: standard
+        field_featured_image:
+          id: field_featured_image
+          table: node__field_featured_image
+          field: field_featured_image
+          relationship: none
+          group_type: group
+          admin_label: 'field_featured_image: Media'
           required: false
           plugin_id: standard
       display_description: ''

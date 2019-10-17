@@ -68,6 +68,12 @@ class UserActivitiesController extends Controller {
    */
   public function userActivities(Request $request) {
     global $_userData;
+    if ($request->has('nid')) {
+      $nids = array_filter($request->get('nid'));
+      if (empty($nids)) {
+        return $this->errorResponse('Node id is required.', Response::HTTP_BAD_REQUEST);
+      }
+    }
     $validatedData = $this->validate($request, [
       'nid' => 'required|numericarray',
       '_format' => 'required|format',
@@ -352,13 +358,15 @@ class UserActivitiesController extends Controller {
     $query = DB::table('node_field_data as n')
       ->select('n.nid', 'n.status')
       ->whereIn('n.nid', $nids)
+      ->where('n.langcode', '=', 'en')
+      ->where('n.status', '=', 1)
       ->get()->all();
     $nodes_status = json_decode(json_encode($query), TRUE);
     // To get brands key.
     $brands_terms_ids = ContentModel::getBrandTermIds();
     $brand_keys = array_column($brands_terms_ids, 'field_brand_key_value');
     // To get faq page id.
-    $faq_config_data = ContentModel::getFaqValues();
+    $faq_config_data = ContentModel::getTrlxUtilityConfigValues();
     $nid = !empty($faq_config_data['faq_id']) ? (int) $faq_config_data['faq_id'] : 9999999;
     // Array of sum of brands key and faq page id.
     $faq_ids = [];
