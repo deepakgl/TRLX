@@ -179,6 +179,9 @@ class LrsAgentController extends Controller {
         // Update LRS data.
         ContentModel::setLrsData($lrs);
       }
+      else {
+        file_put_contents('/tmp/curl_lrs_log.txt', print_r($decode, 1), FILE_APPEND);
+      }
     }
     // Building url and headers.
     $build = $this->build($arg1, $arg2, $request->all(), $request->headers->all());
@@ -204,7 +207,7 @@ class LrsAgentController extends Controller {
     }, array_filter(array_map("trim", explode("\n", $response))));
     $res = Response('');
     foreach ($parsed as $value) {
-      if (!empty($value[1])) {
+      if (!empty($value[1]) && isset($value[0])) {
         $res->header($value[0], $value[1]);
       }
     }

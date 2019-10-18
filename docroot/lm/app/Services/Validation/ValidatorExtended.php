@@ -15,6 +15,7 @@ class ValidatorExtended extends IlluminateValidator {
     'brandid' => 'Brand Id (:input) does not exist.',
     'languagecode' => 'The :attribute is not valid',
     'bookmarklisttype' => 'The type must be either video or myLibrary',
+    'leaderboardsection' => 'The :attribute value is not valid',
   ];
 
   public function __construct($translator, $data, $rules, $messages = array(), $customAttributes = []) {
@@ -196,6 +197,29 @@ class ValidatorExtended extends IlluminateValidator {
    */
   protected function validateBookmarkListType($attribute, $value, $parameters, $validator) {
     if (in_array($value, ['myLibrary', 'video'])) {
+      return TRUE;
+    }
+
+    return FALSE;
+  }
+
+  /**
+   * Validate leaderboard section value.
+   *
+   * @param mixed $attribute
+   *   Attribute.
+   * @param mixed $value
+   *   Value.
+   * @param mixed $parameters
+   *   Parameters.
+   * @param mixed $validator
+   *   Validator.
+   *
+   * @return bool
+   *   True/False.
+   */
+  protected function validateLeaderboardSection($attribute, $value, $parameters, $validator) {
+    if (in_array($value, ['world', 'region', 'subregion', 'country', 'location'])) {
       return TRUE;
     }
 
