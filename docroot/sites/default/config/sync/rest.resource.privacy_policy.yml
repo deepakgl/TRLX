@@ -1,0 +1,18 @@
+uuid: 21640fcd-aaae-439d-aa74-713e3b19e43a
+langcode: en
+status: true
+dependencies:
+  module:
+    - serialization
+    - trlx_tnc_privacy_policy
+    - trlx_utility
+id: privacy_policy
+plugin_id: privacy_policy
+granularity: resource
+configuration:
+  methods:
+    - GET
+  formats:
+    - json
+  authentication:
+    - jwt_Auth
