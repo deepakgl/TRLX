@@ -1,0 +1,21 @@
+uuid: 87f447a1-9133-4922-919f-5a3b27f5b441
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_translation
+    - node.type.privacy_policy
+  module:
+    - options
+id: node.privacy_policy.field_translation
+field_name: field_translation
+entity_type: node
+bundle: privacy_policy
+label: Translation
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

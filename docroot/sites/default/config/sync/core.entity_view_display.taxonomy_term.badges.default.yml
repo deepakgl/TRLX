@@ -12,21 +12,13 @@ dependencies:
     - taxonomy.vocabulary.badges
   module:
     - svg_image
-    - text
 id: taxonomy_term.badges.default
 targetEntityType: taxonomy_term
 bundle: badges
 mode: default
 content:
-  description:
-    label: hidden
-    type: text_default
-    weight: 0
-    region: content
-    settings: {  }
-    third_party_settings: {  }
   field_badge_image:
-    weight: 5
+    weight: 1
     label: above
     settings:
       svg_attributes:
@@ -39,46 +31,18 @@ content:
     type: image
     region: content
   field_badges_title:
-    weight: 1
+    weight: 0
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
     type: string
     region: content
-  field_earned_badge_description:
-    weight: 3
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: basic_string
-    region: content
-  field_inspiration_badge:
-    weight: 7
-    label: above
-    settings:
-      format: default
-      format_custom_false: ''
-      format_custom_true: ''
-    third_party_settings: {  }
-    type: boolean
-    region: content
-  field_manual_badge:
-    weight: 6
-    label: above
-    settings:
-      format: default
-      format_custom_false: ''
-      format_custom_true: ''
-    third_party_settings: {  }
-    type: boolean
-    region: content
-  field_unearned_badge_description:
-    weight: 4
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: basic_string
-    region: content
 hidden:
+  description: true
+  field_earned_badge_description: true
+  field_inspiration_badge: true
+  field_manual_badge: true
+  field_unearned_badge_description: true
   langcode: true
+  search_api_excerpt: true

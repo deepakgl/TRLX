@@ -321,6 +321,7 @@ class SearchController extends Controller {
         array_push($brand_data, $value['entity_id']);
       }
     }
+    $this->field_brands_1 = $this->field_brands = [];
     foreach ($brand_data as $value) {
       $this->field_brands_1[] = [
         'match' => ['field_brands_1' => $value],
@@ -354,6 +355,7 @@ class SearchController extends Controller {
                 'multi_match' => [
                   'query' => $this->search,
                   'fields' => $this->searchFields,
+                  'type' => 'phrase_prefix'
                 ],
               ],
               1 => [

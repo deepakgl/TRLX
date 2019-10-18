@@ -1,20 +1,20 @@
-uuid: fecb9f8a-7d36-42db-9a93-e5f4b7868344
+uuid: b8a8eea4-2e60-4084-9555-97bef20dc29e
 langcode: en
 status: true
 dependencies:
   config:
-    - taxonomy.vocabulary.badges
-id: taxonomy_term.badges.status
-field_name: status
-entity_type: taxonomy_term
-bundle: badges
-label: Published
+    - node.type.privacy_policy
+id: node.privacy_policy.promote
+field_name: promote
+entity_type: node
+bundle: privacy_policy
+label: 'Promoted to front page'
 description: ''
 required: false
 translatable: true
 default_value:
   -
-    value: 1
+    value: 0
 default_value_callback: ''
 settings:
   on_label: 'On'

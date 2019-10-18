@@ -29,8 +29,6 @@ function migrate_badge_master() {
       $badge_master[$translated_term->name->value] = [
         'tid' => $translated_term->id(), // Term id.
         'src' => str_replace('public:/', 'sites/default/files', $path), // Badge Image.
-        'earned_description' => $translated_term->field_earned_badge_description->value, // Earned Badge Description
-        'unearned_description' => $translated_term->field_unearned_badge_description->value, // Unearned Badge Description
         'title' => $translated_term->field_badges_title->value,
       ];
     }
