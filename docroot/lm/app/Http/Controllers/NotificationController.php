@@ -301,6 +301,9 @@ class NotificationController extends Controller {
       if (!$client) {
         return $this->errorResponse('No alive nodes found in cluster.', Response::HTTP_INTERNAL_SERVER_ERROR);
       }
+      if (is_null($ids)) {
+        return $this->errorResponse('No notifications to update.', Response::HTTP_UNPROCESSABLE_ENTITY);
+      }
       foreach ($ids as $value) {
         $params = [
           self::INDEX => $this->elasticNotificationIndex,

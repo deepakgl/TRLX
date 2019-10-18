@@ -15,6 +15,7 @@
         $('.node-t-c-form .term-reference-tree-level .form-type-checkbox input:checkbox').prop("checked", true);
         $('.node-welcome-message-form .term-reference-tree-level .form-type-checkbox input:checkbox').prop("checked", true);
       }
+      $(".form-item-send-notifications .translation-entity-all-languages").hide();
       // Js for select all markets on select of region.
       var $region = $('.path-node .term-reference-tree-button').next('div').find('input[type="checkbox"]');
       $region.on('click', function() {
