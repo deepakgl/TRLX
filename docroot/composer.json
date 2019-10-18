@@ -77,7 +77,7 @@
         "drupal/menu_per_role":"^1.0",
         "drupal/password_encrypt": "^1.0",
         "drupal/queue_ui": "^2.0",
-        "drupal/simpleautologout": "1.x-dev"
+        "drupal/simpleautologout": "^1.4"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
