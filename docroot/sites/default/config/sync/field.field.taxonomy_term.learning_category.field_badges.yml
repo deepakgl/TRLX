@@ -10,7 +10,7 @@ id: taxonomy_term.learning_category.field_badges
 field_name: field_badges
 entity_type: taxonomy_term
 bundle: learning_category
-label: Badges
+label: Stamps
 description: ''
 required: false
 translatable: true
