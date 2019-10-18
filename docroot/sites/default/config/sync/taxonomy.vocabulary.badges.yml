@@ -2,7 +2,7 @@ uuid: 2f795f5f-9e67-480c-87e2-9acd227ec60a
 langcode: en
 status: true
 dependencies: {  }
-name: Badges
+name: Stamps
 vid: badges
 description: ''
 hierarchy: 0
