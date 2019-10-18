@@ -17,11 +17,15 @@ class UserUtility {
    *   User market.
    */
   public function getMarketByReferenceId($region_subregion_country_ids) {
-    $query = db_select('taxonomy_term__field_region_subreg_country_id', 'tfrsc');
-    $query->fields('tfrsc', ['entity_id', 'field_region_subreg_country_id_value']);
-    $query->condition('tfrsc.field_region_subreg_country_id_value', $region_subregion_country_ids, 'IN');
-    // Fetch user markets.
-    return $query->execute()->fetchAll();
+    try {
+      $query = db_select('taxonomy_term__field_region_subreg_country_id', 'tfrsc');
+      $query->fields('tfrsc', ['entity_id', 'field_region_subreg_country_id_value']);
+      $query->condition('tfrsc.field_region_subreg_country_id_value', $region_subregion_country_ids, 'IN');
+      // Fetch user markets.
+      return $query->execute()->fetchAll();
+    } catch (\Exception $e) {
+      return FALSE;
+    }
   }
 
   /**
@@ -63,11 +67,16 @@ class UserUtility {
    *   User market keys.
    */
   public function getMarketKeyByCategoryId($market_ids) {
-    $query = db_select('taxonomy_term__field_region_subreg_country_id', 'tfrsc');
-    $query->fields('tfrsc', ['entity_id', 'field_region_subreg_country_id_value']);
-    $query->condition('tfrsc.entity_id', $market_ids, 'IN');
-    // Fetch user markets.
-    return $query->execute()->fetchAll();
+    try {
+      $query = db_select('taxonomy_term__field_region_subreg_country_id', 'tfrsc');
+      $query->fields('tfrsc', ['entity_id', 'field_region_subreg_country_id_value']);
+      $query->condition('tfrsc.entity_id', $market_ids, 'IN');
+      // Fetch user markets.
+      return $query->execute()->fetchAll();
+    } catch (\Exception $e) {
+      // Return FALSE
+      return FALSE;
+    }
   }
 
   /**

@@ -234,107 +234,174 @@ class FlagController extends Controller {
    *   Rest resource query parameters.
    *
    * @return json
-   *   User bookmark and favorites data.
+   *   User bookmarks data.
    */
-  public function myFlags(Request $request) {
-    $this->uid = Helper::getJtiToken($request);
+  public function myBookmarks(Request $request) {
+    global $_userData;
+    $this->uid = $_userData->userId;
+    $validatedData = $this->validate($request, [
+      'limit' => 'sometimes|required|positiveinteger',
+      'offset' => 'sometimes|required|positiveinteger',
+      '_format' => 'required|format',
+      'language' => 'required|languagecode',
+      'type' => 'required|bookmarklisttype',
+    ]);
     try {
       $this->elasticClient = Helper::checkElasticClient();
     }
     catch (\Exception $e) {
-      return Helper::jsonError($e->getMessage(), 400);
+      return $this->errorResponse($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
     }
-    $lang = UserModel::getUserInfoByUid($this->uid, 'language');
     $img_url = getenv("SITE_IMAGE_URL");
-    if (!$this->uid) {
-      return Helper::jsonError('Please provide user id.', 422);
-    }
-    $this->limit = !empty($request->input('limit')) ? $request->input('limit') : $this->limit;
-    $this->offset = !empty($request->input('offset')) ? $request->input('offset') : $this->offset;
-    $this->type = !empty($request->input('contentType')) ? $request->input('contentType') : $this->type;
+    $lang = $validatedData['language'];
+    $this->type = $validatedData['type'];
+    $this->limit = isset($validatedData['limit']) ? $validatedData['limit'] : 10;
+    $this->offset = isset($validatedData['offset']) ? $validatedData['offset'] : 0;
     $exist = ElasticUserModel::checkElasticUserIndex($this->uid, $this->elasticClient);
     if ($exist) {
       $response = ElasticUserModel::fetchElasticUserData($this->uid, $this->elasticClient);
-      if (empty($response['_source']['bookmarks'])) {
-        return new Response(NULL, 204);
+      if (empty($response['_source']['bookmark'])) {
+        return $this->successResponse([], Response::HTTP_OK);
       }
       $results = $nid_user_activity = $bookmark_data = [];
       $pages = 0;
-      if ($this->type != 'all') {
-        foreach ($response['_source']['bookmarks'] as $key => $value) {
-          $type = ContentModel::getTypeByLang($value, $lang[0]->language);
-          if (!empty($type) && $type->type == $this->type) {
-            array_push($bookmark_data, $value);
-          }
-        }
+      $i = 0;
+      // To get all brand keys.
+      $brands_terms_ids = ContentModel::getBrandTermIds();
+      $brand_keys = array_column($brands_terms_ids, 'field_brand_key_value');
+      // To get faq page id.
+      $faq_config_data = ContentModel::getTrlxUtilityConfigValues();
+      $default_faq_id = !empty($faq_config_data['faq_id']) ? (int) $faq_config_data['faq_id'] : 9999999;
+      // Array of sum of brands key and faq page id.
+      $faq_ids = [$default_faq_id];
+      foreach ($brand_keys as $value) {
+        $faq_ids[] = (int) $value + (int) $default_faq_id;
       }
-      else {
-        $bookmark_data = $response['_source']['bookmarks'];
-      }
-      $bookmark_data_by_type = [];
-      foreach ($bookmark_data as $key => $values) {
-        $this->type = ContentModel::getTypeByLang($values, $lang[0]->language);
-        if (!empty($this->type)) {
-          array_push($bookmark_data_by_type, $values);
-        }
-      }
-      if (empty(array_slice($bookmark_data_by_type, $this->offset, $this->limit))) {
-        return new Response(NULL, 204);
-      }
-      foreach (array_slice($bookmark_data_by_type, $this->offset, $this->limit) as $key => $value) {
-        $type = ContentModel::getTypeByLang($value, $lang[0]->language);
-        $lang = UserModel::getUserInfoByUid($this->uid, 'language');
-        $point_value = ContentModel::getPointValueByNid($value, $lang[0]->language);
-        $body = $title = $image_id = $url = '';
-        if (isset($type->type)) {
-          if ($type->type == 'product_detail') {
-            list($title, $image_id, $body, $sub_title) = ContentModel::getProductsContent($value, $lang[0]->language);
-          }
-          elseif ($type->type == 'tools' || $type->type == 'tools-pdf') {
-            $sub_title = '';
-            list($title, $image_id, $body) = ContentModel::getToolsContent($value, $lang[0]->language);
-          }
-          elseif ($type->type == 'stories') {
-            list($title, $image_id, $body, $sub_title) = ContentModel::getStoriesContent($value, $lang[0]->language);
-          }
-          elseif ($type->type == 'level_interactive_content') {
-            list($title, $image_id, $id) = ContentModel::getLevelContent($value, $lang[0]->language);
-            if (!empty($id)) {
-              list($body, $sub_title) = ContentModel::getLevelParagraphById($id, $lang[0]->language);
+      // Bookmark ids in latest bookmarked order.
+      $bookmark_ids = array_reverse($response['_source']['bookmark']);
+      // TRLX section names.
+      $sectionNames = ContentModel::getTrlxSectionNames();
+      $bookmark_data = [];
+      foreach ($bookmark_ids as $bookmark_id) {
+        if (!in_array($bookmark_id, $faq_ids)) {
+          $node_data = ContentModel::getNodeDataByNid($bookmark_id, $lang);
+          if (!is_null($node_data)) {
+            $node_type = ContentModel::getTypeByNid($bookmark_id);
+            $bookmark_data[$i]['id'] = $node_data->nid;
+            $bookmark_data[$i]['title'] = ($node_type->type == 'level_interactive_content') ? $node_data->field_headline_value : $node_data->field_display_title_value;
+            $bookmark_data[$i]['brandKey'] = 0;
+            $bookmark_data[$i]['brandName'] = "";
+            $bookmark_data[$i]['sectionKey'] = "";
+            $bookmark_data[$i]['sectionName'] = array_key_exists($node_type->type, $sectionNames) ? $sectionNames[$node_type->type] : "";
+            $bookmark_data[$i]['pointValue'] = 0;
+            $bookmark_data[$i]['imageSmall'] = "";
+            $bookmark_data[$i]['imageMedium'] = "";
+            $bookmark_data[$i]['imageLarge'] = "";
+            $bookmark_data[$i]['faqId'] = 0;
+            if ($node_data->field_brands_target_id != NULL) {
+              $brandinfo = ContentModel::getBrandTermIds();
+              foreach ($brandinfo as $brand) {
+                if ($brand['entity_id'] == $node_data->field_brands_target_id) {
+                  $brand_key = (int) $brand['field_brand_key_value'];
+                }
+              }
+              $bookmark_data[$i]['brandKey'] = $brand_key;
+              $bookmark_data[$i]['brandName'] = ContentModel::getTermName([$node_data->field_brands_target_id])[0];
+            }
+            if ($node_data->field_content_section_target_id != NULL) {
+              $bookmark_data[$i]['sectionKey'] = ContentModel::getContentSectionKeyByTid($node_data->field_content_section_target_id);
+              $bookmark_data[$i]['sectionName'] = array_key_exists($bookmark_data[$i]['sectionKey'], $sectionNames) ? $sectionNames[$bookmark_data[$i]['sectionKey']] : "";
+            }
+            if ($node_data->field_point_value_value != NULL) {
+              $bookmark_data[$i]['pointValue'] = (int) $node_data->field_point_value_value;
+            }
+            if ($node_data->field_hero_image_target_id != NULL) {
+              $bookmark_data[$i]['imageSmall'] = ContentModel::getBookmarkImageUrlByFid($node_data->field_hero_image_target_id)[0];
+              $bookmark_data[$i]['imageMedium'] = ContentModel::getBookmarkImageUrlByFid($node_data->field_hero_image_target_id)[1];
+              $bookmark_data[$i]['imageLarge'] = ContentModel::getBookmarkImageUrlByFid($node_data->field_hero_image_target_id)[2];
+            }
+            if ($node_data->field_field_product_image_target_id != NULL) {
+              $bookmark_data[$i]['imageSmall'] = ContentModel::getBookmarkImageUrlByFid($node_data->field_field_product_image_target_id)[0];
+              $bookmark_data[$i]['imageMedium'] = ContentModel::getBookmarkImageUrlByFid($node_data->field_field_product_image_target_id)[1];
+              $bookmark_data[$i]['imageLarge'] = ContentModel::getBookmarkImageUrlByFid($node_data->field_field_product_image_target_id)[2];
+            }
+            if ($node_data->field_tool_thumbnail_target_id != NULL) {
+              $bookmark_data[$i]['imageSmall'] = ContentModel::getBookmarkImageUrlByFid($node_data->field_tool_thumbnail_target_id)[0];
+              $bookmark_data[$i]['imageMedium'] = ContentModel::getBookmarkImageUrlByFid($node_data->field_tool_thumbnail_target_id)[1];
+              $bookmark_data[$i]['imageLarge'] = ContentModel::getBookmarkImageUrlByFid($node_data->field_tool_thumbnail_target_id)[2];
             }
           }
-          if (!empty($image_id)) {
-            $url = ContentModel::getImageUrlByFid($image_id);
+          else {
+            $brand_key = $bookmark_id - $default_faq_id;
+            if ($brand_key != 0) {
+              $brand_data = ContentModel::getBrandDataFromBrandKey($brand_key);
+              if (!empty($brand_data)) {
+                $bookmark_data[$i]['id'] = 0;
+                $bookmark_data[$i]['title'] = mb_strtoupper($brand_data['name']) . ' CUSTOMER QUESTIONS';
+                $bookmark_data[$i]['brandKey'] = $brand_key;
+                $bookmark_data[$i]['brandName'] = $brand_data['name'];
+                $bookmark_data[$i]['sectionKey'] = "";
+                $bookmark_data[$i]['sectionName'] = $sectionNames['faq'];
+                $bookmark_data[$i]['pointValue'] = (int) $faq_config_data['faq_points'];
+                $bookmark_data[$i]['imageSmall'] = "";
+                $bookmark_data[$i]['imageMedium'] = "";
+                $bookmark_data[$i]['imageLarge'] = "";
+                $bookmark_data[$i]['faqId'] = $bookmark_id;
+              }
+            }
+            else {
+              $bookmark_data[$i]['id'] = 0;
+              $bookmark_data[$i]['title'] = 'HELP QUESTIONS';
+              $bookmark_data[$i]['brandKey'] = 0;
+              $bookmark_data[$i]['brandName'] = "";
+              $bookmark_data[$i]['sectionKey'] = "";
+              $bookmark_data[$i]['sectionName'] = $sectionNames['faq'];
+              $bookmark_data[$i]['pointValue'] = (int) $faq_config_data['faq_points'];
+              $bookmark_data[$i]['imageSmall'] = "";
+              $bookmark_data[$i]['imageMedium'] = "";
+              $bookmark_data[$i]['imageLarge'] = "";
+              $bookmark_data[$i]['faqId'] = $bookmark_id;
+            }
           }
+          $i++;
         }
-        $body = !(empty($body)) ? str_replace('"/sites/default/files', '"' . $img_url, $body) : '';
-        $nid_user_activity[] = $value;
-        $results['results'][] = [
-          "nid" => $value,
-          "imageLarge" => isset($url) ? $url : '',
-          "imageMedium" => isset($url) ? $url : '',
-          "imageSmall" => isset($url) ? $url : '',
-          "title" => isset($title) ? $title : '',
-          "subTitle" => isset($sub_title) ? $sub_title : '',
-          "description" => isset($body) ? $body : '',
-          "pointValue" => isset($point_value) ? $point_value : '',
-          "type" => $type->type,
-        ];
       }
-
-      $total_count = count($bookmark_data_by_type) - $this->offset;
-      $pages = ceil($total_count / $this->limit);
     }
-    $results['pager'] = [
+    else {
+      return $this->successResponse([], Response::HTTP_OK);
+    }
+    // Filter bookmark data by type value.
+    $filterBy = 'VIDEOS';
+    $bookmark_data = array_values($bookmark_data);
+    if ($this->type == 'video') {
+      $bookmark_data = array_filter($bookmark_data, function ($var) use ($filterBy) {
+          return ($var['sectionName'] == $filterBy);
+      });
+    }
+    else {
+      $bookmark_data = array_filter($bookmark_data, function ($var) use ($filterBy) {
+          return ($var['sectionName'] != $filterBy);
+      });
+    }
+    // Pagination logic.
+    $total_count = count($bookmark_data) - $this->offset;
+    $pages = ceil($total_count / $this->limit);
+    $bookmark_data = array_slice($bookmark_data, $this->offset, $this->limit);
+    $results['bookmark'] = $bookmark_data;
+    $pager = [
       "count" => $total_count,
       "pages" => $pages,
       "items_per_page" => $this->limit,
       "current_page" => 0,
-      "next_page" => 1,
+      "next_page" => 0,
     ];
-    header('Content-language: ' . $lang[0]->language);
-
-    return new Response($results, 200);
+    header('Content-language: ' . $lang);
+    if (empty($results['bookmark'])) {
+      return $this->successResponse([], Response::HTTP_OK);
+    }
+    else {
+      return $this->successResponse($results, Response::HTTP_OK, $pager);
+    }
   }
 
   /**

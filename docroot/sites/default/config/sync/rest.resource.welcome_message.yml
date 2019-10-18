@@ -1,11 +1,11 @@
 uuid: 5a6d89f4-5c4a-4943-b75a-2330dd76a8e8
 langcode: en
-status: true
+status: false
 dependencies:
   module:
-    - elx_dashboard
     - serialization
-    - simple_oauth
+    - trlx_banner
+    - trlx_utility
 id: welcome_message
 plugin_id: welcome_message
 granularity: resource
@@ -15,4 +15,4 @@ configuration:
   formats:
     - json
   authentication:
-    - oauth2
+    - jwt_Auth

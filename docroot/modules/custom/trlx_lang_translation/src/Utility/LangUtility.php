@@ -3,6 +3,7 @@
 namespace Drupal\trlx_lang_translation\Utility;
 
 use Drupal\elx_user\Utility\UserUtility;
+use PHPUnit\Exception;
 
 /**
  * Purpose of this class is to build language object.
@@ -30,7 +31,7 @@ class LangUtility {
 
       return $translation;
     }
-    catch (Exception $e) {
+    catch (\Exception $e) {
       return FALSE;
     }
   }
@@ -45,14 +46,18 @@ class LangUtility {
    *   Translation language.
    */
   public function getTranslationLanguageByNid($nid) {
-    $query = db_select('node_field_data', 'n')
-      ->fields('n', ['langcode'])
-      ->condition('n.nid', $nid, '=')
-      ->execute();
-    $results = $query->fetchAll();
-    $results = array_column($results, 'langcode');
+    try {
+      $query = db_select('node_field_data', 'n')
+        ->fields('n', ['langcode'])
+        ->condition('n.nid', $nid, '=')
+        ->execute();
+      $results = $query->fetchAll();
+      $results = array_column($results, 'langcode');
 
-    return $results;
+      return $results;
+    } catch (\Exception $e) {
+      return FALSE;
+    }
   }
 
   /**
@@ -67,33 +72,36 @@ class LangUtility {
    *   Market primary and secondary language.
    */
   public function getMarketPrimaryAndSecondaryLanguage($market_id, $flag = NULL) {
-    $query = \Drupal::database();
-    $query = $query->select('taxonomy_term__field_primary_language', 'pl');
-    $query->distinct();
-    $query->leftjoin('taxonomy_term__field_secondary_language',
-    'sl', 'pl.entity_id = sl.entity_id');
-    $query->fields('pl', ['field_primary_language_target_id']);
-    $query->fields('sl', ['field_secondary_language_target_id']);
-    $query->condition('pl.entity_id', $market_id, 'IN');
-    $results = $query->execute()->fetchAll();
-    if (!empty($flag)) {
-      return $results;
-    }
-    $primary_lang = array_column(
-     $results, 'field_primary_language_target_id');
-    $secondary_lang = array_column(
-     $results, 'field_secondary_language_target_id');
-    $lang_code = array_unique(array_merge(
-     $primary_lang, $secondary_lang));
-    $response = [];
-    foreach ($lang_code as $key => $value) {
-      if (!empty($value)) {
-        $language = \Drupal::languageManager()->getLanguage($value);
-        $response[$value] = $language->getName();
+    try {
+      $query = \Drupal::database();
+      $query = $query->select('taxonomy_term__field_primary_language', 'pl');
+      $query->distinct();
+      $query->leftjoin('taxonomy_term__field_secondary_language',
+        'sl', 'pl.entity_id = sl.entity_id');
+      $query->fields('pl', ['field_primary_language_target_id']);
+      $query->fields('sl', ['field_secondary_language_target_id']);
+      $query->condition('pl.entity_id', $market_id, 'IN');
+      $results = $query->execute()->fetchAll();
+      if (!empty($flag)) {
+        return $results;
       }
+      $primary_lang = array_column(
+        $results, 'field_primary_language_target_id');
+      $secondary_lang = array_column(
+        $results, 'field_secondary_language_target_id');
+      $lang_code = array_unique(array_merge(
+        $primary_lang, $secondary_lang));
+      $response = [];
+      foreach ($lang_code as $key => $value) {
+        if (!empty($value)) {
+          $language = \Drupal::languageManager()->getLanguage($value);
+          $response[$value] = $language->getName();
+        }
+      }
+      return $response;
+    } catch (\Exception $e) {
+      return FALSE;
     }
-
-    return $response;
   }
 
   /**

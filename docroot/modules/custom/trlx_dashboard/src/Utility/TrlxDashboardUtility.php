@@ -64,37 +64,42 @@ class TrlxDashboardUtility {
     $uuid = $menu_item->getDerivativeId();
     if (!empty($uuid)) {
       $this->commonUtility = new CommonUtility();
-      $entity = \Drupal::service('entity.repository')->loadEntityByUuid('menu_link_content', $uuid);
-      $tid = $entity->getFields()['trlx_menu_content']->getString();
-      $term_name = '';
-      if ($tid) {
-        $term_name = $this->commonUtility->getTermName($tid);
-      }
-      $fid = $entity->link->first()->options['menu_icon']['fid'];
-      $type = 'internal';
-      $url = $icon_path = '';
-      if ($menu_item->getUrlObject()->isExternal()) {
-        $type = 'external';
-        $url = $menu_item->getUrlObject()->toString();
-      }
-      // Get menu icon path.
-      if (!empty($fid)) {
-        $file = File::load($fid);
-        if (!empty($file)) {
-          $icon_path = file_create_url($file->getFileUri());
-        }
-      }
-      // Get link attributes.
-      $options = $entity->hasTranslation($langcode) ? $entity->getTranslation($langcode)->getUrlObject()->getOptions() : $entity->getUrlObject()->getOptions();
 
-      $menu_result = [
-        'sequenceId' => $entity->hasTranslation($langcode) ? intval($entity->getTranslation($langcode)->getWeight()) : intval($entity->getWeight()),
-        'content' => $term_name,
-        'name' => $entity->hasTranslation($langcode) ? $entity->getTranslation($langcode)->getTitle() : $entity->getTitle(),
-        'URL' => $url,
-        'type' => $type,
-        'attributes' => isset($options['attributes']) ? $options['attributes'] : "",
-      ];
+      try {
+        $entity = \Drupal::service('entity.repository')->loadEntityByUuid('menu_link_content', $uuid);
+        $tid = $entity->getFields()['trlx_menu_content']->getString();
+        $term_name = '';
+        if ($tid) {
+          $term_name = $this->commonUtility->getTermName($tid);
+        }
+        $fid = $entity->link->first()->options['menu_icon']['fid'];
+        $type = 'internal';
+        $url = $icon_path = '';
+        if ($menu_item->getUrlObject()->isExternal()) {
+          $type = 'external';
+          $url = $menu_item->getUrlObject()->toString();
+        }
+        // Get menu icon path.
+        if (!empty($fid)) {
+          $file = File::load($fid);
+          if (!empty($file)) {
+           $icon_path = file_create_url($file->getFileUri());
+          }
+        }
+        // Get link attributes.
+        $options = $entity->hasTranslation($langcode) ? $entity->getTranslation($langcode)->getUrlObject()->getOptions() : $entity->getUrlObject()->getOptions();
+
+        $menu_result = [
+          'sequenceId' => $entity->hasTranslation($langcode) ? intval($entity->getTranslation($langcode)->getWeight()) : intval($entity->getWeight()),
+          'content' => $term_name,
+          'name' => $entity->hasTranslation($langcode) ? $entity->getTranslation($langcode)->getTitle() : $entity->getTitle(),
+          'URL' => $url,
+          'type' => $type,
+          'attributes' => isset($options['attributes']) ? $options['attributes'] : "",
+        ];
+      } catch (\Exception $e) {
+        $menu_result = [];
+      }
     }
     return $menu_result;
   }

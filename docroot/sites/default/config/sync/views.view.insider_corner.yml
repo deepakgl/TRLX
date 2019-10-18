@@ -1095,7 +1095,7 @@ display:
             more_link: false
             more_link_text: ''
             more_link_path: ''
-            strip_tags: true
+            strip_tags: false
             trim: false
             preserve_tags: ''
             html: false
@@ -1762,7 +1762,7 @@ display:
               alias: firstName
               raw_output: false
             field_last_name:
-              alias: LastName
+              alias: lastName
               raw_output: false
             field_department:
               alias: department
@@ -1787,9 +1787,6 @@ display:
               raw_output: false
             field_headline:
               alias: productCarouselTitle
-              raw_output: false
-            field_product_carousel:
-              alias: productCarouselEntity
               raw_output: false
       display_description: ''
       title: 'Insider Corner Details API'
@@ -2259,6 +2256,68 @@ display:
             url_type: '0'
             image_style: insider_corner_detail_desktop
             image_link: ''
+          group_column: ''
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_media_video_file:
+          id: field_media_video_file
+          table: media__field_media_video_file
+          field: field_media_video_file
+          relationship: field_video
+          group_type: group
+          admin_label: ''
+          label: ''
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: file_url_plain
+          settings: {  }
           group_column: ''
           group_columns: {  }
           group_rows: true
@@ -2775,68 +2834,6 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
-        field_media_video_file:
-          id: field_media_video_file
-          table: media__field_media_video_file
-          field: field_media_video_file
-          relationship: field_video
-          group_type: group
-          admin_label: ''
-          label: ''
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: target_id
-          type: file_url_plain
-          settings: {  }
-          group_column: ''
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-          plugin_id: field
         field_point_value:
           id: field_point_value
           table: node__field_point_value
@@ -2964,15 +2961,6 @@ display:
           field_api_classes: false
           plugin_id: field
       relationships:
-        field_hero_image:
-          id: field_hero_image
-          table: node__field_hero_image
-          field: field_hero_image
-          relationship: none
-          group_type: group
-          admin_label: 'field_hero_image: Media'
-          required: false
-          plugin_id: standard
         field_content_section:
           id: field_content_section
           table: node__field_content_section
@@ -2998,7 +2986,7 @@ display:
           relationship: none
           group_type: group
           admin_label: 'field_featured_image: Media'
-          required: true
+          required: false
           plugin_id: standard
     cache_metadata:
       max-age: -1

@@ -42,6 +42,7 @@ module:
   elx_elastic_user: 0
   elx_entityqueue_alter: 0
   elx_menu: 0
+  elx_points_migration: 0
   elx_products: 0
   elx_redis_purge: 0
   elx_reports: 0
@@ -136,6 +137,7 @@ module:
   trlx_security: 0
   trlx_spotlight: 0
   trlx_story: 0
+  trlx_tnc_privacy_policy: 0
   trlx_trends: 0
   trlx_utility: 0
   trlx_banner: 0

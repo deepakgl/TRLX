@@ -1,0 +1,16 @@
+uuid: 326cedfd-3f2f-4622-8ee3-ff460b4b0ad9
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.privacy_policy
+  module:
+    - content_translation
+third_party_settings:
+  content_translation:
+    enabled: true
+id: node.privacy_policy
+target_entity_type_id: node
+target_bundle: privacy_policy
+default_langcode: site_default
+language_alterable: false

@@ -1,0 +1,5 @@
+trlx_banner.content_config_menu:
+  title: 'Welcome Message Configuration Form'
+  description: 'Set welcome message related config variables.'
+  route_name: welcome_message.settings
+  parent: system.admin_config_system

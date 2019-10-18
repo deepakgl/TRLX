@@ -8,7 +8,7 @@ id: node.t_c.title
 field_name: title
 entity_type: node
 bundle: t_c
-label: 'Title (Backend use only)'
+label: Title
 description: ''
 required: true
 translatable: true
