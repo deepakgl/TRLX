@@ -441,9 +441,6 @@ function elx_utility_get_redis_pattern(EntityInterface $entity) {
     elseif ($entity_type == 't_c') {
       $pattern[] = implode(':', [$env . '_t_c', 'detail*']);
     }
-    elseif ($entity_type == 'privacy_policy') {
-      $pattern[] = implode(':', [$env . '_privacy_policy', 'detail*']);
-    }
     elseif ($entity_type == 'brand_story') {
       $pattern[] = implode(':', [$env . 'brandStoryDetails*']);
     }
