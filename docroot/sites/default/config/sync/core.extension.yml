@@ -42,6 +42,7 @@ module:
   elx_elastic_user: 0
   elx_entityqueue_alter: 0
   elx_menu: 0
+  elx_points_migration: 0
   elx_products: 0
   elx_redis_purge: 0
   elx_reports: 0
