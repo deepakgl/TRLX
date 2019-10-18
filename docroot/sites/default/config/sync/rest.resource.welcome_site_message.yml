@@ -1,13 +1,13 @@
-uuid: 5a6d89f4-5c4a-4943-b75a-2330dd76a8e8
+uuid: abcb3967-520e-40d1-a209-1cbb0564a98a
 langcode: en
-status: false
+status: true
 dependencies:
   module:
     - serialization
     - trlx_banner
     - trlx_utility
-id: welcome_message
-plugin_id: welcome_message
+id: welcome_site_message
+plugin_id: welcome_site_message
 granularity: resource
 configuration:
   methods:

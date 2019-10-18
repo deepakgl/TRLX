@@ -23,6 +23,7 @@ function elx_translation_workflow_form_alter(&$form,
     case 'node_level_interactive_content_form':
     case 'node_brand_story_form':
     case 'node_faq_form':
+    case 'node_t_c_form':
       $form['status']['widget']['value']['#default_value'] = FALSE;
       $translation_state =
       $form['field_translation']['widget']['#default_value'];
@@ -36,6 +37,7 @@ function elx_translation_workflow_form_alter(&$form,
     case 'node_level_interactive_content_edit_form':
     case 'node_brand_story_edit_form':
     case 'node_faq_edit_form':
+    case 'node_t_c_edit_form':
       $translation_state =
       $form['field_translation']['widget']['#default_value'];
       _prepare_content_states($form, $translation_state);
@@ -150,6 +152,9 @@ function elx_translation_workflow_generate_img_styles($entity) {
       'search_listings_tablet',
       'search_listings_desktop',
       'search_listings_mobile',
+      'bookmark_image_mobile',
+      'bookmark_image_tablet',
+      'bookmark_image_desktop',
     ]
     );
   }
@@ -177,6 +182,9 @@ function elx_translation_workflow_generate_img_styles($entity) {
       'search_listings_tablet',
       'search_listings_desktop',
       'search_listings_mobile',
+      'bookmark_image_mobile',
+      'bookmark_image_tablet',
+      'bookmark_image_desktop',
     ]
     );
   }
@@ -201,6 +209,9 @@ function elx_translation_workflow_generate_img_styles($entity) {
       'search_listings_tablet',
       'search_listings_desktop',
       'search_listings_mobile',
+      'bookmark_image_mobile',
+      'bookmark_image_tablet',
+      'bookmark_image_desktop',
     ]
     );
   }
@@ -216,6 +227,9 @@ function elx_translation_workflow_generate_img_styles($entity) {
       'search_listings_tablet',
       'search_listings_desktop',
       'search_listings_mobile',
+      'bookmark_image_mobile',
+      'bookmark_image_tablet',
+      'bookmark_image_desktop',
     ]
     );
   }

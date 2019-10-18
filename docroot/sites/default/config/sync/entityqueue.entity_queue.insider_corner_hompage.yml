@@ -5,7 +5,7 @@ dependencies:
   module:
     - node
 id: insider_corner_hompage
-label: 'Insider Corner Hompage'
+label: 'Insider Corner'
 handler: simple
 handler_configuration: {  }
 entity_settings:

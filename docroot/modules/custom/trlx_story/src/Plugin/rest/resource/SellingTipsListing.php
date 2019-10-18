@@ -197,7 +197,6 @@ class SellingTipsListing extends ResourceBase {
       $query->condition('tfd.langcode', $language);
       $query->condition('tfd.status', 1);
       $query->condition('fst.langcode', $language);
-      $query->condition('fcs.langcode', $language);
       $query->condition('fcsk.deleted', 0);
       $query->condition('fcsk.field_content_section_key_value', $sectionKey);
       // Level associated content type.

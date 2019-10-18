@@ -73,4 +73,50 @@ class UserModel {
     return $result;
   }
 
+  /**
+   * Fetch user market by user object.
+   *
+   * @return array
+   *   User market.
+   */
+  public static function getMarketByUserData() {
+    global $_userData;
+    $regions = $_userData->region;
+    $subregions = $_userData->subregion;
+    $country = $_userData->country;
+    // Get region, subregion or country from token if array is not empty.
+    if (!empty($country)) {
+      $ref_keys = $country;
+    }
+    elseif (!empty($subregions)) {
+      $ref_keys = $subregions;
+    }
+    elseif (!empty($regions)) {
+      $ref_keys = $regions;
+    }
+    // Get current user markets.
+    $markets = array_column(self::getMarketByReferenceId($ref_keys), 'entity_id');
+
+    return $markets;
+  }
+
+  /**
+   * Fetch user market by user region, subregion or country reference id.
+   *
+   * @param int $region_subregion_country_ids
+   *   Region, subregion or country reference ids.
+   *
+   * @return array
+   *   User market.
+   */
+  public static function getMarketByReferenceId($region_subregion_country_ids) {
+    $query = DB::table('taxonomy_term__field_region_subreg_country_id as tfrsc');
+    $select[] = 'tfrsc.entity_id';
+    $select[] = 'tfrsc.field_region_subreg_country_id_value';
+    $query->whereIn('tfrsc.field_region_subreg_country_id_value', $region_subregion_country_ids);
+    $result = $query->select($select)->get()->all();
+
+    return $result;
+  }
+
 }
