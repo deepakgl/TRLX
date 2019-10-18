@@ -57,6 +57,8 @@ function trlx_utility_form_alter(&$form, FormStateInterface $form_state, $form_i
     case 'node_welcome_message_edit_form':
     case 'node_faq_form':
     case 'node_faq_edit_form':
+    case 'node_privacy_policy_form':
+    case 'node_privacy_policy_edit_form':
       $form['#attached']['library'][] = 'trlx_market_hierarchy/trlx_market';
       break;
 
