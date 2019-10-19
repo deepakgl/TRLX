@@ -40,7 +40,6 @@ module:
   elx_custom_service: 0
   elx_dashboard: 0
   elx_elastic_user: 0
-  elx_entityqueue_alter: 0
   elx_menu: 0
   elx_products: 0
   elx_redis_purge: 0
@@ -127,6 +126,7 @@ module:
   trlx_comment: 0
   trlx_consumer: 0
   trlx_dashboard: 0
+  trlx_entityqueue_alter: 0
   trlx_factsheets: 0
   trlx_faq: 0
   trlx_insider_corner: 0
