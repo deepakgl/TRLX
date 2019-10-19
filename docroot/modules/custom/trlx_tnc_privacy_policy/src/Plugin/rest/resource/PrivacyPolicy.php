@@ -66,9 +66,6 @@ class PrivacyPolicy extends ResourceBase {
       return $response;
     }
 
-    // Prepare redis key.
-    $key = "_privacy_policy:detail:{$language}";
-
     // Prepare array of keys for alteration in response.
     $data = [
       'title' => 'decode',
@@ -77,7 +74,7 @@ class PrivacyPolicy extends ResourceBase {
 
     // Fetch view response.
     list($view_results, $status_code) = $entityUtility->fetchApiResult(
-      $key,
+      '',
       't_c',
       'rest_export_privacy_policy',
       $data,
