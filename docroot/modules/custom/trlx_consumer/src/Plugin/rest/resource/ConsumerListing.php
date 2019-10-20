@@ -274,9 +274,9 @@ class ConsumerListing extends ResourceBase {
 
           // Create image urls for three different display screens.
           if (!empty($result['image'])) {
-            $levelsListing[$result['id']]['imageSmall'] = $commonUtility->getImageStyleBasedUrl('learning_levels_mobile', $result['image']);
-            $levelsListing[$result['id']]['imageMedium'] = $commonUtility->getImageStyleBasedUrl('learning_levels_tablet', $result['image']);
-            $levelsListing[$result['id']]['imageLarge'] = $commonUtility->getImageStyleBasedUrl('learning_levels_desktop', $result['image']);
+            $levelsListing[$result['id']]['imageSmall'] = $commonUtility->getImageStyleBasedUrl('stories_level_listing_mobile', $result['image']);
+            $levelsListing[$result['id']]['imageMedium'] = $commonUtility->getImageStyleBasedUrl('stories_level_listing_tablet', $result['image']);
+            $levelsListing[$result['id']]['imageLarge'] = $commonUtility->getImageStyleBasedUrl('stories_level_listing_desktop', $result['image']);
           }
         }
 

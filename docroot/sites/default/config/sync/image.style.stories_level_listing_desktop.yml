@@ -1,0 +1,15 @@
+uuid: c6ce8a1a-00c2-47bd-93d6-5a02b38adf80
+langcode: en
+status: true
+dependencies: {  }
+name: stories_level_listing_desktop
+label: 'Stories Level Listing Desktop (188×200)'
+effects:
+  98e55937-cb47-42ea-99f2-2581d9652e81:
+    uuid: 98e55937-cb47-42ea-99f2-2581d9652e81
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 188
+      height: 200
+      anchor: center-center
