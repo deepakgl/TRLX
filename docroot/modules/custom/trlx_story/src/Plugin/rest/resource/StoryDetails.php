@@ -115,6 +115,7 @@ class StoryDetails extends ResourceBase {
         $data['video'] = 'append_host';
         // Section specific keys for alteration.
         $data['productCarouselTitle'] = 'decode';
+        $data['tryThis'] = 'string_replace';
         $productCarousel = TRUE;
         break;
     }

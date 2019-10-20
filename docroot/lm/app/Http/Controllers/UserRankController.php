@@ -59,14 +59,14 @@ class UserRankController extends Controller {
     $response['userLeft'] = [];
     if (!empty($user_left_uid) && $user_left_uid != $uid) {
       $response['userLeft']['uid'] = (int) $user_left_uid;
-      $response['userLeft']['rank'] = $rank_centre;
+      $response['userLeft']['rank'] = "#" . $rank_centre;
     }
     $response['userCentre']['uid'] = (int) $uid;
-    $response['userCentre']['rank'] = $rank_centre + 1;
+    $response['userCentre']['rank'] = "#" . ($rank_centre + 1);
     $response['userRight'] = [];
     if (!empty($user_right_uid) && $user_right_uid != $uid) {
       $response['userRight']['uid'] = (int) $user_right_uid;
-      $response['userRight']['rank'] = $rank_centre + 2;
+      $response['userRight']['rank'] = "#" . ($rank_centre + 2);
     }
     return $this->successResponse($response, Response::HTTP_OK);
   }

@@ -1,0 +1,30 @@
+uuid: 864c155d-e442-4196-8732-37e1e8cd475e
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_try_this
+    - node.type.stories
+  module:
+    - allowed_formats
+    - text
+third_party_settings:
+  allowed_formats:
+    full_html: '0'
+    basic_html: '0'
+    restricted_html: '0'
+    plain_text: '0'
+    quiz: '0'
+id: node.stories.field_try_this
+field_name: field_try_this
+entity_type: node
+bundle: stories
+label: 'Try this'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  display_summary: false
+field_type: text_with_summary
