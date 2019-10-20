@@ -3,13 +3,13 @@ langcode: en
 status: true
 dependencies: {  }
 name: brands_category_listing_mobile
-label: 'Brands Category Listing Mobile (345X85)'
+label: 'Brands Category Listing Mobile (276×65)'
 effects:
   4a94ff3d-39be-4fbc-87f6-c669450205c6:
     uuid: 4a94ff3d-39be-4fbc-87f6-c669450205c6
     id: image_scale_and_crop
     weight: 1
     data:
-      width: 345
-      height: 85
+      width: 276
+      height: 65
       anchor: center-center
