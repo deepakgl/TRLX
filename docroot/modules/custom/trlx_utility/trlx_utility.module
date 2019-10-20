@@ -57,6 +57,8 @@ function trlx_utility_form_alter(&$form, FormStateInterface $form_state, $form_i
     case 'node_welcome_message_edit_form':
     case 'node_faq_form':
     case 'node_faq_edit_form':
+    case 'node_privacy_policy_form':
+    case 'node_privacy_policy_edit_form':
       $form['#attached']['library'][] = 'trlx_market_hierarchy/trlx_market';
       break;
 
@@ -213,6 +215,7 @@ function trlx_utility_form_alter(&$form, FormStateInterface $form_state, $form_i
         unset($form['field_consumer_category']['widget']['#options']['_none']);
         $form['#validate'][] = 'stories_validate';
       }
+
       /*** Show/Hide/Required Consumer Category based on section selection - END ***/
 
       /*** Change Point Value as per selected section on edit page - START ***/
@@ -523,6 +526,18 @@ function trlx_utility_field_group_build_pre_render_alter(&$element) {
         ],
         'enabled' => [
           ["input[name='field_content_section']" => ['value' => $insiderCornerTermId]],
+        ],
+      ];
+    }
+
+    // Show & enable Tr Trend group.
+    if (isset($element['group_tr_trends']) && !empty($insiderCornerTermId)) {
+      $element['group_tr_trends']['#states'] = [
+        'visible' => [
+          ["input[name='field_content_section']" => ['value' => $trendTermId]],
+        ],
+        'enabled' => [
+          ["input[name='field_content_section']" => ['value' => $trendTermId]],
         ],
       ];
     }

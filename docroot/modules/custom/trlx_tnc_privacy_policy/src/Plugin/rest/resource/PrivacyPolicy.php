@@ -9,20 +9,20 @@ use Drupal\trlx_utility\Utility\CommonUtility;
 use Drupal\trlx_utility\Utility\EntityUtility;
 
 /**
- * Provides a Terms and Conditons resource.
+ * Provides a Privacy Policy resource.
  *
  * @RestResource(
- *   id = "term_and_condition",
- *   label = @Translation("Terms & Conditions"),
+ *   id = "privacy_policy",
+ *   label = @Translation("Privacy Policy"),
  *   uri_paths = {
- *     "canonical" = "/api/v1/termAndCondition"
+ *     "canonical" = "/api/v1/privacyPolicy"
  *   }
  * )
  */
-class TermAndCondition extends ResourceBase {
+class PrivacyPolicy extends ResourceBase {
 
   /**
-   * Rest resource for T&C content.
+   * Rest resource for Privacy Policy content.
    *
    * @param \Symfony\Component\HttpFoundation\Request $request
    *   Rest resource query parameters.
@@ -76,7 +76,7 @@ class TermAndCondition extends ResourceBase {
     list($view_results, $status_code) = $entityUtility->fetchApiResult(
       '',
       't_c',
-      'rest_export_tnc',
+      'rest_export_privacy_policy',
       $data,
       ['language' => $language]
     );

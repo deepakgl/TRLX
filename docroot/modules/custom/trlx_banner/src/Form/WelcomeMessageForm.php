@@ -44,7 +44,7 @@ class WelcomeMessageForm extends ConfigFormBase {
       $message = 'message_' . $value;
       $form[$message] = [
         '#type' => 'textfield',
-        '#title' => 'Enter ' . $languages[$value][0] . ' welcome message.',
+        '#title' => 'Enter Welcome Message (' . $languages[$value][0] . ')',
         '#default_value' => !empty($config->get($message)) ? $config->get($message) : '',
       ];
 

@@ -85,8 +85,8 @@ class NotificationController extends Controller {
       return $this->errorResponse('No alive nodes found in cluster.', Response::HTTP_INTERNAL_SERVER_ERROR);
     }
     $validatedData = $this->validate($request, [
-      'limit' => 'sometimes|required|positiveinteger',
-      'offset' => 'sometimes|required|positiveinteger',
+      'limit' => 'sometimes|required|integer|min:0',
+      'offset' => 'sometimes|required|integer|min:0',
       '_format' => 'required|format',
       'language' => 'required|languagecode',
     ]);

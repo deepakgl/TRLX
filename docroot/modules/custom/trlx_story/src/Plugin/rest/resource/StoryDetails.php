@@ -79,48 +79,43 @@ class StoryDetails extends ResourceBase {
 
     // Prepare redis key.
     $key = ":storyDetail:_{$nid}_{$language}";
-
     $views = $viewsDisplay = $type = $pointValAlterKey = $productCarousel = '';
     $data = [];
-
     // Switch case to specify section specific views & variables.
     switch ($section) {
       case $commonUtility::INSIDER_CORNER:
         $views = 'insider_corner';
         $viewsDisplay = 'rest_export_insider_corner_details';
         $type = $commonUtility::INSIDER_CORNER;
-
         // Section specific keys for alteration.
         $data['socialMediaHandles'] = 'social_media_handles';
         $data['video'] = 'append_host';
         $data['productCarouselTitle'] = 'decode';
         $productCarousel = TRUE;
         break;
-
       case $commonUtility::SELLING_TIPS:
         $views = 'selling_tips';
         $viewsDisplay = 'rest_export_selling_tips_details';
         $type = $commonUtility::SELLING_TIPS;
-
         // Section specific keys for alteration.
         $data['video'] = 'append_host';
         $data['productCarouselTitle'] = 'decode';
         $productCarousel = TRUE;
         break;
-
       case $commonUtility::CONSUMER:
         $views = 'consumer';
+        $data['video'] = 'append_host';
         $viewsDisplay = 'rest_export_consumer_details';
         $type = $commonUtility::CONSUMER;
         break;
-
       default:
         $views = 'stories_listing';
         $viewsDisplay = 'rest_export_story_details';
         $type = 'trend_detail';
-
+        $data['video'] = 'append_host';
         // Section specific keys for alteration.
         $data['productCarouselTitle'] = 'decode';
+        $data['tryThis'] = 'string_replace';
         $productCarousel = TRUE;
         break;
     }
