@@ -1,0 +1,19 @@
+uuid: e0a556ce-b233-40a9-8eb5-16801e7333bb
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - text
+id: node.field_try_this
+field_name: field_try_this
+entity_type: node
+type: text_with_summary
+settings: {  }
+module: text
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

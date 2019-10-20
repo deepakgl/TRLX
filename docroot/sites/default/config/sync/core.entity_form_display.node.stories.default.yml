@@ -33,6 +33,7 @@ dependencies:
     - field.field.node.stories.field_sub_title
     - field.field.node.stories.field_tags
     - field.field.node.stories.field_translation
+    - field.field.node.stories.field_try_this
     - field.field.node.stories.field_video
     - field.field.node.stories.field_video_thumbnail
     - node.type.stories
@@ -70,7 +71,7 @@ third_party_settings:
         - field_headline
         - field_product_carousel
       parent_name: ''
-      weight: 13
+      weight: 14
       format_type: fieldset
       format_settings:
         id: ''
@@ -79,6 +80,19 @@ third_party_settings:
         required_fields: false
       label: 'Product Carousel'
       region: content
+    group_tr_trends:
+      children:
+        - field_try_this
+      parent_name: ''
+      weight: 7
+      format_type: fieldset
+      format_settings:
+        id: ''
+        classes: ''
+        description: ''
+        required_fields: true
+      label: 'TR Trends'
+      region: content
 id: node.stories.default
 targetEntityType: node
 bundle: stories
@@ -86,7 +100,7 @@ mode: default
 content:
   body:
     type: text_textarea_with_summary
-    weight: 7
+    weight: 8
     settings:
       rows: 9
       summary_rows: 3
@@ -136,7 +150,7 @@ content:
     type: string_textfield
     region: content
   field_featured_image:
-    weight: 8
+    weight: 9
     settings:
       entity_browser: media_entity_browser
       field_widget_display: rendered_entity
@@ -167,7 +181,7 @@ content:
     type: string_textfield
     region: content
   field_hero_image:
-    weight: 10
+    weight: 11
     settings:
       entity_browser: media_entity_browser
       field_widget_display: rendered_entity
@@ -254,8 +268,17 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_try_this:
+    weight: 21
+    settings:
+      rows: 9
+      summary_rows: 3
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea_with_summary
+    region: content
   field_video:
-    weight: 11
+    weight: 12
     settings:
       entity_browser: video_entity_browser
       field_widget_display: rendered_entity
@@ -270,7 +293,7 @@ content:
     type: entity_browser_entity_reference
     region: content
   field_video_thumbnail:
-    weight: 12
+    weight: 13
     settings:
       entity_browser: media_entity_browser
       field_widget_display: rendered_entity
@@ -313,7 +336,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
   translation:
-    weight: 9
+    weight: 10
     region: content
     settings: {  }
     third_party_settings: {  }

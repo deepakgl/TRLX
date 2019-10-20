@@ -240,8 +240,8 @@ class FlagController extends Controller {
     global $_userData;
     $this->uid = $_userData->userId;
     $validatedData = $this->validate($request, [
-      'limit' => 'sometimes|required|positiveinteger',
-      'offset' => 'sometimes|required|positiveinteger',
+      'limit' => 'sometimes|required|integer|min:0',
+      'offset' => 'sometimes|required|integer|min:0',
       '_format' => 'required|format',
       'language' => 'required|languagecode',
       'type' => 'required|bookmarklisttype',

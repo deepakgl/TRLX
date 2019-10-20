@@ -874,4 +874,76 @@ class ContentModel {
     return json_decode(json_encode((array) $query), TRUE);
   }
 
+  /**
+   * Get all trlx regions.
+   *
+   * @return array
+   *   Regions data.
+   */
+  public static function getAllRegions() {
+    $query = DB::table('taxonomy_term__parent as ttp')
+      ->select('ttp.entity_id')
+      ->where('ttp.parent_target_id', '=', 0)
+      ->where('ttp.bundle', '=', 'markets')
+      ->where('ttp.deleted', '=', 0)
+      ->get()->all();
+
+    return json_decode(json_encode((array) $query), TRUE);
+  }
+
+  /**
+   * Get all trlx sub regions.
+   *
+   * @return array
+   *   Sub regions data.
+   */
+  public static function getAllSubRegions() {
+    $regions = ContentModel::getAllRegions();
+    $query = DB::table('taxonomy_term__parent as ttp')
+      ->select('ttp.entity_id')
+      ->whereIn('ttp.parent_target_id', $regions)
+      ->where('ttp.bundle', '=', 'markets')
+      ->where('ttp.deleted', '=', 0)
+      ->get()->all();
+
+    return json_decode(json_encode((array) $query), TRUE);
+  }
+
+  /**
+   * Get all trlx countries.
+   *
+   * @return array
+   *   Countries data.
+   */
+  public static function getAllCountries() {
+    $subRegions = ContentModel::getAllSubRegions();
+    $query = DB::table('taxonomy_term__parent as ttp')
+      ->select('ttp.entity_id')
+      ->whereIn('ttp.parent_target_id', $subRegions)
+      ->where('ttp.bundle', '=', 'markets')
+      ->where('ttp.deleted', '=', 0)
+      ->get()->all();
+
+    return json_decode(json_encode((array) $query), TRUE);
+  }
+
+  /**
+   * Get region subregion country key by tid.
+   *
+   * @param array $tids
+   *   Taxonomy ids.
+   *
+   * @return array
+   *   Key ids.
+   */
+  public static function getRegionSubregionCountryKeyByTid(array $tids) {
+    $query = DB::table('taxonomy_term__field_region_subreg_country_id as tfrsc');
+    $query->select('tfrsc.field_region_subreg_country_id_value');
+    $query->whereIn('tfrsc.entity_id', $tids);
+    $query->where('tfrsc.langcode', '=', 'en');
+    $query->where('tfrsc.deleted', '=', 0);
+    $results = $query->get()->all();
+    return json_decode(json_encode((array) $results), TRUE);
+  }
+
 }
