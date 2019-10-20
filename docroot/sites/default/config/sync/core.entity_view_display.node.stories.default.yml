@@ -33,6 +33,7 @@ dependencies:
     - field.field.node.stories.field_sub_title
     - field.field.node.stories.field_tags
     - field.field.node.stories.field_translation
+    - field.field.node.stories.field_try_this
     - field.field.node.stories.field_video
     - field.field.node.stories.field_video_thumbnail
     - node.type.stories
@@ -214,6 +215,13 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: list_default
+    region: content
+  field_try_this:
+    weight: 26
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
     region: content
   field_video:
     type: entity_reference_entity_view
