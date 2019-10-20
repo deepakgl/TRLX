@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 name: consumer_category_listing_mobile
-label: 'Consumer Category Listing Mobile (345x158)'
+label: 'Consumer Category Listing Mobile (345x160)'
 effects:
   f5651645-05b9-4f66-bb8e-1d563bf734a9:
     uuid: f5651645-05b9-4f66-bb8e-1d563bf734a9
@@ -11,5 +11,5 @@ effects:
     weight: 1
     data:
       width: 345
-      height: 158
+      height: 160
       anchor: center-center
