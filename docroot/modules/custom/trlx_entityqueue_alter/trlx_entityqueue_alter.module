@@ -1,0 +1,174 @@
+<?php
+
+/**
+ * @file
+ * Entityqueue alter module file.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\views\ViewExecutable;
+use Drupal\elx_user\Utility\UserUtility;
+
+/**
+ * Implements hook_form_alter().
+ */
+function trlx_entityqueue_alter_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  switch ($form_id) {
+    case 'entity_subqueue_browse_products_edit_form':
+    case 'entity_subqueue_browse_products_market_wise_edit_form':
+      $form['#prefix'] = "<div class='entityqueue-help-text'>Maximum 6 items
+       can be added.";
+      $form['#suffix'] = "</div>";
+      break;
+
+    case 'entity_subqueue_spotlight_edit_form':
+    case 'entity_subqueue_stories_edit_form':
+    case 'entity_subqueue_explore_learning_levels_edit_form':
+    case 'entity_subqueue_spotlight_market_wise_edit_form':
+    case 'entity_subqueue_stories_market_wise_edit_form':
+    case 'entity_subqueue_learning_levels_market_wise_edit_form':
+    case 'entity_subqueue_insider_corner_hompage_edit_form':
+    case 'entity_subqueue_spotlight_section_edit_form':
+      $form['#prefix'] = "<div class='entityqueue-help-text'>Maximum 4 items
+       can be added.";
+      $form['#suffix'] = "</div>";
+      break;
+  }
+  $edit_queue = [
+    'entity_subqueue_spotlight_market_wise_edit_form',
+    'entity_subqueue_browse_products_market_wise_edit_form',
+    'entity_subqueue_stories_market_wise_edit_form',
+    'entity_subqueue_learning_levels_market_wise_edit_form',
+  ];
+  $add_queue = [
+    'entity_subqueue_spotlight_market_wise_form',
+    'entity_subqueue_browse_products_market_wise_form',
+    'entity_subqueue_stories_market_wise_form',
+    'entity_subqueue_learning_levels_market_wise_form',
+  ];
+  if (in_array($form_id, $edit_queue) ||in_array($form_id, $add_queue)) {
+    if (in_array($form_id, $edit_queue)) {
+      $form['field_market']['#disabled'] = TRUE;
+      $form['title']['#disabled'] = TRUE;
+    }
+    if ($form_id != 'entity_subqueue_learning_levels_market_wise_edit_form' &&
+    $form_id != 'entity_subqueue_learning_levels_market_wise_form') {
+      // @todo Need to do some correction in validation query.
+      $form['#validate'][] = 'elx_entityqueue_alter_validate';
+    }
+    $form['#attached']['library'][] = 'elx_entityqueue_alter/entity_autocomplete';
+  }
+}
+
+/**
+ * Implements validation to check node id added are of respective market.
+ *
+ * @param mixed $form
+ *   Form object.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   Form state object.
+ */
+function trlx_entityqueue_alter_validate($form, $form_state) {
+  $items = array_filter(array_column($form_state->getValues()['items'],
+   'target_id'));
+  if (!empty(array_filter($items))) {
+    // Get the current path args.
+    $path_args = array_filter(explode('/', \Drupal::service('path.current')
+    ->getPath()));
+    // Load the entity queue.
+    $entity_subqueue = \Drupal::entityManager()->getStorage('entity_queue')
+    ->load($path_args[4]);
+    // Fetch the target bundles of the queue.
+    $queue_type = array_keys($entity_subqueue
+    ->getEntitySettings()['handler_settings']['target_bundles']);
+    $market_id = $form_state->getValues()['field_market'][0]['target_id'];
+    $query = db_select('node__field_markets', 'fm')
+      ->distinct('fm.field_markets_target_id')
+      ->fields('fm', ['entity_id', 'field_markets_target_id'])
+      ->condition('fm.entity_id', $items, 'IN')
+      ->condition('fm.bundle', $queue_type, 'IN')
+      ->execute()
+      ->fetchAll();
+    $data = [];
+    foreach ($query as $key => $value) {
+      $data[$value->entity_id][] = $value->field_markets_target_id;
+    }
+    foreach ($items as $key => $item) {
+      if (!in_array($market_id, $data[$item])) {
+        $form_state->setErrorByName('items][' . $key, t('Please add appropiate
+         node of respective market.'));
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_views_query_alter().
+ */
+function trlx_entityqueue_alter_views_query_alter(ViewExecutable $view, $query) {
+  $view_id = [
+    'browse_products',
+    'stories_listing',
+    'learning_levels'
+  ];
+  // Array of market wise entityqueue.
+  $display = [
+    'rest_export_spotlight_market_wise',
+    'rest_export_browse_products_market_wise',
+    'rest_export_trending_section_market_wise',
+    'rest_export_explore_learning_levels_market_wise',
+  ];
+  // Array of global entityqueue.
+  $global_queue = [
+    'rest_export_browse_products',
+    'rest_export_trending_section',
+    'rest_export_explore_learning_levels',
+  ];
+  // Alter market filter for spotlight section on the basis of user market.
+  if (in_array($view->id(), $view_id)) {
+    $user_utility = new UserUtility();
+    // Fetch the user roles.
+    $roles = $user_utility->getUserRoles(\Drupal::currentUser()->id());
+    if (in_array($view->current_display, $display)) {
+      // Fetch the user market.
+      $market = $user_utility->getMarketByUserId(\Drupal::currentUser()->id(),
+      'all');
+      $query->where[0]['conditions'][0]['value']
+      [':entity_subqueue__field_market_field_market_target_id'] =
+      $market[0]->field_default_market_target_id;
+      _prepare_query($query, $roles, $view->id());
+    }
+    elseif ($roles && in_array($view->current_display, $global_queue)) {
+      _prepare_query($query, $roles, $view->id());
+    }
+  }
+}
+
+/**
+ * Prepare entityqueue view query.
+ *
+ * @param  mixed $query
+ *   View query object.
+ * @param  array $roles
+ *   User roles.
+ * @param  int $view_id
+ *   View id.
+ */
+function _prepare_query($query, $roles, $view_id) {
+  // Add access by role table to the query.
+  // Add access by role condition based on the current user role.
+  if ($roles && $view_id != 'learning_levels') {
+    $query->queueTable('node__field_access_by_role',
+     'node_field_data', NULL, 'node__field_access_by_role');
+     $query->addWhere('1',
+      'node__field_access_by_role.field_access_by_role_target_id',
+       $roles, 'IN');
+  }
+  elseif ($roles && $view_id == 'learning_levels') {
+    $query->queueTable('taxonomy_term__field_access_by_role',
+     'taxonomy_term_field_data', NULL, 'taxonomy_term__field_access_by_role');
+     $query->addWhere('1',
+      'taxonomy_term__field_access_by_role.field_access_by_role_target_id',
+       $roles, 'IN');
+  }
+}

@@ -337,6 +337,9 @@ function trlx_utility_taxonomy_submit(array &$form, FormStateInterface $form_sta
       'consumer_category_listing_desktop',
       'consumer_category_listing_tablet',
       'consumer_category_listing_mobile',
+      'listing_image_desktop',
+      'listing_image_tablet',
+      'listing_image_mobile',
     ]
     );
   }
