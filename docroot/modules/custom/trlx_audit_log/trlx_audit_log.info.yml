@@ -1,6 +1,7 @@
-name: 'ELX Audit Log'
+name: 'TRLX Audit Log'
 type: module
 description: 'Provides logging entity audit events in ELK.'
 core: '8.x'
+package: TRLX
 dependencies:
-  - elx_utility
+  - trlx_utility
