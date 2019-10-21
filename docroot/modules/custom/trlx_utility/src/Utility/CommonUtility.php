@@ -22,6 +22,7 @@ class CommonUtility {
   const TREND = 'trend';
   const SELLING_TIPS = 'sellingTips';
   const CONSUMER = 'consumer';
+  const BRAND_LEVEL = 'brandLevel';
 
   /**
    * Build success response.

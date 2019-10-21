@@ -255,6 +255,8 @@ function trlx_utility_form_alter(&$form, FormStateInterface $form_state, $form_i
       $commonUtility = new CommonUtility();
       // Fetch Consumer Section Term Id.
       list($consumerTermId) = $commonUtility->getSectionTerm($commonUtility::CONSUMER);
+      // Fetch Brand Level Section Term Id.
+      list($brandLevelTermId) = $commonUtility->getSectionTerm($commonUtility::BRAND_LEVEL);
 
       /*** Show/Hide/Required Consumer Category based on section selection - START ***/
       if (!empty($consumerTermId)) {
@@ -287,9 +289,43 @@ function trlx_utility_form_alter(&$form, FormStateInterface $form_state, $form_i
         $form['#validate'][] = 'stories_validate';
       }
       /*** Show/Hide/Required Consumer Category based on section selection - END ***/
+
+      /*** Show/Hide Brands list based on Brand List section - START ***/
+      if (!empty($brandLevelTermId)) {
+        // Visible state.
+        $form['field_brands']['widget']['#states']['visible'] = [
+          // If Content Section is checkbox.
+          ["input[name='field_content_section[{$brandLevelTermId}]']" => ['checked' => TRUE]],
+          // If Content Section is radio button.
+          // ["input[name='field_content_section']" => ['value' => $brandLevelTermId]],.
+        ];
+
+        // Enabled state.
+        $form['field_brands']['widget']['#states']['enabled'] = [
+          // If Content Section is checkbox.
+          ["input[name='field_content_section[{$brandLevelTermId}]']" => ['checked' => TRUE]],
+          // If Content Section is radio button.
+          // ["input[name='field_content_section']" => ['value' => $brandLevelTermId]],.
+        ];
+
+        // Required state.
+        $form['field_brands']['widget']['#states']['required'] = [
+          // If Content Section is checkbox.
+          ["input[name='field_content_section[{$brandLevelTermId}]']" => ['checked' => TRUE]],
+          // If Content Section is radio button.
+          // ["input[name='field_content_section']" => ['value' => $brandLevelTermId]],.
+        ];
+
+        // Unset option "N/A".
+        unset($form['field_brands']['widget']['#options']['_none']);
+        $form['#validate'][] = 'stories_validate';
+        // kint($form['field_brands']);exit;
+      }
+      /*** Show/Hide Brands list based on Brand List section - END ***/
       break;
 
     default:
+      break;
   }
 }
 
@@ -317,6 +353,9 @@ function trlx_utility_taxonomy_submit(array &$form, FormStateInterface $form_sta
       'search_listings_tablet',
       'search_listings_desktop',
       'search_listings_mobile',
+      'stories_level_listing_mobile',
+      'stories_level_listing_tablet',
+      'stories_level_listing_desktop',
     ]
     );
   }
@@ -335,6 +374,9 @@ function trlx_utility_taxonomy_submit(array &$form, FormStateInterface $form_sta
       'consumer_category_listing_desktop',
       'consumer_category_listing_tablet',
       'consumer_category_listing_mobile',
+      'listing_image_desktop',
+      'listing_image_tablet',
+      'listing_image_mobile',
     ]
     );
   }
@@ -405,6 +447,13 @@ function stories_validate(array &$form, FormStateInterface $form_state) {
       // Check for Consumer Category required validation.
       if (empty($form_state->getValue('field_consumer_category')[0]['target_id'])) {
         $form_state->setErrorByName('field_consumer_category', t('@title is required!', ['@title' => $form['field_consumer_category']['widget']['#title']]));
+      }
+      break;
+
+    case $commonUtility::BRAND_LEVEL:
+      // Check for Consumer Category required validation.
+      if (empty($form_state->getValue('field_brands')[0]['target_id'])) {
+        $form_state->setErrorByName('field_brands', t('@title is required!', ['@title' => $form['field_brands']['widget']['#title']]));
       }
       break;
 

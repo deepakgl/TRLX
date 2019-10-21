@@ -85,21 +85,17 @@ class LeaderboardController extends Controller {
     $this->limit = isset($validatedData['limit']) ? (int) $validatedData['limit'] : 10;
     $this->offset = isset($validatedData['offset']) ? (int) $validatedData['offset'] : 0;
     $section = isset($validatedData['section']) ? $validatedData['section'] : '';
-    $section_filter = isset($validatedData['sectionFilter']) ? (int) $validatedData['sectionFilter'] : 0;
+    $section_filter = isset($validatedData['sectionFilter']) ? $validatedData['sectionFilter'] : 0;
     // Fetch respective user info from elastic.
     $current_user_data = ElasticUserModel::fetchElasticUserData($this->uid, $this->elasticClient);
+    // To show user rank in the region on the profile page.
+    $profileSection = $section;
     if ($section == '') {
-      // To show user rank in the region on the profile page.
-      $user_rank = $this->calculateUserRankByPoints($this->elasticClient, 'region');
+      $section = 'region';
     }
-    else {
-      // To show user rank in the section on profile page based on selection.
-      $user_rank = $this->calculateUserRankByPoints($this->elasticClient, $section);
-    }
-    $other_users_data['hits']['hits'] = [];
-    if ($section != '') {
-      $other_users_data = $this->getAllUsersRankByPoints($this->elasticClient, $section, $section_filter);
-    }
+    // To show user rank in section on leaderboard page based on selection.
+    $user_rank = $this->calculateUserRankByPoints($this->elasticClient, $section);
+    $other_users_data = $this->getAllUsersRankByPoints($this->elasticClient, $section, $section_filter);
     // Add 1 in the rank of current user.
     $user_rank = !empty($user_rank) ? $user_rank['hits']['total'] : 0;
     $user_selected_section_rank = ($user_rank == 0) ? 1 : ($user_rank + 1);
@@ -123,11 +119,22 @@ class LeaderboardController extends Controller {
         $i++;
         $rank++;
       }
-      $pager = $this->buildPager($other_users_data, $this->limit, $this->offset);
-      $response['sectionData'] = $sectionData;
+      if ($profileSection != '') {
+        $pager = $this->buildPager($other_users_data, $this->limit, $this->offset);
+        $response['sectionData'] = $sectionData;
+      }
+    }
+    // If multiple user have same number of view points.
+    $keys = array_keys(array_column($sectionData, 'pointValue'), $total_points);
+    if (!empty($keys) && count($keys) >= 2) {
+      foreach ($keys as $key) {
+        if ($sectionData[$key]['uid'] == $this->uid) {
+          $response['userData'] = $sectionData[$key];
+        }
+      }
     }
     header('Content-language: ' . $validatedData['language']);
-    if (!empty($sectionData)) {
+    if (!empty($sectionData) && ($profileSection != '')) {
       return $this->successResponse($response, Response::HTTP_OK, $pager);
     }
     else {
