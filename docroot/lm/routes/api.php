@@ -87,11 +87,6 @@ $router->group(
       $router->post('update/user/elastic/index', 'UserActivitiesController@updateUserElasticBody');
     });
 
-    // User Rank.
-    $router->group(['prefix' => 'v1'], function () use ($router) {
-      $router->get('userProfileRank', 'UserRankController@userProfileRank');
-    });
-
     // Global activity.
     $router->group(['prefix' => 'v2'], function () use ($router) {
       $router->get('userActivity', 'UserActivitiesController@userActivity');
