@@ -19,4 +19,6 @@ permissions:
   - 'translate tools node'
   - 'translate tools-pdf node'
   - 'translate welcome_message node'
+  - 'update insider_corner_hompage entityqueue'
+  - 'update spotlight_section entityqueue'
   - 'view group_content_access'
