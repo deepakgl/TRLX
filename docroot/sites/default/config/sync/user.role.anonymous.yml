@@ -46,6 +46,7 @@ permissions:
   - 'restful get terms_and_condition_anonymous'
   - 'restful get terms_and_conditions_anonymous'
   - 'restful get tr_trends_homepage_section'
+  - 'restful get translation_key'
   - 'restful get trends_listing'
   - 'restful get user_activities_level'
   - 'restful get video_details'
