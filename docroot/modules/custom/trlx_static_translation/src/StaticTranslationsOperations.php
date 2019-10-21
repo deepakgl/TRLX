@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\elx_static_translation;
+namespace Drupal\trlx_static_translation;
 
 use Drupal\taxonomy\Entity\Term;
 
