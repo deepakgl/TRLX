@@ -112,8 +112,6 @@
             },
             "drupal/entityqueue": {
                 "entityqueue title": "patches/entityqueue/entityqueue_title.patch",
-                "entityqueue subqueue list alter": "patches/entityqueue/entity_subqueue_list_builders.patch",
-                "entityqueue queue list alter": "patches/entityqueue/entity_queue_list_builder.patch",
                 "entityqueue queue actions alter": "patches/entityqueue/entityqueue_links_action.patch",
                 "entityqueue queue routing alter": "patches/entityqueue/entityqueue_routing.patch"
             },
