@@ -32,6 +32,11 @@ function trlx_entityqueue_alter_form_alter(&$form, FormStateInterface $form_stat
       $form['#prefix'] = "<div class='entityqueue-help-text'>Maximum 4 items
        can be added.";
       $form['#suffix'] = "</div>";
+      unset($form['actions']['reverse']);
+      unset($form['actions']['shuffle']);
+      $form['actions']['clear']['#value'] = 'Clear All';
+      //$form['actions']['reverse']['#access'] = FALSE;
+      //$form['actions']['Reverse']['#access'] = FALSE;
       break;
   }
   $edit_queue = [
