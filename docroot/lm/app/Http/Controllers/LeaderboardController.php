@@ -39,6 +39,12 @@ class LeaderboardController extends Controller {
    * @var offset
    */
   private $offset = NULL;
+  /**
+   * Size.
+   *
+   * @var size
+   */
+  private $size = NULL;
 
   /**
    * Create a new controller instance.
@@ -52,6 +58,8 @@ class LeaderboardController extends Controller {
     $this->limit = 10;
     // Offset.
     $this->offset = 0;
+    // Size.
+    $this->size = 10000;
   }
 
   /**
@@ -89,13 +97,14 @@ class LeaderboardController extends Controller {
     // Fetch respective user info from elastic.
     $current_user_data = ElasticUserModel::fetchElasticUserData($this->uid, $this->elasticClient);
     // To show user rank in the region on the profile page.
-    $profileSection = $section;
+    $profileSection = '';
     if ($section == '') {
+      $profileSection = 'profilePage';
       $section = 'region';
     }
     // To show user rank in section on leaderboard page based on selection.
     $user_rank = $this->calculateUserRankByPoints($this->elasticClient, $section);
-    $other_users_data = $this->getAllUsersRankByPoints($this->elasticClient, $section, $section_filter);
+    $other_users_data = $this->getAllUsersRankInTheSystem($this->elasticClient, $section, $section_filter);
     // Add 1 in the rank of current user.
     $user_rank = !empty($user_rank) ? $user_rank['hits']['total'] : 0;
     $user_selected_section_rank = ($user_rank == 0) ? 1 : ($user_rank + 1);
@@ -108,124 +117,30 @@ class LeaderboardController extends Controller {
       'stamps' => $badges_count,
     ];
     $response['userData'] = $userData;
-    $sectionData = [];
-    if (!empty($other_users_data['hits']['hits'])) {
-      $rank = 1;
-      $i = 0;
-      foreach ($other_users_data['hits']['hits'] as $value) {
-        $sectionData[$i]['uid'] = (int) $value['_source']['uid'];
-        $sectionData[$i]['rank'] = "#" . $rank;
-        $sectionData[$i]['pointValue'] = isset($value['_source']['total_points']) ? $value['_source']['total_points'] : 0;
-        $i++;
-        $rank++;
-      }
-      if ($profileSection != '') {
-        $pager = $this->buildPager($other_users_data, $this->limit, $this->offset);
-        $response['sectionData'] = $sectionData;
-      }
+    $other_users_sliced_array = [];
+    if ($profileSection != 'profilePage') {
+      $pager = $this->buildPager($other_users_data, $this->limit, $this->offset);
+      $other_users_sliced_array = array_slice($other_users_data, $this->offset, $this->limit);
+      $response['sectionData'] = $other_users_sliced_array;
     }
+    $all_users_data_array = $this->getAllUsersRankInTheSystem($this->elasticClient);
     // If multiple user have same number of view points.
-    $keys = array_keys(array_column($sectionData, 'pointValue'), $total_points);
+    $keys = array_keys(array_column($all_users_data_array, 'pointValue'), $total_points);
     if (!empty($keys) && count($keys) >= 2) {
       foreach ($keys as $key) {
-        if ($sectionData[$key]['uid'] == $this->uid) {
-          $response['userData'] = $sectionData[$key];
+        if ($all_users_data_array[$key]['uid'] == $this->uid) {
+          $response['userData'] = $all_users_data_array[$key];
         }
       }
     }
     header('Content-language: ' . $validatedData['language']);
-    if (!empty($sectionData) && ($profileSection != '')) {
+    if (!empty($other_users_sliced_array)) {
       return $this->successResponse($response, Response::HTTP_OK, $pager);
     }
     else {
       return $this->successResponse($response, Response::HTTP_OK);
     }
 
-  }
-
-  /**
-   * Fetch total points of user.
-   *
-   * @return json
-   *   User rank by total view points.
-   */
-  protected function getAllUsersRankByPoints($elasticClient, $section, $section_filter) {
-    global $_userData;
-    $search_param = [
-      'index' => getenv("ELASTIC_ENV") . '_user',
-      'type' => 'user',
-      // Offset.
-      'from' => $this->offset,
-      // Limit.
-      'size' => $this->limit,
-      'body' => [
-        'sort' => [
-          'total_points' => [
-            'order' => 'desc',
-          ],
-          'uid' => [
-            'order' => 'desc',
-          ],
-        ],
-      ],
-    ];
-    // If no comparison is there & is not equal to world.
-    if ($section != 'world') {
-      if ($section == 'country') {
-        if (!empty($_userData->country)) {
-          // Get user information based on country.
-          // Create the query filters.
-          $filter = ($section_filter != 0) ? [$section_filter] : $_userData->country;
-          $search_param['body']['query']['bool']['filter'][]['terms'] = [
-            'country' => $filter,
-          ];
-        }
-        else {
-          return [];
-        }
-      }
-      if ($section == 'subregion') {
-        if (!empty($_userData->subregion)) {
-          // Get user information based on subregion.
-          // Create the query filters.
-          $filter = ($section_filter != 0) ? [$section_filter] : $_userData->subregion;
-          $search_param['body']['query']['bool']['filter'][]['terms'] = [
-            'subRegion' => $filter,
-          ];
-        }
-        else {
-          return [];
-        }
-      }
-      if ($section == 'region') {
-        if (!empty($_userData->region)) {
-          // Get user information based on region.
-          // Create the query filters.
-          $filter = ($section_filter != 0) ? [$section_filter] : $_userData->region;
-          $search_param['body']['query']['bool']['filter'][]['terms'] = [
-            'region' => $filter,
-          ];
-        }
-        else {
-          return [];
-        }
-      }
-      if ($section == 'location') {
-        if (!empty($_userData->location)) {
-          // Get user information based on country.
-          // Create the query filters.
-          $filter = ($section_filter != 0) ? [$section_filter] : $_userData->location;
-          $search_param['body']['query']['bool']['filter'][]['terms'] = [
-            'location' => $filter,
-          ];
-        }
-        else {
-          return [];
-        }
-      }
-    }
-    // Search the data in elastic based on the search params.
-    return $elasticClient->search($search_param);
   }
 
   /**
@@ -354,8 +269,8 @@ class LeaderboardController extends Controller {
    *   Pager array.
    */
   protected function buildPager(array $data, $limit, $offset) {
-    if (isset($data['hits']['total'])) {
-      $total_count = $data['hits']['total'] - $offset;
+    if (!empty($data)) {
+      $total_count = count($data) - $offset;
     }
     else {
       $total_count = 1;
@@ -369,6 +284,154 @@ class LeaderboardController extends Controller {
       "next_page" => 0,
     ];
     return $response;
+  }
+
+  /**
+   * Fetch user rank and other immediate users rank.
+   *
+   * @param \Illuminate\Http\Request $request
+   *   Rest resource query parameters.
+   *
+   * @return json
+   *   Object of user rank.
+   */
+  public function userProfileRank(Request $request) {
+    global $_userData;
+    $uid = $_userData->userId;
+    $response = [];
+    // Check whether elastic connectivity is there.
+    $client = Helper::checkElasticClient();
+    // Check whether user elastic index exists.
+    $exist = ElasticUserModel::checkElasticUserIndex($uid, $client);
+    if (!$client) {
+      return $this->errorResponse('No alive nodes found in cluster.', Response::HTTP_INTERNAL_SERVER_ERROR);
+    }
+    if (!$exist) {
+      return $this->errorResponse('Not authorized.', Response::HTTP_FORBIDDEN);
+    }
+    $validatedData = $this->validate($request, [
+      '_format' => 'required|format',
+      'language' => 'required|languagecode',
+    ]);
+    header('Content-language: ' . $validatedData['language']);
+    $all_users_data = $this->getAllUsersRankInTheSystem($client);
+    if (!empty($all_users_data)) {
+      foreach ($all_users_data as $key => $user_info) {
+        if ($user_info['uid'] == $uid) {
+          $response['userLeft'] = [];
+          $user_left_key = (($key - 1) > 0) ? ($key - 1) : '';
+          if ($user_left_key != '') {
+            $response['userLeft']['uid'] = $all_users_data[$user_left_key]['uid'];
+            $response['userLeft']['rank'] = $all_users_data[$user_left_key]['rank'];
+          }
+          $response['userCentre']['uid'] = $all_users_data[$key]['uid'];
+          $response['userCentre']['rank'] = $all_users_data[$key]['rank'];
+          $response['userRight'] = [];
+          $user_right_key = ($key < (count($all_users_data) - 1)) ? $key + 1 : '';
+          if ($user_right_key != '') {
+            $response['userRight']['uid'] = $all_users_data[$user_right_key]['uid'];
+            $response['userRight']['rank'] = $all_users_data[$user_right_key]['rank'];
+          }
+        }
+      }
+    }
+    return $this->successResponse($response, Response::HTTP_OK);
+  }
+
+  /**
+   * Fetch all users from the system based on applied filters.
+   *
+   * @return array
+   *   All users rank.
+   */
+  protected function getAllUsersRankInTheSystem($elasticClient, $section = 'region', $section_filter = 0) {
+    global $_userData;
+    $search_param = [
+      'index' => getenv("ELASTIC_ENV") . '_user',
+      'type' => 'user',
+      'size' => $this->size,
+      '_source_includes' => ['uid', 'total_points'],
+      'body' => [
+        'sort' => [
+          'total_points' => [
+            'order' => 'desc',
+          ],
+          'uid' => [
+            'order' => 'desc',
+          ],
+        ],
+      ],
+    ];
+    // If no comparison is there & is not equal to world.
+    if ($section != 'world') {
+      if ($section == 'country') {
+        if (!empty($_userData->country)) {
+          // Get user information based on country.
+          // Create the query filters.
+          $filter = ($section_filter != 0) ? [$section_filter] : $_userData->country;
+          $search_param['body']['query']['bool']['filter'][]['terms'] = [
+            'country' => $filter,
+          ];
+        }
+        else {
+          return [];
+        }
+      }
+      if ($section == 'subregion') {
+        if (!empty($_userData->subregion)) {
+          // Get user information based on subregion.
+          // Create the query filters.
+          $filter = ($section_filter != 0) ? [$section_filter] : $_userData->subregion;
+          $search_param['body']['query']['bool']['filter'][]['terms'] = [
+            'subRegion' => $filter,
+          ];
+        }
+        else {
+          return [];
+        }
+      }
+      if ($section == 'region') {
+        if (!empty($_userData->region)) {
+          // Get user information based on region.
+          // Create the query filters.
+          $filter = ($section_filter != 0) ? [$section_filter] : $_userData->region;
+          $search_param['body']['query']['bool']['filter'][]['terms'] = [
+            'region' => $filter,
+          ];
+        }
+        else {
+          return [];
+        }
+      }
+      if ($section == 'location') {
+        if (!empty($_userData->location)) {
+          // Get user information based on country.
+          // Create the query filters.
+          $filter = ($section_filter != 0) ? [$section_filter] : $_userData->location;
+          $search_param['body']['query']['bool']['filter'][]['terms'] = [
+            'location' => $filter,
+          ];
+        }
+        else {
+          return [];
+        }
+      }
+    }
+    // Search the data in elastic based on the search params.
+    $all_users_data = $elasticClient->search($search_param);
+    $all_users_data_array = [];
+    if (!empty($all_users_data['hits']['hits'])) {
+      $position = 1;
+      $j = 0;
+      foreach ($all_users_data['hits']['hits'] as $value) {
+        $all_users_data_array[$j]['uid'] = (int) $value['_source']['uid'];
+        $all_users_data_array[$j]['rank'] = "#" . $position;
+        $all_users_data_array[$j]['pointValue'] = isset($value['_source']['total_points']) ? $value['_source']['total_points'] : 0;
+        $j++;
+        $position++;
+      }
+    }
+    return $all_users_data_array;
   }
 
 }

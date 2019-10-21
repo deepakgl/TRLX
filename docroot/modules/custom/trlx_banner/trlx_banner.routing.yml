@@ -4,4 +4,4 @@ welcome_message.settings:
     _form: '\Drupal\trlx_banner\Form\WelcomeMessageForm'
     _title: 'Welcome Message Form'
   requirements:
-    _permission: 'administer site configuration'
+    _permission: 'access content'

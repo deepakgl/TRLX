@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\elx_audit_log;
+namespace Drupal\trlx_audit_log;
 
 /**
  * Class to create the corresponding events for the entities.
