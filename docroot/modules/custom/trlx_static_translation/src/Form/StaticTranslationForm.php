@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\elx_static_translation\Form;
+namespace Drupal\trlx_static_translation\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -14,7 +14,7 @@ class StaticTranslationForm extends FormBase {
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'elx_static_translation';
+    return 'trlx_static_translation';
   }
 
   /**
@@ -43,7 +43,7 @@ class StaticTranslationForm extends FormBase {
    * Form validation.
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
-    $file_name = _elx_file_name($form_state->getValue('file_upload')[0]);
+    $file_name = _trlx_file_name($form_state->getValue('file_upload')[0]);
     if (pathinfo($file_name, PATHINFO_EXTENSION) != 'csv') {
       return $form_state->setErrorByName('file_upload', t('The file extension is not valid, please upload .csv file only.'));
     }
@@ -53,7 +53,7 @@ class StaticTranslationForm extends FormBase {
    * Form submit.
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $file_uri = _elx_file_uri($form_state->getValue('file_upload')[0]);
+    $file_uri = _trlx_file_uri($form_state->getValue('file_upload')[0]);
     if (($handle = fopen($file_uri, 'r')) !== FALSE) {
       while (($data = fgetcsv($handle)) !== FALSE) {
         $value = [
@@ -62,7 +62,7 @@ class StaticTranslationForm extends FormBase {
           'language' => $data[2],
         ];
         $operations[] = [
-          '\Drupal\elx_static_translation\StaticTranslationsOperations::import',
+          '\Drupal\trlx_static_translation\StaticTranslationsOperations::import',
           [
             $value,
             t('(Operation @operation)', ['@operation' => $value]),
@@ -73,7 +73,7 @@ class StaticTranslationForm extends FormBase {
       $batch = [
         'title' => t('Performing bulk operations...'),
         'operations' => $operations,
-        'finished' => '\Drupal\elx_static_translation\StaticTranslationsOperations::finishedCallback',
+        'finished' => '\Drupal\trlx_static_translation\StaticTranslationsOperations::finishedCallback',
       ];
 
       batch_set($batch);
