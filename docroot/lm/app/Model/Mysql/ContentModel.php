@@ -3,7 +3,6 @@
 namespace App\Model\Mysql;
 
 use Illuminate\Support\Facades\DB;
-use App\Model\Elastic\PointsModel;
 use App\Support\Helper;
 use App\Model\Elastic\BadgeModel;
 
@@ -129,15 +128,9 @@ class ContentModel {
       if ($query[0]->statement_status != 'progress') {
         return FALSE;
       }
-      // Allocate points to user on completion of level.
-      PointsModel::allocatePointsOnLevelComplete($params);
       return DB::table('lm_lrs_records')
         ->where('nid', $params['nid'])
         ->update(['statement_status' => $params['statement_status'], 'tid' => $params['tid']]);
-    }
-    if ($params['statement_status'] != 'progress') {
-      // Allocate points to user on completion of level.
-      PointsModel::allocatePointsOnLevelComplete($params);
     }
 
     DB::table('lm_lrs_records')->insert([
@@ -522,37 +515,6 @@ class ContentModel {
     if (!$elastic_client) {
       return FALSE;
     }
-    $lang = UserModel::getUserInfoByUid($params['uid'], 'language');
-    $market = UserModel::getUserInfoByUid($params['uid'], ['market']);
-    // Fetch all completed level by user id.
-    $results = DB::select(DB::raw("SELECT lm.tid , GROUP_CONCAT(COALESCE(lrs.statement_status, 'NULL'))
-    as status FROM lm_terms_node as lm LEFT JOIN lm_lrs_records
-    as lrs on  lm.nid = lrs.nid AND  lm.tid = lrs.tid AND lrs.uid = {$params['uid']} LEFT
-    JOIN node_field_data as nfd on nfd.nid  = lm.nid INNER JOIN node__field_markets as nfm on nfm.entity_id = lm.nid WHERE nfd.langcode =
-    '{$lang[0]->language}' AND nfm.field_markets_target_id = {$market[0]->market}  AND nfd.status = 1 GROUP BY lm.tid"));
-    $status = [];
-    foreach ($results as $key => $result) {
-      $status_array = explode(",", $result->status);
-      $count_null = array_count_values($status_array);
-      // Get the in-progress/completed levels.
-      if (!in_array('progress', $status_array) && !isset($count_null['NULL'])) {
-        $status[] = $result->tid;
-      }
-    }
-    // Allocate badge to user on completion of respective level.
-    $badge_name = [];
-    if (count($status) == 1) {
-      $badge_name[] = 'on_your_way_badge';
-    }
-    elseif (count($status) == 5) {
-      $badge_name[] = 'high_five_badge';
-    }
-    elseif (count($status) == 10) {
-      $badge_name[] = 'perfect_10_badge';
-    }
-    if (!empty($badge_name)) {
-      BadgeModel::allocateBadgeToUser($params['nid'], $params, $badge_name, $elastic_client);
-    }
     // Allocate badge to user on level percentage.
     $level_info = self::getLevelModules($params);
     $percentage = self::getLevelModulePercentage($params, $level_info);
@@ -575,7 +537,7 @@ class ContentModel {
    *   Level related nids.
    */
   public static function getLevelModules($params) {
-    $user_info = UserModel::getUserInfoByUid($params['uid'], ['market', 'language']);
+    $market = explode(", ", $params['market']);
     // Query for get all module by category id.
     $query = DB::table('node_field_data as n');
     $query->leftJoin('node__field_learning_category as nflc', 'n.nid', '=', 'nflc.entity_id');
@@ -584,11 +546,12 @@ class ContentModel {
     $query->distinct('n.nid');
     $query->where('n.type', '=', 'level_interactive_content');
     $query->where('n.status', '=', 1);
-    $query->where('n.langcode', '=', $user_info[0]->language);
-    $query->where('nflc.langcode', '=', $user_info[0]->language);
+    $query->where('n.langcode', '=', $params['lang']);
+    $query->where('nflc.langcode', '=', $params['lang']);
     $query->where('nflc.field_learning_category_target_id', '=', $params['tid']);
-    $query->where('nfm.field_markets_target_id', '=', $user_info[0]->market);
+    $query->whereIn('nfm.field_markets_target_id', $market);
     $result = $query->get();
+    $nids = [];
     foreach ($result as $key => $value) {
       $nids[] = $value->nid;
     }

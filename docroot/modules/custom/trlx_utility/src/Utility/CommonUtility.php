@@ -12,6 +12,8 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\media\Entity\Media;
 use Drupal\file\Entity\File;
 use Elasticsearch\ClientBuilder;
+use Drupal\taxonomy\Entity\Term;
+
 
 /**
  * Purpose of this class is to build common object.
@@ -816,6 +818,43 @@ class CommonUtility {
       return $result;
     } catch (\Exception $e) {
       return FALSE;
+    }
+  }
+
+ /**
+  * Method to get notification translation.
+  *
+  * @param string $value
+  *   expects parammeter of notification of taxonomy
+  *
+  * @return array
+  *   Listing Images
+  */
+  public function getNotificationTranslation($value, $langcode) {
+    // Query to fetch static translation taxonomy
+    $term = \Drupal::entityTypeManager()
+      ->getStorage('taxonomy_term')
+      ->loadByProperties(['vid' => 'static_translation','field_translation_key' => $value]);
+    if (!empty($term)) {
+      $term_object = array_shift($term);
+      if (($langcode != 'en') && ($term_object->hasTranslation($langcode))) {
+        $field_translation_key = $term_object->getTranslation($langcode)->get('field_translation_key')->value;
+      } else {
+        $field_translation_key = $term_object->get('field_translation_key')->value;
+      }
+      return $field_translation_key;
+    } else {
+      $term = Term::create([
+        'vid' => 'static_translation',
+        'name' => $value,
+        'field_translation_key'=>$value,
+      ])->save();
+
+      if ($term->save()) {
+        return $value;
+      } else {
+        return $value;
+      }
     }
   }
 
