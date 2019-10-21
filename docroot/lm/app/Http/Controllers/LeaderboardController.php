@@ -39,6 +39,12 @@ class LeaderboardController extends Controller {
    * @var offset
    */
   private $offset = NULL;
+  /**
+   * Size.
+   *
+   * @var size
+   */
+  private $size = NULL;
 
   /**
    * Create a new controller instance.
@@ -52,6 +58,8 @@ class LeaderboardController extends Controller {
     $this->limit = 10;
     // Offset.
     $this->offset = 0;
+    // Size.
+    $this->size = 10000;
   }
 
   /**
@@ -124,12 +132,13 @@ class LeaderboardController extends Controller {
         $response['sectionData'] = $sectionData;
       }
     }
+    $all_users_data_array = $this->getAllUsersRankInTheSystem($this->elasticClient);
     // If multiple user have same number of view points.
-    $keys = array_keys(array_column($sectionData, 'pointValue'), $total_points);
+    $keys = array_keys(array_column($all_users_data_array, 'pointValue'), $total_points);
     if (!empty($keys) && count($keys) >= 2) {
       foreach ($keys as $key) {
-        if ($sectionData[$key]['uid'] == $this->uid) {
-          $response['userData'] = $sectionData[$key];
+        if ($all_users_data_array[$key]['uid'] == $this->uid) {
+          $response['userData'] = $all_users_data_array[$key];
         }
       }
     }
@@ -158,6 +167,7 @@ class LeaderboardController extends Controller {
       'from' => $this->offset,
       // Limit.
       'size' => $this->limit,
+      '_source_includes' => ['uid', 'total_points'],
       'body' => [
         'sort' => [
           'total_points' => [
@@ -369,6 +379,104 @@ class LeaderboardController extends Controller {
       "next_page" => 0,
     ];
     return $response;
+  }
+
+  /**
+   * Fetch user rank.
+   *
+   * @param \Illuminate\Http\Request $request
+   *   Rest resource query parameters.
+   *
+   * @return json
+   *   Object of user rank.
+   */
+  public function userProfileRank(Request $request) {
+    global $_userData;
+    $uid = $_userData->userId;
+    $response = [];
+    // Check whether elastic connectivity is there.
+    $client = Helper::checkElasticClient();
+    // Check whether user elastic index exists.
+    $exist = ElasticUserModel::checkElasticUserIndex($uid, $client);
+    if (!$client) {
+      return $this->errorResponse('No alive nodes found in cluster.', Response::HTTP_INTERNAL_SERVER_ERROR);
+    }
+    if (!$exist) {
+      return $this->errorResponse('Not authorized.', Response::HTTP_FORBIDDEN);
+    }
+    $validatedData = $this->validate($request, [
+      '_format' => 'required|format',
+      'language' => 'required|languagecode',
+    ]);
+    header('Content-language: ' . $validatedData['language']);
+    $all_users_data = $this->getAllUsersRankInTheSystem($client);
+    if (!empty($all_users_data)) {
+      foreach ($all_users_data as $key => $user_info) {
+        if ($user_info['uid'] == $uid) {
+          $response['userLeft'] = [];
+          $user_left_key = (($key - 1) > 0) ? ($key - 1) : '';
+          if ($user_left_key != '') {
+            $response['userLeft']['uid'] = $all_users_data[$user_left_key]['uid'];
+            $response['userLeft']['rank'] = $all_users_data[$user_left_key]['rank'];
+          }
+          $response['userCentre']['uid'] = $all_users_data[$key]['uid'];
+          $response['userCentre']['rank'] = $all_users_data[$key]['rank'];
+          $response['userRight'] = [];
+          $user_right_key = ($key < (count($all_users_data) - 1)) ? $key + 1 : '';
+          if ($user_right_key != '') {
+            $response['userRight']['uid'] = $all_users_data[$user_right_key]['uid'];
+            $response['userRight']['rank'] = $all_users_data[$user_right_key]['rank'];
+          }
+        }
+      }
+    }
+    return $this->successResponse($response, Response::HTTP_OK);
+  }
+
+  /**
+   * Fetch all users from the system.
+   *
+   * @return array
+   *   All users rank.
+   */
+  protected function getAllUsersRankInTheSystem($elasticClient) {
+    global $_userData;
+    $search_param = [
+      'index' => getenv("ELASTIC_ENV") . '_user',
+      'type' => 'user',
+      'size' => $this->size,
+      '_source_includes' => ['uid', 'total_points'],
+      'body' => [
+        'sort' => [
+          'total_points' => [
+            'order' => 'desc',
+          ],
+          'uid' => [
+            'order' => 'desc',
+          ],
+        ],
+      ],
+    ];
+    // Get user information based on region.
+    // Create the query filters.
+    $search_param['body']['query']['bool']['filter'][]['terms'] = [
+      'region' => $_userData->region,
+    ];
+    // Search the data in elastic based on the search params.
+    $all_users_data = $elasticClient->search($search_param);
+    $all_users_data_array = [];
+    if (!empty($all_users_data['hits']['hits'])) {
+      $position = 1;
+      $j = 0;
+      foreach ($all_users_data['hits']['hits'] as $value) {
+        $all_users_data_array[$j]['uid'] = (int) $value['_source']['uid'];
+        $all_users_data_array[$j]['rank'] = "#" . $position;
+        $all_users_data_array[$j]['pointValue'] = isset($value['_source']['total_points']) ? $value['_source']['total_points'] : 0;
+        $j++;
+        $position++;
+      }
+    }
+    return $all_users_data_array;
   }
 
 }
