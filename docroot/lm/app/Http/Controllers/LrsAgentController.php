@@ -168,12 +168,16 @@ class LrsAgentController extends Controller {
       $uid = $request->input('uid');
       $nid = $request->input('nid');
       $tid = $request->input('tid');
+      $lang = $request->input('lang');
+      $market = $request->input('market');
       $lrs = [
         'uid' => $uid,
         'nid' => $nid,
         'tid' => $tid,
         'statement_status' => $statement_status,
         'statement_id' => $statement_id,
+        'lang' => $lang,
+        'market' => $market,
       ];
       if (!empty($statement_id)) {
         // Update LRS data.
@@ -187,7 +191,7 @@ class LrsAgentController extends Controller {
     $build = $this->build($arg1, $arg2, $request->all(), $request->headers->all());
     $post_field = $request->getcontent();
     $curl = curl_init();
-    curl_setopt_array($curl, array(
+    curl_setopt_array($curl, [
       CURLOPT_URL => $build['url'],
       CURLOPT_RETURNTRANSFER => TRUE,
       CURLOPT_ENCODING => "",
@@ -198,7 +202,7 @@ class LrsAgentController extends Controller {
       CURLOPT_POSTFIELDS => $post_field,
       CURLOPT_HTTPHEADER => $build['header'],
       CURLOPT_HEADER => TRUE,
-    ));
+    ]);
     $response = curl_exec($curl);
     $err = curl_error($curl);
     curl_close($curl);
@@ -229,7 +233,7 @@ class LrsAgentController extends Controller {
    */
   protected function processCurl(array $build, $method) {
     $curl = curl_init();
-    curl_setopt_array($curl, array(
+    curl_setopt_array($curl, [
       CURLOPT_URL => $build['url'],
       CURLOPT_RETURNTRANSFER => TRUE,
       CURLOPT_ENCODING => "",
@@ -238,7 +242,7 @@ class LrsAgentController extends Controller {
       CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
       CURLOPT_CUSTOMREQUEST => $method,
       CURLOPT_HTTPHEADER => $build['header'],
-    ));
+    ]);
 
     $response = curl_exec($curl);
     $err = curl_error($curl);

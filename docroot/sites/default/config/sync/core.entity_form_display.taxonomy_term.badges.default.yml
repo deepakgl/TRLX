@@ -35,13 +35,6 @@ content:
     third_party_settings: {  }
     type: string_textfield
     region: content
-  langcode:
-    type: language_select
-    weight: 3
-    region: content
-    settings:
-      include_locked: true
-    third_party_settings: {  }
   name:
     type: string_textfield
     weight: 0
@@ -52,12 +45,12 @@ content:
     third_party_settings: {  }
   path:
     type: path
-    weight: 4
+    weight: 3
     region: content
     settings: {  }
     third_party_settings: {  }
   translation:
-    weight: 10
+    weight: 4
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -67,3 +60,4 @@ hidden:
   field_inspiration_badge: true
   field_manual_badge: true
   field_unearned_badge_description: true
+  langcode: true

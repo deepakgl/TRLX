@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Drupal\trlx_utility\Utility\CommonUtility;
 use Drupal\trlx_utility\Utility\EntityUtility;
 use Drupal\trlx_learning_levels\Utility\LevelUtility;
+use Drupal\trlx_utility\Utility\UserUtility;
 
 /**
  * Provides a modules details resource.
@@ -114,6 +115,7 @@ class ModuleDetails extends ResourceBase {
    */
   private function prepareRow($decode, $nid, $language) {
     $levelUtility = new LevelUtility();
+    $user_utility = new UserUtility();
     global $_userData;
     global $base_url;
     $lumen_url = \Drupal::config('elx_utility.settings')
@@ -129,23 +131,24 @@ class ModuleDetails extends ResourceBase {
     $user_roles = ['beauty_advisor'];
     $user_email = 'trlx@mailinator.com';
     $user_name = 'beauty_advisor';
-
+    // Get current user markets.
+    $markets = $user_utility->getMarketByUserData($_userData);
+    $market = implode(", ", $markets);
     $actor = '"mbox":"' . $user_email . '","name":"' .
       $user_name . '","objectType":"' .
       implode(',', $user_roles) . '"';
     $actor = "{" . urlencode($actor) . "}";
     $statement_id = \Drupal::config('elx_utility.settings')
       ->get('lrs_statement_id');
-
+    // @todo will add dynamic data once user repository work done.
     $user = User::load(\Drupal::currentUser()->id());
     $uuid = $user->uuid();
-    // $uuid = '66f93bc8-befc-4586-a935-84cb2dc636ba';
     $learning_category = $levelUtility->getLevelCategory($nid);
     $decode['articulateFile'] = $base_url . $decode['articulateFile']
      . '?tincan=true&endpoint=' . $lumen_url . '/lm/api/v1/slrsa&auth='
      . $statement_id . '&actor=' . $actor . '&registration=' .
      $uuid . '&uid='
-     . $_userData->userId . '&tid=' . $learning_category . '&nid=' . $nid;
+     . $_userData->userId . '&tid=' . $learning_category . '&nid=' . $nid . '&lang=' . $language . '&market=' . $market;
 
     // Fetch previous and next level.
     list($previous, $next) = $levelUtility
