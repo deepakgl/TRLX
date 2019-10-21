@@ -13,6 +13,8 @@ use Drupal\views\ViewExecutable;
 use Drupal\trlx_utility\Utility\CommonUtility;
 use Drupal\Core\Entity\ContentEntityForm;
 use Drupal\file\Entity\File;
+use Drupal\Core\Ajax\AjaxResponse;
+use Drupal\Core\Ajax\ReplaceCommand;
 
 /**
  * Implements hook_entity_base_field_info().
@@ -75,13 +77,17 @@ function trlx_utility_form_alter(&$form, FormStateInterface $form_state, $form_i
       $form['field_point_value']['widget']['#suffix'] = '</div>';
       $form['field_content_section']['widget']['#ajax'] = [
         'callback' => 'set_section_based_point_value',
-        'wrapper' => 'field-point-value-no-ajax-wrapper',
+        // 'wrapper' => 'field-point-value-no-ajax-wrapper',
         'method' => 'replace',
         'progress' => [
           'type' => 'throbber',
           'message' => t('Updating Point Value...'),
         ],
       ];
+
+      // Prefix for Sub Title field.
+      $form['field_sub_title']['widget']['#prefix'] = '<div id="field-sub-title-no-ajax-wrapper">';
+      $form['field_sub_title']['widget']['#suffix'] = '</div>';
 
       // Stories Content Type node edit form alteration.
       // Alter form to show only Bundle mapped sections for selection.
@@ -320,7 +326,6 @@ function trlx_utility_form_alter(&$form, FormStateInterface $form_state, $form_i
         // Unset option "N/A".
         unset($form['field_brands']['widget']['#options']['_none']);
         $form['#validate'][] = 'stories_validate';
-        // kint($form['field_brands']);exit;
       }
       /*** Show/Hide Brands list based on Brand List section - END ***/
       break;
@@ -397,9 +402,22 @@ function set_section_based_point_value(array &$form, FormStateInterface $form_st
     $form['field_point_value']['widget'][0]['value']['#value'] = $point_field_value;
     $form['field_point_value']['widget'][0]['value']['#default_value'] = $point_field_value;
 
-    return $form['field_point_value'];
-  } catch (\Exception $e) {
+    // Add a help text to Sub Title for Insider Corner.
+    if ($sectionKey == CommonUtility::INSIDER_CORNER) {
+      $form['field_sub_title']['widget'][0]['value']['#description'] = t('<div class="quotes-help-text"><b>This field will be used for Quotes</b></div>');
+    }
 
+    // An AjaxResponse object.
+    $response = new AjaxResponse();
+    // Issue replace command to render updated field.
+    // Replace command to replace updated Point Value field.
+    $response->addCommand(new ReplaceCommand('#field-point-value-no-ajax-wrapper', $form['field_point_value']));
+    // Replace command to replace updated Sub Title field.
+    $response->addCommand(new ReplaceCommand('#field-sub-title-no-ajax-wrapper', $form['field_sub_title']));
+
+    return $response;
+  }
+  catch (\Exception $e) {
     return FALSE;
   }
 }
