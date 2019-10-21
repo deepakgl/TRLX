@@ -9,7 +9,6 @@ use App\Model\Mysql\ContentModel;
 use App\Model\Mysql\UserModel;
 use App\Model\Elastic\ElasticUserModel;
 use App\Model\Elastic\FlagModel;
-use App\Model\Elastic\BadgeModel;
 use App\Traits\ApiResponser;
 
 /**
@@ -502,7 +501,6 @@ class FlagController extends Controller {
       $point_value = !empty($faq_config_data['faq_points']) ? (int) $faq_config_data['faq_points'] : 50;
     }
     if (isset($response['_source']['total_points'])) {
-      $badge_info['old_points'] = $response['_source']['total_points'];
       $response['_source']['total_points'] = $response['_source']['total_points'] + $point_value;
       // Prepare the elastic params and update the user index.
       $params['body'] = [
@@ -515,7 +513,6 @@ class FlagController extends Controller {
       $output = ElasticUserModel::updateElasticUserData($params, $this->uid, $this->elasticClient);
     }
     else {
-      $badge_info['old_points'] = 0;
       $params['body'] = [
         'doc' => [
           'total_points' => $point_value,
@@ -525,26 +522,12 @@ class FlagController extends Controller {
       $output = ElasticUserModel::updateElasticUserData($params, $this->uid, $this->elasticClient);
       $response = ElasticUserModel::fetchElasticUserData($this->uid, $this->elasticClient);
     }
-    // New points of user.
-    $badge_info['new_points'] = $response['_source']['total_points'];
-    $new_points = $badge_info['new_points'];
-    $badge_info['uid'] = $this->uid;
-    // Old points of user.
-    $old_points = $badge_info['old_points'];
-    $badge = [];
-    // Allocate badge to user on the basis of old points & new points.
-    if ($old_points < 1000 && $new_points >= 1000) {
-      $badge[] = 'first_1_000_points_badge';
-    }
-    if ($old_points < 5000 && $new_points >= 5000) {
-      $badge[] = 'first_5_000_points_badge';
-    }
-    if ($old_points < 10000 && $new_points >= 10000) {
-      $badge[] = 'first_10000_points_badge';
-    }
-    $set_user_point = BadgeModel::allocateBadgeToUser($nid, $badge_info, $badge, $this->elasticClient);
 
-    return $set_user_point;
+    return $this->successResponse([
+      'nid' => $nid,
+      'status' => TRUE,
+      'message' => 'Successfully updated',
+    ], Response::HTTP_OK);
   }
 
 }
