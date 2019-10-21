@@ -194,11 +194,12 @@ class CommonUtility {
    *   Following params required.
    */
   public function invalidData($param = []) {
-    global $base_url;
+    global $base_url, $_userData;
     $request_uri = $base_url . \Drupal::request()->getRequestUri();
     $param = implode(',', $param);
     $logger = \Drupal::service('logger.stdout');
     $logger->log(RfcLogLevel::ERROR, 'Following parameters is/are required: ' . $param, [
+      'user' => $_userData,
       'request_uri' => $request_uri,
       'data' => $param,
     ]);
