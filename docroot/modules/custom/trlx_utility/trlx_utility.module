@@ -12,6 +12,7 @@ use Drupal\File\FileInterface;
 use Drupal\views\ViewExecutable;
 use Drupal\trlx_utility\Utility\CommonUtility;
 use Drupal\Core\Entity\ContentEntityForm;
+use Drupal\file\Entity\File;
 
 /**
  * Implements hook_entity_base_field_info().
@@ -612,4 +613,34 @@ function trlx_utility_field_group_build_pre_render_alter(&$element) {
     }
 
   }
+}
+
+/**
+ * Fetch file uri.
+ *
+ * @param string $fid
+ *   File id.
+ *
+ * @return string
+ *   File uri.
+ */
+function _trlx_file_uri($fid) {
+  $file = File::load($fid);
+
+  return $file->getFileUri();
+}
+
+/**
+ * Fetch file name.
+ *
+ * @param string $fid
+ *   File id.
+ *
+ * @return string
+ *   File name.
+ */
+function _trlx_file_name($fid) {
+  $file = File::load($fid);
+
+  return $file->getFilename();
 }

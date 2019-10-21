@@ -1,0 +1,5 @@
+name: TRLX Static Translation
+type: module
+description: TRLX custom module for static translation.
+core: 8.x
+package: TRLX

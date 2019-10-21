@@ -5,9 +5,11 @@ namespace Drupal\trlx_lang_translation\Plugin\rest\resource;
 use Drupal\rest\Plugin\ResourceBase;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Drupal\Component\Serialization\Json;
 use Drupal\Component\Utility\Html;
-use Drupal\elx_utility\Utility\EntityUtility;
+use Drupal\trlx_utility\Utility\EntityUtility;
+use Drupal\trlx_utility\Utility\CommonUtility;
 
 /**
  * Get translation key.
@@ -33,34 +35,62 @@ class TranslationKey extends ResourceBase {
    */
   public function get(Request $request) {
     $entity_utility = new EntityUtility();
-    $language_code = $request->query->get('languageCode');
-    $all_languages = \Drupal::languageManager()->getLanguages();
-    $lang_code = [];
-    foreach ($all_languages as $key => $all_language) {
-      $lang_code[] = $all_language->getId();
-    }
-    if (!in_array($language_code, $lang_code)) {
+    $commonUtility = new CommonUtility();
+    $language_code = $request->query->get('language');
 
+    // Required parameters.
+    $requiredParams = [
+      '_format',
+      'language',
+    ];
+
+    // Check for required parameters.
+    $missingParams = [];
+    foreach ($requiredParams as $param) {
+      $$param = $request->query->get($param);
+      if (empty($$param)) {
+        $missingParams[] = $param;
+      }
+    }
+    // Report missing required parameters.
+    if (!empty($missingParams)) {
+      return $commonUtility->invalidData($missingParams);
+    }
+    // Check for valid _format type.
+    $response = $commonUtility->validateFormat($_format, $request);
+    if (!($response->getStatusCode() === Response::HTTP_OK)) {
+      return $response;
+    }
+    // Checkfor valid language code.
+    $response = $commonUtility->validateLanguageCode($language, $request);
+    if (!($response->getStatusCode() === Response::HTTP_OK)) {
+      return $response;
+    }
+
+    $all_languages = \Drupal::languageManager()->getLanguages();
+    $lang_code = array_keys($all_languages);
+
+    if (!in_array($language_code, $lang_code)) {
       return new JsonResponse('Invalid language code', 400, [], FALSE);
     }
     // Prepare view response.
     list($view_results, $status_code) = $entity_utility
       ->fetchApiResult(NULL, 'static_translation_api',
     'rest_export_static_translation_api', NULL, $language_code);
-    $decode = JSON::decode($view_results, TRUE);
-    if (!empty($decode)) {
-      foreach ($decode as $key => $value) {
-        $decode[$key] = [
-          $value['SourceKey'] =>
-          Html::decodeEntities($value['StringTransaltion']),
-        ];
-        unset($decode[$key]['SourceKey']);
-        unset($decode[$key]['StringTransaltion']);
-      }
-      $view_results = JSON::encode($decode);
+
+    // Check for empty / no result from views.
+    if (empty($view_results)) {
+      return $commonUtility->successResponse([], Response::HTTP_OK);
     }
 
-    return new JsonResponse($view_results, $status_code, [], TRUE);
+    $response = $view_results['results'];
+    if (!empty($response)) {
+      foreach ($response as $key => $value) {
+        $response[$key]['StringTransaltion'] = Html::decodeEntities($value['StringTransaltion']);
+      }
+    }
+
+    return $commonUtility->successResponse($response, $status_code, []);
   }
 
 }

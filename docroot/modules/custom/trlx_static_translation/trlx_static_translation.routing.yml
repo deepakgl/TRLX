@@ -1,7 +1,7 @@
-elx_static_translation.static_translation:
+trlx_static_translation.static_translation:
   path: '/admin/config/system/static_translation'
   defaults:
-    _form: 'Drupal\elx_static_translation\Form\StaticTranslationForm'
+    _form: 'Drupal\trlx_static_translation\Form\StaticTranslationForm'
     _title: 'CSV Import'
   requirements:
     _permission: 'administer content'
