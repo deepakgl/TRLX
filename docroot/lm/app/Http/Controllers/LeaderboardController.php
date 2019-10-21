@@ -126,7 +126,7 @@ class LeaderboardController extends Controller {
     }
     // If multiple user have same number of view points.
     $keys = array_keys(array_column($sectionData, 'pointValue'), $total_points);
-    if (!empty($keys) && count($keys) > 2) {
+    if (!empty($keys) && count($keys) >= 2) {
       foreach ($keys as $key) {
         if ($sectionData[$key]['uid'] == $this->uid) {
           $response['userData'] = $sectionData[$key];
