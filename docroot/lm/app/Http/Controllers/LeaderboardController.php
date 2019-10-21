@@ -123,12 +123,13 @@ class LeaderboardController extends Controller {
       $other_users_sliced_array = array_slice($other_users_data, $this->offset, $this->limit);
       $response['sectionData'] = $other_users_sliced_array;
     }
+    $all_users_data_array = $this->getAllUsersRankInTheSystem($this->elasticClient);
     // If multiple user have same number of view points.
-    $keys = array_keys(array_column($other_users_data, 'pointValue'), $total_points);
+    $keys = array_keys(array_column($all_users_data_array, 'pointValue'), $total_points);
     if (!empty($keys) && count($keys) >= 2) {
       foreach ($keys as $key) {
-        if ($other_users_data[$key]['uid'] == $this->uid) {
-          $response['userData'] = $other_users_data[$key];
+        if ($all_users_data_array[$key]['uid'] == $this->uid) {
+          $response['userData'] = $all_users_data_array[$key];
         }
       }
     }
@@ -286,7 +287,7 @@ class LeaderboardController extends Controller {
   }
 
   /**
-   * Fetch user rank and other immediate users rank..
+   * Fetch user rank and other immediate users rank.
    *
    * @param \Illuminate\Http\Request $request
    *   Rest resource query parameters.
