@@ -19,7 +19,7 @@ id: node.stories.field_try_this
 field_name: field_try_this
 entity_type: node
 bundle: stories
-label: 'Try this'
+label: 'TRY THIS'
 description: ''
 required: false
 translatable: true

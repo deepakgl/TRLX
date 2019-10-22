@@ -57,7 +57,9 @@ class TrlxLogger implements LoggerInterface {
       if ( $context['user'] instanceof NodeInterface) {
         $username = $context['user']->getAccountName();
       } else {
-        $username = $context['user']->name . $context['user']->userId;
+          if (isset($content['user']->name)) {
+            $username = $context['user']->name;
+          }
       }
     }
     
