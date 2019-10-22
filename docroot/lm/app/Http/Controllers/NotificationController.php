@@ -143,6 +143,7 @@ class NotificationController extends Controller {
           $notificationArray[$key]['notificationLink'] = (int) $value['notificationLink'];
           $notificationArray[$key]['notificationLinkType'] = $value['notificationLinkType'];
           $notificationArray[$key]['notificationBrandKey'] = (int) $value['notificationBrandKey'];
+          $notificationArray[$key]['notificationBrandName'] = !is_null($value['notificationBrandName']) ? $value['notificationBrandName'] : '';
           $notificationArray[$key][self::NOTIFICATION_FLAG] = (int) $value[self::NOTIFICATION_FLAG];
         }
 

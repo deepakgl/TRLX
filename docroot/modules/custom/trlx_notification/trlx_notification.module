@@ -27,6 +27,7 @@ const NOTIFICATION_LINK = 'notificationLink';
 const NOTIFICATION_LINK_TYPE = 'notificationLinkType';
 const NOTIFICATIONS_LANGUAGE = 'notificationLanguage';
 const NOTIFICATION_BRAND_KEY = 'notificationBrandKey';
+const NOTIFICATION_BRAND_NAME = 'notificationBrandName';
 const CONTENT = 'content';
 const VALUE = 'value';
 
@@ -106,7 +107,11 @@ function trlx_notification_brand_story_related_content($node) {
   $commonUtility = new CommonUtility();
   $user_utility = new UserUtility();
   $config = \Drupal::config('trlx_notification.settings');
+  $brand_id[] = $node->get('field_brands')->first()->getValue()['target_id'];
   $brand_key[] = $commonUtility->getBrandKeyByTermId($node->get('field_brands')->first()->getValue()['target_id']);
+  if (!empty($brand_id)) {
+    $brand_data = $commonUtility->brandsData($brand_id);
+  }
   // Get current node markets.
   $markets = array_column($node->get('field_markets')->getValue(), 'target_id');
   // Get current user markets.
@@ -118,13 +123,12 @@ function trlx_notification_brand_story_related_content($node) {
       $content_language = $node->langcode->value;
       $notificationArray[NOTIFICATION_TYPE] = t('BRAND');
       $notificationArray[NOTIFICATION_USER_ID] = $id;
-      $headline = $commonUtility->getNotificationTranslation('New Brand Stroy content.', $content_language);
-      $notificationArray[NOTIFICATION_HEADING] = $headline;
-      $text = $commonUtility->getNotificationTranslation('Check out new brand story:', $content_language);
-      $notificationArray[NOTIFICATION_TEXT] = $text . ' ' . $node->get('field_display_title')->first()->getValue()['value'];
+      $notificationArray[NOTIFICATION_HEADING] = $commonUtility->getNotificationTranslation("Hi TR Team. Don't miss brand story, available now.", $content_language);
+      $notificationArray[NOTIFICATION_TEXT] = $node->get('field_display_title')->first()->getValue()['value'];
       $notificationArray[NOTIFICATION_LINK] = NULL;
       $notificationArray[NOTIFICATION_LINK_TYPE] = t('brandStory');
       $notificationArray[NOTIFICATION_BRAND_KEY] = reset($brand_key);
+      $notificationArray[NOTIFICATION_BRAND_NAME] = reset($brand_data);
       $notificationArray[NOTIFICATIONS_LANGUAGE] = $content_language;
       $notification_index[] = process_notification($notificationArray);
     }
@@ -153,6 +157,10 @@ function trlx_notification_modules_related_content($node) {
   $level_category_id = $node->get('field_learning_category')->first()->getValue()['target_id'];
   $level_data = $level_utility->getLevelData($level_category_id);
   $brand_keys = array_column($level_utility->getLevelBrands($level_category_id), 'field_brand_key_value');
+  $brand_ids = array_column($level_utility->getLevelBrands($level_category_id), 'field_brands_target_id');
+  if (!empty($brand_ids)) {
+    $brand_data = $commonUtility->brandsData($brand_ids);
+  }
   $content_sections = array_column($level_utility->getLevelContentSection($level_category_id), 'field_content_section_key_value');
   $notification_index = [];
   if (in_array('brandLevel', $content_sections) && !empty($brand_keys)) {
@@ -162,12 +170,11 @@ function trlx_notification_modules_related_content($node) {
         $content_language = $node->langcode->value;
         $notificationArray[NOTIFICATION_TYPE] = t('BRAND');
         $notificationArray[NOTIFICATION_USER_ID] = $id;
-        $headline = $commonUtility->getNotificationTranslation('New Brand learning lesson added in level:', $content_language);
-        $notificationArray[NOTIFICATION_HEADING] = $headline . ' ' . $level_data->name;
-        $text = $commonUtility->getNotificationTranslation('Checkout new lesson:', $content_language);
-        $notificationArray[NOTIFICATION_TEXT] = $text . ' ' . $node->get('field_headline')->first()->getValue()['value'];
+        $notificationArray[NOTIFICATION_HEADING] = $commonUtility->getNotificationTranslation('Hello TR Team! Check out the new Learning Level.', $content_language);
+        $notificationArray[NOTIFICATION_TEXT] = $node->get('field_headline')->first()->getValue()['value'];
         $notificationArray[NOTIFICATION_LINK] = $node->id();
         $notificationArray[NOTIFICATION_LINK_TYPE] = t('brandLevel');
+        $notificationArray[NOTIFICATION_BRAND_NAME] = reset($brand_data);
         $notificationArray[NOTIFICATIONS_LANGUAGE] = $content_language;
         $notification_index[] = process_notification($notificationArray);
       }
@@ -180,12 +187,10 @@ function trlx_notification_modules_related_content($node) {
         $content_language = $node->langcode->value;
         $notificationArray[NOTIFICATION_TYPE] = t('SELLINGTIPS');
         $notificationArray[NOTIFICATION_USER_ID] = $id;
-        $headline = $commonUtility->getNotificationTranslation('New Selling Tips learning lesson added in level:', $content_language);
-        $notificationArray[NOTIFICATION_HEADING] = $headline . ' ' . $level_data->name;
-        $text = $commonUtility->getNotificationTranslation('Checkout new lesson:', $content_language);
-        $notificationArray[NOTIFICATION_TEXT] = $text . ' ' . $node->get('field_headline')->first()->getValue()['value'];
+        $notificationArray[NOTIFICATION_HEADING] = $commonUtility->getNotificationTranslation('Hello TR Team! We have the latest selling tips to help drive your business. Learn about it here.', $content_language);
+        $notificationArray[NOTIFICATION_TEXT] = $node->get('field_headline')->first()->getValue()['value'];
         $notificationArray[NOTIFICATION_LINK] = $node->id();
-        $notificationArray[NOTIFICATION_LINK_TYPE] = t('sellingTips');
+        $notificationArray[NOTIFICATION_LINK_TYPE] = t('sellingTipsLevel');
         $notificationArray[NOTIFICATIONS_LANGUAGE] = $content_language;
         $notification_index[] = process_notification($notificationArray);
       }
@@ -198,12 +203,10 @@ function trlx_notification_modules_related_content($node) {
         $content_language = $node->langcode->value;
         $notificationArray[NOTIFICATION_TYPE] = t('CONSUMER');
         $notificationArray[NOTIFICATION_USER_ID] = $id;
-        $headline = $commonUtility->getNotificationTranslation('New Consumer learning lesson added in level:', $content_language);
-        $notificationArray[NOTIFICATION_HEADING] = $headline . ' ' . $level_data->name;
-        $text = $commonUtility->getNotificationTranslation('Checkout new lesson:', $content_language);
-        $notificationArray[NOTIFICATION_TEXT] = $text . ' ' . $node->get('field_headline')->first()->getValue()['value'];
+        $notificationArray[NOTIFICATION_HEADING] = $commonUtility->getNotificationTranslation('Hello TR Team. Are you ready to meet the Travel Retail Consumer? Learn all about them here.', $content_language);
+        $notificationArray[NOTIFICATION_TEXT] = $node->get('field_headline')->first()->getValue()['value'];
         $notificationArray[NOTIFICATION_LINK] = $node->id();
-        $notificationArray[NOTIFICATION_LINK_TYPE] = t('consumer');
+        $notificationArray[NOTIFICATION_LINK_TYPE] = t('consumerLevel');
         $notificationArray[NOTIFICATIONS_LANGUAGE] = $content_language;
         $notification_index[] = process_notification($notificationArray);
       }
@@ -219,24 +222,27 @@ function trlx_notification_product_detail_related_content($node) {
   $commonUtility = new CommonUtility();
   $user_utility = new UserUtility();
   $config = \Drupal::config('trlx_notification.settings');
-  $brand_key[] = $commonUtility->getBrandKeyByTermId($node->get('field_brands')->first()->getValue()['target_id']);
+  $brand_id = $node->get('field_brands')->first()->getValue()['target_id'];
+  $brand_key[] = $commonUtility->getBrandKeyByTermId($brand_id);
+  if (!empty($brand_id)) {
+    $brand_data = $commonUtility->brandsData([$brand_id]);
+  }
   // Get current node markets.
   $markets = array_column($node->get('field_markets')->getValue(), 'target_id');
   // Get current user markets.
   $market_ref_keys = array_column($user_utility->getMarketKeyByCategoryId($markets), 'field_region_subreg_country_id_value');
   $userIds = NotificationUtility::getUsersBasedOnBrandsAndMarkets($market_ref_keys, $brand_key);
-  $notification_index = []; 
+  $notification_index = [];
   if (!empty($userIds)) {
     foreach ($userIds as $id) {
       $content_language = $node->langcode->value;
       $notificationArray[NOTIFICATION_TYPE] = t('BRAND');
       $notificationArray[NOTIFICATION_USER_ID] = $id;
-      $headline = $commonUtility->getNotificationTranslation('New product is added.', $content_language);
-      $notificationArray[NOTIFICATION_HEADING] = $headline;
-      $text = $commonUtility->getNotificationTranslation('Checkout new product factsheet:', $content_language);
-      $notificationArray[NOTIFICATION_TEXT] = $text . ' ' . $node->get('field_display_title')->first()->getValue()['value'];
+      $notificationArray[NOTIFICATION_HEADING] = $commonUtility->getNotificationTranslation("Hey TR Team. Ready for a new fact sheet? It's here!", $content_language);
+      $notificationArray[NOTIFICATION_TEXT] = $node->get('field_display_title')->first()->getValue()['value'];
       $notificationArray[NOTIFICATION_LINK] = $node->id();
       $notificationArray[NOTIFICATION_LINK_TYPE] = t('factsheet');
+      $notificationArray[NOTIFICATION_BRAND_NAME] = reset($brand_data);
       $notificationArray[NOTIFICATIONS_LANGUAGE] = $content_language;
       $notification_index[] = process_notification($notificationArray);
     }
@@ -268,10 +274,9 @@ function trlx_notification_stories_related_content($node) {
         $content_language = $node->langcode->value;
         $notificationArray[NOTIFICATION_TYPE] = t('TREND');
         $notificationArray[NOTIFICATION_USER_ID] = $id;
-        $headline = $commonUtility->getNotificationTranslation('New trending story added.', $content_language);
-        $notificationArray[NOTIFICATION_HEADING] = $headline;
+        $notificationArray[NOTIFICATION_HEADING] = $commonUtility->getNotificationTranslation("Hey TR Team! We've got a new TR Trend headed your way. Check it out.", $content_language);
         $text = $commonUtility->getNotificationTranslation('Checkout new story:', $content_language);
-        $notificationArray[NOTIFICATION_TEXT] = $text . ' ' . $node->get('field_display_title')->first()->getValue()['value'];
+        $notificationArray[NOTIFICATION_TEXT] = $node->get('field_display_title')->first()->getValue()['value'];
         $notificationArray[NOTIFICATION_LINK] = $node->id();
         $notificationArray[NOTIFICATION_LINK_TYPE] = t('trend');
         $notificationArray[NOTIFICATIONS_LANGUAGE] = $content_language;
@@ -286,10 +291,8 @@ function trlx_notification_stories_related_content($node) {
         $content_language = $node->langcode->value;
         $notificationArray[NOTIFICATION_TYPE] = t('INSIDERCORNER');
         $notificationArray[NOTIFICATION_USER_ID] = $id;
-        $headline = $commonUtility->getNotificationTranslation('New insider corner added.', $content_language);
-        $notificationArray[NOTIFICATION_HEADING] = $headline;
-        $text = $commonUtility->getNotificationTranslation('Checkout new story:', $content_language);
-        $notificationArray[NOTIFICATION_TEXT] = $text . ' ' . $node->get('field_display_title')->first()->getValue()['value'];
+        $notificationArray[NOTIFICATION_HEADING] = $commonUtility->getNotificationTranslation('Hey TR Team. Ready to meet our newest insider? Check them out today.', $content_language);
+        $notificationArray[NOTIFICATION_TEXT] = $node->get('field_display_title')->first()->getValue()['value'];
         $notificationArray[NOTIFICATION_LINK] = $node->id();
         $notificationArray[NOTIFICATION_LINK_TYPE] = t('insiderCorner');
         $notificationArray[NOTIFICATIONS_LANGUAGE] = $content_language;
@@ -304,10 +307,8 @@ function trlx_notification_stories_related_content($node) {
         $content_language = $node->langcode->value;
         $notificationArray[NOTIFICATION_TYPE] = t('SELLINGTIPS');
         $notificationArray[NOTIFICATION_USER_ID] = $id;
-        $headline = $commonUtility->getNotificationTranslation('New selling tips added.', $content_language);
-        $notificationArray[NOTIFICATION_HEADING] = $headline;
-        $text = $commonUtility->getNotificationTranslation('Checkout new story:', $content_language);
-        $notificationArray[NOTIFICATION_TEXT] = $text . ' ' . $node->get('field_display_title')->first()->getValue()['value'];
+        $notificationArray[NOTIFICATION_HEADING] = $commonUtility->getNotificationTranslation('Hi TR Team. Are you ready to learn about the latest tips to help drive your business? Here it is at a glance.', $content_language);
+        $notificationArray[NOTIFICATION_TEXT] = $node->get('field_display_title')->first()->getValue()['value'];
         $notificationArray[NOTIFICATION_LINK] = $node->id();
         $notificationArray[NOTIFICATION_LINK_TYPE] = t('sellingTips');
         $notificationArray[NOTIFICATIONS_LANGUAGE] = $content_language;
@@ -322,10 +323,8 @@ function trlx_notification_stories_related_content($node) {
         $content_language = $node->langcode->value;
         $notificationArray[NOTIFICATION_TYPE] = t('CONSUMER');
         $notificationArray[NOTIFICATION_USER_ID] = $id;
-        $headline = $commonUtility->getNotificationTranslation('New brand video uploaded.', $content_language);
-        $notificationArray[NOTIFICATION_HEADING] = t('New consumer story added.');
-        $text = $commonUtility->getNotificationTranslation('Checkout new story:', $content_language);
-        $notificationArray[NOTIFICATION_TEXT] = $text . ' ' . $node->get('field_display_title')->first()->getValue()['value'];
+        $notificationArray[NOTIFICATION_HEADING] = $commonUtility->getNotificationTranslation('Hello TR Team. Are you ready to meet the Travel Retail Consumer? Here they are at a glance.', $content_language);
+        $notificationArray[NOTIFICATION_TEXT] = $node->get('field_display_title')->first()->getValue()['value'];
         $notificationArray[NOTIFICATION_LINK] = $node->id();
         $notificationArray[NOTIFICATION_LINK_TYPE] = t('consumer');
         $notificationArray[NOTIFICATIONS_LANGUAGE] = $content_language;
@@ -342,7 +341,11 @@ function trlx_notification_stories_related_content($node) {
 function trlx_notification_video_related_content($node) {
   $commonUtility = new CommonUtility();
   $user_utility = new UserUtility();
-  $brand_key[] = $commonUtility->getBrandKeyByTermId($node->get('field_brands')->first()->getValue()['target_id']);
+  $brand_id = $node->get('field_brands')->first()->getValue()['target_id'];
+  $brand_key[] = $commonUtility->getBrandKeyByTermId($brand_id);
+  if (!empty($brand_id)) {
+    $brand_data = $commonUtility->brandsData([$brand_id]);
+  }
   // Get current node markets.
   $markets = array_column($node->get('field_markets')->getValue(), 'target_id');
   // Get current user markets.
@@ -354,11 +357,11 @@ function trlx_notification_video_related_content($node) {
       $content_language = $node->langcode->value;
       $notificationArray[NOTIFICATION_TYPE] = t('BRAND');
       $notificationArray[NOTIFICATION_USER_ID] = $id;
-      $headline = $commonUtility->getNotificationTranslation('New brand video uploaded.', $content_language);
-      $notificationArray[NOTIFICATION_HEADING] = $headline;
+      $notificationArray[NOTIFICATION_HEADING] = $commonUtility->getNotificationTranslation('Hello TR Team! Ready for a new video? Check it out today.', $content_language);
       $notificationArray[NOTIFICATION_TEXT] = $node->get('field_display_title')->first()->getValue()['value'];
       $notificationArray[NOTIFICATION_LINK] = $node->id();
       $notificationArray[NOTIFICATION_LINK_TYPE] = t('video');
+      $notificationArray[NOTIFICATION_BRAND_NAME] = reset($brand_data);
       $notificationArray[NOTIFICATIONS_LANGUAGE] = $content_language;
       $notification_index[] = process_notification($notificationArray);
     }
@@ -421,6 +424,7 @@ function process_notification(array $notificationArray) {
   $notification_index[NOTIFICATION_LINK_TYPE] = $notificationArray[NOTIFICATION_LINK_TYPE];
   $notification_index[NOTIFICATIONS_LANGUAGE] = $notificationArray[NOTIFICATIONS_LANGUAGE];
   $notification_index[NOTIFICATION_BRAND_KEY] = (int) $notificationArray[NOTIFICATION_BRAND_KEY];
+  $notification_index[NOTIFICATION_BRAND_NAME] = $notificationArray[NOTIFICATION_BRAND_NAME];
 
   return $notification_index;
 }
