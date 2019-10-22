@@ -72,12 +72,8 @@ visibility:
   user_role:
     id: user_role
     roles:
-      store_management: store_management
-      multi_brand_sales_associate: multi_brand_sales_associate
-      brand_management_and_field: brand_management_and_field
       el_regional_market_admin: el_regional_market_admin
       el_nyo_global_education_system_admin: el_nyo_global_education_system_admin
-      el_regional_market_translator: el_regional_market_translator
     negate: false
     context_mapping:
       user: '@user.current_user_context:current_user'

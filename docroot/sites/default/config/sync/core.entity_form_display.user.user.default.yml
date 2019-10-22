@@ -36,10 +36,8 @@ dependencies:
     - field.field.user.user.user_picture
     - image.style.thumbnail
   module:
-    - datetime
     - field_group
     - svg_image
-    - term_reference_tree
     - user
 third_party_settings:
   field_group:
@@ -63,39 +61,12 @@ third_party_settings:
         speed: fast
       label: 'Personal information'
       region: content
-    group_employee:
-      children:
-        - field_employer_number
-        - field_account_name
-        - field_door
-        - field_hire_date
-        - field_counter_manager
-        - field_education_manager_executiv
-        - field_account_field_executive
-        - field_field_sales_director_regio
-        - field_regional_vice_president
-        - field_general_manager_brand_mana
-        - field_market_administrator
-        - field_employment_status
-      parent_name: ''
-      weight: 1
-      format_type: fieldset
-      format_settings:
-        id: ''
-        classes: 'group-employee field-group-fieldset'
-        description: ''
-        required_fields: true
-      label: 'Employee info'
-      region: content
     group_regional:
       children:
         - field_city
-        - field_state
-        - field_country
-        - field_region_list
-        - field_default_market
+        - group_elx_user
       parent_name: ''
-      weight: 2
+      weight: 29
       format_type: fieldset
       format_settings:
         id: ''
@@ -103,15 +74,15 @@ third_party_settings:
         description: ''
         required_fields: true
       label: 'Regional information'
-      region: content
+      region: hidden
     group_elx_user:
       children:
-        - field_level
-        - field_rank
-        - field_modified_date
         - field_last_access_date
-      parent_name: ''
-      weight: 3
+        - field_level
+        - field_modified_date
+        - field_rank
+      parent_name: group_regional
+      weight: 1
       format_type: fieldset
       format_settings:
         id: ''
@@ -119,7 +90,7 @@ third_party_settings:
         description: ''
         required_fields: true
       label: 'ELX Data'
-      region: content
+      region: hidden
 _core:
   default_config_hash: K-1rBM8mTIkFp9RqOC2tMRUukOQ1xbRCfSKK8dEddnA
 id: user.user.default
@@ -132,138 +103,8 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-  field_account_field_executive:
-    weight: 14
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: string_textfield
-    region: content
-  field_account_name:
-    weight: 8
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: string_textfield
-    region: content
-  field_ar_search_access:
-    weight: 31
-    settings:
-      display_label: true
-    third_party_settings: {  }
-    type: boolean_checkbox
-    region: content
-  field_badges:
-    weight: 27
-    settings: {  }
-    third_party_settings: {  }
-    type: options_buttons
-    region: content
-  field_city:
-    weight: 14
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: string_textfield
-    region: content
-  field_counter_manager:
-    weight: 12
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: string_textfield
-    region: content
-  field_country:
-    weight: 17
-    settings: {  }
-    third_party_settings: {  }
-    type: options_select
-    region: content
-  field_default_market:
-    weight: 25
-    settings: {  }
-    third_party_settings: {  }
-    type: term_reference_tree
-    region: content
-  field_door:
-    weight: 9
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: string_textfield
-    region: content
-  field_education_manager_executiv:
-    weight: 13
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: string_textfield
-    region: content
-  field_employer_number:
-    weight: 7
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: string_textfield
-    region: content
-  field_employment_status:
-    weight: 19
-    settings: {  }
-    third_party_settings: {  }
-    type: options_select
-    region: content
-  field_field_sales_director_regio:
-    weight: 15
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: string_textfield
-    region: content
   field_first_name:
     weight: 2
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: string_textfield
-    region: content
-  field_general_manager_brand_mana:
-    weight: 17
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: string_textfield
-    region: content
-  field_has_3_0_permission:
-    weight: 29
-    settings:
-      display_label: true
-    third_party_settings: {  }
-    type: boolean_checkbox
-    region: content
-  field_hire_date:
-    weight: 11
-    settings: {  }
-    third_party_settings: {  }
-    type: datetime_default
-    region: content
-  field_inspiration_badge:
-    weight: 28
-    settings: {  }
-    third_party_settings: {  }
-    type: options_select
-    region: content
-  field_last_access_date:
-    weight: 24
     settings:
       size: 60
       placeholder: ''
@@ -278,80 +119,13 @@ content:
     third_party_settings: {  }
     type: string_textfield
     region: content
-  field_level:
-    weight: 21
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: string_textfield
-    region: content
-  field_market_administrator:
-    weight: 18
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: string_textfield
-    region: content
-  field_modified_date:
-    weight: 23
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: string_textfield
-    region: content
-  field_rank:
-    weight: 22
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: string_textfield
-    region: content
-  field_region_list:
-    weight: 18
-    settings: {  }
-    third_party_settings: {  }
-    type: options_select
-    region: content
-  field_regional_vice_president:
-    weight: 16
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: string_textfield
-    region: content
-  field_state:
-    weight: 15
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: string_textfield
-    region: content
-  field_t_c_flag:
-    weight: 30
-    settings:
-      display_label: true
-    third_party_settings: {  }
-    type: boolean_checkbox
-    region: content
-  field_user_interest:
-    weight: 26
-    settings: {  }
-    third_party_settings: {  }
-    type: options_buttons
-    region: content
   google_analytics:
     weight: 3
     region: content
     settings: {  }
     third_party_settings: {  }
   language:
-    weight: 5
+    weight: 2
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -366,10 +140,37 @@ content:
       progress_indicator: throbber
       preview_image_style: thumbnail
     third_party_settings: {  }
-    weight: 4
+    weight: 1
     region: content
 hidden:
   contact: true
   feeds_item: true
+  field_account_field_executive: true
+  field_account_name: true
+  field_ar_search_access: true
+  field_badges: true
+  field_city: true
+  field_counter_manager: true
+  field_country: true
+  field_default_market: true
+  field_door: true
+  field_education_manager_executiv: true
+  field_employer_number: true
+  field_employment_status: true
+  field_field_sales_director_regio: true
+  field_general_manager_brand_mana: true
+  field_has_3_0_permission: true
+  field_hire_date: true
+  field_inspiration_badge: true
+  field_last_access_date: true
+  field_level: true
+  field_market_administrator: true
+  field_modified_date: true
+  field_rank: true
+  field_region_list: true
+  field_regional_vice_president: true
+  field_state: true
+  field_t_c_flag: true
+  field_user_interest: true
   langcode: true
   timezone: true
