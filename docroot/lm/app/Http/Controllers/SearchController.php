@@ -112,14 +112,14 @@ class SearchController extends Controller {
 
     $validatedData = $this->validate($request, [
       '_format' => 'required|format',
-      'langcode' => 'required|languagecode',
+      'language' => 'required|languagecode',
     ]);
     // Check elastic client.
     $client = Helper::checkElasticClient();
     if (!$client) {
       return FALSE;
     }
-    $lang = $request->input('langcode');
+    $lang = $validatedData['language'];
     $this->buildQuery($request, $lang);
     if (empty($this->search)) {
       return Helper::jsonError('Please enter search keyword.', 400);
@@ -355,7 +355,7 @@ class SearchController extends Controller {
                 'multi_match' => [
                   'query' => $this->search,
                   'fields' => $this->searchFields,
-                  'type' => 'phrase_prefix'
+                  'type' => 'phrase_prefix',
                 ],
               ],
               1 => [

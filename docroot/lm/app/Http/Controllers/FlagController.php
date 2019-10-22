@@ -280,6 +280,7 @@ class FlagController extends Controller {
       $bookmark_ids = array_reverse($response['_source']['bookmark']);
       // TRLX section names.
       $sectionNames = ContentModel::getTrlxSectionNames();
+      $brandinfo = ContentModel::getBrandTermIds();
       $bookmark_data = [];
       foreach ($bookmark_ids as $bookmark_id) {
         if (!in_array($bookmark_id, $faq_ids)) {
@@ -310,7 +311,6 @@ class FlagController extends Controller {
               $bookmark_data[$i]['sectionKey'] = 'video';
             }
             if ($node_data->field_brands_target_id != NULL) {
-              $brandinfo = ContentModel::getBrandTermIds();
               foreach ($brandinfo as $brand) {
                 if ($brand['entity_id'] == $node_data->field_brands_target_id) {
                   $brand_key = (int) $brand['field_brand_key_value'];
@@ -326,20 +326,29 @@ class FlagController extends Controller {
             if ($node_data->field_point_value_value != NULL) {
               $bookmark_data[$i]['pointValue'] = (int) $node_data->field_point_value_value;
             }
-            if ($node_data->field_hero_image_target_id != NULL) {
+            if ($node_data->field_hero_image_target_id != NULL && !in_array($node_type->type, [
+              'product_detail',
+              'tools',
+              'brand_story',
+            ])) {
               $bookmark_data[$i]['imageSmall'] = ContentModel::getBookmarkImageUrlByFid($node_data->field_hero_image_target_id)[0];
               $bookmark_data[$i]['imageMedium'] = ContentModel::getBookmarkImageUrlByFid($node_data->field_hero_image_target_id)[1];
               $bookmark_data[$i]['imageLarge'] = ContentModel::getBookmarkImageUrlByFid($node_data->field_hero_image_target_id)[2];
             }
-            if ($node_data->field_field_product_image_target_id != NULL) {
+            if ($node_data->field_field_product_image_target_id != NULL  && $node_type->type == 'product_detail') {
               $bookmark_data[$i]['imageSmall'] = ContentModel::getBookmarkImageUrlByFid($node_data->field_field_product_image_target_id)[0];
               $bookmark_data[$i]['imageMedium'] = ContentModel::getBookmarkImageUrlByFid($node_data->field_field_product_image_target_id)[1];
               $bookmark_data[$i]['imageLarge'] = ContentModel::getBookmarkImageUrlByFid($node_data->field_field_product_image_target_id)[2];
             }
-            if ($node_data->field_tool_thumbnail_target_id != NULL) {
+            if ($node_data->field_tool_thumbnail_target_id != NULL && $node_type->type == 'tools') {
               $bookmark_data[$i]['imageSmall'] = ContentModel::getBookmarkImageUrlByFid($node_data->field_tool_thumbnail_target_id)[0];
               $bookmark_data[$i]['imageMedium'] = ContentModel::getBookmarkImageUrlByFid($node_data->field_tool_thumbnail_target_id)[1];
               $bookmark_data[$i]['imageLarge'] = ContentModel::getBookmarkImageUrlByFid($node_data->field_tool_thumbnail_target_id)[2];
+            }
+            if ($node_data->field_featured_image_target_id != NULL  && $node_type->type == 'brand_story') {
+              $bookmark_data[$i]['imageSmall'] = ContentModel::getBookmarkImageUrlByFid($node_data->field_featured_image_target_id)[0];
+              $bookmark_data[$i]['imageMedium'] = ContentModel::getBookmarkImageUrlByFid($node_data->field_featured_image_target_id)[1];
+              $bookmark_data[$i]['imageLarge'] = ContentModel::getBookmarkImageUrlByFid($node_data->field_featured_image_target_id)[2];
             }
           }
           $i++;
