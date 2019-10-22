@@ -108,7 +108,7 @@ class LeaderboardController extends Controller {
     // Add 1 in the rank of current user.
     $user_rank = !empty($user_rank) ? $user_rank['hits']['total'] : 0;
     $user_selected_section_rank = ($user_rank == 0) ? 1 : ($user_rank + 1);
-    $badges_count = 3;
+    $badges_count = !empty(array_filter($current_user_data['_source']['badge'])) ? count(array_filter($current_user_data['_source']['badge'])) : 0;
     $total_points = $current_user_data['_source']['total_points'];
     $userData = [
       'uid' => $this->uid,
@@ -129,7 +129,10 @@ class LeaderboardController extends Controller {
     if (!empty($keys) && count($keys) >= 2) {
       foreach ($keys as $key) {
         if ($all_users_data_array[$key]['uid'] == $this->uid) {
-          $response['userData'] = $all_users_data_array[$key];
+          $response['userData']['uid'] = $all_users_data_array[$key]['uid'];
+          $response['userData']['pointValue'] = $all_users_data_array[$key]['pointValue'];
+          $response['userData']['rank'] = $all_users_data_array[$key]['rank'];
+          $response['userData']['stamps'] = $badges_count;
         }
       }
     }
