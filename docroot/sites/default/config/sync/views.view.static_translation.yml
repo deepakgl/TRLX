@@ -554,7 +554,7 @@ display:
           empty: false
           tokenize: false
           content:
-            value: "<a href=\"/admin/structure/taxonomy/manage/static_translation/add\">Add New</a>\r\n<a href=\"/admin/config/system/static_translation\">Static Label CSV Importer</a>"
+            value: "<a href=\"/admin/structure/taxonomy/manage/static_translation/add\">Add New</a>"
             format: full_html
           plugin_id: text
       footer: {  }
