@@ -752,7 +752,8 @@ class ContentModel {
          'nfcs.field_content_section_target_id',
           'nfhi.field_hero_image_target_id',
            'nfpi.field_field_product_image_target_id',
-            'nftt.field_tool_thumbnail_target_id')
+            'nftt.field_tool_thumbnail_target_id',
+             'nffi.field_featured_image_target_id')
       ->leftJoin('node__field_display_title as nfdt', function ($join) {
           $join->on('n.nid', '=', 'nfdt.entity_id');
           $join->on('n.langcode', '=', 'nfdt.langcode');
@@ -766,8 +767,7 @@ class ContentModel {
           $join->on('n.langcode', '=', 'nfpv.langcode');
       })
       ->leftJoin('node__field_brands as nfb', function ($join) {
-          $join->on('n.nid', '=', 'nfpv.entity_id');
-          $join->on('n.langcode', '=', 'nfb.langcode');
+          $join->on('n.nid', '=', 'nfb.entity_id');
       })
       ->leftJoin('node__field_content_section as nfcs', function ($join) {
           $join->on('n.nid', '=', 'nfcs.entity_id');
@@ -784,6 +784,10 @@ class ContentModel {
       ->leftJoin('node__field_tool_thumbnail as nftt', function ($join) {
           $join->on('n.nid', '=', 'nftt.entity_id');
           $join->on('n.langcode', '=', 'nftt.langcode');
+      })
+      ->leftJoin('node__field_featured_image as nffi', function ($join) {
+          $join->on('n.nid', '=', 'nffi.entity_id');
+          $join->on('n.langcode', '=', 'nffi.langcode');
       })
       ->distinct('n.nid')
       ->where('n.nid', '=', $nid)
