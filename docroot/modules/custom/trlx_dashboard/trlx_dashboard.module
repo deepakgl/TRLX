@@ -1,0 +1,61 @@
+<?php
+
+/**
+ * @file
+ * Dashboard module file.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
+use Drupal\Core\Link;
+use Drupal\Core\Entity\ContentEntityForm;
+use Drupal\views\ViewExecutable;
+use Drupal\elx_user\Utility\UserUtility;
+use Drupal\trlx_lang_translation\Utility\LangUtility;
+use Drupal\elx_utility\Utility\CommonUtility;
+
+/**
+ * Implements hook_preprocess_html().
+ */
+function elx_dashboard_preprocess_page(&$variables) {
+  $variables['#attached']['library'][] = 'trlx_dashboard/elx_admin';
+  $variables['#attached']['drupalSettings']['lrs_statement_id'] = \Drupal::config('elx_utility.settings')->get('lrs_statement_id');
+}
+
+/**
+ * Alter link of the node title.
+ *
+ * @param object $entity
+ *   View result object.
+ * @param string $title
+ *   Node title.
+ * @param mixed $path
+ *   Redirected path of the node.
+ */
+function _nodeRedirectUrl($entity, $title, $path) {
+  global $base_url;
+  $url = Url::fromUri("$base_url/$path");
+  $link = Link::fromTextAndUrl($title, $url)->toString();
+  $entity->set('title', $link);
+}
+
+/**
+ * Fetch primary language.
+ *
+ * @return array
+ *   Market primary language.
+ */
+function getMarketPrimaryLanguage() {
+  $lang_utility = new LangUtility();
+  $user_utility = new UserUtility();
+  // Fetch market by user id.
+  $market = $user_utility->getMarketByUserId(\Drupal::currentUser()->id(),
+    'all');
+  $lang = $lang_utility->getMarketPrimaryAndSecondaryLanguage(
+    array_column($market, 'field_default_market_target_id'), 'lang');
+  // Fetch user primary language.
+  $primary_lang = array_values(array_unique(array_column(
+    $lang, 'field_primary_language_target_id')));
+
+  return $primary_lang;
+}
