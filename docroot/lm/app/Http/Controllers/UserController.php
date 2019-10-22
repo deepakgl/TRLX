@@ -134,7 +134,8 @@ class UserController extends Controller
 		$elastic_arr['total_points'] = isset($data['total_points']) && !empty($data['total_points']) ? $data['total_points'] : $elastic_arr['total_points'];
 		$elastic_arr['badge'] = isset($data['badge']) && !empty($data['badge']) ? $data['badge'] : $elastic_arr['badge'];
 		$elastic_arr['is_otm'] = isset($data['is_otm']) && !empty($data['is_otm']) ? $data['is_otm'] : $elastic_arr['is_otm'];
-		$elastic_arr['is_external'] = isset($data['is_external']) && !empty($data['is_external']) ? $data['is_external'] : $elastic_arr['is_external'];
+    $elastic_arr['isExternal'] = isset($data['isExternal']) && !empty($data['isExternal']) ? $data['isExternal'] : $elastic_arr['isExternal'];
+    $elastic_arr['primaryBrand'] = isset($data['primaryBrand']) && !empty($data['primaryBrand']) ? $data['primaryBrand'] : $elastic_arr['primaryBrand'];
 		$elastic_arr['account'] = isset($data['account']) && !empty($data['account']) ? $data['account'] : $elastic_arr['account'];
 		$elastic_arr['access_permission'] = isset($data['access_permission']) && !empty($data['access_permission']) ? $data['access_permission'] : $elastic_arr['access_permission'];
 		$elastic_arr['ignore'] = isset($data['ignore']) && !empty($data['ignore']) ? $data['ignore'] : $elastic_arr['ignore'];
@@ -167,10 +168,11 @@ class UserController extends Controller
 			'total_points' => 0,
 			'badge' => [],
 			'is_otm' => '',
-			'is_external' => 0,
+      'isExternal' => 0,
 			'account' => [],
 			'access_permission' => 0,
 			'ignore' => 0,
+      'primaryBrand' => 0,
 		];
 	}
 
