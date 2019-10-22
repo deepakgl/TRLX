@@ -10,7 +10,7 @@ id: taxonomy_term.consumer_category.field_featured_image
 field_name: field_featured_image
 entity_type: taxonomy_term
 bundle: consumer_category
-label: 'Featured Image'
+label: 'Listing image'
 description: 'Allowed file types:<b> png, jpg, jpeg.</b><br>Image Resolution:<b> 1440X437px</b>'
 required: true
 translatable: true
