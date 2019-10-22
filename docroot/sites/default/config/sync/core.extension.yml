@@ -35,15 +35,12 @@ module:
   elasticsearch_connector: 0
   elasticsearch_connector_views: 0
   elc_password_policy: 0
-  elx_audit_log: 0
-  elx_bulk_mail: 0
   elx_custom_service: 0
   elx_dashboard: 0
   elx_elastic_user: 0
-  elx_entityqueue_alter: 0
   elx_menu: 0
-  elx_points_migration: 0
   elx_products: 0
+  elx_points_migration: 0
   elx_redis_purge: 0
   elx_reports: 0
   elx_search: 0
@@ -126,6 +123,7 @@ module:
   trlx_comment: 0
   trlx_consumer: 0
   trlx_dashboard: 0
+  trlx_entityqueue_alter: 0
   trlx_factsheets: 0
   trlx_faq: 0
   trlx_insider_corner: 0
@@ -136,12 +134,14 @@ module:
   trlx_products: 0
   trlx_security: 0
   trlx_spotlight: 0
+  trlx_static_translation: 0
   trlx_story: 0
   trlx_tnc_privacy_policy: 0
   trlx_trends: 0
   trlx_utility: 0
   trlx_banner: 0
   trlx_video: 0
+  trlx_audit_log: 0
   user: 0
   video_embed_field: 0
   view_custom_table: 0

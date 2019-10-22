@@ -9,7 +9,6 @@ use App\Model\Mysql\ContentModel;
 use App\Model\Mysql\UserModel;
 use App\Model\Elastic\ElasticUserModel;
 use App\Model\Elastic\FlagModel;
-use App\Model\Elastic\BadgeModel;
 use App\Traits\ApiResponser;
 
 /**
@@ -240,8 +239,8 @@ class FlagController extends Controller {
     global $_userData;
     $this->uid = $_userData->userId;
     $validatedData = $this->validate($request, [
-      'limit' => 'sometimes|required|positiveinteger',
-      'offset' => 'sometimes|required|positiveinteger',
+      'limit' => 'sometimes|required|integer|min:0',
+      'offset' => 'sometimes|required|integer|min:0',
       '_format' => 'required|format',
       'language' => 'required|languagecode',
       'type' => 'required|bookmarklisttype',
@@ -298,6 +297,18 @@ class FlagController extends Controller {
             $bookmark_data[$i]['imageMedium'] = "";
             $bookmark_data[$i]['imageLarge'] = "";
             $bookmark_data[$i]['faqId'] = 0;
+            if ($node_type->type == 'level_interactive_content') {
+              $bookmark_data[$i]['sectionKey'] = 'lesson';
+            }
+            if ($node_type->type == 'product_detail') {
+              $bookmark_data[$i]['sectionKey'] = 'productDetail';
+            }
+            if ($node_type->type == 'brand_story') {
+              $bookmark_data[$i]['sectionKey'] = 'brandStory';
+            }
+            if ($node_type->type == 'tools') {
+              $bookmark_data[$i]['sectionKey'] = 'video';
+            }
             if ($node_data->field_brands_target_id != NULL) {
               $brandinfo = ContentModel::getBrandTermIds();
               foreach ($brandinfo as $brand) {
@@ -331,30 +342,18 @@ class FlagController extends Controller {
               $bookmark_data[$i]['imageLarge'] = ContentModel::getBookmarkImageUrlByFid($node_data->field_tool_thumbnail_target_id)[2];
             }
           }
-          else {
-            $brand_key = $bookmark_id - $default_faq_id;
-            if ($brand_key != 0) {
-              $brand_data = ContentModel::getBrandDataFromBrandKey($brand_key);
-              if (!empty($brand_data)) {
-                $bookmark_data[$i]['id'] = 0;
-                $bookmark_data[$i]['title'] = mb_strtoupper($brand_data['name']) . ' CUSTOMER QUESTIONS';
-                $bookmark_data[$i]['brandKey'] = $brand_key;
-                $bookmark_data[$i]['brandName'] = $brand_data['name'];
-                $bookmark_data[$i]['sectionKey'] = "";
-                $bookmark_data[$i]['sectionName'] = $sectionNames['faq'];
-                $bookmark_data[$i]['pointValue'] = (int) $faq_config_data['faq_points'];
-                $bookmark_data[$i]['imageSmall'] = "";
-                $bookmark_data[$i]['imageMedium'] = "";
-                $bookmark_data[$i]['imageLarge'] = "";
-                $bookmark_data[$i]['faqId'] = $bookmark_id;
-              }
-            }
-            else {
+          $i++;
+        }
+        if (in_array($bookmark_id, $faq_ids)) {
+          $brand_key = $bookmark_id - $default_faq_id;
+          if ($brand_key > 0) {
+            $brand_data = ContentModel::getBrandDataFromBrandKey($brand_key);
+            if (!empty($brand_data)) {
               $bookmark_data[$i]['id'] = 0;
-              $bookmark_data[$i]['title'] = 'HELP QUESTIONS';
-              $bookmark_data[$i]['brandKey'] = 0;
-              $bookmark_data[$i]['brandName'] = "";
-              $bookmark_data[$i]['sectionKey'] = "";
+              $bookmark_data[$i]['title'] = mb_strtoupper($brand_data['name']) . ' CUSTOMER QUESTIONS';
+              $bookmark_data[$i]['brandKey'] = $brand_key;
+              $bookmark_data[$i]['brandName'] = $brand_data['name'];
+              $bookmark_data[$i]['sectionKey'] = "faq";
               $bookmark_data[$i]['sectionName'] = $sectionNames['faq'];
               $bookmark_data[$i]['pointValue'] = (int) $faq_config_data['faq_points'];
               $bookmark_data[$i]['imageSmall'] = "";
@@ -362,6 +361,19 @@ class FlagController extends Controller {
               $bookmark_data[$i]['imageLarge'] = "";
               $bookmark_data[$i]['faqId'] = $bookmark_id;
             }
+          }
+          else {
+            $bookmark_data[$i]['id'] = 0;
+            $bookmark_data[$i]['title'] = 'HELP QUESTIONS';
+            $bookmark_data[$i]['brandKey'] = 0;
+            $bookmark_data[$i]['brandName'] = "";
+            $bookmark_data[$i]['sectionKey'] = "helpFaq";
+            $bookmark_data[$i]['sectionName'] = $sectionNames['faq'];
+            $bookmark_data[$i]['pointValue'] = (int) $faq_config_data['faq_points'];
+            $bookmark_data[$i]['imageSmall'] = "";
+            $bookmark_data[$i]['imageMedium'] = "";
+            $bookmark_data[$i]['imageLarge'] = "";
+            $bookmark_data[$i]['faqId'] = $bookmark_id;
           }
           $i++;
         }
@@ -391,7 +403,7 @@ class FlagController extends Controller {
     $pager = [
       "count" => $total_count,
       "pages" => $pages,
-      "items_per_page" => $this->limit,
+      "items_per_page" => (int) $this->limit,
       "current_page" => 0,
       "next_page" => 0,
     ];
@@ -502,7 +514,6 @@ class FlagController extends Controller {
       $point_value = !empty($faq_config_data['faq_points']) ? (int) $faq_config_data['faq_points'] : 50;
     }
     if (isset($response['_source']['total_points'])) {
-      $badge_info['old_points'] = $response['_source']['total_points'];
       $response['_source']['total_points'] = $response['_source']['total_points'] + $point_value;
       // Prepare the elastic params and update the user index.
       $params['body'] = [
@@ -515,7 +526,6 @@ class FlagController extends Controller {
       $output = ElasticUserModel::updateElasticUserData($params, $this->uid, $this->elasticClient);
     }
     else {
-      $badge_info['old_points'] = 0;
       $params['body'] = [
         'doc' => [
           'total_points' => $point_value,
@@ -525,26 +535,12 @@ class FlagController extends Controller {
       $output = ElasticUserModel::updateElasticUserData($params, $this->uid, $this->elasticClient);
       $response = ElasticUserModel::fetchElasticUserData($this->uid, $this->elasticClient);
     }
-    // New points of user.
-    $badge_info['new_points'] = $response['_source']['total_points'];
-    $new_points = $badge_info['new_points'];
-    $badge_info['uid'] = $this->uid;
-    // Old points of user.
-    $old_points = $badge_info['old_points'];
-    $badge = [];
-    // Allocate badge to user on the basis of old points & new points.
-    if ($old_points < 1000 && $new_points >= 1000) {
-      $badge[] = 'first_1_000_points_badge';
-    }
-    if ($old_points < 5000 && $new_points >= 5000) {
-      $badge[] = 'first_5_000_points_badge';
-    }
-    if ($old_points < 10000 && $new_points >= 10000) {
-      $badge[] = 'first_10000_points_badge';
-    }
-    $set_user_point = BadgeModel::allocateBadgeToUser($nid, $badge_info, $badge, $this->elasticClient);
 
-    return $set_user_point;
+    return $this->successResponse([
+      'nid' => $nid,
+      'status' => TRUE,
+      'message' => 'Successfully updated',
+    ], Response::HTTP_OK);
   }
 
 }

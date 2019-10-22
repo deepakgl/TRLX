@@ -12,6 +12,7 @@ dependencies:
     - field.storage.node.field_headline
     - field.storage.node.field_point_value
     - field.storage.node.field_sub_title
+    - field.storage.node.field_try_this
     - node.type.stories
     - taxonomy.vocabulary.markets
   module:
@@ -870,7 +871,7 @@ display:
           type: image_url
           settings:
             url_type: '0'
-            image_style: stories_listing_desktop
+            image_style: stories_level_listing_desktop
             image_link: ''
           group_column: ''
           group_columns: {  }
@@ -935,7 +936,7 @@ display:
           type: image_url
           settings:
             url_type: '0'
-            image_style: stories_listing_tablet
+            image_style: stories_level_listing_tablet
             image_link: ''
           group_column: ''
           group_columns: {  }
@@ -1000,7 +1001,7 @@ display:
           type: image_url
           settings:
             url_type: '0'
-            image_style: stories_listing_mobile
+            image_style: stories_level_listing_mobile
             image_link: ''
           group_column: ''
           group_columns: {  }
@@ -1361,6 +1362,9 @@ display:
               raw_output: false
             body:
               alias: body
+              raw_output: false
+            field_try_this:
+              alias: tryThis
               raw_output: false
             field_point_value:
               alias: pointValue
@@ -1946,6 +1950,68 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
+        field_try_this:
+          id: field_try_this
+          table: node__field_try_this
+          field: field_try_this
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: ''
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: text_default
+          settings: {  }
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
         field_point_value:
           id: field_point_value
           table: node__field_point_value
@@ -2303,6 +2369,7 @@ display:
         - 'config:field.storage.node.field_headline'
         - 'config:field.storage.node.field_point_value'
         - 'config:field.storage.node.field_sub_title'
+        - 'config:field.storage.node.field_try_this'
         - extensions
   rest_export_tr_trends_homepage:
     display_plugin: rest_export

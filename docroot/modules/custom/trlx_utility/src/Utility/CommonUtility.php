@@ -2,7 +2,6 @@
 
 namespace Drupal\trlx_utility\Utility;
 
-use Mockery\Exception;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Drupal\Core\Logger\RfcLogLevel;
@@ -12,6 +11,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\media\Entity\Media;
 use Drupal\file\Entity\File;
 use Elasticsearch\ClientBuilder;
+use Drupal\taxonomy\Entity\Term;
 
 /**
  * Purpose of this class is to build common object.
@@ -22,6 +22,7 @@ class CommonUtility {
   const TREND = 'trend';
   const SELLING_TIPS = 'sellingTips';
   const CONSUMER = 'consumer';
+  const BRAND_LEVEL = 'brandLevel';
 
   /**
    * Build success response.
@@ -141,10 +142,11 @@ class CommonUtility {
       if ($style != NULL) {
         $image_url = $style->buildUrl($path);
       }
-      // Fetch Image url
+      // Fetch Image url.
       return $image_url;
-    } catch (\Exception $e) {
-      // Return False
+    }
+    catch (\Exception $e) {
+      // Return False.
       return FALSE;
     }
   }
@@ -191,11 +193,12 @@ class CommonUtility {
    *   Following params required.
    */
   public function invalidData($param = []) {
-    global $base_url;
+    global $base_url, $_userData;
     $request_uri = $base_url . \Drupal::request()->getRequestUri();
     $param = implode(',', $param);
     $logger = \Drupal::service('logger.stdout');
     $logger->log(RfcLogLevel::ERROR, 'Following parameters is/are required: ' . $param, [
+      'user' => $_userData,
       'request_uri' => $request_uri,
       'data' => $param,
     ]);
@@ -233,7 +236,8 @@ class CommonUtility {
       }
       $query->range(0, 1);
       $result = $query->execute()->fetchAll();
-    } catch (\Exception $e) {
+    }
+    catch (\Exception $e) {
       $result = '';
     }
 
@@ -257,6 +261,8 @@ class CommonUtility {
    *
    * @param int $tid
    *   Term Id.
+   * @param string $lang
+   *   Language code.
    *
    * @return string
    *   Term name.
@@ -279,7 +285,8 @@ class CommonUtility {
       }
       $term_name = array_column($data, 'name');
       return $term_name[0];
-    } catch (\Exception $e) {
+    }
+    catch (\Exception $e) {
       return FALSE;
     }
   }
@@ -385,8 +392,9 @@ class CommonUtility {
       }
 
       return TRUE;
-    } catch (\Exception $e) {
-      // Return FALSE;
+    }
+    catch (\Exception $e) {
+      // Return FALSE.
       return FALSE;
     }
 
@@ -475,8 +483,9 @@ class CommonUtility {
       }
 
       return $socialMediaHandles;
-    } catch (\Exception $e) {
-      // Return False
+    }
+    catch (\Exception $e) {
+      // Return False.
       return FALSE;
     }
   }
@@ -506,7 +515,8 @@ class CommonUtility {
       }
 
       return $pointValue;
-    } catch (\Exception $e) {
+    }
+    catch (\Exception $e) {
       return FALSE;
     }
   }
@@ -623,7 +633,8 @@ class CommonUtility {
     // Load all Section taxonomy terms.
     try {
       $sectionTerms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadTree('trlx_content_sections', 0, NULL, TRUE);
-    } catch (\Exception $e) {
+    }
+    catch (\Exception $e) {
       $sectionTerms = '';
     }
 
@@ -655,7 +666,8 @@ class CommonUtility {
     // Load all Section taxonomy terms.
     try {
       $brandTerms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadTree('brands', 0, NULL, TRUE);
-    } catch (\Exception $e) {
+    }
+    catch (\Exception $e) {
       $brandTerms = '';
     }
 
@@ -691,7 +703,8 @@ class CommonUtility {
       if ($node->hasTranslation($language)) {
         return $node->getTranslation($language);
       }
-    } catch (\Exception $e) {
+    }
+    catch (\Exception $e) {
       return FALSE;
     }
   }
@@ -777,7 +790,7 @@ class CommonUtility {
    * Method to get listing images.
    *
    * @param string $section
-   *   expects parammeter of section key of taxonomy
+   *   Expects parammeter of section key of taxonomy.
    *
    * @return array
    *   Listing Images
@@ -813,8 +826,51 @@ class CommonUtility {
       }
 
       return $result;
-    } catch (\Exception $e) {
+    }
+    catch (\Exception $e) {
       return FALSE;
+    }
+  }
+
+  /**
+   * Method to get notification translation.
+   *
+   * @param string $value
+   *   Expects parammeter of notification of taxonomy.
+   * @param string $langcode
+   *   Language code.
+   *
+   * @return array
+   *   Listing Images
+   */
+  public function getNotificationTranslation($value, $langcode) {
+    // Query to fetch static translation taxonomy.
+    $term = \Drupal::entityTypeManager()
+      ->getStorage('taxonomy_term')
+      ->loadByProperties(['vid' => 'static_translation', 'field_translation_key' => $value]);
+    if (!empty($term)) {
+      $term_object = array_shift($term);
+      if (($langcode != 'en') && ($term_object->hasTranslation($langcode))) {
+        $field_translation_key = $term_object->getTranslation($langcode)->get('field_translation_key')->value;
+      }
+      else {
+        $field_translation_key = $term_object->get('field_translation_key')->value;
+      }
+      return $field_translation_key;
+    }
+    else {
+      $term = Term::create([
+        'vid' => 'static_translation',
+        'name' => $value,
+        'field_translation_key' => $value,
+      ]);
+
+      if ($term->save()) {
+        return $value;
+      }
+      else {
+        return $value;
+      }
     }
   }
 

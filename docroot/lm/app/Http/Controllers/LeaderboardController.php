@@ -4,38 +4,47 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Response;
 use App\Support\Helper;
-use App\Model\Mysql\UserModel;
-use App\Model\Mysql\ContentModel;
 use App\Model\Elastic\ElasticUserModel;
 use Illuminate\Http\Request;
-use App\Model\Elastic\BadgeModel;
-use App\Http\Controllers\BadgesController;
+use App\Traits\ApiResponser;
 
 /**
- *
+ * Class to get the data from elastic based on query.
  */
 class LeaderboardController extends Controller {
 
+  use ApiResponser;
+
   /**
    * Elastic client.
+   *
+   * @var elasticClient
    */
   private $elasticClient = NULL;
   /**
    * User id.
+   *
+   * @var uid
    */
   private $uid = NULL;
   /**
    * Limit.
+   *
+   * @var limit
    */
   private $limit = NULL;
   /**
    * Offset.
+   *
+   * @var offset
    */
   private $offset = NULL;
   /**
-   * Leaderboard comparison.
+   * Size.
+   *
+   * @var size
    */
-  private $compare = NULL;
+  private $size = NULL;
 
   /**
    * Create a new controller instance.
@@ -46,52 +55,113 @@ class LeaderboardController extends Controller {
     $this->elasticClient = '';
     $this->uid = '';
     // Limit.
-    $this->limit = !empty($request->input('limit')) ? $request->input('limit') : 10;
+    $this->limit = 10;
     // Offset.
-    $this->offset = !empty($request->input('offset')) ? $request->input('offset') : 0;
-    // Compare Type.
-    $this->compare = $request->input('compare');
+    $this->offset = 0;
+    // Size.
+    $this->size = 10000;
   }
 
   /**
-   * Fetch total points of user.
+   * Fetch user leaderboard data.
    *
    * @return json
+   *   User leaderboard data.
    */
-  protected function getAllUsersRankByPoints() {
-    $search_param = [
-      'index' => getenv("ELASTIC_ENV") . '_user',
-      'type' => 'user',
-    // Offset.
-      'from' => $this->offset,
-    // Limit.
-      'size' => $this->limit,
-      'body' => [
-        'sort' => [
-          'total_points' => [
-            'order' => 'desc',
-          ],
-        ],
-      ],
+  public function userLeaderBoard(Request $request) {
+    global $_userData;
+    $response = [];
+    $this->uid = $_userData->userId;
+    // Check whether elastic connectivity is there.
+    $this->elasticClient = Helper::checkElasticClient();
+    // Check whether user elastic index exists.
+    $exist = ElasticUserModel::checkElasticUserIndex($this->uid, $this->elasticClient);
+    if (!$this->elasticClient) {
+      return $this->errorResponse('No alive nodes found in cluster.', Response::HTTP_INTERNAL_SERVER_ERROR);
+    }
+    if (!$exist) {
+      return $this->errorResponse('Not authorized.', Response::HTTP_FORBIDDEN);
+    }
+    $validatedData = $this->validate($request, [
+      'limit' => 'sometimes|required|integer|min:0',
+      'offset' => 'sometimes|required|integer|min:0',
+      '_format' => 'required|format',
+      'language' => 'required|languagecode',
+      'section' => 'sometimes|required|leaderboardsection',
+      'sectionFilter' => 'sometimes|required|regex:/^[0-9]+$/',
+    ]);
+    $this->limit = isset($validatedData['limit']) ? (int) $validatedData['limit'] : 10;
+    $this->offset = isset($validatedData['offset']) ? (int) $validatedData['offset'] : 0;
+    $section = isset($validatedData['section']) ? $validatedData['section'] : '';
+    $section_filter = isset($validatedData['sectionFilter']) ? $validatedData['sectionFilter'] : 0;
+    // Fetch respective user info from elastic.
+    $current_user_data = ElasticUserModel::fetchElasticUserData($this->uid, $this->elasticClient);
+    // To show user rank in the region on the profile page.
+    $profileSection = '';
+    if ($section == '') {
+      $profileSection = 'profilePage';
+      $section = 'region';
+    }
+    // To show user rank in section on leaderboard page based on selection.
+    $user_rank = $this->calculateUserRankByPoints($this->elasticClient, $section);
+    $other_users_data = $this->getAllUsersRankInTheSystem($this->elasticClient, $section, $section_filter);
+    // Add 1 in the rank of current user.
+    $user_rank = !empty($user_rank) ? $user_rank['hits']['total'] : 0;
+    $user_selected_section_rank = ($user_rank == 0) ? 1 : ($user_rank + 1);
+    $badges_count = !empty(array_filter($current_user_data['_source']['badge'])) ? count(array_filter($current_user_data['_source']['badge'])) : 0;
+    $total_points = $current_user_data['_source']['total_points'];
+    $userData = [
+      'uid' => $this->uid,
+      'pointValue' => $total_points,
+      'rank' => "#" . $user_selected_section_rank,
+      'stamps' => $badges_count,
     ];
-    $response = $this->calculateUserRank($search_param);
+    $response['userData'] = $userData;
+    $other_users_sliced_array = [];
+    if ($profileSection != 'profilePage') {
+      $pager = $this->buildPager($other_users_data, $this->limit, $this->offset);
+      $other_users_sliced_array = array_slice($other_users_data, $this->offset, $this->limit);
+      $response['sectionData'] = $other_users_sliced_array;
+    }
+    $all_users_data_array = $this->getAllUsersRankInTheSystem($this->elasticClient);
+    // If multiple user have same number of view points.
+    $keys = array_keys(array_column($all_users_data_array, 'pointValue'), $total_points);
+    if (!empty($keys) && count($keys) >= 2) {
+      foreach ($keys as $key) {
+        if ($all_users_data_array[$key]['uid'] == $this->uid) {
+          $response['userData']['uid'] = $all_users_data_array[$key]['uid'];
+          $response['userData']['pointValue'] = $all_users_data_array[$key]['pointValue'];
+          $response['userData']['rank'] = $all_users_data_array[$key]['rank'];
+          $response['userData']['stamps'] = $badges_count;
+        }
+      }
+    }
+    header('Content-language: ' . $validatedData['language']);
+    if (!empty($other_users_sliced_array)) {
+      return $this->successResponse($response, Response::HTTP_OK, $pager);
+    }
+    else {
+      return $this->successResponse($response, Response::HTTP_OK);
+    }
 
-    return $response;
   }
 
   /**
    * Fetch current user rank based on points.
    *
-   * @return json
+   * @return array
+   *   Users data above the current user points.
    */
-  public function calculateUserRankByPoints($key = NULL) {
+  public function calculateUserRankByPoints($elasticClient, $section) {
+    global $_userData;
+    $uid = $_userData->userId;
     // Check whether elastic connectivity is there.
     $this->elasticClient = Helper::checkElasticClient();
     // Check whether elastic user index is exists.
-    $exist = ElasticUserModel::checkElasticUserIndex($this->uid, $this->elasticClient);
+    $exist = ElasticUserModel::checkElasticUserIndex($uid, $elasticClient);
     if ($exist) {
       // Fetch current user data from elastic.
-      $user_data = ElasticUserModel::fetchElasticUserData($this->uid, $this->elasticClient);
+      $user_data = ElasticUserModel::fetchElasticUserData($uid, $elasticClient);
       // Fetch total points of user.
       $user_points = $user_data['_source']['total_points'];
       $search_param = [
@@ -113,221 +183,79 @@ class LeaderboardController extends Controller {
           ],
         ],
       ];
-      if (!empty($key)) {
-        $this->compare[0] == $key;
-      }
       // Calculate user rank based on comparison.
-      $response = $this->calculateUserRank($search_param);
+      $response = $this->calculateUserRank($search_param, $section);
     }
 
     return $response;
   }
 
   /**
-   * Calculate user rank based on comparison.
+   * Calculate user rank based on section.
    *
    * @param string $search_param
-   *   string to be searched.
-   *
-   * @return json
-   */
-  protected function calculateUserRank($search_param) {
-    $filter = [];
-    // If no comparison is there & is not equal to world.
-    if (!empty($this->compare) && $this->compare[0] != 'world') {
-      if ($this->compare[0] == 'store') {
-        // Get user information based on store.
-        $store = UserModel::getUserInfoByUid($this->uid, $this->compare[0]);
-        if (isset($store[0]->store) && !empty($store[0]->store)) {
-          // Create the query filters.
-          $search_param['body']['query']['bool']['filter'][]['term'] = [
-             'store.keyword' => ['value' => $store[0]->store]];
-        }
-      }
-      elseif ($this->compare[0] == 'market') {
-        // Get user information based on market.
-        $markets = UserModel::getUserInfoByUid($this->uid, $this->compare[0]);
-        if (isset($markets[0]->market) && !empty($markets[0]->market)) {
-          // Create the query filters.
-          $search_param['body']['query']['bool']['must']['match'] = [
-             $this->compare[0] => $markets[0]->market];
-        }
-      }
-      elseif ($this->compare[0] == 'retailer') {
-        // Get user information based on retailer.
-        $account = UserModel::getUserInfoByUid($this->uid, $this->compare[0]);
-        if (isset($account[0]->retailer)  && !empty($account[0]->retailer)) {
-          // Create the query filters.
-          $search_param['body']['query']['bool']['filter'][]['term'] = [
-             'account.keyword' => ['value' => $account[0]->retailer]];
-        }
-      }
-    }
-    /*
-     * Search and Ignore Srijan & Test users in elastic.
-     * Search and Ignore blocked users in elastic.
-    */
-    $search_param['body']['query']['bool']['must_not'] =
-    [
-      ['match' => ['ignore' => 1]],
-      ['match' => ['status' => 0]]
-    ];
-    // Search the data in elastic based on the search params.
-    $response = $this->elasticClient->search($search_param);
-
-    return Helper::jsonSuccess($response);
-  }
-
-  /**
-   * Get currentUserRank.
-   *
-   * @param $request
-   *   Rest resource query parameters.
-   *
-   * @return json
-   */
-  public function currentUserRank(Request $request) {
-    $this->uid = $request->input('uid');
-    if (!$this->uid) {
-      return Helper::jsonError('Invalid user id.', 402);
-    }
-    // Fetch current user rank based on points.
-    $response = $this->calculateUserRankByPoints('store');
-
-    return $response;
-  }
-
-  /**
-   * Fetch user leaderboard.
-   *
-   * @return json
-   */
-  public function userLeaderBoard(Request $request) {
-    // Fetch user id based on Oauth token.
-    $this->uid = Helper::getJtiToken($request);
-    if (!$this->uid) {
-      return jsonError('Please provide user id.', 422);
-    }
-    // Check whether elastic connectivity is there.
-    $this->elasticClient = Helper::checkElasticClient();
-    // Check whether user elastic index exists.
-    $exist = ElasticUserModel::checkElasticUserIndex($this->uid, $this->elasticClient);
-    if (!$this->elasticClient || !$exist) {
-      return FALSE;
-    }
-    if (!empty($this->compare)) {
-      $this->compare = ContentModel::getTermName([$this->compare], 'leaderboard_comparison');
-      if (empty($this->compare)) {
-        return new Response('Compare ID is not valid.', 400);
-      }
-    }
-    $response = [];
-    // Fetch current user rank based on points.
-    $current_user_rank = json_decode($this->calculateUserRankByPoints()->getContent(), TRUE);
-    // Add 1 in the rank of current user.
-    $current_user_rank = !empty($current_user_rank['data']) ? $current_user_rank['data']['hits']['total'] : 0;
-    $current_user_rank = $current_user_rank + 1;
-    // Fetch respective user info from elastic.
-    $current_user_data = ElasticUserModel::fetchElasticUserData($this->uid, $this->elasticClient);
-    // Fetch user name, image & language.
-    $user_info = UserModel::getUserInfoByUid($this->uid, ['name', 'image', 'language']);
-    $current_user_market_name = $other_user_market_name = "";
-    // Get current user market name.
-    if (isset($current_user_data['_source']['market'])) {
-      // Get term name by tid and vid.
-      $current_user_market = ContentModel::getMarketNameByLang($current_user_data['_source']['market'], $user_info[0]->language);
-      $current_user_market_name = implode(", ", $current_user_market);
-    }
-    $exist_master = BadgeModel::checkBadgeMasterIndex($this->elasticClient);
-    $badge_image = "";
-    if ($exist_master) {
-      $badge_data = BadgeModel::fetchBadgeMasterData($user_info[0]->language, $this->elasticClient);
-      if (!empty($current_user_data['_source']['badge'])) {
-        $current_user_badges = $current_user_data['_source']['badge'][0];
-        $badge_image = BadgesController::starBadge($current_user_badges, $badge_data);
-      }
-    }
-    $response['userData'][] = $this->buildResponse(
-      $this->uid,
-      $current_user_rank,
-      $current_user_data,
-      $user_info,
-      $badge_image,
-      $current_user_market_name
-    );
-    // Get all users ranks on the basis of total points.
-    $other_user_data = json_decode($this->getAllUsersRankByPoints()->getContent(), TRUE);
-    if (!empty($other_user_data['data']['hits']['hits'])) {
-      $i = 1 + $this->offset;
-      foreach ($other_user_data['data']['hits']['hits'] as $key => $value) {
-        $other_uid = $value['_source']['uid'];
-        $other_user_info = UserModel::getUserInfoByUid($other_uid, ['name', 'image', 'language']);
-        if (!empty($other_user_info[0])) {
-          // Get other user market name.
-          if (isset($value['_source']['market'])) {
-            $other_user_market[$other_uid] = ContentModel::getMarketNameByLang($value['_source']['market'], $other_user_info[0]->language);
-            $other_user_market_name = implode(", ", $other_user_market[$other_uid]);
-          }
-          $other_badge_image = "";
-          if ($exist_master) {
-            if (isset($value['_source']['badge'][0])) {
-              $other_user_badges = $value['_source']['badge'][0];
-              $other_badge_image = BadgesController::starBadge($other_user_badges, $badge_data);
-            }
-          }
-          $response['allLeaderboard'][] = $this->buildResponse(
-            $other_uid,
-            $i,
-            $value,
-            $other_user_info,
-            $other_badge_image,
-            $other_user_market_name
-          );
-          $i++;
-      }
-    }
-      $response['pager'] = $this->buildPager($other_user_data, $this->limit, $this->offset);
-    }
-
-    header('Content-language: ' . $user_info[0]->language);
-
-    return new Response($response, 200);
-  }
-
-  /**
-   * Build api response based on the params.
-   *
-   * @param int $uid
-   *   User id.
-   * @param int $rank
-   *   User rank.
-   * @param array $data
-   *   User elastic data.
-   * @param array $info
-   *   User info.
-   * @param string $badge_image
-   *   Badge image url.
-   * @param string $market_name
-   *   Assigned user market name.
+   *   String to be searched.
+   * @param string $section
+   *   User rank to be calculated for which section.
    *
    * @return array
+   *   User rank in the selected section.
    */
-  protected function buildResponse($uid, $rank, $data, $info, $badge_image, $market_name) {
-    $image_url = "";
-    if (!empty($info[0]->image)) {
-      $image_url = str_replace("public://", getenv("SITE_IMAGE_URL"), $info[0]->image);
+  protected function calculateUserRank($search_param, $section) {
+    global $_userData;
+    // If no comparison is there & is not equal to world.
+    if ($section != 'world') {
+      if ($section == 'country') {
+        if (!empty($_userData->country)) {
+          // Get user information based on country.
+          // Create the query filters.
+          $search_param['body']['query']['bool']['filter'][]['terms'] = [
+            'country' => $_userData->country,
+          ];
+        }
+        else {
+          return [];
+        }
+      }
+      if ($section == 'subregion') {
+        if (!empty($_userData->subregion)) {
+          // Get user information based on subregion.
+          // Create the query filters.
+          $search_param['body']['query']['bool']['filter'][]['terms'] = [
+            'subRegion' => $_userData->subregion,
+          ];
+        }
+        else {
+          return [];
+        }
+      }
+      if ($section == 'region') {
+        if (!empty($_userData->region)) {
+          // Get user information based on region.
+          // Create the query filters.
+          $search_param['body']['query']['bool']['filter'][]['terms'] = [
+            'region' => $_userData->region,
+          ];
+        }
+        else {
+          return [];
+        }
+      }
+      if ($section == 'location') {
+        if (!empty($_userData->location)) {
+          // Get user information based on country.
+          // Create the query filters.
+          $search_param['body']['query']['bool']['filter'][]['terms'] = [
+            'location' => $_userData->location,
+          ];
+        }
+        else {
+          return [];
+        }
+      }
     }
-    $response = [
-      "uid" => $uid,
-      "rank" => $rank,
-      "userPoints" => $data['_source']['total_points'],
-      "userName" => !empty($info[0]->firstname) ? $info[0]->firstname . " " . $info[0]->lastname : '',
-      "userImage" => $image_url,
-      "star" => $badge_image,
-      "userMarket" => $market_name,
-    ];
-
-    return $response;
+    // Search the data in elastic based on the search params.
+    return $this->elasticClient->search($search_param);
   }
 
   /**
@@ -341,19 +269,172 @@ class LeaderboardController extends Controller {
    *   Offset.
    *
    * @return array
+   *   Pager array.
    */
-  protected function buildPager($data, $limit, $offset) {
-    $total_count = $data['data']['hits']['total'] - $offset;
+  protected function buildPager(array $data, $limit, $offset) {
+    if (!empty($data)) {
+      $total_count = count($data) - $offset;
+    }
+    else {
+      $total_count = 1;
+    }
     $pages = ceil($total_count / $limit);
     $response = [
       "count" => ($total_count > 0) ? $total_count : 0,
-      "pages" => ($pages > 0) ? $pages : 0,
-      "items_per_page" => $limit,
+      "pages" => ($pages > 0) ? (int) $pages : 0,
+      "items_per_page" => (int) $limit,
       "current_page" => 0,
-      "next_page" => 1,
+      "next_page" => 0,
     ];
-
     return $response;
+  }
+
+  /**
+   * Fetch user rank and other immediate users rank.
+   *
+   * @param \Illuminate\Http\Request $request
+   *   Rest resource query parameters.
+   *
+   * @return json
+   *   Object of user rank.
+   */
+  public function userProfileRank(Request $request) {
+    global $_userData;
+    $uid = $_userData->userId;
+    $response = [];
+    // Check whether elastic connectivity is there.
+    $client = Helper::checkElasticClient();
+    // Check whether user elastic index exists.
+    $exist = ElasticUserModel::checkElasticUserIndex($uid, $client);
+    if (!$client) {
+      return $this->errorResponse('No alive nodes found in cluster.', Response::HTTP_INTERNAL_SERVER_ERROR);
+    }
+    if (!$exist) {
+      return $this->errorResponse('Not authorized.', Response::HTTP_FORBIDDEN);
+    }
+    $validatedData = $this->validate($request, [
+      '_format' => 'required|format',
+      'language' => 'required|languagecode',
+    ]);
+    header('Content-language: ' . $validatedData['language']);
+    $all_users_data = $this->getAllUsersRankInTheSystem($client);
+    if (!empty($all_users_data)) {
+      foreach ($all_users_data as $key => $user_info) {
+        if ($user_info['uid'] == $uid) {
+          $response['userLeft'] = [];
+          $user_left_key = (($key - 1) > 0) ? ($key - 1) : '';
+          if ($user_left_key != '') {
+            $response['userLeft']['uid'] = $all_users_data[$user_left_key]['uid'];
+            $response['userLeft']['rank'] = $all_users_data[$user_left_key]['rank'];
+          }
+          $response['userCentre']['uid'] = $all_users_data[$key]['uid'];
+          $response['userCentre']['rank'] = $all_users_data[$key]['rank'];
+          $response['userRight'] = [];
+          $user_right_key = ($key < (count($all_users_data) - 1)) ? $key + 1 : '';
+          if ($user_right_key != '') {
+            $response['userRight']['uid'] = $all_users_data[$user_right_key]['uid'];
+            $response['userRight']['rank'] = $all_users_data[$user_right_key]['rank'];
+          }
+        }
+      }
+    }
+    return $this->successResponse($response, Response::HTTP_OK);
+  }
+
+  /**
+   * Fetch all users from the system based on applied filters.
+   *
+   * @return array
+   *   All users rank.
+   */
+  protected function getAllUsersRankInTheSystem($elasticClient, $section = 'region', $section_filter = 0) {
+    global $_userData;
+    $search_param = [
+      'index' => getenv("ELASTIC_ENV") . '_user',
+      'type' => 'user',
+      'size' => $this->size,
+      '_source_includes' => ['uid', 'total_points'],
+      'body' => [
+        'sort' => [
+          'total_points' => [
+            'order' => 'desc',
+          ],
+          'uid' => [
+            'order' => 'desc',
+          ],
+        ],
+      ],
+    ];
+    // If no comparison is there & is not equal to world.
+    if ($section != 'world') {
+      if ($section == 'country') {
+        if (!empty($_userData->country)) {
+          // Get user information based on country.
+          // Create the query filters.
+          $filter = ($section_filter != 0) ? [$section_filter] : $_userData->country;
+          $search_param['body']['query']['bool']['filter'][]['terms'] = [
+            'country' => $filter,
+          ];
+        }
+        else {
+          return [];
+        }
+      }
+      if ($section == 'subregion') {
+        if (!empty($_userData->subregion)) {
+          // Get user information based on subregion.
+          // Create the query filters.
+          $filter = ($section_filter != 0) ? [$section_filter] : $_userData->subregion;
+          $search_param['body']['query']['bool']['filter'][]['terms'] = [
+            'subRegion' => $filter,
+          ];
+        }
+        else {
+          return [];
+        }
+      }
+      if ($section == 'region') {
+        if (!empty($_userData->region)) {
+          // Get user information based on region.
+          // Create the query filters.
+          $filter = ($section_filter != 0) ? [$section_filter] : $_userData->region;
+          $search_param['body']['query']['bool']['filter'][]['terms'] = [
+            'region' => $filter,
+          ];
+        }
+        else {
+          return [];
+        }
+      }
+      if ($section == 'location') {
+        if (!empty($_userData->location)) {
+          // Get user information based on country.
+          // Create the query filters.
+          $filter = ($section_filter != 0) ? [$section_filter] : $_userData->location;
+          $search_param['body']['query']['bool']['filter'][]['terms'] = [
+            'location' => $filter,
+          ];
+        }
+        else {
+          return [];
+        }
+      }
+    }
+    // Search the data in elastic based on the search params.
+    $all_users_data = $elasticClient->search($search_param);
+    $all_users_data_array = [];
+    if (!empty($all_users_data['hits']['hits'])) {
+      $position = 1;
+      $j = 0;
+      foreach ($all_users_data['hits']['hits'] as $value) {
+        $all_users_data_array[$j]['uid'] = (int) $value['_source']['uid'];
+        $all_users_data_array[$j]['rank'] = "#" . $position;
+        $all_users_data_array[$j]['pointValue'] = isset($value['_source']['total_points']) ? $value['_source']['total_points'] : 0;
+        $j++;
+        $position++;
+      }
+    }
+    return $all_users_data_array;
   }
 
 }

@@ -3,13 +3,13 @@ langcode: en
 status: true
 dependencies: {  }
 name: consumer_category_desktop
-label: 'Consumer Category Desktop (1194x357)'
+label: 'Consumer Category Hero Desktop (1440×437)'
 effects:
-  04c45087-55f6-4920-b716-7a8d07fbea49:
-    uuid: 04c45087-55f6-4920-b716-7a8d07fbea49
+  83804d5f-0406-46bf-a5c1-63a5cbaa4e83:
+    uuid: 83804d5f-0406-46bf-a5c1-63a5cbaa4e83
     id: image_scale_and_crop
-    weight: 1
+    weight: 2
     data:
-      width: 1194
-      height: 357
+      width: 1440
+      height: 437
       anchor: center-center

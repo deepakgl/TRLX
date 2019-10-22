@@ -1,15 +1,16 @@
-uuid: b15c16cb-c995-48a1-a118-c39a7db9117a
+uuid: e0a556ce-b233-40a9-8eb5-16801e7333bb
 langcode: en
 status: true
 dependencies:
   module:
-    - taxonomy
-id: taxonomy_term.field_flag
-field_name: field_flag
-entity_type: taxonomy_term
-type: boolean
+    - node
+    - text
+id: node.field_try_this
+field_name: field_try_this
+entity_type: node
+type: text_with_summary
 settings: {  }
-module: core
+module: text
 locked: false
 cardinality: 1
 translatable: true

@@ -32,7 +32,7 @@ class StringTranslation extends ResourceBase {
    */
   public function get(Request $request) {
     $lang_utility = new LangUtility();
-    $lang_code = $request->query->get('languageCode');
+    $lang_code = $request->query->get('language');
     // Check if empty lang code.
     if (empty($lang_code)) {
       return new JsonResponse('Please provide languageCode.', 400, [], FALSE);

@@ -28,8 +28,8 @@ $router->group(
 
     // Leaderboard.
     $router->group(['prefix' => 'v1'], function () use ($router) {
-      $router->get('userLeaderBoard', 'LeaderboardController@userLeaderBoard');
-      $router->get('currentUserRank', 'LeaderboardController@currentUserRank');
+      $router->get('leaderboard', 'LeaderboardController@userLeaderBoard');
+      $router->get('userProfileRank', 'LeaderboardController@userProfileRank');
     });
 
     // Content.
@@ -72,6 +72,11 @@ $router->group(
       $router->post('quiz', 'QuizController@quiz');
     });
 
+    // JWT token API.
+    $router->group(['prefix' => 'v1'], function () use ($router) {
+      $router->get('token', 'JwtTokenController@jwtToken');
+    });
+
     // User Activity.
     $router->group(['prefix' => 'v1'], function () use ($router) {
       $router->get('getUserActivities', 'UserActivitiesController@getUserActivities');
@@ -80,11 +85,6 @@ $router->group(
       $router->get('userActivitiesLevel', 'UserActivitiesController@userActivitiesLevel');
       $router->get('userActivitiesLevel', 'UserActivitiesController@userActivitiesLevel');
       $router->post('update/user/elastic/index', 'UserActivitiesController@updateUserElasticBody');
-    });
-
-    // User Rank.
-    $router->group(['prefix' => 'v1'], function () use ($router) {
-      $router->get('userProfileRank', 'UserRankController@userProfileRank');
     });
 
     // Global activity.

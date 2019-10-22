@@ -5,13 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 use App\Support\Helper;
-use App\Model\Mysql\UserModel;;
 use App\Model\Elastic\ElasticUserModel;
+use App\Traits\ApiResponser;
 
 /**
  * Purpose of this class is to calculate user rank.
  */
 class UserRankController extends Controller {
+
+  use ApiResponser;
 
   /**
    * Create a new controller instance.
@@ -28,76 +30,45 @@ class UserRankController extends Controller {
    *   Object of user rank.
    */
   public function userProfileRank(Request $request) {
-    $uid = Helper::getJtiToken($request);
-    if (!$uid) {
-      return Helper::jsonError('Please provide user id.', 422);
-    }
+    global $_userData;
+    $uid = $_userData->userId;
+    $response = [];
+    // Check whether elastic connectivity is there.
     $client = Helper::checkElasticClient();
-    $lang = UserModel::getUserInfoByUid($uid, 'language');
-    header('Content-language: ' . $lang[0]->language);
+    // Check whether user elastic index exists.
     $exist = ElasticUserModel::checkElasticUserIndex($uid, $client);
-    if (!$exist) {
-      return Helper::jsonError('Please provide user id.', 422);
+    if (!$client) {
+      return $this->errorResponse('No alive nodes found in cluster.', Response::HTTP_INTERNAL_SERVER_ERROR);
     }
+    if (!$exist) {
+      return $this->errorResponse('Not authorized.', Response::HTTP_FORBIDDEN);
+    }
+    $validatedData = $this->validate($request, [
+      '_format' => 'required|format',
+      'language' => 'required|languagecode',
+    ]);
+    header('Content-language: ' . $validatedData['language']);
     $current_user_data = ElasticUserModel::fetchElasticUserData($uid, $client);
     // Fetch user left, user right & user centre points and uid.
     list($user_left_uid, $user_left_points, $user_right_uid, $user_right_points,
     $rank_centre) = $this->getUserRank($current_user_data, $client);
     // Fetch user information of left, centre and right user.
-    $user_left = UserModel::getUserInfoByUid($user_left_uid, ['name', 'image',
-      'state',
-    ]);
-    $user_centre = UserModel::getUserInfoByUid($uid, ['name', 'image',
-      'state',
-    ]);
-    $user_right = UserModel::getUserInfoByUid($user_right_uid, ['name',
-      'image', 'state',
-    ]);
+    $left_user_data = ElasticUserModel::fetchElasticUserData($user_left_uid, $client);
+    $right_user_data = ElasticUserModel::fetchElasticUserData($user_right_uid, $client);
     // Build response of left, centre and right user.
     $response['userLeft'] = [];
     if (!empty($user_left_uid) && $user_left_uid != $uid) {
-      $response['userLeft'][] = $this->responseElement($user_left_uid,
-       $user_left, $rank_centre, $user_left_points);
+      $response['userLeft']['uid'] = (int) $user_left_uid;
+      $response['userLeft']['rank'] = "#" . $rank_centre;
     }
-    $response['userCentre'][] = $this->responseElement($uid, $user_centre,
-     $rank_centre + 1, $current_user_data['_source']['total_points']);
-
-    $response['userRight'][] = $this->responseElement($user_right_uid,
-     $user_right, $rank_centre + 2, $user_right_points);
-
-    return new Response($response, 200);
-  }
-
-  /**
-   * Prepare rank response.
-   *
-   * @param int $uid
-   *   User uid.
-   * @param array $user
-   *   User object.
-   * @param int $rank
-   *   User rank.
-   * @param int $points
-   *   User points.
-   *
-   * @return array
-   *   Object of user status.
-   */
-  protected function responseElement($uid, $user, $rank, $points) {
-    $image_url = "";
-    if (!empty($user[0]->image)) {
-      $image_url = str_replace("public://", getenv("SITE_IMAGE_URL"),
-       $user[0]->image);
+    $response['userCentre']['uid'] = (int) $uid;
+    $response['userCentre']['rank'] = "#" . ($rank_centre + 1);
+    $response['userRight'] = [];
+    if (!empty($user_right_uid) && $user_right_uid != $uid) {
+      $response['userRight']['uid'] = (int) $user_right_uid;
+      $response['userRight']['rank'] = "#" . ($rank_centre + 2);
     }
-    $data = [
-      "uid" => $uid,
-      "userName" => $user[0]->firstname . " " . $user[0]->lastname,
-      "userImage" => $image_url,
-      "rank" => $rank,
-      "pointValue" => $points,
-      "state" => $user[0]->state,
-    ];
-    return $data;
+    return $this->successResponse($response, Response::HTTP_OK);
   }
 
   /**
@@ -111,9 +82,9 @@ class UserRankController extends Controller {
    * @return array
    *   User left, right & centre points and uid.
    */
-  protected function getUserRank($data, $client) {
-    $points = $data['_source']['total_points'] == 0 ? 2 :
-     $data['_source']['total_points'];
+  protected function getUserRank(array $data, $client) {
+    global $_userData;
+    $points = ($data['_source']['total_points'] == 0) ? 2 : $data['_source']['total_points'];
     $query = [
       'index' => getenv("ELASTIC_ENV") . '_user',
       'type' => 'user',
@@ -151,23 +122,23 @@ class UserRankController extends Controller {
         ],
       ],
     ];
+    if (!empty($_userData->region)) {
+      $query['body']['query']['bool']['filter'][]['terms'] = [
+        'region' => $_userData->region,
+      ];
+    }
+    // Search the data in elastic based on the search params.
     $response = $client->search($query);
-
     return [
-      !empty($response['aggregations']['duplicateCount']['buckets']['greater']
-      ['greater']['hits']['hits']) ?
-      $response['aggregations']['duplicateCount']['buckets']['greater']
-      ['greater']['hits']['hits'][0]['_source']['uid'] : FALSE,
-      !empty($response['aggregations']['duplicateCount']['buckets']['greater']
-      ['greater']['hits']['hits']) ?
-      $response['aggregations']['duplicateCount']['buckets']['greater']
-      ['greater']['hits']['hits'][0]['_source']['total_points'] : FALSE,
-      $response['aggregations']['duplicateCount']['buckets']['less']['less']
-      ['hits']['hits'][0]['_source']['uid'],
-      $response['aggregations']['duplicateCount']['buckets']['less']['less']
-      ['hits']['hits'][0]['_source']['total_points'],
-      $response['aggregations']['duplicateCount']['buckets']['greater']
-      ['greater']['hits']['total'],
+      !empty($response['aggregations']['duplicateCount']['buckets']['greater']['greater']['hits']['hits']) ?
+      $response['aggregations']['duplicateCount']['buckets']['greater']['greater']['hits']['hits'][0]['_source']['uid'] : FALSE,
+      !empty($response['aggregations']['duplicateCount']['buckets']['greater']['greater']['hits']['hits']) ?
+      $response['aggregations']['duplicateCount']['buckets']['greater']['greater']['hits']['hits'][0]['_source']['total_points'] : FALSE,
+      !empty($response['aggregations']['duplicateCount']['buckets']['less']['less']['hits']['hits'][0]['_source']['uid']) ?
+      $response['aggregations']['duplicateCount']['buckets']['less']['less']['hits']['hits'][0]['_source']['uid'] : FALSE,
+      !empty($response['aggregations']['duplicateCount']['buckets']['less']['less']['hits']['hits'][0]['_source']['total_points']) ?
+      $response['aggregations']['duplicateCount']['buckets']['less']['less']['hits']['hits'][0]['_source']['total_points'] : FALSE,
+      $response['aggregations']['duplicateCount']['buckets']['greater']['greater']['hits']['total'],
     ];
   }
 

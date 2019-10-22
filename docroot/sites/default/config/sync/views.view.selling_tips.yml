@@ -1286,7 +1286,7 @@ display:
           type: image_url
           settings:
             url_type: '0'
-            image_style: stories_listing_mobile
+            image_style: stories_level_listing_mobile
             image_link: ''
           group_column: ''
           group_columns: {  }
@@ -1351,7 +1351,7 @@ display:
           type: image_url
           settings:
             url_type: '0'
-            image_style: stories_listing_tablet
+            image_style: stories_level_listing_tablet
             image_link: ''
           group_column: ''
           group_columns: {  }
@@ -1416,7 +1416,7 @@ display:
           type: image_url
           settings:
             url_type: '0'
-            image_style: stories_listing_desktop
+            image_style: stories_level_listing_desktop
             image_link: ''
           group_column: ''
           group_columns: {  }

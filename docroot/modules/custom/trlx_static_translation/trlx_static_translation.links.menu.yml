@@ -1,5 +1,5 @@
-elx_static_translation.menu:
+trlx_static_translation.menu:
   title: 'Static Translation Operations'
   description: 'Import static translation via CSV.'
-  route_name: elx_static_translation.static_translation
+  route_name: trlx_static_translation.static_translation
   parent: system.admin_config_system

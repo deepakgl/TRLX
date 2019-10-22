@@ -8,3 +8,8 @@ services:
     class: \Drupal\trlx_utility\Commands\OtmMigrationCommands
     tags:
       - { name: drush.command }
+  logger.stdout:
+    class: Drupal\trlx_utility\Logger\TrlxLogger
+    arguments: ['@logger.log_message_parser', '@request_stack']
+    tags:
+      - { name: logger }
