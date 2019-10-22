@@ -599,12 +599,9 @@ function trlx_utility_field_group_build_pre_render_alter(&$element) {
     }
 
     // Show & enable Tr Trend group.
-    if (isset($element['group_tr_trends']) && !empty($insiderCornerTermId)) {
+    if (isset($element['group_tr_trends']) && !empty($trendTermId)) {
       $element['group_tr_trends']['#states'] = [
         'visible' => [
-          ["input[name='field_content_section']" => ['value' => $trendTermId]],
-        ],
-        'enabled' => [
           ["input[name='field_content_section']" => ['value' => $trendTermId]],
         ],
       ];

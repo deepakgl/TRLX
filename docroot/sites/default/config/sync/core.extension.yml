@@ -141,6 +141,7 @@ module:
   trlx_trends: 0
   trlx_utility: 0
   trlx_video: 0
+  trlx_audit_log: 0
   user: 0
   video_embed_field: 0
   view_custom_table: 0
