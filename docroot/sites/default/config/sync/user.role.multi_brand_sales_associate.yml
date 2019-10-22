@@ -1,9 +1,0 @@
-uuid: df7c0f6e-187a-467b-9c94-51feb8b64b64
-langcode: en
-status: true
-dependencies: {  }
-id: multi_brand_sales_associate
-label: 'Multi-Brand Sales Associate'
-weight: 5
-is_admin: null
-permissions: {  }

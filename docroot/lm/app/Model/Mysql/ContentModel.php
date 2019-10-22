@@ -122,8 +122,8 @@ class ContentModel {
       ->select('records.statement_status')
       ->where('records.nid', '=', $params['nid'])
       ->where('records.uid', '=', $params['uid'])
-      ->get();
-    if (!empty(array_filter($query[0]))) {
+      ->get()->all();
+    if (isset($query[0]) && !empty($query[0])) {
       // If level status is in complete state return.
       if ($query[0]->statement_status != 'progress') {
         return FALSE;
