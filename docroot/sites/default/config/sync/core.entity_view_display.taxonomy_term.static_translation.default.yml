@@ -3,7 +3,6 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.taxonomy_term.static_translation.field_flag
     - field.field.taxonomy_term.static_translation.field_translation_key
     - taxonomy.vocabulary.static_translation
   module:
@@ -20,16 +19,6 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-  field_flag:
-    weight: 2
-    label: above
-    settings:
-      format: default
-      format_custom_false: ''
-      format_custom_true: ''
-    third_party_settings: {  }
-    type: boolean
-    region: content
   field_translation_key:
     weight: 1
     label: above
@@ -39,3 +28,4 @@ content:
     region: content
 hidden:
   langcode: true
+  search_api_excerpt: true

@@ -297,6 +297,18 @@ class FlagController extends Controller {
             $bookmark_data[$i]['imageMedium'] = "";
             $bookmark_data[$i]['imageLarge'] = "";
             $bookmark_data[$i]['faqId'] = 0;
+            if ($node_type->type == 'level_interactive_content') {
+              $bookmark_data[$i]['sectionKey'] = 'lesson';
+            }
+            if ($node_type->type == 'product_detail') {
+              $bookmark_data[$i]['sectionKey'] = 'productDetail';
+            }
+            if ($node_type->type == 'brand_story') {
+              $bookmark_data[$i]['sectionKey'] = 'brandStory';
+            }
+            if ($node_type->type == 'tools') {
+              $bookmark_data[$i]['sectionKey'] = 'video';
+            }
             if ($node_data->field_brands_target_id != NULL) {
               $brandinfo = ContentModel::getBrandTermIds();
               foreach ($brandinfo as $brand) {
@@ -330,30 +342,18 @@ class FlagController extends Controller {
               $bookmark_data[$i]['imageLarge'] = ContentModel::getBookmarkImageUrlByFid($node_data->field_tool_thumbnail_target_id)[2];
             }
           }
-          else {
-            $brand_key = $bookmark_id - $default_faq_id;
-            if ($brand_key != 0) {
-              $brand_data = ContentModel::getBrandDataFromBrandKey($brand_key);
-              if (!empty($brand_data)) {
-                $bookmark_data[$i]['id'] = 0;
-                $bookmark_data[$i]['title'] = mb_strtoupper($brand_data['name']) . ' CUSTOMER QUESTIONS';
-                $bookmark_data[$i]['brandKey'] = $brand_key;
-                $bookmark_data[$i]['brandName'] = $brand_data['name'];
-                $bookmark_data[$i]['sectionKey'] = "";
-                $bookmark_data[$i]['sectionName'] = $sectionNames['faq'];
-                $bookmark_data[$i]['pointValue'] = (int) $faq_config_data['faq_points'];
-                $bookmark_data[$i]['imageSmall'] = "";
-                $bookmark_data[$i]['imageMedium'] = "";
-                $bookmark_data[$i]['imageLarge'] = "";
-                $bookmark_data[$i]['faqId'] = $bookmark_id;
-              }
-            }
-            else {
+          $i++;
+        }
+        if (in_array($bookmark_id, $faq_ids)) {
+          $brand_key = $bookmark_id - $default_faq_id;
+          if ($brand_key > 0) {
+            $brand_data = ContentModel::getBrandDataFromBrandKey($brand_key);
+            if (!empty($brand_data)) {
               $bookmark_data[$i]['id'] = 0;
-              $bookmark_data[$i]['title'] = 'HELP QUESTIONS';
-              $bookmark_data[$i]['brandKey'] = 0;
-              $bookmark_data[$i]['brandName'] = "";
-              $bookmark_data[$i]['sectionKey'] = "";
+              $bookmark_data[$i]['title'] = mb_strtoupper($brand_data['name']) . ' CUSTOMER QUESTIONS';
+              $bookmark_data[$i]['brandKey'] = $brand_key;
+              $bookmark_data[$i]['brandName'] = $brand_data['name'];
+              $bookmark_data[$i]['sectionKey'] = "faq";
               $bookmark_data[$i]['sectionName'] = $sectionNames['faq'];
               $bookmark_data[$i]['pointValue'] = (int) $faq_config_data['faq_points'];
               $bookmark_data[$i]['imageSmall'] = "";
@@ -361,6 +361,19 @@ class FlagController extends Controller {
               $bookmark_data[$i]['imageLarge'] = "";
               $bookmark_data[$i]['faqId'] = $bookmark_id;
             }
+          }
+          else {
+            $bookmark_data[$i]['id'] = 0;
+            $bookmark_data[$i]['title'] = 'HELP QUESTIONS';
+            $bookmark_data[$i]['brandKey'] = 0;
+            $bookmark_data[$i]['brandName'] = "";
+            $bookmark_data[$i]['sectionKey'] = "helpFaq";
+            $bookmark_data[$i]['sectionName'] = $sectionNames['faq'];
+            $bookmark_data[$i]['pointValue'] = (int) $faq_config_data['faq_points'];
+            $bookmark_data[$i]['imageSmall'] = "";
+            $bookmark_data[$i]['imageMedium'] = "";
+            $bookmark_data[$i]['imageLarge'] = "";
+            $bookmark_data[$i]['faqId'] = $bookmark_id;
           }
           $i++;
         }
@@ -390,7 +403,7 @@ class FlagController extends Controller {
     $pager = [
       "count" => $total_count,
       "pages" => $pages,
-      "items_per_page" => $this->limit,
+      "items_per_page" => (int) $this->limit,
       "current_page" => 0,
       "next_page" => 0,
     ];
