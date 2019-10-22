@@ -48,7 +48,8 @@ $router->group(
 
     // Badges.
     $router->group(['prefix' => 'v1'], function () use ($router) {
-      $router->get('getUserBadges', 'BadgesController@userBadges');
+      $router->get('allStamps', 'BadgesController@userStamps');
+      $router->get('myStamps', 'BadgesController@userStamps');
       $router->get('getUserBadgesByUid', 'BadgesController@userBadgesByUid');
       $router->get('allocateBadge', 'BadgesController@allocateBadge');
       $router->get('allocateInspirationBadge', 'BadgesController@allocateInspirationBadge');

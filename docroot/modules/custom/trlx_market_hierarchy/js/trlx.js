@@ -14,6 +14,7 @@
         $('.node-brand-story-form .term-reference-tree-level .form-type-checkbox input:checkbox').prop("checked", true);
         $('.node-t-c-form .term-reference-tree-level .form-type-checkbox input:checkbox').prop("checked", true);
         $('.node-welcome-message-form .term-reference-tree-level .form-type-checkbox input:checkbox').prop("checked", true);
+        $('.node-privacy-policy-form .term-reference-tree-level .form-type-checkbox input:checkbox').prop("checked", true);
       }
       $(".form-item-send-notifications .translation-entity-all-languages").hide();
       // Js for select all markets on select of region.

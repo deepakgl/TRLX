@@ -5,7 +5,7 @@ dependencies:
   config:
     - field.field.taxonomy_term.brands.field_brand_key
     - field.field.taxonomy_term.brands.field_brand_logo
-    - image.style.thumbnail
+    - image.style.brands_category_listing_desktop
     - taxonomy.vocabulary.brands
   module:
     - path
@@ -17,12 +17,12 @@ bundle: brands
 mode: default
 content:
   description:
-    type: text_textfield
+    type: text_textarea
     weight: 0
     region: content
     settings:
-      size: 60
       placeholder: ''
+      rows: 5
     third_party_settings: {  }
   field_brand_key:
     weight: 32
@@ -35,8 +35,8 @@ content:
   field_brand_logo:
     weight: 31
     settings:
+      preview_image_style: brands_category_listing_desktop
       progress_indicator: throbber
-      preview_image_style: thumbnail
     third_party_settings: {  }
     type: image_image
     region: content

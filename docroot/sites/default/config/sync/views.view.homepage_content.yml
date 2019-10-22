@@ -8,7 +8,6 @@ dependencies:
     - user.role.administrator
     - user.role.el_nyo_global_education_system_admin
     - user.role.el_regional_market_admin
-    - user.role.el_regional_market_translator
   module:
     - entityqueue
     - user
@@ -34,7 +33,6 @@ display:
             administrator: administrator
             el_regional_market_admin: el_regional_market_admin
             el_nyo_global_education_system_admin: el_nyo_global_education_system_admin
-            el_regional_market_translator: el_regional_market_translator
       cache:
         type: tag
         options: {  }
