@@ -59,42 +59,59 @@ class BadgeModel {
   }
 
   /**
-   * Set badge master data in elastic.
+   * Set stamps master data in elastic.
    *
    * @param array $badge_data
    *   Badge master information.
    * @param mixed $flag
    *   TRUE/FALSE.
+   * @param string $url
+   *   Request url.
    *
    * @return array
-   *   All badges with user activity.
+   *   AllStamps/MyStamps.
    */
-  public static function setBadgeMasterData($badge_data, $flag = NULL) {
+  public static function setBadgeMasterData($badge_data, $flag = NULL, $url = NULL) {
     $all_badges = [];
-    $all_badges['userActivity'] = [];
-    foreach ($badge_data['badge_master'] as $key => $value) {
-      $badge['key'] = $key;
-      $badge['tid'] = $value['tid'];
-      $badge['image'] = $value['src'];
-      $badge['earned_description'] = $value['earned_description'];
-      $badge['unearned_description'] = $value['unearned_description'];
-      $badge['title'] = $value['title'];
-      $all_badges['allBadges'][] = $badge;
-      if (isset($flag) && $flag == TRUE) {
-        if (isset($badge_data['user_badge'][$key])) {
-          if ($badge_data['user_badge'][$key] > 0) {
-            $all_badges['userActivity'][] = [
-              'key' => $key,
-              'status' => TRUE,
-            ];
+    if ($url == 'allStamps') {
+      foreach ($badge_data['badge_master'] as $key => $value) {
+        $badge['tid'] = (int) $value['tid'];
+        $badge['title'] = $value['title'];
+        $badge['imageSmall'] = $value['src'];
+        $badge['imageMedium'] = $value['src'];
+        $badge['imageLarge'] = $value['src'];
+        if (isset($flag) && $flag == TRUE) {
+          if (isset($badge_data['user_badge'][$key])) {
+            $badge['status'] = TRUE;
+          }
+          else {
+            $badge['status'] = FALSE;
           }
         }
+        else {
+          $badge['status'] = FALSE;
+        }
+        $all_badges['results'][] = $badge;
       }
-      elseif (isset($flag) && $flag == FALSE) {
-        $all_badges['userActivity'][] = [
-          'key' => $key,
-          'status' => FALSE,
-        ];
+    }
+
+    if ($url == 'myStamps') {
+      $count = [];
+      $i = 1;
+      $keys = array_column($badge_data['badge_master'], 'tid');
+      array_multisort($keys, SORT_ASC, $badge_data['badge_master']);
+      foreach ($badge_data['badge_master'] as $key => $value) {
+        if (isset($flag) && $flag == TRUE && $i <= 3) {
+          if (isset($badge_data['user_badge'][$key])) {
+            $badge['tid'] = (int) $value['tid'];
+            $badge['title'] = $value['title'];
+            $badge['imageSmall'] = $value['src'];
+            $badge['imageMedium'] = $value['src'];
+            $badge['imageLarge'] = $value['src'];
+            $i++;
+            $all_badges['results'][] = $badge;
+          }
+        }
       }
     }
 
