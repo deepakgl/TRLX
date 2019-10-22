@@ -76,7 +76,7 @@ class BadgesController extends Controller {
     $url = explode("/", $uri);
     $validatedData = $this->validate($request, [
       '_format' => 'required|format',
-      'language' => 'required|language',
+      'language' => 'required|languagecode',
     ]);
     // Get user language.
     $lang = $request->input('language');
