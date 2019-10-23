@@ -332,8 +332,8 @@ class LeaderboardController extends Controller {
             $response['userLeft']['uid'] = $all_users_data[$user_left_key]['uid'];
             $response['userLeft']['rank'] = $all_users_data[$user_left_key]['rank'];
           }
-          $response['userCentre']['uid'] = $all_users_data[$key]['uid'];
-          $response['userCentre']['rank'] = $all_users_data[$key]['rank'];
+          $response['userCenter']['uid'] = $all_users_data[$key]['uid'];
+          $response['userCenter']['rank'] = $all_users_data[$key]['rank'];
           $response['userRight'] = [];
           $user_right_key = ($key < (count($all_users_data) - 1)) ? $key + 1 : '';
           if ($user_right_key != '') {
