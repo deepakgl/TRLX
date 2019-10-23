@@ -36,11 +36,10 @@ module:
   elasticsearch_connector_views: 0
   elc_password_policy: 0
   elx_custom_service: 0
-  elx_dashboard: 0
   elx_elastic_user: 0
   elx_menu: 0
-  elx_products: 0
   elx_points_migration: 0
+  elx_products: 0
   elx_redis_purge: 0
   elx_reports: 0
   elx_search: 0
@@ -118,6 +117,8 @@ module:
   toolbar: 0
   tour: 0
   translation_views: 0
+  trlx_audit_log: 0
+  trlx_banner: 0
   trlx_brand: 0
   trlx_brand_story: 0
   trlx_comment: 0
@@ -141,7 +142,6 @@ module:
   trlx_utility: 0
   trlx_banner: 0
   trlx_video: 0
-  trlx_audit_log: 0
   user: 0
   video_embed_field: 0
   view_custom_table: 0

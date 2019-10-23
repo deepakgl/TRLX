@@ -12,7 +12,7 @@ field_name: field_badge_image
 entity_type: taxonomy_term
 bundle: badges
 label: 'Stamp Image'
-description: ''
+description: 'Image Resolution:<b> 120X120px</b>'
 required: true
 translatable: false
 default_value: {  }

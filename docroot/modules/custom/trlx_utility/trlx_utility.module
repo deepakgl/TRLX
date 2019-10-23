@@ -250,6 +250,7 @@ function trlx_utility_form_alter(&$form, FormStateInterface $form_state, $form_i
 
     case 'taxonomy_term_brands_form':
     case 'taxonomy_term_consumer_category_form':
+    case 'taxonomy_term_badges_form':
       $entity = $form_state->getFormObject()->getEntity();
       $form['actions']['submit']['#submit'][] = 'trlx_utility_taxonomy_submit';
       break;
@@ -383,6 +384,15 @@ function trlx_utility_taxonomy_submit(array &$form, FormStateInterface $form_sta
       'listing_image_desktop',
       'listing_image_tablet',
       'listing_image_mobile',
+    ]
+    );
+  }
+  // Stamps images.
+  if ($entity->hasField('field_badge_image')) {
+    $commonUtility->setMediaEntity($entity, 'field_badge_image', [
+      'stamp_mobile',
+      'stamp_tablet',
+      'stamp_detail',
     ]
     );
   }

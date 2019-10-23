@@ -771,7 +771,6 @@ class ContentModel {
       })
       ->leftJoin('node__field_content_section as nfcs', function ($join) {
           $join->on('n.nid', '=', 'nfcs.entity_id');
-          $join->on('n.langcode', '=', 'nfcs.langcode');
       })
       ->leftJoin('node__field_hero_image as nfhi', function ($join) {
           $join->on('n.nid', '=', 'nfhi.entity_id');

@@ -102,15 +102,7 @@ class ProductDetails extends ResourceBase {
     }
 
     // Load Product Carousel.
-    $productCarousel = $commonUtility->fetchProductCarouselByNodeId($nid, $language);
-    if (!empty($productCarousel)) {
-      $view_results['productCarousel'] = $productCarousel;
-    }
-    else {
-      if (isset($view_results['productCarouselTitle'])) {
-        unset($view_results['productCarouselTitle']);
-      }
-    }
+    $view_results['productCarousel'] = $commonUtility->fetchProductCarouselByNodeId($nid, $language);
 
     return $commonUtility->successResponse($view_results, $status_code);
   }
