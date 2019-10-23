@@ -1,0 +1,8 @@
+uuid: a5706fa7-1143-4f9d-b460-a0779cb893b9
+langcode: en
+status: true
+dependencies: {  }
+id: backend-user-top-menu-for-m
+label: 'Backend User Top Menu for MA'
+description: 'Menu for MA'
+locked: false
