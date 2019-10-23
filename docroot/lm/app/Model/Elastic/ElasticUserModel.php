@@ -145,11 +145,11 @@ class ElasticUserModel {
 
 	public static function getElasticSearchParam($fieldName, $fieldVal, $size, $from)
 	{
-		if ($fieldVal) {
+		if ($fieldName && $fieldVal) {
 			$query = [
-				'match_phrase_prefix' => [
-					'name' => [
-						"query" => $fieldVal
+				'bool' => [
+					'filter' => [
+						$fieldName => $fieldVal,
 					]
 				]
 			];

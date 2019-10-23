@@ -184,7 +184,11 @@ class UserController extends Controller
 	{
 		$this->limit = !empty($request->input('limit')) ? $request->input('limit') : $this->limit;
 		$this->offset = !empty($request->input('offset')) ? $request->input('offset') : $this->offset;
-    $queryParams = ElasticUserModel::getElasticSearchParam('email', '101', $this->limit, $this->offset);
+		if (!empty($request->input('uid'))) {
+			$queryParams = ElasticUserModel::getElasticSearchParam('uid', $request->input('uid'), $this->limit, $this->offset);
+		} else {
+			$queryParams = ElasticUserModel::getElasticSearchParam('email', '', $this->limit, $this->offset);
+		}
 		$searchResult = ElasticUserModel::search($this->elasticClient, $queryParams);
 		if (empty($searchResult)) {
 			return new Response(NULL, Response::HTTP_NO_CONTENT);
