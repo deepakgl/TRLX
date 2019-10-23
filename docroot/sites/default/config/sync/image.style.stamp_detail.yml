@@ -1,0 +1,15 @@
+uuid: 5d829d17-05b4-44bd-9562-1a2cdfd7dd90
+langcode: en
+status: true
+dependencies: {  }
+name: stamp_detail
+label: 'Stamp Detail'
+effects:
+  0ea0fb17-ff00-475d-acaa-dead9d07f7c1:
+    uuid: 0ea0fb17-ff00-475d-acaa-dead9d07f7c1
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 120
+      height: 120
+      anchor: center-center

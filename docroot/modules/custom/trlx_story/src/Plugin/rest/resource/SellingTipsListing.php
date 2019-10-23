@@ -203,6 +203,7 @@ class SellingTipsListing extends ResourceBase {
       $query->condition('flc.bundle', 'level_interactive_content');
       $query->condition('flc.langcode', $language);
       $query->condition('fd.status', 1);
+      $query->condition('fd.langcode', $language);
       $query->condition('fpv.langcode', $language);
 
       // Fields.

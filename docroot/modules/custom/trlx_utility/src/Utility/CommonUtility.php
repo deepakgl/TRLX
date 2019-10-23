@@ -39,6 +39,8 @@ class CommonUtility {
    *   Param if faq id is there.
    * @param array $faq_point_value
    *   Param if faq point value is there.
+   * @param array $extraData
+   *   Extra data.
    *
    * @return Illuminate\Http\JsonResponse
    *   Success json response.
@@ -394,7 +396,7 @@ class CommonUtility {
       return TRUE;
     }
     catch (\Exception $e) {
-      // Return FALSE.
+      // Return FALSE;.
       return FALSE;
     }
 
@@ -534,7 +536,7 @@ class CommonUtility {
   public function setMediaEntity(EntityInterface $entity, string $field, array $styles) {
     if ($entity->hasField($field)) {
       if (!$entity->$field->isEmpty() && !empty($styles)) {
-        if (in_array($entity->bundle(), ['user', 'brands'])) {
+        if (in_array($entity->bundle(), ['user', 'brands', 'badges'])) {
           $file_id = $entity->get($field)->getValue()[0]['target_id'];
           $media_entity = ($file_id) ? File::Load($file_id) : '';
           $path = $media_entity->getFileUri();
@@ -724,10 +726,11 @@ class CommonUtility {
     try {
       $image_style = \Drupal::entityTypeManager()->getStorage('image_style')->load($style_name);
       $result = $image_style->buildUrl($file_uri);
-      // Fetch uri
+      // Fetch uri.
       return $result;
-    } catch (\Exception $e) {
-      // Return false
+    }
+    catch (\Exception $e) {
+      // Return false.
       return FALSE;
     }
   }
@@ -762,7 +765,8 @@ class CommonUtility {
       $query->condition('pifd.parent_type', 'node');
       $query->fields('fpc', ['field_product_carousel_target_id']);
       $result = $query->execute()->fetchAllAssoc('field_product_carousel_target_id');
-    } catch (\Exception $e) {
+    }
+    catch (\Exception $e) {
       $result = '';
     }
 
@@ -871,6 +875,37 @@ class CommonUtility {
       else {
         return $value;
       }
+    }
+  }
+
+  /**
+   * Brands data based on language and term ids.
+   *
+   * @param array $tids
+   *   Term id.
+   * @param string $language
+   *   Language code.
+   *
+   * @return array
+   *   Taxonomy term data.
+   */
+  public function brandsData(array $tids, $language = 'en') {
+    try {
+      $query = \Drupal::database()->select('taxonomy_term_field_data', 'ttfd');
+      $query->fields('ttfd', ['tid', 'vid', 'langcode', 'name']);
+      $query->leftjoin('taxonomy_term__field_brand_key', 'ttfbk', 'ttfbk.entity_id = ttfd.tid');
+      $query->addExpression('ttfbk.field_brand_key_value', 'brand_key_value');
+      $query->condition('ttfd.tid', $tids, 'IN');
+      $query->condition('ttfd.langcode', $language, '=');
+      $result = $query->execute()->fetchAll();
+      $brands_data = [];
+      foreach ($result as $data) {
+        $brands_data[$data->brand_key_value] = $data->name;
+      }
+      return $brands_data;
+    }
+    catch (\Exception $e) {
+      return FALSE;
     }
   }
 

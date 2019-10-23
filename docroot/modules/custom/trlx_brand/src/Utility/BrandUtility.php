@@ -31,7 +31,8 @@ class BrandUtility {
       $query->condition('ttfd.tid', $tid, '=');
       $query->condition('ttfd.langcode', $language, '=');
       return $query->execute()->fetchAssoc();
-    } catch (\Exception $e ) {
+    }
+    catch (\Exception $e) {
       return FALSE;
     }
   }

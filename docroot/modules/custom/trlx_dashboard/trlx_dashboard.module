@@ -1,0 +1,13 @@
+<?php
+
+/**
+ * @file
+ * Dashboard module file.
+ */
+
+/**
+ * Implements hook_preprocess_html().
+ */
+function trlx_dashboard_preprocess_page(&$variables) {
+  $variables['#attached']['library'][] = 'trlx_dashboard/trlx_admin';
+}

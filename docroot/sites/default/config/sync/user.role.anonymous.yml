@@ -36,7 +36,6 @@ permissions:
   - 'restful get main_navigation_menu'
   - 'restful get module_details'
   - 'restful get modules_listing'
-  - 'restful get primary_navigation_menu'
   - 'restful get privacy_policy'
   - 'restful get product_details'
   - 'restful get selling_tips_listing'

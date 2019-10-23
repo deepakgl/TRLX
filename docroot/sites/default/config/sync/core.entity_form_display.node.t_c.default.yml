@@ -9,7 +9,6 @@ dependencies:
     - node.type.t_c
   module:
     - path
-    - term_reference_tree
     - text
 id: node.t_c.default
 targetEntityType: node
@@ -25,33 +24,22 @@ content:
       summary_rows: 3
     third_party_settings: {  }
     region: content
-  field_markets:
-    weight: 2
-    settings:
-      start_minimized: true
-      leaves_only: false
-      select_parents: false
-      cascading_selection: 0
-      max_depth: 0
-    third_party_settings: {  }
-    type: term_reference_tree
-    region: content
   field_translation:
-    weight: 26
+    weight: 6
     settings: {  }
     third_party_settings: {  }
     type: options_buttons
     region: content
   langcode:
     type: language_select
-    weight: 3
+    weight: 2
     region: content
     settings:
       include_locked: true
     third_party_settings: {  }
   path:
     type: path
-    weight: 5
+    weight: 4
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -59,7 +47,7 @@ content:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 6
+    weight: 5
     region: content
     third_party_settings: {  }
   title:
@@ -71,12 +59,13 @@ content:
       placeholder: ''
     third_party_settings: {  }
   translation:
-    weight: 4
+    weight: 3
     region: content
     settings: {  }
     third_party_settings: {  }
 hidden:
   created: true
+  field_markets: true
   promote: true
   sticky: true
   uid: true

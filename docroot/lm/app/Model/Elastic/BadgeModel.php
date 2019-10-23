@@ -3,6 +3,7 @@
 namespace App\Model\Elastic;
 
 use Illuminate\Http\Response;
+use App\Support\Helper;
 
 /**
  * Purpose of this class is to check, fetch and update badges.
@@ -73,13 +74,22 @@ class BadgeModel {
    */
   public static function setBadgeMasterData($badge_data, $flag = NULL, $url = NULL) {
     $all_badges = [];
+    foreach ($badge_data['badge_master'] as $key => $value) {
+      $fids[] = [
+        'tid' => $value['tid'],
+        'imageId' => $value['src'],
+      ];
+    }
+    $image_uris = Helper::getUriByFid(array_column($fids, "imageId"));
+    $result = Helper::buildStampsImageStyles($fids, $image_uris);
     if ($url == 'allStamps') {
       foreach ($badge_data['badge_master'] as $key => $value) {
+        $image_style = Helper::buildImageResponse($result, $value['tid']);
         $badge['tid'] = (int) $value['tid'];
         $badge['title'] = $value['title'];
-        $badge['imageSmall'] = $value['src'];
-        $badge['imageMedium'] = $value['src'];
-        $badge['imageLarge'] = $value['src'];
+        $badge['imageSmall'] = $image_style['imageSmall'];
+        $badge['imageMedium'] = $image_style['imageMedium'];
+        $badge['imageLarge'] = $image_style['imageLarge'];
         if (isset($flag) && $flag == TRUE) {
           if (isset($badge_data['user_badge'][$key])) {
             $badge['status'] = TRUE;
@@ -103,11 +113,12 @@ class BadgeModel {
       foreach ($badge_data['badge_master'] as $key => $value) {
         if (isset($flag) && $flag == TRUE && $i <= 3) {
           if (isset($badge_data['user_badge'][$key])) {
+            $image_style = Helper::buildImageResponse($result, $value['tid']);
             $badge['tid'] = (int) $value['tid'];
             $badge['title'] = $value['title'];
-            $badge['imageSmall'] = $value['src'];
-            $badge['imageMedium'] = $value['src'];
-            $badge['imageLarge'] = $value['src'];
+            $badge['imageSmall'] = $image_style['imageSmall'];
+            $badge['imageMedium'] = $image_style['imageMedium'];
+            $badge['imageLarge'] = $image_style['imageLarge'];
             $i++;
             $all_badges['results'][] = $badge;
           }

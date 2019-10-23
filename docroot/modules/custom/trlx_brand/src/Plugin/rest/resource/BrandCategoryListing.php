@@ -47,7 +47,8 @@ class BrandCategoryListing extends ResourceBase {
       $query = \Drupal::entityQuery('taxonomy_term');
       $query->condition('vid', 'brands');
       $term_ids = $query->execute();
-    } catch (\Exception $e ) {
+    }
+    catch (\Exception $e) {
       $term_ids = [];
     }
     $brands_list = [];

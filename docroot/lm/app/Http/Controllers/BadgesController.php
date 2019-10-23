@@ -76,10 +76,10 @@ class BadgesController extends Controller {
     $url = explode("/", $uri);
     $validatedData = $this->validate($request, [
       '_format' => 'required|format',
-      'langcode' => 'required|languagecode',
+      'language' => 'required|languagecode',
     ]);
     // Get user language.
-    $lang = $request->input('langcode');
+    $lang = $request->input('language');
     global $_userData;
     // User id.
     $this->uid = $_userData->userId;
