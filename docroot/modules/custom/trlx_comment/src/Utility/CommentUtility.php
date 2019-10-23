@@ -2,6 +2,8 @@
 
 namespace Drupal\trlx_comment\Utility;
 
+use Drupal\Component\Serialization\Json;
+
 /**
  * Purpose of this class is to build common object.
  */
@@ -25,6 +27,7 @@ class CommentUtility {
         'entity_id',
         'pid',
         'comment_body',
+        'comment_tags',
         'comment_timestamp',
       ])
       ->values([
@@ -32,6 +35,7 @@ class CommentUtility {
         'entity_id' => $data['nid'],
         'pid' => $data['parentId'],
         'comment_body' => $data['comment'],
+        'comment_tags' => Json::encode($data['tags']),
         'comment_timestamp' => REQUEST_TIME,
       ])
       ->execute();
@@ -55,6 +59,7 @@ class CommentUtility {
           'entity_id',
           'pid',
           'comment_body',
+          'comment_tags',
           'comment_timestamp',
         ])
         ->orderBy('tc.comment_timestamp', 'DESC')->range(0, 1)
@@ -86,6 +91,7 @@ class CommentUtility {
           'entity_id',
           'pid',
           'comment_body',
+          'comment_tags',
           'comment_timestamp',
         ])
         ->condition('tc.entity_id', $nid, '=')

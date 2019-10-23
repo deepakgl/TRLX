@@ -1,5 +1,7 @@
 <?php
 
+use Drupal\Core\Database\Database;
+
 /**
  * @file
  * Create and update table.
@@ -69,4 +71,22 @@ function trlx_comment_update_8504() {
   if (!db_table_exists('trlx_comment')) {
     db_create_table('trlx_comment', $schema['trlx_comment']);
   }
+}
+
+/**
+ * Implements hook_update_N().
+ *
+ * Add new column "comment_tags" to store tag data.
+ */
+function trlx_comment_update_8601() {
+  // Specifications for comment_tags column.
+  $spec = array(
+    'description' => "Stores tag data.",
+    'type' => 'blob',
+    'not null' => FALSE,
+    'size' => 'big',
+  );
+
+  $schema = Database::getConnection()->schema();
+  $schema->addField('trlx_comment', 'comment_tags', $spec);
 }
