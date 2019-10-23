@@ -1,13 +1,31 @@
 <?php
-
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Drupal\Core\Url;
 /**
  * @file
  * Dashboard module file.
  */
-
+  
 /**
  * Implements hook_preprocess_html().
  */
 function trlx_dashboard_preprocess_page(&$variables) {
   $variables['#attached']['library'][] = 'trlx_dashboard/trlx_admin';
+}
+
+/**
+ * Implements hook_user_login().
+ */
+function trlx_dashboard_user_login($account) {
+  $roles = $account->getRoles();
+  //$url = Url::fromRoute('view.dashboard.dashboard_unpublished');
+  if(in_array('el_regional_market_admin', $roles)) {
+    $response = new RedirectResponse('/dashboard/published');
+    $response->send();
+    return;
+  } elseif (in_array('el_nyo_global_education_system_admin', $roles)) {
+    $response = new RedirectResponse('/dashboard/published');
+    $response->send();
+    return;
+  }
 }
