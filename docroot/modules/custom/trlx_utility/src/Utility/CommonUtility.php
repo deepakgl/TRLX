@@ -39,6 +39,8 @@ class CommonUtility {
    *   Param if faq id is there.
    * @param array $faq_point_value
    *   Param if faq point value is there.
+   * @param array $extraData
+   *   Extra data.
    *
    * @return Illuminate\Http\JsonResponse
    *   Success json response.
@@ -394,7 +396,7 @@ class CommonUtility {
       return TRUE;
     }
     catch (\Exception $e) {
-      // Return FALSE.
+      // Return FALSE;.
       return FALSE;
     }
 
@@ -534,7 +536,7 @@ class CommonUtility {
   public function setMediaEntity(EntityInterface $entity, string $field, array $styles) {
     if ($entity->hasField($field)) {
       if (!$entity->$field->isEmpty() && !empty($styles)) {
-        if (in_array($entity->bundle(), ['user', 'brands'])) {
+        if (in_array($entity->bundle(), ['user', 'brands', 'badges'])) {
           $file_id = $entity->get($field)->getValue()[0]['target_id'];
           $media_entity = ($file_id) ? File::Load($file_id) : '';
           $path = $media_entity->getFileUri();
@@ -724,10 +726,11 @@ class CommonUtility {
     try {
       $image_style = \Drupal::entityTypeManager()->getStorage('image_style')->load($style_name);
       $result = $image_style->buildUrl($file_uri);
-      // Fetch uri
+      // Fetch uri.
       return $result;
-    } catch (\Exception $e) {
-      // Return false
+    }
+    catch (\Exception $e) {
+      // Return false.
       return FALSE;
     }
   }
@@ -762,7 +765,8 @@ class CommonUtility {
       $query->condition('pifd.parent_type', 'node');
       $query->fields('fpc', ['field_product_carousel_target_id']);
       $result = $query->execute()->fetchAllAssoc('field_product_carousel_target_id');
-    } catch (\Exception $e) {
+    }
+    catch (\Exception $e) {
       $result = '';
     }
 
