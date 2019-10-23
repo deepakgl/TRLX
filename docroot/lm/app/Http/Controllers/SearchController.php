@@ -202,11 +202,12 @@ class SearchController extends Controller {
         $display_title = isset($value['_source']['field_display_title'][0]) ? $value['_source']['field_display_title'][0] : '';
       }
       // Get category on based on brand and content section.
-      $category = $brand_key = '';
+      $category = [];
+      $brand_key = 0;
       $brandinfo = ContentModel::getBrandTermIds();
       if (isset($value['_source']['field_brands'][0])) {
         $category_name = ContentModel::getTermName([$value['_source']['field_brands'][0]]);
-        $category = ['key' => 'brands', 'value' => implode(" ", $category_name)];
+        $category[] = ['key' => 'brands', 'value' => implode(" ", $category_name)];
         foreach ($brandinfo as $key => $brand) {
           if ($brand['entity_id'] == $value['_source']['field_brands'][0]) {
             $brand_key = (int) $brand['field_brand_key_value'];
@@ -216,11 +217,11 @@ class SearchController extends Controller {
       elseif (isset($value['_source']['field_content_section'][0])) {
         $category_name = ContentModel::getTermName([$value['_source']['field_content_section'][0]]);
         $key = ContentModel::getContentSectionKeyByTid($value['_source']['field_content_section'][0]);
-        $category = ['key' => $key, 'value' => implode(" ", $category_name)];
+        $category[] = ['key' => $key, 'value' => implode(" ", $category_name)];
       }
       elseif (isset($value['_source']['field_brands_1'][0])) {
         $category_name = ContentModel::getTermName([$value['_source']['field_brands_1'][0]]);
-        $category = ['key' => 'brands', 'value' => implode(" ", $category_name)];
+        $category[] = ['key' => 'brands', 'value' => implode(" ", $category_name)];
         foreach ($brandinfo as $key => $brand) {
           if ($brand['entity_id'] == $value['_source']['field_brands_1'][0]) {
             $brand_key = (int) $brand['field_brand_key_value'];
@@ -230,7 +231,7 @@ class SearchController extends Controller {
       elseif (isset($value['_source']['field_content_section_1'][0])) {
         $category_name = ContentModel::getTermName([$value['_source']['field_content_section_1'][0]]);
         $key = ContentModel::getContentSectionKeyByTid($value['_source']['field_content_section_1'][0]);
-        $category = ['key' => $key, 'value' => implode(" ", $category_name)];
+        $category[] = ['key' => $key, 'value' => implode(" ", $category_name)];
       }
 
       // Get subtitle on based on content type.
