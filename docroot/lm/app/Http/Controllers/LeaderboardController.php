@@ -123,7 +123,12 @@ class LeaderboardController extends Controller {
       $other_users_sliced_array = array_slice($other_users_data, $this->offset, $this->limit);
       $response['sectionData'] = $other_users_sliced_array;
     }
-    $all_users_data_array = $this->getAllUsersRankInTheSystem($this->elasticClient);
+    if ($profileSection != 'profilePage') {
+      $all_users_data_array = $this->getAllUsersRankInTheSystem($this->elasticClient, $section);
+    }
+    else {
+      $all_users_data_array = $this->getAllUsersRankInTheSystem($this->elasticClient);
+    }
     // If multiple user have same number of view points.
     $keys = array_keys(array_column($all_users_data_array, 'pointValue'), $total_points);
     if (!empty($keys) && count($keys) >= 2) {
