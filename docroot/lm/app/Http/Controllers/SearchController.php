@@ -152,14 +152,12 @@ class SearchController extends Controller {
           $image_id = !empty($value['_source']['field_hero_image']) ? $value['_source']['field_hero_image'][0] : '';
         }
       }
-      if (!empty($image_id)) {
-        $tid = isset($value['_source']['tid'][0]) ? $value['_source']['tid'][0] : '';
-        $nid = isset($value['_source']['nid'][0]) ? $value['_source']['nid'][0] : '';
-        $fids[] = [
-          'nid' => !empty($nid) ? $nid : $tid,
-          'imageId' => $image_id,
-        ];
-      }
+      $tid = isset($value['_source']['tid'][0]) ? $value['_source']['tid'][0] : '';
+      $nid = isset($value['_source']['nid'][0]) ? $value['_source']['nid'][0] : '';
+      $fids[] = [
+        'nid' => !empty($nid) ? $nid : $tid,
+        'imageId' => $image_id,
+      ];
     }
     // Fetch image styles.
     $image_uris = Helper::getUriByMediaId(array_column($fids, "imageId"));
