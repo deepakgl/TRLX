@@ -226,6 +226,7 @@ class ConsumerListing extends ResourceBase {
       $query->condition('flc.bundle', 'level_interactive_content');
       $query->condition('flc.langcode', $language);
       $query->condition('fd.status', 1);
+      $query->condition('fd.langcode', $language);
       $query->condition('fpv.langcode', $language);
       $query->condition('fcc.field_consumer_category_target_id', $categoryId);
 
