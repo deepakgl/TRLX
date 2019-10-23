@@ -65,7 +65,7 @@ class WelcomeMessage extends ResourceBase {
     $message = 'message_' . $language;
     $response['results']['message'] = $config->get($message);
     if (empty($response['results']['message'])) {
-      return new JsonResponse(t('No @messageParam message found.', ['@messageParam' => 'welcome']), 200);
+      return $commonUtility->successResponse([], Response::HTTP_OK);
     }
 
     return $commonUtility->successResponse($response['results'], 200);

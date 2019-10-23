@@ -1,0 +1,15 @@
+uuid: ae8b2825-8ade-48e8-a070-6630207ca0df
+langcode: en
+status: true
+dependencies: {  }
+name: stamp_tablet
+label: 'Stamp Tablet'
+effects:
+  7d2e5d2a-3592-4a65-868e-5311dbc8858a:
+    uuid: 7d2e5d2a-3592-4a65-868e-5311dbc8858a
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 120
+      height: 120
+      anchor: center-center

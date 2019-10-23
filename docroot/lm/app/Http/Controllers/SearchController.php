@@ -138,26 +138,33 @@ class SearchController extends Controller {
       if (!empty($value['_source']['vid'][0])) {
         $image_id = !empty($value['_source']['field_image']) ? $value['_source']['field_image'][0] : '';
       }
-      elseif ($value['_source']['type'][0] == 'tools') {
-        $image_id = !empty($value['_source']['field_tool_thumbnail']) ? $value['_source']['field_tool_thumbnail'][0] : '';
-      }
-      elseif ($value['_source']['type'][0] == 'product_detail') {
-        $image_id = !empty($value['_source']['field_field_product_image']) ? $value['_source']['field_field_product_image'][0] : '';
-      }
-      elseif ($value['_source']['type'][0] == 'brand_story') {
-        $image_id = !empty($value['_source']['field_featured_image']) ? $value['_source']['field_featured_image'][0] : '';
-      }
       else {
-        $image_id = !empty($value['_source']['field_hero_image']) ? $value['_source']['field_hero_image'][0] : '';
+        if ($value['_source']['type'][0] == 'tools') {
+          $image_id = !empty($value['_source']['field_tool_thumbnail']) ? $value['_source']['field_tool_thumbnail'][0] : '';
+        }
+        elseif ($value['_source']['type'][0] == 'product_detail') {
+          $image_id = !empty($value['_source']['field_field_product_image']) ? $value['_source']['field_field_product_image'][0] : '';
+        }
+        elseif ($value['_source']['type'][0] == 'brand_story') {
+          $image_id = !empty($value['_source']['field_featured_image']) ? $value['_source']['field_featured_image'][0] : '';
+        }
+        else {
+          $image_id = !empty($value['_source']['field_hero_image']) ? $value['_source']['field_hero_image'][0] : '';
+        }
       }
-      $fids[] = [
-        'nid' => isset($value['_source']['nid'][0]) ? $value['_source']['nid'][0] : '',
-        'imageId' => $image_id,
-      ];
+      if (!empty($image_id)) {
+        $tid = isset($value['_source']['tid'][0]) ? $value['_source']['tid'][0] : '';
+        $nid = isset($value['_source']['nid'][0]) ? $value['_source']['nid'][0] : '';
+        $fids[] = [
+          'nid' => !empty($nid) ? $nid : $tid,
+          'imageId' => $image_id,
+        ];
+      }
     }
     // Fetch image styles.
     $image_uris = Helper::getUriByMediaId(array_column($fids, "imageId"));
     $result = Helper::buildImageStyles($fids, $image_uris);
+
     // Prepare the search response.
     // Get created date.
     $res = [];
@@ -177,7 +184,10 @@ class SearchController extends Controller {
     }
     foreach ($data['hits']['hits'] as $key => $value) {
       $nid = isset($value['_source']['nid'][0]) ? $value['_source']['nid'][0] : '';
-      $image_style = Helper::buildImageResponse($result, $nid);
+      $tid = isset($value['_source']['tid'][0]) ? $value['_source']['tid'][0] : '';
+      $img = !empty($nid) ? $nid : $tid;
+      $image_style = Helper::buildImageResponse($result, $img);
+
       // Get displaytitle on based on content type.
       if (!empty($value['_source']['vid'][0])) {
         $display_title = isset($value['_source']['name'][0]) ? $value['_source']['name'][0] : '';
@@ -355,7 +365,7 @@ class SearchController extends Controller {
                 'multi_match' => [
                   'query' => $this->search,
                   'fields' => $this->searchFields,
-                  'type' => 'phrase_prefix',
+                  'type' => 'phrase',
                 ],
               ],
               1 => [
