@@ -70,6 +70,7 @@ class ImportDataFromNotificationQueue extends QueueWorkerBase implements Contain
           'notificationLink' => $indexValues['notificationLink'],
           'notificationLinkType' => $indexValues['notificationLinkType'],
           'notificationBrandKey' => $indexValues['notificationBrandKey'],
+          'notificationBrandName' => $indexValues['notificationBrandName'],
           'notificationFlag' => '0',
           'notificationLanguage' => $indexValues['notificationLanguage'],
         ],

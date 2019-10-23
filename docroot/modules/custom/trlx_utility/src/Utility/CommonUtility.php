@@ -878,4 +878,35 @@ class CommonUtility {
     }
   }
 
+  /**
+   * Brands data based on language and term ids.
+   *
+   * @param array $tids
+   *   Term id.
+   * @param string $language
+   *   Language code.
+   *
+   * @return array
+   *   Taxonomy term data.
+   */
+  public function brandsData(array $tids, $language = 'en') {
+    try {
+      $query = \Drupal::database()->select('taxonomy_term_field_data', 'ttfd');
+      $query->fields('ttfd', ['tid', 'vid', 'langcode', 'name']);
+      $query->leftjoin('taxonomy_term__field_brand_key', 'ttfbk', 'ttfbk.entity_id = ttfd.tid');
+      $query->addExpression('ttfbk.field_brand_key_value', 'brand_key_value');
+      $query->condition('ttfd.tid', $tids, 'IN');
+      $query->condition('ttfd.langcode', $language, '=');
+      $result = $query->execute()->fetchAll();
+      $brands_data = [];
+      foreach ($result as $data) {
+        $brands_data[$data->brand_key_value] = $data->name;
+      }
+      return $brands_data;
+    }
+    catch (\Exception $e) {
+      return FALSE;
+    }
+  }
+
 }
