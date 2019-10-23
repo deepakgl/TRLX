@@ -152,14 +152,12 @@ class SearchController extends Controller {
           $image_id = !empty($value['_source']['field_hero_image']) ? $value['_source']['field_hero_image'][0] : '';
         }
       }
-      if (!empty($image_id)) {
-        $tid = isset($value['_source']['tid'][0]) ? $value['_source']['tid'][0] : '';
-        $nid = isset($value['_source']['nid'][0]) ? $value['_source']['nid'][0] : '';
-        $fids[] = [
-          'nid' => !empty($nid) ? $nid : $tid,
-          'imageId' => $image_id,
-        ];
-      }
+      $tid = isset($value['_source']['tid'][0]) ? $value['_source']['tid'][0] : '';
+      $nid = isset($value['_source']['nid'][0]) ? $value['_source']['nid'][0] : '';
+      $fids[] = [
+        'nid' => !empty($nid) ? $nid : $tid,
+        'imageId' => $image_id,
+      ];
     }
     // Fetch image styles.
     $image_uris = Helper::getUriByMediaId(array_column($fids, "imageId"));
@@ -202,11 +200,12 @@ class SearchController extends Controller {
         $display_title = isset($value['_source']['field_display_title'][0]) ? $value['_source']['field_display_title'][0] : '';
       }
       // Get category on based on brand and content section.
-      $category = $brand_key = '';
+      $category = [];
+      $brand_key = 0;
       $brandinfo = ContentModel::getBrandTermIds();
       if (isset($value['_source']['field_brands'][0])) {
         $category_name = ContentModel::getTermName([$value['_source']['field_brands'][0]]);
-        $category = ['key' => 'brands', 'value' => implode(" ", $category_name)];
+        $category[] = ['key' => 'brands', 'value' => implode(" ", $category_name)];
         foreach ($brandinfo as $key => $brand) {
           if ($brand['entity_id'] == $value['_source']['field_brands'][0]) {
             $brand_key = (int) $brand['field_brand_key_value'];
@@ -216,11 +215,11 @@ class SearchController extends Controller {
       elseif (isset($value['_source']['field_content_section'][0])) {
         $category_name = ContentModel::getTermName([$value['_source']['field_content_section'][0]]);
         $key = ContentModel::getContentSectionKeyByTid($value['_source']['field_content_section'][0]);
-        $category = ['key' => $key, 'value' => implode(" ", $category_name)];
+        $category[] = ['key' => $key, 'value' => implode(" ", $category_name)];
       }
       elseif (isset($value['_source']['field_brands_1'][0])) {
         $category_name = ContentModel::getTermName([$value['_source']['field_brands_1'][0]]);
-        $category = ['key' => 'brands', 'value' => implode(" ", $category_name)];
+        $category[] = ['key' => 'brands', 'value' => implode(" ", $category_name)];
         foreach ($brandinfo as $key => $brand) {
           if ($brand['entity_id'] == $value['_source']['field_brands_1'][0]) {
             $brand_key = (int) $brand['field_brand_key_value'];
@@ -230,7 +229,7 @@ class SearchController extends Controller {
       elseif (isset($value['_source']['field_content_section_1'][0])) {
         $category_name = ContentModel::getTermName([$value['_source']['field_content_section_1'][0]]);
         $key = ContentModel::getContentSectionKeyByTid($value['_source']['field_content_section_1'][0]);
-        $category = ['key' => $key, 'value' => implode(" ", $category_name)];
+        $category[] = ['key' => $key, 'value' => implode(" ", $category_name)];
       }
 
       // Get subtitle on based on content type.

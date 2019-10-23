@@ -3,6 +3,6 @@ langcode: en
 status: true
 dependencies: {  }
 id: backend-user-top-menu
-label: 'Backend User Top Menu'
-description: 'Menu for GA and MA users'
+label: 'Backend User Top Menu for GA'
+description: 'Menu for GA'
 locked: false
