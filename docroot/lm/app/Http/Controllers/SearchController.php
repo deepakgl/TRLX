@@ -355,7 +355,7 @@ class SearchController extends Controller {
                 'multi_match' => [
                   'query' => $this->search,
                   'fields' => $this->searchFields,
-                  'type' => 'phrase_prefix'
+                  'type' => 'phrase_prefix',
                 ],
               ],
               1 => [
