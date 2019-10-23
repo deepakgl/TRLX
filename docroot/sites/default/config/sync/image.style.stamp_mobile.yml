@@ -1,0 +1,15 @@
+uuid: 608e53f1-ff1e-4180-a026-8dfa67325f44
+langcode: en
+status: true
+dependencies: {  }
+name: stamp_mobile
+label: 'Stamp Mobile'
+effects:
+  821a26e4-991f-4755-94a7-d342fea86e28:
+    uuid: 821a26e4-991f-4755-94a7-d342fea86e28
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 80
+      height: 80
+      anchor: center-center
