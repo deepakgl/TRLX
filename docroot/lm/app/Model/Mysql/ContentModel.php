@@ -124,8 +124,8 @@ class ContentModel {
       ->where('records.uid', '=', $params['uid'])
       ->get()->all();
     if (isset($query[0]) && !empty($query[0])) {
-      // If level status is in complete state return.
-      if ($query[0]->statement_status != 'progress') {
+      // If level status is in passed state return.
+      if ($query[0]->statement_status == 'passed') {
         return FALSE;
       }
       return DB::table('lm_lrs_records')

@@ -91,8 +91,8 @@ class CommonUtility {
    * @return \Symfony\Component\HttpFoundation\JsonResponse
    *   Json response.
    */
-  public function validateLanguageCode($langcode, $request) {
-    if (!$request->query->has('language') || empty($langcode)) {
+  public function validateLanguageCode($langcode, $request, $skipRequestCheck = FALSE) {
+    if ((!$request->query->has('language') || empty($langcode)) && empty($skipRequestCheck)) {
       return $this->errorResponse(t('Language parameter is required.'), Response::HTTP_BAD_REQUEST);
     }
 

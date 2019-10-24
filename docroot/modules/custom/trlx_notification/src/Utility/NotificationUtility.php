@@ -97,6 +97,33 @@ class NotificationUtility {
   }
 
   /**
+   * Fetch user data from elastic.
+   *
+   * @param int $uid
+   *   User id.
+   * @param mixed $client
+   *   Elastic client.
+   *
+   * @return array
+   *   Elastic user data.
+   */
+  public static function getElasticUserData($uid, $client) {
+    $config = \Drupal::config('trlx_notification.settings');
+    $params = [
+     'index' => $config->get('user_index'),
+     'type' => 'user',
+     'id' => 'user_' . $uid,
+    ];
+    try {
+     $response = $client->get($params);
+    }
+    catch (\Exception $e) {
+     return FALSE;
+    }
+    return $response;
+  }
+
+  /**
    * Get elastic client.
    *
    * @return object
