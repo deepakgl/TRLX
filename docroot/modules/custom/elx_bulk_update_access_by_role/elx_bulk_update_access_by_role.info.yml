@@ -1,5 +1,0 @@
-name: ELX bulk update access by role
-type: module
-description: ELX custom module for bulk update access by role and select all roles by default.
-core: 8.x
-package: ELX
