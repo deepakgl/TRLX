@@ -343,7 +343,7 @@ class LeaderboardController extends Controller {
         }
       }
     }
-    return $this->successResponse($response, Response::HTTP_OK);
+    return $this->successResponse([$response], Response::HTTP_OK);
   }
 
   /**
