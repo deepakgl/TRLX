@@ -1,6 +1,0 @@
-name: 'Elx Audit Log'
-type: module
-description: 'Provides logging entity audit events in ELK.'
-core: '8.x'
-dependencies:
-  - trlx_utility
