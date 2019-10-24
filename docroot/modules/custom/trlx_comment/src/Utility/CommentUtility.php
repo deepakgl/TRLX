@@ -9,6 +9,8 @@ use Drupal\Component\Serialization\Json;
  */
 class CommentUtility {
 
+  const DEFAULT_LANGUAGE = 'en';
+
   /**
    * To save comment data in database.
    *
@@ -20,6 +22,8 @@ class CommentUtility {
    */
   public function saveComment(array $data) {
     global $_userData;
+
+    $langcode = !empty($data['language']) ? $data['language'] : self::DEFAULT_LANGUAGE;
     $query = \Drupal::database();
     $result = $query->insert('trlx_comment')
       ->fields([
@@ -28,6 +32,7 @@ class CommentUtility {
         'pid',
         'comment_body',
         'comment_tags',
+        'langcode',
         'comment_timestamp',
       ])
       ->values([
@@ -35,10 +40,16 @@ class CommentUtility {
         'entity_id' => $data['nid'],
         'pid' => $data['parentId'],
         'comment_body' => $data['comment'],
-        'comment_tags' => Json::encode($data['tags']),
+        'comment_tags' => !empty($data['tags']) ? Json::encode($data['tags']) : '',
+        'langcode' => $langcode;
         'comment_timestamp' => REQUEST_TIME,
       ])
       ->execute();
+
+    if (!empty($data['tags'])) {
+      trlx_notification_comment_user_tags($nid, $langcode, $data['tags']);
+    }
+
     return TRUE;
   }
 
@@ -60,6 +71,7 @@ class CommentUtility {
           'pid',
           'comment_body',
           'comment_tags',
+          'langcode',
           'comment_timestamp',
         ])
         ->orderBy('tc.comment_timestamp', 'DESC')->range(0, 1)
@@ -92,6 +104,7 @@ class CommentUtility {
           'pid',
           'comment_body',
           'comment_tags',
+          'langcode',
           'comment_timestamp',
         ])
         ->condition('tc.entity_id', $nid, '=')

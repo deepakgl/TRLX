@@ -22,22 +22,18 @@ class NotificationConfigurationForm extends ConfigFormBase {
   const USER_INDEX = 'user_index';
   const USER_INDEX_TYPE = 'user_index_type';
   const DELETE_NOTIFICATIONS = 'delete_notifications';
-  const CRON_REQUIREMENT_NOTIFICATIONS = 'cron_requirement_notifications';
   const NODE_TYPE = 'nodetype';
   const BRAND_STORY_HEADING = 'brand_story_heading';
-  const BRAND_STORY_TEXT = 'brand_story_text';
-  const MODULE_HEADING = 'module_heading';
-  const MODULE_TEXT = 'module_text';
   const FACTSHEET_HEADING = 'factsheet_heading';
-  const FACTSHEET_TEXT = 'factsheet_text';
   const VIDEO_HEADING = 'video_heading';
-  const VIDEO_TEXT = 'video_text';
+  const TREND_HEADING = 'trend_heading';
   const INSIDER_CORNER_HEADING = 'insider_corner_heading';
-  const INSIDER_CORNER_TEXT = 'insider_corner_text';
   const SELLING_TIPS_HEADING = 'selling_tips_heading';
-  const SELLING_TIPS_TEXT = 'selling_tips_text';
   const CONSUMER_HEADING = 'consumer_heading';
-  const CONSUMER_TEXT = 'consumer_text';
+  const BRAND_LEVEL_HEADING = 'brand_level_heading';
+  const SELLING_TIPS_LEVEL_HEADING = 'selling_tips_level_heading';
+  const CONSUMER_LEVEL_HEADING = 'consumer_level_heading';
+  const COMMENT_TAGS_HEADING = 'comment_tags_heading';
 
   /**
    * {@inheritdoc}
@@ -120,10 +116,71 @@ class NotificationConfigurationForm extends ConfigFormBase {
       self::HASH_REQUIRED => TRUE,
       self::HASH_DEFAULT_VALUE => $config->get(self::NODE_TYPE),
     ];
-    $form[self::CRON_REQUIREMENT_NOTIFICATIONS] = [
-      self::HASH_TYPE => 'checkbox',
-      self::HASH_TITLE => $this->t('Check whether to run cron once in a day or not'),
-      self::HASH_DEFAULT_VALUE => $config->get(self::CRON_REQUIREMENT_NOTIFICATIONS),
+    $form[self::BRAND_STORY_HEADING] = [
+      self::HASH_TYPE => self::TEXTFIELD,
+      self::HASH_TITLE => $this->t('Brand story heading.'),
+      self::HASH_DEFAULT_VALUE => $config->get(self::BRAND_STORY_HEADING),
+      self::HASH_REQUIRED => TRUE,
+    ];
+    $form[self::FACTSHEET_HEADING] = [
+      self::HASH_TYPE => self::TEXTFIELD,
+      self::HASH_TITLE => $this->t('Factsheet heading.'),
+      self::HASH_DEFAULT_VALUE => $config->get(self::FACTSHEET_HEADING),
+      self::HASH_REQUIRED => TRUE,
+    ];
+    $form[self::VIDEO_HEADING] = [
+      self::HASH_TYPE => self::TEXTFIELD,
+      self::HASH_TITLE => $this->t('Video heading.'),
+      self::HASH_DEFAULT_VALUE => $config->get(self::VIDEO_HEADING),
+      self::HASH_REQUIRED => TRUE,
+    ];
+    $form[self::TREND_HEADING] = [
+      self::HASH_TYPE => self::TEXTFIELD,
+      self::HASH_TITLE => $this->t('TR trend story heading.'),
+      self::HASH_DEFAULT_VALUE => $config->get(self::TREND_HEADING),
+      self::HASH_REQUIRED => TRUE,
+    ];
+    $form[self::INSIDER_CORNER_HEADING] = [
+      self::HASH_TYPE => self::TEXTFIELD,
+      self::HASH_TITLE => $this->t('Insider corner story heading.'),
+      self::HASH_DEFAULT_VALUE => $config->get(self::INSIDER_CORNER_HEADING),
+      self::HASH_REQUIRED => TRUE,
+    ];
+    $form[self::SELLING_TIPS_HEADING] = [
+      self::HASH_TYPE => self::TEXTFIELD,
+      self::HASH_TITLE => $this->t('Selling tips story heading.'),
+      self::HASH_DEFAULT_VALUE => $config->get(self::SELLING_TIPS_HEADING),
+      self::HASH_REQUIRED => TRUE,
+    ];
+    $form[self::CONSUMER_HEADING] = [
+      self::HASH_TYPE => self::TEXTFIELD,
+      self::HASH_TITLE => $this->t('Consumer heading.'),
+      self::HASH_DEFAULT_VALUE => $config->get(self::CONSUMER_HEADING),
+      self::HASH_REQUIRED => TRUE,
+    ];
+    $form[self::BRAND_LEVEL_HEADING] = [
+      self::HASH_TYPE => self::TEXTFIELD,
+      self::HASH_TITLE => $this->t('Brand level heading.'),
+      self::HASH_DEFAULT_VALUE => $config->get(self::BRAND_LEVEL_HEADING),
+      self::HASH_REQUIRED => TRUE,
+    ];
+    $form[self::SELLING_TIPS_LEVEL_HEADING] = [
+      self::HASH_TYPE => self::TEXTFIELD,
+      self::HASH_TITLE => $this->t('Selling tips level heading.'),
+      self::HASH_DEFAULT_VALUE => $config->get(self::SELLING_TIPS_LEVEL_HEADING),
+      self::HASH_REQUIRED => TRUE,
+    ];
+    $form[self::CONSUMER_LEVEL_HEADING] = [
+      self::HASH_TYPE => self::TEXTFIELD,
+      self::HASH_TITLE => $this->t('Consumer level heading.'),
+      self::HASH_DEFAULT_VALUE => $config->get(self::CONSUMER_LEVEL_HEADING),
+      self::HASH_REQUIRED => TRUE,
+    ];
+    $form[self::COMMENT_TAGS_HEADING] = [
+      self::HASH_TYPE => self::TEXTFIELD,
+      self::HASH_TITLE => $this->t('Comment tags heading.'),
+      self::HASH_DEFAULT_VALUE => $config->get(self::COMMENT_TAGS_HEADING),
+      self::HASH_REQUIRED => TRUE,
     ];
     return parent::buildForm($form, $form_state);
   }
@@ -132,28 +189,16 @@ class NotificationConfigurationForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $search_scheme = $form_state->getValue(self::SCHEME);
-    $search_host = $form_state->getValue('host');
-    $search_port = $form_state->getValue('port');
-    $search_index = $form_state->getValue(self::SEARCH_INDEX);
-    $search_index_type = $form_state->getValue(self::SEARCH_INDEX_TYPE);
-    $user_index = $form_state->getValue(self::USER_INDEX);
-    $user_index_type = $form_state->getValue(self::USER_INDEX_TYPE);
-    $delete_notifications = $form_state->getValue(self::DELETE_NOTIFICATIONS);
-    $cron_requirement_notifications = $form_state->getValue(self::CRON_REQUIREMENT_NOTIFICATIONS);
-    $notification_nodes = $form_state->getValue(self::NODE_TYPE);
-    $this->config(self::NOTIFICATION_SETTINGS)
-      ->set(self::SCHEME, $search_scheme)
-      ->set('host', $search_host)
-      ->set('port', $search_port)
-      ->set(self::SEARCH_INDEX, $search_index)
-      ->set(self::SEARCH_INDEX_TYPE, $search_index_type)
-      ->set(self::USER_INDEX, $user_index)
-      ->set(self::USER_INDEX_TYPE, $user_index_type)
-      ->set(self::DELETE_NOTIFICATIONS, $delete_notifications)
-      ->set(self::CRON_REQUIREMENT_NOTIFICATIONS, $cron_requirement_notifications)
-      ->set(self::NODE_TYPE, $notification_nodes)
-      ->save();
+    // Load module config for editing.
+    $config = $this->configFactory->getEditable(self::NOTIFICATION_SETTINGS);
+    // Iterate through form fields.
+    foreach ($form_state->getValues() as $key => $value) {
+      // Set config value.
+      $config->set($key, $value);
+    }
+    // Save config.
+    $config->save();
+
     parent::submitForm($form, $form_state);
   }
 

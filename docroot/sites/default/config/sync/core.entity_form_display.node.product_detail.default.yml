@@ -55,7 +55,7 @@ third_party_settings:
     group_perfect_partners:
       children: {  }
       parent_name: ''
-      weight: 47
+      weight: 46
       format_type: fieldset
       format_settings:
         id: ''
@@ -92,14 +92,8 @@ content:
     third_party_settings: {  }
     type: text_textarea_with_summary
     region: content
-  field_archive_and_unarchive:
-    weight: 20
-    settings: {  }
-    third_party_settings: {  }
-    type: options_select
-    region: content
   field_brands:
-    weight: 16
+    weight: 15
     settings: {  }
     third_party_settings: {  }
     type: options_buttons
@@ -151,7 +145,7 @@ content:
     type: string_textfield
     region: content
   field_markets:
-    weight: 17
+    weight: 16
     settings:
       start_minimized: true
       leaves_only: false
@@ -220,7 +214,7 @@ content:
     type: string_textfield
     region: content
   field_tags_keywords:
-    weight: 15
+    weight: 14
     settings:
       match_operator: CONTAINS
       size: 60
@@ -230,7 +224,7 @@ content:
     region: content
   field_translation:
     type: options_buttons
-    weight: 18
+    weight: 17
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -263,7 +257,7 @@ content:
     third_party_settings: {  }
   status:
     type: boolean_checkbox
-    weight: 19
+    weight: 18
     region: content
     settings:
       display_label: true
@@ -285,6 +279,7 @@ hidden:
   created: true
   field_access_by_role: true
   field_ar_search: true
+  field_archive_and_unarchive: true
   field_benefits: true
   field_customer_questions: true
   field_demonstration: true

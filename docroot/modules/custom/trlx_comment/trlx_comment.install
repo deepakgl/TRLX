@@ -1,11 +1,11 @@
 <?php
 
-use Drupal\Core\Database\Database;
-
 /**
  * @file
  * Create and update table.
  */
+
+use Drupal\Core\Database\Database;
 
 /**
  * Create new table in the database.
@@ -74,19 +74,29 @@ function trlx_comment_update_8504() {
 }
 
 /**
- * Implements hook_update_N().
+ * Add new columns: "comment_tags" & "langcode".
  *
- * Add new column "comment_tags" to store tag data.
+ * Column: "comment_tags" - comment tag data.
+ * Column: "langcode" - Language code of associated nid.
  */
 function trlx_comment_update_8601() {
   // Specifications for comment_tags column.
-  $spec = array(
-    'description' => "Stores tag data.",
-    'type' => 'blob',
-    'not null' => FALSE,
-    'size' => 'big',
-  );
+  $spec = [
+    'comment_tags' => [
+      'description' => "Stores tag data.",
+      'type' => 'blob',
+      'not null' => FALSE,
+      'size' => 'big',
+    ],
+    'langcode' => [
+      'description' => "Stores language code of associated nid.",
+      'type' => 'varchar',
+      'not null' => TRUE,
+      'length' => 12,
+    ],
+  ];
 
   $schema = Database::getConnection()->schema();
-  $schema->addField('trlx_comment', 'comment_tags', $spec);
+  $schema->addField('trlx_comment', 'comment_tags', $spec['comment_tags']);
+  $schema->addField('trlx_comment', 'langcode', $spec['langcode']);
 }

@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Drupal\trlx_utility\Utility\CommonUtility;
 use Drupal\trlx_comment\Utility\CommentUtility;
+use Drupal\Component\Serialization\Json;
 
 /**
  * Provides a comments listing resource.
@@ -113,6 +114,8 @@ class CommentListing extends ResourceBase {
       $comments[$i]['userId'] = (int) $comment->user_id;
       $comments[$i]['commentTime'] = (int) $comment->comment_timestamp;
       $comments[$i]['comment'] = $comment->comment_body;
+      $comments[$i]['comment_tags'] = Json::decode($comment->comment_tags);
+      $comments[$i]['language'] = $comment->langcode;
       $i++;
     }
     // Group main comments and their replies.

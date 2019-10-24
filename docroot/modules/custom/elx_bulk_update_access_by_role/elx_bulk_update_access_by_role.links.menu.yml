@@ -1,5 +1,0 @@
-elx_bulk_update_access_by_role.bulk_update_access:
-  title: 'Bulk Update Access By Role'
-  description: 'Bulk Update Access By Role.'
-  route_name: elx_bulk_update_access_by_role.bulk_update_access
-  parent: user.admin_index
