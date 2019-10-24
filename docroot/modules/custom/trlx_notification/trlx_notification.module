@@ -172,7 +172,7 @@ function trlx_notification_modules_related_content($node) {
         $notificationArray[NOTIFICATION_USER_ID] = $id;
         $notificationArray[NOTIFICATION_HEADING] = $commonUtility->getNotificationTranslation($config->get('brand_level_heading'), $content_language);
         $notificationArray[NOTIFICATION_TEXT] = $level_data->name;
-        $notificationArray[NOTIFICATION_LINK] = $node->id();
+        $notificationArray[NOTIFICATION_LINK] = $level_category_id;
         $notificationArray[NOTIFICATION_LINK_TYPE] = t('brandLevel');
         $notificationArray[NOTIFICATION_BRAND_NAME] = reset($brand_data);
         $notificationArray[NOTIFICATIONS_LANGUAGE] = $content_language;
@@ -189,7 +189,7 @@ function trlx_notification_modules_related_content($node) {
         $notificationArray[NOTIFICATION_USER_ID] = $id;
         $notificationArray[NOTIFICATION_HEADING] = $commonUtility->getNotificationTranslation($config->get('selling_tips_level_heading'), $content_language);
         $notificationArray[NOTIFICATION_TEXT] = $level_data->name;
-        $notificationArray[NOTIFICATION_LINK] = $node->id();
+        $notificationArray[NOTIFICATION_LINK] = $level_category_id;
         $notificationArray[NOTIFICATION_LINK_TYPE] = t('sellingTipsLevel');
         $notificationArray[NOTIFICATIONS_LANGUAGE] = $content_language;
         $notification_index[] = process_notification($notificationArray);
@@ -205,7 +205,7 @@ function trlx_notification_modules_related_content($node) {
         $notificationArray[NOTIFICATION_USER_ID] = $id;
         $notificationArray[NOTIFICATION_HEADING] = $commonUtility->getNotificationTranslation($config->get('consumer_level_heading'), $content_language);
         $notificationArray[NOTIFICATION_TEXT] = $level_data->name;
-        $notificationArray[NOTIFICATION_LINK] = $node->id();
+        $notificationArray[NOTIFICATION_LINK] = $level_category_id;
         $notificationArray[NOTIFICATION_LINK_TYPE] = t('consumerLevel');
         $notificationArray[NOTIFICATIONS_LANGUAGE] = $content_language;
         $notification_index[] = process_notification($notificationArray);
