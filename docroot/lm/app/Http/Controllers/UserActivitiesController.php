@@ -392,6 +392,7 @@ class UserActivitiesController extends Controller {
     $country = $request->get('country');
     $brands = $request->get('brands');
     $market = $request->get('market');
+    $userExternalId = $request->get('userExternalId');
     $client = Helper::checkElasticClient();
     $params['body'] = [
       'doc' => [
@@ -401,6 +402,7 @@ class UserActivitiesController extends Controller {
         'country' => $country,
         'brands' => $brands,
         'market' => $market,
+        'userExternalId' => $userExternalId,
       ],
       'doc_as_upsert' => TRUE,
     ];
