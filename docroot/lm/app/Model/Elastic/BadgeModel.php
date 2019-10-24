@@ -148,6 +148,22 @@ class BadgeModel {
     // Fetch data from user index.
     $response = ElasticUserModel::fetchElasticUserData($badge_info['uid'], $client);
     if (!empty($response['_source']['badge'])) {
+      if (!in_array($badge[0], array_keys($response['_source']['badge'][0]))) {
+        $indexValues = [
+          'notificationType' => "STAMPS",
+          'userId' => $badge_info['uid'],
+          'notificationHeading' => "Congratulations! You've earned a stamp.",
+          'notificationText' => $badge[0],
+          'notificationDate' => time(),
+          'notificationLink' => 0,
+          'notificationLinkType' => "stamps",
+          'notificationBrandKey' => 0,
+          'notificationBrandName' => "",
+          'notificationFlag' => 0,
+          'notificationLanguage' => $badge_info['lang'],
+        ];
+        NotificationModel::saveIndexes($indexValues);
+      }
       foreach ($response['_source']['badge'] as $key => $value) {
         $response['_source']['badge'] = $value;
       }
