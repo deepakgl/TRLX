@@ -108,7 +108,7 @@ class LeaderboardController extends Controller {
     // Add 1 in the rank of current user.
     $user_rank = !empty($user_rank) ? $user_rank['hits']['total'] : 0;
     $user_selected_section_rank = ($user_rank == 0) ? 1 : ($user_rank + 1);
-    $badges_count = !empty(array_filter($current_user_data['_source']['badge'])) ? count(array_filter($current_user_data['_source']['badge'])) : 0;
+    $badges_count = !empty(array_filter($current_user_data['_source']['badge'])) ? count(array_filter($current_user_data['_source']['badge'][0])) : 0;
     $total_points = $current_user_data['_source']['total_points'];
     $current_user_ref_id = $current_user_data['_source']['userExternalId'];
     $userData = [
@@ -424,7 +424,7 @@ class LeaderboardController extends Controller {
           // Create the query filters.
           $filter = ($section_filter != 0) ? [$section_filter] : $_userData->location;
           $search_param['body']['query']['bool']['filter'][]['terms'] = [
-            'location' => $filter,
+            'locations' => $filter,
           ];
         }
         else {
