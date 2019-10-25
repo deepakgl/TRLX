@@ -424,7 +424,7 @@ class LeaderboardController extends Controller {
           // Create the query filters.
           $filter = ($section_filter != 0) ? [$section_filter] : $_userData->location;
           $search_param['body']['query']['bool']['filter'][]['terms'] = [
-            'location' => $filter,
+            'locations' => $filter,
           ];
         }
         else {
