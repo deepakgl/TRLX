@@ -685,6 +685,54 @@ class ContentModel {
   }
 
   /**
+   * Get trlx notification config form values.
+   *
+   * @return array
+   *   Notification config form data.
+   */
+  public static function getNotificationConfigValues() {
+    $query = DB::table('config')
+      ->select('config.data')
+      ->where('config.name', '=', 'trlx_notification.settings')
+      ->first();
+    return unserialize($query->data);
+  }
+
+  /**
+   * Get term by name.
+   *
+   * @param int $name
+   *   Taxonomy name.
+   * @param mixed $vid
+   *   Vocabulary id.
+   * @param mixed $lang
+   *   Language.
+   *
+   * @return string
+   *   Term name.
+   */
+  public static function getTermByName($name, $vid, $lang) {
+    $query = DB::table('taxonomy_term_field_data as ttfd');
+    $query->leftJoin('taxonomy_term__field_translation_key as tk', 'tk.entity_id', '=', 'ttfd.tid');
+    $query->select('tk.field_translation_key_value');
+    $query->where('ttfd.name', '=', $name);
+    $query->where('ttfd.langcode', '=', $lang);
+    $query->where('tk.langcode', '=', $lang);
+    $query->where('ttfd.vid', '=', $vid);
+
+    $results = $query->get();
+    if (empty($query)) {
+      return FALSE;
+    }
+    $data = [];
+    foreach ($results as $key => $result) {
+      $data[] = $result->field_translation_key_value;
+    }
+
+    return $data;
+  }
+
+  /**
    * Get content section key by tid.
    *
    * @param int $tid

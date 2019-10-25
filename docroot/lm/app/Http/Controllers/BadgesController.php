@@ -7,11 +7,14 @@ use Illuminate\Http\Request;
 use App\Support\Helper;
 use App\Model\Elastic\BadgeModel;
 use App\Model\Elastic\ElasticUserModel;
+use App\Traits\ApiResponser;
 
 /**
  * Purpose of building this class is to allocate badges to user.
  */
 class BadgesController extends Controller {
+
+  use ApiResponser;
 
   /**
    * Inspiration badges.
@@ -113,7 +116,7 @@ class BadgesController extends Controller {
       $all_badges = BadgeModel::setBadgeMasterData($badge_data, FALSE, $url[4]);
     }
     if (empty($all_badges)) {
-      return new Response([], Response::HTTP_NO_CONTENT);
+      return $this->successResponse([], Response::HTTP_OK);
     }
 
     return new Response($all_badges, 200);
