@@ -100,7 +100,7 @@ class BadgesController extends Controller {
       $response = ElasticUserModel::fetchElasticUserData($this->uid, $this->client);
       if (empty($response['_source']['badge'])) {
         // Update master stamps.
-        $all_badges = BadgeModel::setBadgeMasterData($badge_data);
+        $all_badges = BadgeModel::setBadgeMasterData($badge_data, FALSE, $url[4]);
       }
       else {
         $badge_data['user_badge'] = $response['_source']['badge'][0];
