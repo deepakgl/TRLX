@@ -59,6 +59,12 @@ class WelcomeMessage extends ResourceBase {
       return $response;
     }
 
+    // Check for valid language code.
+    $response = $commonUtility->validateLanguageCode($language, $request);
+    if (!($response->getStatusCode() === Response::HTTP_OK)) {
+      return $response;
+    }
+
     $config = \Drupal::config('welcome_message.settings');
     // Return all languages for global admin role.
     $response = [];
