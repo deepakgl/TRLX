@@ -909,4 +909,26 @@ class CommonUtility {
     }
   }
 
+  /**
+   * Get user real id referenced in drupal with otm system id.
+   *
+   * @param int $externalId
+   *   User id from otm system.
+   *
+   * @return array
+   *   Taxonomy term data.
+   */
+  public function getUserRealId($externalId) {
+    try {
+      $query = \Drupal::database()->select('user_records', 'ur');
+      $query->fields('ur', ['id']);
+      $query->condition('ur.uid', $externalId);
+      $result = $query->execute()->fetchColumn();
+      return (int) $result;
+    }
+    catch (\Exception $e) {
+      return FALSE;
+    }
+  }
+
 }

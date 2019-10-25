@@ -108,10 +108,11 @@ class LeaderboardController extends Controller {
     // Add 1 in the rank of current user.
     $user_rank = !empty($user_rank) ? $user_rank['hits']['total'] : 0;
     $user_selected_section_rank = ($user_rank == 0) ? 1 : ($user_rank + 1);
-    $badges_count = !empty(array_filter($current_user_data['_source']['badge'])) ? count(array_filter($current_user_data['_source']['badge'])) : 0;
+    $badges_count = !empty(array_filter($current_user_data['_source']['badge'])) ? count(array_filter($current_user_data['_source']['badge'][0])) : 0;
     $total_points = $current_user_data['_source']['total_points'];
+    $current_user_ref_id = $current_user_data['_source']['userExternalId'];
     $userData = [
-      'uid' => $this->uid,
+      'uid' => $current_user_ref_id,
       'pointValue' => $total_points,
       'rank' => "#" . $user_selected_section_rank,
       'stamps' => $badges_count,
@@ -133,7 +134,7 @@ class LeaderboardController extends Controller {
     $keys = array_keys(array_column($all_users_data_array, 'pointValue'), $total_points);
     if (!empty($keys) && count($keys) >= 2) {
       foreach ($keys as $key) {
-        if ($all_users_data_array[$key]['uid'] == $this->uid) {
+        if ($all_users_data_array[$key]['uid'] == $_userData->uid) {
           $response['userData']['uid'] = $all_users_data_array[$key]['uid'];
           $response['userData']['pointValue'] = $all_users_data_array[$key]['pointValue'];
           $response['userData']['rank'] = $all_users_data_array[$key]['rank'];
@@ -325,7 +326,7 @@ class LeaderboardController extends Controller {
     $all_users_data = $this->getAllUsersRankInTheSystem($client);
     if (!empty($all_users_data)) {
       foreach ($all_users_data as $key => $user_info) {
-        if ($user_info['uid'] == $uid) {
+        if ($user_info['uid'] == $_userData->uid) {
           $response['userLeft'] = [];
           $user_left_key = (($key - 1) > 0) ? ($key - 1) : '';
           if ($user_left_key != '') {
@@ -343,7 +344,13 @@ class LeaderboardController extends Controller {
         }
       }
     }
-    return $this->successResponse([$response], Response::HTTP_OK);
+    if (!empty($response)) {
+      return $this->successResponse([$response], Response::HTTP_OK);
+    }
+    else {
+      return $this->successResponse([], Response::HTTP_OK);
+    }
+
   }
 
   /**
@@ -358,7 +365,7 @@ class LeaderboardController extends Controller {
       'index' => getenv("ELASTIC_ENV") . '_user',
       'type' => 'user',
       'size' => $this->size,
-      '_source_includes' => ['uid', 'total_points'],
+      '_source_includes' => ['uid', 'total_points', 'userExternalId'],
       'body' => [
         'sort' => [
           'total_points' => [
@@ -417,7 +424,7 @@ class LeaderboardController extends Controller {
           // Create the query filters.
           $filter = ($section_filter != 0) ? [$section_filter] : $_userData->location;
           $search_param['body']['query']['bool']['filter'][]['terms'] = [
-            'location' => $filter,
+            'locations' => $filter,
           ];
         }
         else {
@@ -432,7 +439,7 @@ class LeaderboardController extends Controller {
       $position = 1;
       $j = 0;
       foreach ($all_users_data['hits']['hits'] as $value) {
-        $all_users_data_array[$j]['uid'] = (int) $value['_source']['uid'];
+        $all_users_data_array[$j]['uid'] = isset($value['_source']['userExternalId']) ? $value['_source']['userExternalId'] : (int) $value['_source']['uid'];
         $all_users_data_array[$j]['rank'] = "#" . $position;
         $all_users_data_array[$j]['pointValue'] = isset($value['_source']['total_points']) ? $value['_source']['total_points'] : 0;
         $j++;
