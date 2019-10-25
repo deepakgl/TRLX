@@ -4,6 +4,7 @@ namespace Drupal\trlx_comment\Utility;
 
 use Drupal\Component\Serialization\Json;
 use Elasticsearch\ClientBuilder;
+use Drupal\trlx_utility\Utility\CommonUtility;
 
 /**
  * Purpose of this class is to build common object.
@@ -24,7 +25,10 @@ class CommentUtility {
   public function saveComment(array $data) {
     global $_userData;
 
+    $commonUtility = new CommonUtility();
     $langcode = !empty($data['language']) ? $data['language'] : self::DEFAULT_LANGUAGE;
+    $userId = $commonUtility->getUserRealId($_userData->uid);
+
     $query = \Drupal::database();
     $result = $query->insert('trlx_comment')
       ->fields([
@@ -37,7 +41,7 @@ class CommentUtility {
         'comment_timestamp',
       ])
       ->values([
-        'user_id' => $_userData->userId,
+        'user_id' => $userId,
         'entity_id' => $data['nid'],
         'pid' => $data['parentId'],
         'comment_body' => $data['comment'],
@@ -47,7 +51,14 @@ class CommentUtility {
       ])
       ->execute();
 
-    if (!empty($data['tags'])) {
+    // Unset variable.
+    unset($commonUtility);
+
+    // Push data for notification(s).
+    if (!empty($data['tags']) && !empty($result)) {
+      // Update id with real user id.
+      $data['tags'] = $this->updateTags($data['tags'], FALSE, TRUE);
+      // Prepare notification data.
       $notification_index = trlx_notification_comment_user_tags($data['nid'], $langcode, $data['tags']);
       // Send data to the queue.
       save_data_in_queue($notification_index);
@@ -79,8 +90,18 @@ class CommentUtility {
         ])
         ->orderBy('tc.comment_timestamp', 'DESC')->range(0, 1)
         ->execute()->fetch();
-    } catch (\Exception $e ) {
+    }
+    catch (\Exception $e)
+    {
       $result = [];
+    }
+
+    if (!empty($result)) {
+      $commonUtility = new CommonUtility();
+      // Update tags data from elastic.
+      $result->user_id = $commonUtility->getExternalUserId($result->user_id);
+      // Unset variable.
+      unset($commonUtility);
     }
 
     return $result;
@@ -117,10 +138,20 @@ class CommentUtility {
      $result = [];
     }
 
-    if (!empty($result) && $updateTags) {
+    if (!empty($result)) {
+      $commonUtility = new CommonUtility();
+
       foreach ($result as $comment) {
-        $comment->comment_tags = $this->updateTags($comment->comment_tags);
+        // Fetch external user id.
+        $comment->user_id = $commonUtility->getExternalUserId($comment->user_id);
+
+        // Update tags data from elastic.
+        if ($updateTags) {
+          $comment->comment_tags = $this->updateTags($comment->comment_tags);
+        }
       }
+      // Unset variable.
+      unset($commonUtility);
     }
 
     return $result;
@@ -161,7 +192,7 @@ class CommentUtility {
    * @param boolean $decode
    *   Boolean to decide whether to decode tags.
    */
-  public function updateTags($tags = [], $decode = TRUE) {
+  public function updateTags($tags = [], $decode = TRUE, $updateIdOnly = FALSE) {
     if (!empty($tags)) {
 
       // Decode tags.
@@ -169,19 +200,35 @@ class CommentUtility {
         $tags = Json::decode($tags, TRUE);
       }
 
-      $client = self::getElasticClient();
-      foreach ($tags as $delta => $tag) {
-        // Fetch user data from elastic.
-        $elasticUserData = self::getElasticUserData($tag['id'], $client);
+      $commonUtility = new CommonUtility();
 
-        // Update user tag data.
-        // First Name.
-        $tags[$delta]['firstName'] = !empty($elasticUserData['_source']['firstName']) ? $elasticUserData['_source']['firstName'] : $tag['firstName'];
-        // Last Name.
-        $tags[$delta]['lastName'] = !empty($elasticUserData['_source']['lastName']) ? $elasticUserData['_source']['lastName'] : $tag['lastName'];
-        // Email.
-        $tags[$delta]['workEmailAddress'] = !empty($elasticUserData['_source']['email']) ? $elasticUserData['_source']['email'] : $tag['workEmailAddress'];
+      if (empty($updateIdOnly)) {
+        $client = self::getElasticClient();
       }
+
+      foreach ($tags as $delta => $tag) {
+        // Fetch user real id referenced in drupal with otm system id.
+        $userId = !is_numeric($tag['id']) ? $commonUtility->getUserRealId($tag['id']) : $tag['id'];
+
+        if (empty($updateIdOnly)) {
+          // Fetch user data from elastic.
+          $elasticUserData = self::getElasticUserData($userId, $client);
+
+          // Update user tag data.
+          // First Name.
+          $tags[$delta]['firstName'] = !empty($elasticUserData['_source']['firstName']) ? $elasticUserData['_source']['firstName'] : $tag['firstName'];
+          // Last Name.
+          $tags[$delta]['lastName'] = !empty($elasticUserData['_source']['lastName']) ? $elasticUserData['_source']['lastName'] : $tag['lastName'];
+          // Email.
+          $tags[$delta]['workEmailAddress'] = !empty($elasticUserData['_source']['email']) ? $elasticUserData['_source']['email'] : $tag['workEmailAddress'];
+        }
+        else {
+          $tags[$delta]['id'] = $userId;
+        }
+      }
+
+      // Unset variable.
+      unset($commonUtility);
 
       // Encode tags if received encoded.
       if ($decode) {
@@ -237,4 +284,5 @@ class CommentUtility {
     }
     return $response;
   }
+
 }

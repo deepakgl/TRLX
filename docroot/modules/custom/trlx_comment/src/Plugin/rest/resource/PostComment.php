@@ -38,6 +38,13 @@ class PostComment extends ResourceBase {
     global $_userData;
     $this->commonUtility = new CommonUtility();
     $this->commentUtility = new CommentUtility();
+
+    // Validate user real id referenced in drupal with otm system id.
+    $userId = $this->commonUtility->getUserRealId($_userData->uid);
+    if (empty($userId)) {
+      return $this->commonUtility->errorResponse($this->t('Invalid or User Id not found.'), Response::HTTP_BAD_REQUEST);
+    }
+
     // Required parameters.
     $requiredParams = [
       'nid',

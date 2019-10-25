@@ -111,7 +111,7 @@ class CommentListing extends ResourceBase {
     foreach ($response as $comment) {
       $comments[$i]['commentId'] = (int) $comment->id;
       $comments[$i]['parentId'] = (int) $comment->pid;
-      $comments[$i]['userId'] = (int) $comment->user_id;
+      $comments[$i]['userId'] = $comment->user_id;
       $comments[$i]['commentTime'] = (int) $comment->comment_timestamp;
       $comments[$i]['comment'] = $comment->comment_body;
       $comments[$i]['comment_tags'] = Json::decode($comment->comment_tags);

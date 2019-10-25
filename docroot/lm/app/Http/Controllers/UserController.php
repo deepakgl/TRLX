@@ -118,6 +118,8 @@ class UserController extends Controller
 	{
 		$elastic_arr['uid'] = isset($data['uid']) && !empty($data['uid']) ? $data['uid'] : $elastic_arr['uid'];
 		$elastic_arr['email'] = isset($data['email']) && !empty($data['email']) ? $data['email'] : $elastic_arr['email'];
+		$elastic_arr['firstName'] = isset($data['firstName']) && !empty($data['firstName']) ? $data['firstName'] : $elastic_arr['firstName'];
+		$elastic_arr['lastName'] = isset($data['lastName']) && !empty($data['lastName']) ? $data['lastName'] : $elastic_arr['lastName'];
 		$elastic_arr['status'] = isset($data['status']) && !empty($data['status']) ? $data['status'] : $elastic_arr['status'];
 		$elastic_arr['region'] = isset($data['region']) && !empty($data['region']) ? $data['region'] : $elastic_arr['region'];
 		$elastic_arr['subRegion'] = isset($data['subRegion']) && !empty($data['subRegion']) ? $data['subRegion'] : $elastic_arr['subRegion'];
@@ -154,6 +156,8 @@ class UserController extends Controller
 			'uid' => '',
 			'userExternalId' => 0,
 			'email' => '',
+			'firstName'=> '',
+			'lastName'=> '',
 			'status' => 0,
 			'region' => [],
 			'subRegion' => [],

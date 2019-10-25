@@ -931,4 +931,26 @@ class CommonUtility {
     }
   }
 
+  /**
+   * Get external id mapped with user real id.
+   *
+   * @param int $userId
+   *   User real id.
+   *
+   * @return string
+   *   External id.
+   */
+  public function getExternalUserId($userId) {
+    try {
+      $query = \Drupal::database()->select('user_records', 'ur');
+      $query->fields('ur', ['uid']);
+      $query->condition('ur.id', $userId);
+      $result = $query->execute()->fetchColumn();
+      return $result;
+    }
+    catch (\Exception $e) {
+      return FALSE;
+    }
+  }
+
 }
