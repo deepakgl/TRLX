@@ -5,6 +5,8 @@
  * Create and update table.
  */
 
+ use Drupal\Core\Database\Database;
+
 /**
  * Implements hook_update_N().
  */
@@ -13,4 +15,35 @@ function trlx_utility_update_8503() {
   $entity_manager = \Drupal::entityManager();
   $definition = $entity_manager->getFieldStorageDefinitions('menu_link_content')['trlx_menu_content'];
   $entity_manager->onFieldStorageDefinitionCreate($definition);
+}
+
+function trlx_utility_schema() {
+ $schema['user_records'] = [
+   'fields' => [
+     'id' => [
+       'type' => 'serial',
+       'not null' => TRUE,
+     ],
+     'uid' => [
+       'type' => 'varchar',
+       'length' => 255,
+       'not null' => FALSE,
+       'default' => NULL,
+     ],
+     'created_on' => [
+       'type' => 'int',
+       'not null' => TRUE,
+     ],
+   ],
+   'primary key' => ['id'],
+ ];
+ return $schema;
+}
+/**
+* Implements hook_update_N().
+*/
+function trlx_utility_update_8504() {
+ $table = trlx_utility_schema();
+ $schema = Database::getConnection()->schema();
+ $schema->createTable('user_records', $table['user_records']);
 }
