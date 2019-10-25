@@ -79,6 +79,7 @@ module:
   mailsystem: 0
   media: 0
   media_entity_browser: 0
+  menu_export: 0
   menu_link_attributes: 0
   menu_ui: 0
   migrate: 0
