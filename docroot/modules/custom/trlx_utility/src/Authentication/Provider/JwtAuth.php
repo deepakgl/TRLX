@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Drupal\trlx_utility\Transcoder\JwtDecodeException;
 use Drupal\trlx_utility\Transcoder\JwtTranscoder;
+use Drupal\trlx_utility\Utility\CommonUtility;
 
 /**
  * JWT Auth token provider.
@@ -26,6 +27,7 @@ class JwtAuth implements AuthenticationProviderInterface {
    */
   public function authenticate(Request $request) {
     global $_userData;
+    $commonUtility = new CommonUtility();
     $this->transcoder = new JwtTranscoder();
     $auth_header = $request->headers->get('Authorization');
     $matches = [];
@@ -37,6 +39,8 @@ class JwtAuth implements AuthenticationProviderInterface {
 
     try {
       $jwt = $this->transcoder->decode($raw_jwt);
+      $userId = $commonUtility->getUserRealId($jwt->uid);
+      $jwt->userId = $userId;
     }
     catch (JwtDecodeException $e) {
       throw new AccessDeniedHttpException($e->getMessage(), $e);

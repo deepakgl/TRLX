@@ -912,4 +912,27 @@ class ContentModel {
     return json_decode(json_encode((array) $results), TRUE);
   }
 
+  /**
+   * Insert user id in drupal table and send set user id.
+   *
+   * @return int
+   *   User id.
+   */
+  public static function setUserData($params) {
+    $query = DB::table('user_records as records')
+      ->select('records.id')
+      ->where('records.uid', '=', $params['body']['uid'])
+      ->get()->all();
+    $insert = 0;
+    if (empty($query)) {
+      $insert = DB::table('user_records')->insertGetId(
+       [
+         'uid' => $params['body']['uid'],
+         'created_on' => time(),
+       ]
+      );
+      return $insert;
+    }
+  }
+
 }

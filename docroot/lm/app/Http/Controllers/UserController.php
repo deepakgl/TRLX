@@ -8,6 +8,7 @@ use App\Support\Helper;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
+use App\Model\Mysql\ContentModel;
 use Mockery\Exception;
 
 class UserController extends Controller
@@ -55,7 +56,7 @@ class UserController extends Controller
 			$data = $request->all();
 			unset($data['/v1/users']);
 
-			$rules['*.uid'] = 'required|integer|min:1';
+			$rules['*.uid'] = 'required|min:1';
 			$rules['*.email'] = 'required|email';
 
 			$message['*.uid.required'] = 'The field uid is required.';
@@ -100,7 +101,11 @@ class UserController extends Controller
 		}
 		$elastic_arr = $this->getEmptyUserDataArr();
 		$params['body'] = $this->createUserBody($elastic_arr, $data, 'add');
-		ElasticUserModel::createElasticUserIndex($params, $data['uid'], $this->elasticClient);
+		// Update User information inside CMS.
+       $userId = ContentModel::setUserData($params);
+       $params['body']['userExternalId'] = $params['body']['uid'];
+       $params['body']['uid'] = $userId;
+		ElasticUserModel::createElasticUserIndex($params, $userId, $this->elasticClient);
 	}
 
 	/**
@@ -139,6 +144,7 @@ class UserController extends Controller
 		$elastic_arr['account'] = isset($data['account']) && !empty($data['account']) ? $data['account'] : $elastic_arr['account'];
 		$elastic_arr['access_permission'] = isset($data['access_permission']) && !empty($data['access_permission']) ? $data['access_permission'] : $elastic_arr['access_permission'];
 		$elastic_arr['ignore'] = isset($data['ignore']) && !empty($data['ignore']) ? $data['ignore'] : $elastic_arr['ignore'];
+		$elastic_arr['userExternalId'] = isset($data['userExternalId']) && !empty($data['userExternalId']) ? $data['userExternalId'] : $elastic_arr['userExternalId'];
 		return $elastic_arr;
 	}
 
@@ -146,6 +152,7 @@ class UserController extends Controller
 	{
 		return [
 			'uid' => '',
+			'userExternalId' => 0,
 			'email' => '',
 			'status' => 0,
 			'region' => [],
