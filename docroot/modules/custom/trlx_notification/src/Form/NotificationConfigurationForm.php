@@ -4,6 +4,7 @@ namespace Drupal\trlx_notification\Form;
 
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\trlx_utility\Utility\CommonUtility;
 
 /**
  * Defines a form that configures notification settings.
@@ -34,6 +35,7 @@ class NotificationConfigurationForm extends ConfigFormBase {
   const SELLING_TIPS_LEVEL_HEADING = 'selling_tips_level_heading';
   const CONSUMER_LEVEL_HEADING = 'consumer_level_heading';
   const COMMENT_TAGS_HEADING = 'comment_tags_heading';
+  const STAMPS_HEADING = 'stamps_heading';
 
   /**
    * {@inheritdoc}
@@ -182,6 +184,12 @@ class NotificationConfigurationForm extends ConfigFormBase {
       self::HASH_DEFAULT_VALUE => $config->get(self::COMMENT_TAGS_HEADING),
       self::HASH_REQUIRED => TRUE,
     ];
+    $form[self::STAMPS_HEADING] = [
+      self::HASH_TYPE => self::TEXTFIELD,
+      self::HASH_TITLE => $this->t('Stamps heading.'),
+      self::HASH_DEFAULT_VALUE => $config->get(self::STAMPS_HEADING),
+      self::HASH_REQUIRED => TRUE,
+    ];
     return parent::buildForm($form, $form_state);
   }
 
@@ -189,8 +197,10 @@ class NotificationConfigurationForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
+    $commonUtility = new CommonUtility();
     // Load module config for editing.
     $config = $this->configFactory->getEditable(self::NOTIFICATION_SETTINGS);
+    $commonUtility->getNotificationTranslation($config->get('stamps_heading'), 'en');
     // Iterate through form fields.
     foreach ($form_state->getValues() as $key => $value) {
       // Set config value.

@@ -61,7 +61,8 @@ class  LearningLevelHomepageSection extends ResourceBase {
       return $response;
     }
 
-    $all_tids = $this->getDistingTids();
+    global $_userData;
+    $all_tids = $this->getDistingTids($_userData->userId);
     $progress = [];
     $count = 1;
     foreach ($all_tids as $key  => $tid) {
@@ -118,11 +119,11 @@ class  LearningLevelHomepageSection extends ResourceBase {
   * @return array
   *   tid data.
   */
-  public function getDistingTids() {
+  public function getDistingTids($uid) {
     try {
       // Query to get the nid for in-progress learning level content.
       $database = \Drupal::database();
-      $query = $database->query("select distinct tid from lm_lrs_records");
+      $query = $database->query("select distinct tid from lm_lrs_records where uid =" . $uid );
       $result = $query->fetchAll();
       return array_reverse($result);
     } catch (\Exception $e) {
