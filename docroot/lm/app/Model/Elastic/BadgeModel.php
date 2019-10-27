@@ -4,6 +4,7 @@ namespace App\Model\Elastic;
 
 use Illuminate\Http\Response;
 use App\Support\Helper;
+use App\Model\Mysql\ContentModel;
 
 /**
  * Purpose of this class is to check, fetch and update badges.
@@ -149,10 +150,14 @@ class BadgeModel {
     $response = ElasticUserModel::fetchElasticUserData($badge_info['uid'], $client);
     if (!empty($response['_source']['badge'])) {
       if (!in_array($badge[0], array_keys($response['_source']['badge'][0]))) {
+        $notificationConfig = ContentModel::getNotificationConfigValues();
+        $notificationheading = $notificationConfig['stamps_heading'];
+        $notification_title = ContentModel::getTermByName($notificationheading, 'static_translation', $badge_info['lang']);
+        $notification_title = !empty($notification_title) ? $notification_title[0] : $notificationheading;
         $indexValues = [
           'notificationType' => "STAMPS",
           'userId' => $badge_info['uid'],
-          'notificationHeading' => "Congratulations! You've earned a stamp.",
+          'notificationHeading' => $notification_title,
           'notificationText' => $badge[0],
           'notificationDate' => time(),
           'notificationLink' => 0,
