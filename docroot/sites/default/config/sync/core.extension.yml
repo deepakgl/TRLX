@@ -35,7 +35,6 @@ module:
   elasticsearch_connector: 0
   elasticsearch_connector_views: 0
   elc_password_policy: 0
-  elx_custom_service: 0
   elx_elastic_user: 0
   elx_menu: 0
   elx_points_migration: 0
@@ -80,6 +79,7 @@ module:
   mailsystem: 0
   media: 0
   media_entity_browser: 0
+  menu_export: 0
   menu_link_attributes: 0
   menu_ui: 0
   migrate: 0

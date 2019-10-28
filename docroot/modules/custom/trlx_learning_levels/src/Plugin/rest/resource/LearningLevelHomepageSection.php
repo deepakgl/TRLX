@@ -18,7 +18,7 @@ use Drupal\trlx_utility\Utility\CommonUtility;
  *   }
  * )
  */
-class LearningLevelHomepageSection extends ResourceBase {
+class  LearningLevelHomepageSection extends ResourceBase {
 
  /**
   * Fetch Learning Level Section.
@@ -61,37 +61,47 @@ class LearningLevelHomepageSection extends ResourceBase {
       return $response;
     }
 
-    $nids = $this->getNids();
-    $result = [];
-    if (!empty($nids)) {
-      foreach ($nids as $key => $nid) {
-        $node = $commonUtility->getNodeData($nid->nid, $language);
-        $result[$key]['id'] = $node->id();
-        $result[$key]['displayTitle'] = $node->hasTranslation($language) ? $node->getTranslation($language)->get('field_headline')->value : '';
-        $result[$key]['subTitle'] = $node->hasTranslation($language) ? $node->getTranslation($language)->get('field_subtitle')->value : '';
-        $articulate_content = $node->get('field_interactive_content')->referencedEntities();
-        if (!empty($articulate_content)) {
-          $articulate_content = array_shift($articulate_content);
-          $result[$key]['body'] = $articulate_content->hasTranslation($language) ? $articulate_content->getTranslation($language)->get('field_intro_text')->value : '';
-        } else {
-          $result[$key]['body'] = '';
-        }
+    global $_userData;
+    $all_tids = $this->getDistingTids($_userData->userId);
+    $progress = [];
+    $count = 1;
+    foreach ($all_tids as $key  => $tid) {
+       if (!empty($tid->tid)) {
+         $all_nids = $this->getAllNids($tid->tid);
+         $level_status = $this->getLevelStatus($all_nids, $tid->tid);
+         if ($level_status['status'] == 'inprogress') {
+           $progress[$count]['tid'] = $level_status['term_id'];
+           $count ++;
+           if ($count >= 4 ) {
+             break;
+           }
+         }
+       }
+    }
 
-        $featured_image = $node->get('field_featured_image')->referencedEntities();
-        if (!empty($featured_image)) {
-          $image = array_shift($featured_image)->get(field_media_image)->referencedEntities();
-          $uri = (!empty($image)) ? (array_shift($image)->get(uri)->value) : '';
-          $result[$key]['imageSmall'] = (!empty($uri)) ? ($commonUtility->loadImageStyle('level_home_page_mobile', $uri)) : '';
-          $result[$key]['imageMedium'] = (!empty($uri)) ? ($commonUtility->loadImageStyle('level_home_page_tablet', $uri)) : '';
-          $result[$key]['imageLarge'] = (!empty($uri)) ? ($commonUtility->loadImageStyle('level_home_page_desktop', $uri)) : '';
-        }
-        else {
-          $result[$key]['imageSmall'] = '';
-          $result[$key]['imageMedium'] = '';
-          $result[$key]['imageLarge'] = '';
-        }
-        $result[$key]['pointValue'] = $node->get('field_point_value')->value;
+    $result = [];
+    $count1 = 0;
+    foreach ($progress as $tid) {
+      $term = $this->getTaxonomyTerm($tid['tid'], $language);
+      $result[$count1]['id'] = $term ->id();
+      $result[$count1]['displayTitle'] = $term->hasTranslation($language) ? $term->getTranslation($language)->get('name')->value : '';
+      $result[$count1]['subTitle'] = $term->hasTranslation($language) ? $term->getTranslation($language)->get('field_sub_title')->value : '';
+      $result[$count1]['subTitle'] = $term->hasTranslation($language) ? $term->getTranslation($language)->get('description')->value : '';
+      $featured_image = $term->get('field_image')->referencedEntities();
+      if (!empty($featured_image)) {
+        $image = array_shift($featured_image)->get(field_media_image)->referencedEntities();
+        $uri = (!empty($image)) ? (array_shift($image)->get(uri)->value) : '';
+        $result[$count1]['imageSmall'] = (!empty($uri)) ? ($commonUtility->loadImageStyle('level_home_page_mobile', $uri)) : '';
+        $result[$count1]['imageMedium'] = (!empty($uri)) ? ($commonUtility->loadImageStyle('level_home_page_tablet', $uri)) : '';
+        $result[$count1]['imageLarge'] = (!empty($uri)) ? ($commonUtility->loadImageStyle('level_home_page_desktop', $uri)) : '';
       }
+      else {
+        $result[$count1]['imageSmall'] = '';
+        $result[$count1]['imageMedium'] = '';
+        $result[$count1]['imageLarge'] = '';
+      }
+      $result[$count1]['percentage'] = empty($term->get('field_percentage')->value) ? '' : $term->get('field_percentage')->value;
+      $count1++;
     }
 
     $response = [];
@@ -104,31 +114,90 @@ class LearningLevelHomepageSection extends ResourceBase {
   }
 
  /**
-  * Method to get node data.
+  * Method to get tid data.
   *
   * @return array
-  *   Node data.
+  *   tid data.
   */
-  public function getNids() {
-    // Query to get the nid for in-progress learning level content.
-    $database = \Drupal::database();
-    $passed_nid = $database->select('lm_lrs_records', 't')
-      ->fields('t', ['nid'])
-      ->condition('statement_status', db_like("passed"), 'LIKE')
-      ->distinct()
-      ->execute()
-      ->fetchAllKeyed(0, 0);
-
-    $query = $database->select('lm_lrs_records', 't');
-    $query->fields('t',array('nid','id'));
-    if (!empty($passed_nid)) {
-      $query->condition('nid', $passed_nid, 'NOT IN');
+  public function getDistingTids($uid) {
+    try {
+      // Query to get the nid for in-progress learning level content.
+      $database = \Drupal::database();
+      $query = $database->query("select distinct tid from lm_lrs_records where uid =" . $uid );
+      $result = $query->fetchAll();
+      return array_reverse($result);
+    } catch (\Exception $e) {
+      return FALSE;
     }
-    $query->distinct();
-    $query->orderBy("id", 'DESC');
-    $query->range(0, 4);
-
-    return $query->execute()->fetchAll();
   }
 
+ /**
+  * Method to get node data.
+  * @param int $tid
+  *   Term data
+  * @return array
+  *   tid data.
+  */
+  public function getAllNids($tid) {
+    $tid = (int)$tid;
+    try {
+      // Query to get the nid for in-progress learning level content.
+      $query = \Drupal::database()->select('node__field_learning_category', 'n');
+      $query->fields('n', ['entity_id']);
+      $query->condition('n.bundle', 'level_interactive_content');
+      $query->condition('n.field_learning_category_target_id', $tid);
+      $result = $query->execute()->fetchAll();
+      return $result;
+    } catch (\Exception $e) {
+      return FALSE;
+    }
+  }
+
+ /**
+  * Method to get status data.
+  * @param array $nids
+  *   nid data
+  * @param int $tid
+  *   Term data
+  * @return array
+  *   status data.
+  */
+  public function getLevelStatus($nids, $tid) {
+    // Query to get the nid for in-progress learning level content.
+    try {
+      $database = \Drupal::database();
+      foreach ($nids as $nid) {
+        $nid->entity_id;
+        $query = $database->query("select tid from lm_lrs_records where statement_status= 'passed' and 'nid' = " . $nid->entity_id);
+        $result = $query->fetchAll();
+        if (empty($result)) {
+          return array('status' => 'inprogress', 'term_id' => $tid);
+          break;
+        }
+      }
+      return array('status' => 'pass', 'term_id' => $tid);
+    } catch (\Exception $e) {
+      return FALSE;
+    }
+  }
+
+ /**
+  * Method to get status data.
+  * @param int $tid
+  *   Term data
+  *@param  $langcode
+  *   lang data
+  * @return array
+  *   status data.
+  */
+  public function getTaxonomyTerm($tid, $langcode) {
+    try {
+      $term = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($tid);
+      if ($term->hasTranslation($langcode)) {
+        return $term->getTranslation($langcode);
+      }
+    } catch (\Exception $e) {
+      return FALSE;
+    }
+  }
 }

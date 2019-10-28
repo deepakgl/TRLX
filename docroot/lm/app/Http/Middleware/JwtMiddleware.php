@@ -7,6 +7,7 @@ use Exception;
 use Firebase\JWT\JWT;
 use App\Traits\ApiResponser;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Purpose of this class is to verify and decode token coming in request header.
@@ -43,6 +44,16 @@ class JwtMiddleware {
       }
       try {
         $_userData = JWT::decode($token, env('JWT_SECRET'), ['HS256']);
+        $query = DB::table('user_records as ur');
+        $query->select('ur.id');
+        $query->where('ur.uid', '=', $_userData->uid);
+        $result = $query->get()->first();
+        if ($result != NULL) {
+          $_userData->userId = $result->id;
+        }
+        else {
+          return $this->errorResponse('Provided token is invalid.', Response::HTTP_UNAUTHORIZED);
+        }
       }
       catch (Exception $e) {
         return $this->errorResponse('An error while decoding token.', 400);

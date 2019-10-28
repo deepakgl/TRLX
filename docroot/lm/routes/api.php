@@ -22,6 +22,11 @@ $router->group(['prefix' => 'v1/slrsa'], function () use ($router) {
   $router->put('{arg1}[/{arg2}]', 'LrsAgentController@put');
   $router->delete('{arg1}[/{arg2}]', 'LrsAgentController@delete');
 });
+// Index users in elastic.
+$router->group(['prefix' => 'v1'], function () use ($router) {
+  $router->post('users', 'UserController@updateUsersIndex');
+  $router->post('update/user/elastic/index', 'UserActivitiesController@updateUserElasticBody');
+});
 
 $router->group(
   ['middleware' => 'jwt.auth'], function () use ($router) {
@@ -85,7 +90,6 @@ $router->group(
       $router->get('getUserLevelActivities', 'UserActivitiesController@getUserLevelActivities');
       $router->get('userActivitiesLevel', 'UserActivitiesController@userActivitiesLevel');
       $router->get('userActivitiesLevel', 'UserActivitiesController@userActivitiesLevel');
-      $router->post('update/user/elastic/index', 'UserActivitiesController@updateUserElasticBody');
     });
 
     // Global activity.
@@ -98,11 +102,6 @@ $router->group(
     $router->group(['prefix' => 'v1'], function () use ($router) {
       $router->get('notification', 'NotificationController@getByUserId');
       $router->post('notification/status/save', 'NotificationController@updateNotificationsFlag');
-    });
-
-    // Index users in elastic.
-    $router->group(['prefix' => 'v1'], function () use ($router) {
-      $router->post('users', 'UserController@updateUsersIndex');
     });
   });
 
