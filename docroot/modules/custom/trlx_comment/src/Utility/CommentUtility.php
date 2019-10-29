@@ -26,7 +26,6 @@ class CommentUtility {
     global $_userData;
 
     $langcode = !empty($data['language']) ? $data['language'] : self::DEFAULT_LANGUAGE;
-    $userId = $_userData->userId;
 
     $query = \Drupal::database();
     $result = $query->insert('trlx_comment')
@@ -40,7 +39,7 @@ class CommentUtility {
         'comment_timestamp',
       ])
       ->values([
-        'user_id' => $userId,
+        'user_id' => $_userData->userId,
         'entity_id' => $data['nid'],
         'pid' => $data['parentId'],
         'comment_body' => $data['comment'],
@@ -87,8 +86,7 @@ class CommentUtility {
         ->orderBy('tc.comment_timestamp', 'DESC')->range(0, 1)
         ->execute()->fetch();
     }
-    catch (\Exception $e)
-    {
+    catch (\Exception $e) {
       $result = [];
     }
 
@@ -108,6 +106,8 @@ class CommentUtility {
    *
    * @param int $nid
    *   Node id.
+   * @param bool $updateTags
+   *   Flag to update tag keys.
    *
    * @return mixed
    *   Comment data.
@@ -130,8 +130,9 @@ class CommentUtility {
         ->condition('tc.entity_id', $nid, '=')
         ->orderBy('tc.comment_timestamp', 'DESC')
         ->execute()->fetchAll();
-    } catch (\Exception $e ) {
-     $result = [];
+    }
+    catch (\Exception $e) {
+      $result = [];
     }
 
     if (!empty($result)) {
@@ -175,7 +176,8 @@ class CommentUtility {
         ->orderBy('tc.comment_timestamp', 'DESC')
         ->execute()->fetchAll();
       return array_column($result, 'id');
-    } catch (\Exception $e) {
+    }
+    catch (\Exception $e) {
       return FALSE;
     }
   }
@@ -185,8 +187,13 @@ class CommentUtility {
    *
    * @param array $tags
    *   Tagged user data.
-   * @param boolean $decode
+   * @param bool $decode
    *   Boolean to decide whether to decode tags.
+   * @param bool $updateIdOnly
+   *   Flag to only update 'id' key in tags.
+   *
+   * @return array
+   *   Array of comment tags.
    */
   public function updateTags($tags = [], $decode = TRUE, $updateIdOnly = FALSE) {
     if (!empty($tags)) {
@@ -268,15 +275,15 @@ class CommentUtility {
   public static function getElasticUserData($uid, $client) {
     $config = \Drupal::config('trlx_notification.settings');
     $params = [
-     'index' => $config->get('user_index'),
-     'type' => 'user',
-     'id' => 'user_' . $uid,
+      'index' => $config->get('user_index'),
+      'type' => 'user',
+      'id' => 'user_' . $uid,
     ];
     try {
-     $response = $client->get($params);
+      $response = $client->get($params);
     }
     catch (\Exception $e) {
-     return FALSE;
+      return FALSE;
     }
     return $response;
   }
