@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Drupal\trlx_utility\Utility\CommonUtility;
 use Drupal\trlx_comment\Utility\CommentUtility;
 use Symfony\Component\HttpFoundation\Response;
+use Drupal\Component\Serialization\Json;
 
 /**
  * Helps to save comment in database.
@@ -37,6 +38,7 @@ class PostComment extends ResourceBase {
     global $_userData;
     $this->commonUtility = new CommonUtility();
     $this->commentUtility = new CommentUtility();
+
     // Required parameters.
     $requiredParams = [
       'nid',
@@ -70,6 +72,16 @@ class PostComment extends ResourceBase {
     else {
       return $this->commonUtility->errorResponse($this->t('Parent id is required.'), Response::HTTP_BAD_REQUEST);
     }
+    if (!isset($data['tags'])) {
+      return $this->commonUtility->errorResponse($this->t('Tags is required.'), Response::HTTP_BAD_REQUEST);
+    }
+    if (isset($data['language'])) {
+      // Checkfor valid language code.
+      $response = $this->commonUtility->validateLanguageCode($data['language'], $request, TRUE);
+      if (!($response->getStatusCode() === Response::HTTP_OK)) {
+        return $response;
+      }
+    }
 
     // Check for valid node id.
     if (empty($this->commonUtility->isValidNid($nid))) {
@@ -94,6 +106,8 @@ class PostComment extends ResourceBase {
       "parentId" => (int) $saved_data->pid,
       "commentId" => (int) $saved_data->id,
       "comment" => $saved_data->comment_body,
+      "commentTags" => Json::decode($saved_data->comment_tags, TRUE),
+      "language" => $saved_data->langcode,
       "commentTime" => (int) $saved_data->comment_timestamp,
       "message" => $this->t("Comment successfully added."),
     ];
