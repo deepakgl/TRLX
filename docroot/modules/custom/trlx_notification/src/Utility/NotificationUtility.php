@@ -110,15 +110,15 @@ class NotificationUtility {
   public static function getElasticUserData($uid, $client) {
     $config = \Drupal::config('trlx_notification.settings');
     $params = [
-     'index' => $config->get('user_index'),
-     'type' => 'user',
-     'id' => 'user_' . $uid,
+      'index' => $config->get('user_index'),
+      'type' => 'user',
+      'id' => 'user_' . $uid,
     ];
     try {
-     $response = $client->get($params);
+      $response = $client->get($params);
     }
     catch (\Exception $e) {
-     return FALSE;
+      return FALSE;
     }
     return $response;
   }
