@@ -224,7 +224,6 @@ class ConsumerListing extends ResourceBase {
       $query->condition('fcsk.field_content_section_key_value', $sectionKey);
       // Level associated content type.
       $query->condition('flc.bundle', 'level_interactive_content');
-      $query->condition('flc.langcode', $language);
       $query->condition('fd.status', 1);
       $query->condition('fd.langcode', $language);
       $query->condition('fpv.langcode', $language);

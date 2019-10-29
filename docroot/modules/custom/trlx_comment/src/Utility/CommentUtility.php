@@ -25,9 +25,8 @@ class CommentUtility {
   public function saveComment(array $data) {
     global $_userData;
 
-    $commonUtility = new CommonUtility();
     $langcode = !empty($data['language']) ? $data['language'] : self::DEFAULT_LANGUAGE;
-    $userId = $commonUtility->getUserRealId($_userData->uid);
+    $userId = $_userData->userId;
 
     $query = \Drupal::database();
     $result = $query->insert('trlx_comment')
@@ -50,9 +49,6 @@ class CommentUtility {
         'comment_timestamp' => REQUEST_TIME,
       ])
       ->execute();
-
-    // Unset variable.
-    unset($commonUtility);
 
     // Push data for notification(s).
     if (!empty($data['tags']) && !empty($result)) {
