@@ -1,0 +1,3228 @@
+100:
+  id:
+    value: '100'
+  uuid:
+    value: 03cde58e-e2f9-474e-a375-f03459122524
+  langcode:
+    value: en
+  bundle:
+    value: menu_link_content
+  enabled:
+    value: '1'
+  title:
+    value: 'Insider''s Corner'
+  description: false
+  menu_name:
+    value: backend-user-top-menu
+  link:
+    uri: 'internal:/admin/structure/entityqueue/insider_corner_hompage/insider_corner_hompage'
+    title: ''
+    options:
+      menu_icon:
+        fid: false
+  external:
+    value: '0'
+  rediscover:
+    value: '1'
+  weight:
+    value: '0'
+  expanded:
+    value: '0'
+  parent:
+    value: 'menu_link_content:f7af230e-718b-401f-b63c-d3043858d949'
+  changed:
+    value: '1571917061'
+  default_langcode:
+    value: '1'
+  trlx_menu_content: false
+  content_translation_source:
+    value: und
+  content_translation_outdated:
+    value: '0'
+  content_translation_uid:
+    target_id: '1'
+  content_translation_status:
+    value: '1'
+  content_translation_created:
+    value: '1571723586'
+53:
+  id:
+    value: '53'
+  uuid:
+    value: 0ea64246-1269-437f-b9c0-1a428f8a8791
+  langcode:
+    value: en
+  bundle:
+    value: menu_link_content
+  enabled:
+    value: '1'
+  title:
+    value: Videos
+  description: false
+  menu_name:
+    value: backend-user-top-menu
+  link:
+    uri: 'internal:/node/add/tools'
+    title: ''
+    options:
+      menu_icon:
+        fid: false
+  external:
+    value: '0'
+  rediscover:
+    value: '1'
+  weight:
+    value: '-47'
+  expanded:
+    value: '0'
+  parent:
+    value: 'menu_link_content:2a8683d0-5a22-493b-a476-95e522aa998c'
+  changed:
+    value: '1571905068'
+  default_langcode:
+    value: '1'
+  trlx_menu_content: false
+  content_translation_source:
+    value: und
+  content_translation_outdated:
+    value: '0'
+  content_translation_uid:
+    target_id: '95680'
+  content_translation_status:
+    value: '1'
+  content_translation_created:
+    value: '1559200269'
+70:
+  id:
+    value: '70'
+  uuid:
+    value: 0ed0625b-92c9-457b-aac0-ef6e6050901d
+  langcode:
+    value: en
+  bundle:
+    value: menu_link_content
+  enabled:
+    value: '0'
+  title:
+    value: 'Global Browse Products'
+  description: false
+  menu_name:
+    value: backend-user-top-menu
+  link:
+    uri: 'internal:/admin/structure/entityqueue/browse_products/browse_products'
+    title: ''
+    options:
+      menu_icon:
+        fid: false
+  external:
+    value: '0'
+  rediscover:
+    value: '1'
+  weight:
+    value: '-52'
+  expanded:
+    value: '0'
+  parent:
+    value: 'menu_link_content:44b77a58-2d48-4cac-8ddb-ada3b4091367'
+  changed:
+    value: '1571909862'
+  default_langcode:
+    value: '1'
+  trlx_menu_content: false
+  content_translation_source:
+    value: und
+  content_translation_outdated:
+    value: '0'
+  content_translation_uid:
+    target_id: '95680'
+  content_translation_status:
+    value: '1'
+  content_translation_created:
+    value: '1559201236'
+80:
+  id:
+    value: '80'
+  uuid:
+    value: 16f08b62-4867-4958-b676-66231dbb44c4
+  langcode:
+    value: en
+  bundle:
+    value: menu_link_content
+  enabled:
+    value: '0'
+  title:
+    value: 'Module Order'
+  description: false
+  menu_name:
+    value: backend-user-top-menu
+  link:
+    uri: 'internal:/admin/modules-order'
+    title: ''
+    options:
+      menu_icon:
+        fid: false
+  external:
+    value: '0'
+  rediscover:
+    value: '1'
+  weight:
+    value: '-44'
+  expanded:
+    value: '0'
+  parent: false
+  changed:
+    value: '1571909862'
+  default_langcode:
+    value: '1'
+  trlx_menu_content: false
+  content_translation_source:
+    value: und
+  content_translation_outdated:
+    value: '0'
+  content_translation_uid:
+    target_id: '95680'
+  content_translation_status:
+    value: '1'
+  content_translation_created:
+    value: '1559202114'
+48:
+  id:
+    value: '48'
+  uuid:
+    value: 2a8683d0-5a22-493b-a476-95e522aa998c
+  langcode:
+    value: en
+  bundle:
+    value: menu_link_content
+  enabled:
+    value: '1'
+  title:
+    value: 'Add Content'
+  description: false
+  menu_name:
+    value: backend-user-top-menu
+  link:
+    uri: 'route:<nolink>'
+    title: ''
+    options:
+      menu_icon:
+        fid: false
+  external:
+    value: '0'
+  rediscover:
+    value: '0'
+  weight:
+    value: '-50'
+  expanded:
+    value: '0'
+  parent: false
+  changed:
+    value: '1571909071'
+  default_langcode:
+    value: '1'
+  trlx_menu_content: false
+  content_translation_source:
+    value: und
+  content_translation_outdated:
+    value: '0'
+  content_translation_uid:
+    target_id: '95680'
+  content_translation_status:
+    value: '1'
+  content_translation_created:
+    value: '1559200073'
+83:
+  id:
+    value: '83'
+  uuid:
+    value: 33292cec-3f09-428c-89c1-4370de29bc83
+  langcode:
+    value: en
+  bundle:
+    value: menu_link_content
+  enabled:
+    value: '0'
+  title:
+    value: 'Participation Rate Report'
+  description: false
+  menu_name:
+    value: backend-user-top-menu
+  link:
+    uri: 'internal:/admin/report/participation-rate-report'
+    title: ''
+    options:
+      menu_icon:
+        fid: false
+  external:
+    value: '0'
+  rediscover:
+    value: '1'
+  weight:
+    value: '-50'
+  expanded:
+    value: '0'
+  parent:
+    value: 'menu_link_content:f48327d7-4803-4bc9-9646-cd4cecdaafff'
+  changed:
+    value: '1570175331'
+  default_langcode:
+    value: '1'
+  trlx_menu_content: false
+  content_translation_source:
+    value: und
+  content_translation_outdated:
+    value: '0'
+  content_translation_uid:
+    target_id: '95680'
+  content_translation_status:
+    value: '1'
+  content_translation_created:
+    value: '1559202349'
+93:
+  id:
+    value: '93'
+  uuid:
+    value: 38f782d5-c5a4-4113-bc89-4c9da93a4adb
+  langcode:
+    value: en
+  bundle:
+    value: menu_link_content
+  enabled:
+    value: '1'
+  title:
+    value: 'Manage Menu links'
+  description: false
+  menu_name:
+    value: backend-user-top-menu
+  link:
+    uri: 'internal:/admin/structure/menu/manage/main'
+    title: ''
+    options:
+      menu_icon:
+        fid: false
+  external:
+    value: '0'
+  rediscover:
+    value: '1'
+  weight:
+    value: '-45'
+  expanded:
+    value: '0'
+  parent:
+    value: 'menu_link_content:4e827f4b-a6d4-4145-ac81-ecc5841ec5a3'
+  changed:
+    value: '1571909862'
+  default_langcode:
+    value: '1'
+  trlx_menu_content: false
+  content_translation_source:
+    value: und
+  content_translation_outdated:
+    value: '0'
+  content_translation_uid:
+    target_id: '1'
+  content_translation_status:
+    value: '1'
+  content_translation_created:
+    value: '1570180339'
+79:
+  id:
+    value: '79'
+  uuid:
+    value: 3a84d4d3-594b-49ec-9bdf-b74715b36755
+  langcode:
+    value: en
+  bundle:
+    value: menu_link_content
+  enabled:
+    value: '0'
+  title:
+    value: 'User Upload'
+  description: false
+  menu_name:
+    value: backend-user-top-menu
+  link:
+    uri: 'internal:/feed/add/user_bulk_import'
+    title: ''
+    options:
+      menu_icon:
+        fid: false
+  external:
+    value: '0'
+  rediscover:
+    value: '1'
+  weight:
+    value: '-47'
+  expanded:
+    value: '0'
+  parent:
+    value: 'menu_link_content:b97f785b-8e27-4358-821c-fe2c6d98d021'
+  changed:
+    value: '1571905068'
+  default_langcode:
+    value: '1'
+  trlx_menu_content: false
+  content_translation_source:
+    value: und
+  content_translation_outdated:
+    value: '0'
+  content_translation_uid:
+    target_id: '95680'
+  content_translation_status:
+    value: '1'
+  content_translation_created:
+    value: '1559201903'
+57:
+  id:
+    value: '57'
+  uuid:
+    value: 4189bc20-da07-4ac8-b215-e7775dfa5752
+  langcode:
+    value: en
+  bundle:
+    value: menu_link_content
+  enabled:
+    value: '1'
+  title:
+    value: 'Content Dashboard'
+  description: false
+  menu_name:
+    value: backend-user-top-menu
+  link:
+    uri: 'internal:/dashboard/published'
+    title: ''
+    options:
+      menu_icon:
+        fid: false
+  external:
+    value: '0'
+  rediscover:
+    value: '1'
+  weight:
+    value: '-52'
+  expanded:
+    value: '0'
+  parent: false
+  changed:
+    value: '1571909071'
+  default_langcode:
+    value: '1'
+  trlx_menu_content: false
+  content_translation_source:
+    value: und
+  content_translation_outdated:
+    value: '0'
+  content_translation_uid:
+    target_id: '95680'
+  content_translation_status:
+    value: '1'
+  content_translation_created:
+    value: '1559200529'
+69:
+  id:
+    value: '69'
+  uuid:
+    value: 44b77a58-2d48-4cac-8ddb-ada3b4091367
+  langcode:
+    value: en
+  bundle:
+    value: menu_link_content
+  enabled:
+    value: '0'
+  title:
+    value: 'Home Page Order'
+  description: false
+  menu_name:
+    value: backend-user-top-menu
+  link:
+    uri: 'internal:/admin/structure/entityqueue'
+    title: ''
+    options:
+      menu_icon:
+        fid: false
+  external:
+    value: '0'
+  rediscover:
+    value: '1'
+  weight:
+    value: '-44'
+  expanded:
+    value: '0'
+  parent:
+    value: 'menu_link_content:4e827f4b-a6d4-4145-ac81-ecc5841ec5a3'
+  changed:
+    value: '1571908699'
+  default_langcode:
+    value: '1'
+  trlx_menu_content: false
+  content_translation_source:
+    value: und
+  content_translation_outdated:
+    value: '0'
+  content_translation_uid:
+    target_id: '95680'
+  content_translation_status:
+    value: '1'
+  content_translation_created:
+    value: '1559201141'
+102:
+  id:
+    value: '102'
+  uuid:
+    value: 46491f21-c710-4080-9459-558463c75860
+  langcode:
+    value: en
+  bundle:
+    value: menu_link_content
+  enabled:
+    value: '1'
+  title:
+    value: 'T&C'
+  description: false
+  menu_name:
+    value: backend-user-top-menu
+  link:
+    uri: 'internal:/node/add/t_c'
+    title: ''
+    options:
+      menu_icon:
+        fid: false
+  external:
+    value: '0'
+  rediscover:
+    value: '1'
+  weight:
+    value: '-41'
+  expanded:
+    value: '0'
+  parent:
+    value: 'menu_link_content:2a8683d0-5a22-493b-a476-95e522aa998c'
+  changed:
+    value: '1571905068'
+  default_langcode:
+    value: '1'
+  trlx_menu_content: false
+  content_translation_source:
+    value: und
+  content_translation_outdated:
+    value: '0'
+  content_translation_uid:
+    target_id: '1'
+  content_translation_status:
+    value: '1'
+  content_translation_created:
+    value: '1571731096'
+63:
+  id:
+    value: '63'
+  uuid:
+    value: 483c6747-1538-4038-8a56-9ad281b4e96e
+  langcode:
+    value: en
+  bundle:
+    value: menu_link_content
+  enabled:
+    value: '0'
+  title:
+    value: 'Manage Markets'
+  description: false
+  menu_name:
+    value: backend-user-top-menu
+  link:
+    uri: 'internal:/admin/structure/taxonomy/manage/markets/overview'
+    title: ''
+    options:
+      menu_icon:
+        fid: false
+  external:
+    value: '0'
+  rediscover:
+    value: '1'
+  weight:
+    value: '-49'
+  expanded:
+    value: '0'
+  parent:
+    value: 'menu_link_content:4e827f4b-a6d4-4145-ac81-ecc5841ec5a3'
+  changed:
+    value: '1571909862'
+  default_langcode:
+    value: '1'
+  trlx_menu_content: false
+  content_translation_source:
+    value: und
+  content_translation_outdated:
+    value: '0'
+  content_translation_uid:
+    target_id: '95680'
+  content_translation_status:
+    value: '1'
+  content_translation_created:
+    value: '1559200905'
+101:
+  id:
+    value: '101'
+  uuid:
+    value: 4cec5e48-202f-4303-b0bc-1a90caffc412
+  langcode:
+    value: en
+  bundle:
+    value: menu_link_content
+  enabled:
+    value: '1'
+  title:
+    value: 'Privacy Policy'
+  description: false
+  menu_name:
+    value: backend-user-top-menu
+  link:
+    uri: 'internal:/node/add/privacy_policy'
+    title: ''
+    options:
+      menu_icon:
+        fid: false
+  external:
+    value: '0'
+  rediscover:
+    value: '1'
+  weight:
+    value: '-40'
+  expanded:
+    value: '0'
+  parent:
+    value: 'menu_link_content:2a8683d0-5a22-493b-a476-95e522aa998c'
+  changed:
+    value: '1571905068'
+  default_langcode:
+    value: '1'
+  trlx_menu_content: false
+  content_translation_source:
+    value: und
+  content_translation_outdated:
+    value: '0'
+  content_translation_uid:
+    target_id: '1'
+  content_translation_status:
+    value: '1'
+  content_translation_created:
+    value: '1571731039'
+58:
+  id:
+    value: '58'
+  uuid:
+    value: 4e827f4b-a6d4-4145-ac81-ecc5841ec5a3
+  langcode:
+    value: en
+  bundle:
+    value: menu_link_content
+  enabled:
+    value: '1'
+  title:
+    value: 'Manage Content Category'
+  description: false
+  menu_name:
+    value: backend-user-top-menu
+  link:
+    uri: 'route:<nolink>'
+    title: ''
+    options:
+      menu_icon:
+        fid: false
+  external:
+    value: '0'
+  rediscover:
+    value: '0'
+  weight:
+    value: '-49'
+  expanded:
+    value: '0'
+  parent: false
+  changed:
+    value: '1571909071'
+  default_langcode:
+    value: '1'
+  trlx_menu_content: false
+  content_translation_source:
+    value: und
+  content_translation_outdated:
+    value: '0'
+  content_translation_uid:
+    target_id: '95680'
+  content_translation_status:
+    value: '1'
+  content_translation_created:
+    value: '1559200666'
+75:
+  id:
+    value: '75'
+  uuid:
+    value: 5a00d25b-536b-4b12-9722-6d500bde6d8c
+  langcode:
+    value: en
+  bundle:
+    value: menu_link_content
+  enabled:
+    value: '0'
+  title:
+    value: 'Learning Levels (Market Wise)'
+  description: false
+  menu_name:
+    value: backend-user-top-menu
+  link:
+    uri: 'internal:/admin/structure/entityqueue/learning_levels_market_wise/list'
+    title: ''
+    options:
+      menu_icon:
+        fid: false
+  external:
+    value: '0'
+  rediscover:
+    value: '1'
+  weight:
+    value: '-48'
+  expanded:
+    value: '0'
+  parent:
+    value: 'menu_link_content:44b77a58-2d48-4cac-8ddb-ada3b4091367'
+  changed:
+    value: '1571909862'
+  default_langcode:
+    value: '1'
+  trlx_menu_content: false
+  content_translation_source:
+    value: und
+  content_translation_outdated:
+    value: '0'
+  content_translation_uid:
+    target_id: '95680'
+  content_translation_status:
+    value: '1'
+  content_translation_created:
+    value: '1559201385'
+47:
+  id:
+    value: '47'
+  uuid:
+    value: 5d79663f-d476-4ce5-bec1-553e9f61a095
+  langcode:
+    value: en
+  bundle:
+    value: menu_link_content
+  enabled:
+    value: '0'
+  title:
+    value: 'User Export'
+  description: false
+  menu_name:
+    value: backend-user-top-menu
+  link:
+    uri: 'internal:/admin/people/user-export'
+    title: ''
+    options:
+      menu_icon:
+        fid: false
+  external:
+    value: '0'
+  rediscover:
+    value: '1'
+  weight:
+    value: '-48'
+  expanded:
+    value: '0'
+  parent:
+    value: 'menu_link_content:b97f785b-8e27-4358-821c-fe2c6d98d021'
+  changed:
+    value: '1571905068'
+  default_langcode:
+    value: '1'
+  trlx_menu_content: false
+  content_translation_source:
+    value: und
+  content_translation_outdated:
+    value: '0'
+  content_translation_uid:
+    target_id: '95680'
+  content_translation_status:
+    value: '1'
+  content_translation_created:
+    value: '1559199731'
+65:
+  id:
+    value: '65'
+  uuid:
+    value: 608ba9c3-a6a6-4fab-a1d8-fece8f63fc0f
+  langcode:
+    value: en
+  bundle:
+    value: menu_link_content
+  enabled:
+    value: '0'
+  title:
+    value: 'Product Category'
+  description: false
+  menu_name:
+    value: backend-user-top-menu
+  link:
+    uri: 'internal:/admin/structure/taxonomy/manage/product_category/overview'
+    title: ''
+    options:
+      menu_icon:
+        fid: false
+  external:
+    value: '0'
+  rediscover:
+    value: '1'
+  weight:
+    value: '-48'
+  expanded:
+    value: '0'
+  parent:
+    value: 'menu_link_content:4e827f4b-a6d4-4145-ac81-ecc5841ec5a3'
+  changed:
+    value: '1571909862'
+  default_langcode:
+    value: '1'
+  trlx_menu_content: false
+  content_translation_source:
+    value: und
+  content_translation_outdated:
+    value: '0'
+  content_translation_uid:
+    target_id: '95680'
+  content_translation_status:
+    value: '1'
+  content_translation_created:
+    value: '1559200989'
+46:
+  id:
+    value: '46'
+  uuid:
+    value: 650a74e2-80eb-4792-9923-93a32d82313d
+  langcode:
+    value: en
+  bundle:
+    value: menu_link_content
+  enabled:
+    value: '1'
+  title:
+    value: 'Add User'
+  description: false
+  menu_name:
+    value: backend-user-top-menu
+  link:
+    uri: 'internal:/admin/people/create'
+    title: ''
+    options:
+      menu_icon:
+        fid: false
+  external:
+    value: '0'
+  rediscover:
+    value: '1'
+  weight:
+    value: '-46'
+  expanded:
+    value: '0'
+  parent: false
+  changed:
+    value: '1571909862'
+  default_langcode:
+    value: '1'
+  trlx_menu_content: false
+  content_translation_source:
+    value: und
+  content_translation_outdated:
+    value: '0'
+  content_translation_uid:
+    target_id: '95680'
+  content_translation_status:
+    value: '1'
+  content_translation_created:
+    value: '1559199660'
+99:
+  id:
+    value: '99'
+  uuid:
+    value: 68b92167-aea9-4e4b-8833-06cc2ee08885
+  langcode:
+    value: en
+  bundle:
+    value: menu_link_content
+  enabled:
+    value: '1'
+  title:
+    value: 'Welcome Message'
+  description: false
+  menu_name:
+    value: backend-user-top-menu
+  link:
+    uri: 'internal:/admin/config/system/header_message'
+    title: ''
+    options:
+      menu_icon:
+        fid: false
+  external:
+    value: '0'
+  rediscover:
+    value: '1'
+  weight:
+    value: '-42'
+  expanded:
+    value: '0'
+  parent:
+    value: 'menu_link_content:2a8683d0-5a22-493b-a476-95e522aa998c'
+  changed:
+    value: '1571905068'
+  default_langcode:
+    value: '1'
+  trlx_menu_content: false
+  content_translation_source:
+    value: und
+  content_translation_outdated:
+    value: '0'
+  content_translation_uid:
+    target_id: '1'
+  content_translation_status:
+    value: '1'
+  content_translation_created:
+    value: '1571723333'
+62:
+  id:
+    value: '62'
+  uuid:
+    value: 6f7fb383-7614-4e0d-a54d-c12709dbd77e
+  langcode:
+    value: en
+  bundle:
+    value: menu_link_content
+  enabled:
+    value: '1'
+  title:
+    value: 'Add Brands'
+  description: false
+  menu_name:
+    value: backend-user-top-menu
+  link:
+    uri: 'internal:/admin/structure/taxonomy/manage/brands/add'
+    title: ''
+    options:
+      menu_icon:
+        fid: false
+  external:
+    value: '0'
+  rediscover:
+    value: '1'
+  weight:
+    value: '-49'
+  expanded:
+    value: '0'
+  parent:
+    value: 'menu_link_content:8a2b624e-6d39-430c-b6d8-323db4a3ccfe'
+  changed:
+    value: '1571905068'
+  default_langcode:
+    value: '1'
+  trlx_menu_content: false
+  content_translation_source:
+    value: und
+  content_translation_outdated:
+    value: '0'
+  content_translation_uid:
+    target_id: '95680'
+  content_translation_status:
+    value: '1'
+  content_translation_created:
+    value: '1559200858'
+82:
+  id:
+    value: '82'
+  uuid:
+    value: 740780da-b4be-4a84-a86b-6e6eac4a9c4b
+  langcode:
+    value: en
+  bundle:
+    value: menu_link_content
+  enabled:
+    value: '0'
+  title:
+    value: 'Learner Summary report'
+  description: false
+  menu_name:
+    value: backend-user-top-menu
+  link:
+    uri: 'internal:/admin/report/learner-summary-report'
+    title: ''
+    options:
+      menu_icon:
+        fid: false
+  external:
+    value: '0'
+  rediscover:
+    value: '1'
+  weight:
+    value: '-48'
+  expanded:
+    value: '0'
+  parent:
+    value: 'menu_link_content:f48327d7-4803-4bc9-9646-cd4cecdaafff'
+  changed:
+    value: '1559281367'
+  default_langcode:
+    value: '1'
+  trlx_menu_content: false
+  content_translation_source:
+    value: und
+  content_translation_outdated:
+    value: '0'
+  content_translation_uid:
+    target_id: '95680'
+  content_translation_status:
+    value: '1'
+  content_translation_created:
+    value: '1559202297'
+66:
+  id:
+    value: '66'
+  uuid:
+    value: 769898ba-d5ea-4c4f-87cf-bda869f90d40
+  langcode:
+    value: en
+  bundle:
+    value: menu_link_content
+  enabled:
+    value: '0'
+  title:
+    value: 'Add Product Category'
+  description: false
+  menu_name:
+    value: backend-user-top-menu
+  link:
+    uri: 'internal:/admin/structure/taxonomy/manage/product_category/add'
+    title: ''
+    options:
+      menu_icon:
+        fid: false
+  external:
+    value: '0'
+  rediscover:
+    value: '1'
+  weight:
+    value: '-50'
+  expanded:
+    value: '0'
+  parent:
+    value: 'menu_link_content:608ba9c3-a6a6-4fab-a1d8-fece8f63fc0f'
+  changed:
+    value: '1571908449'
+  default_langcode:
+    value: '1'
+  trlx_menu_content: false
+  content_translation_source:
+    value: und
+  content_translation_outdated:
+    value: '0'
+  content_translation_uid:
+    target_id: '95680'
+  content_translation_status:
+    value: '1'
+  content_translation_created:
+    value: '1559201036'
+67:
+  id:
+    value: '67'
+  uuid:
+    value: 781e2738-f05d-4182-a9ef-80e144c5ceb3
+  langcode:
+    value: en
+  bundle:
+    value: menu_link_content
+  enabled:
+    value: '1'
+  title:
+    value: 'Manage Listing Images'
+  description: false
+  menu_name:
+    value: backend-user-top-menu
+  link:
+    uri: 'internal:/admin/structure/taxonomy/manage/listing_image/overview'
+    title: ''
+    options:
+      menu_icon:
+        fid: false
+  external:
+    value: '0'
+  rediscover:
+    value: '1'
+  weight:
+    value: '-47'
+  expanded:
+    value: '0'
+  parent:
+    value: 'menu_link_content:4e827f4b-a6d4-4145-ac81-ecc5841ec5a3'
+  changed:
+    value: '1571909862'
+  default_langcode:
+    value: '1'
+  trlx_menu_content: false
+  content_translation_source:
+    value: und
+  content_translation_outdated:
+    value: '0'
+  content_translation_uid:
+    target_id: '95680'
+  content_translation_status:
+    value: '1'
+  content_translation_created:
+    value: '1559201071'
+97:
+  id:
+    value: '97'
+  uuid:
+    value: 7ee1f6fb-34c8-4980-89a1-bf5bb646e429
+  langcode:
+    value: en
+  bundle:
+    value: menu_link_content
+  enabled:
+    value: '1'
+  title:
+    value: 'Manage Consumer Category'
+  description: false
+  menu_name:
+    value: backend-user-top-menu
+  link:
+    uri: 'internal:/admin/structure/taxonomy/manage/consumer_category/overview'
+    title: ''
+    options:
+      menu_icon:
+        fid: false
+  external:
+    value: '0'
+  rediscover:
+    value: '1'
+  weight:
+    value: '-46'
+  expanded:
+    value: '0'
+  parent:
+    value: 'menu_link_content:4e827f4b-a6d4-4145-ac81-ecc5841ec5a3'
+  changed:
+    value: '1571909862'
+  default_langcode:
+    value: '1'
+  trlx_menu_content: false
+  content_translation_source:
+    value: und
+  content_translation_outdated:
+    value: '0'
+  content_translation_uid:
+    target_id: '1'
+  content_translation_status:
+    value: '1'
+  content_translation_created:
+    value: '1571399761'
+106:
+  id:
+    value: '106'
+  uuid:
+    value: 880e7c6e-221d-4a3a-9e42-6f3e60d559e0
+  langcode:
+    value: en
+  bundle:
+    value: menu_link_content
+  enabled:
+    value: '1'
+  title:
+    value: 'Add Stamps'
+  description: false
+  menu_name:
+    value: backend-user-top-menu
+  link:
+    uri: 'internal:/admin/structure/taxonomy/manage/badges/add'
+    title: ''
+    options:
+      menu_icon:
+        fid: false
+  external:
+    value: '0'
+  rediscover:
+    value: '1'
+  weight:
+    value: '0'
+  expanded:
+    value: '0'
+  parent:
+    value: 'menu_link_content:e0553789-8388-4306-856a-37349271b33b'
+  changed:
+    value: '1571908758'
+  default_langcode:
+    value: '1'
+  trlx_menu_content: false
+  content_translation_source:
+    value: und
+  content_translation_outdated:
+    value: '0'
+  content_translation_uid:
+    target_id: '1'
+  content_translation_status:
+    value: '1'
+  content_translation_created:
+    value: '1571908758'
+54:
+  id:
+    value: '54'
+  uuid:
+    value: 882a8bc3-0f1c-4b8e-887a-4b8d030d463a
+  langcode:
+    value: en
+  bundle:
+    value: menu_link_content
+  enabled:
+    value: '0'
+  title:
+    value: Tools
+  description: false
+  menu_name:
+    value: backend-user-top-menu
+  link:
+    uri: 'internal:/node/add/tools-pdf'
+    title: ''
+    options:
+      menu_icon:
+        fid: false
+  external:
+    value: '0'
+  rediscover:
+    value: '1'
+  weight:
+    value: '-44'
+  expanded:
+    value: '0'
+  parent:
+    value: 'menu_link_content:2a8683d0-5a22-493b-a476-95e522aa998c'
+  changed:
+    value: '1571905068'
+  default_langcode:
+    value: '1'
+  trlx_menu_content: false
+  content_translation_source:
+    value: und
+  content_translation_outdated:
+    value: '0'
+  content_translation_uid:
+    target_id: '95680'
+  content_translation_status:
+    value: '1'
+  content_translation_created:
+    value: '1559200295'
+68:
+  id:
+    value: '68'
+  uuid:
+    value: 88cf7897-56db-4e3c-a0a2-2d18cbb70664
+  langcode:
+    value: en
+  bundle:
+    value: menu_link_content
+  enabled:
+    value: '1'
+  title:
+    value: 'Add Listing Images'
+  description: false
+  menu_name:
+    value: backend-user-top-menu
+  link:
+    uri: 'internal:/admin/structure/taxonomy/manage/listing_image/add'
+    title: ''
+    options:
+      menu_icon:
+        fid: false
+  external:
+    value: '0'
+  rediscover:
+    value: '1'
+  weight:
+    value: '-50'
+  expanded:
+    value: '0'
+  parent:
+    value: 'menu_link_content:781e2738-f05d-4182-a9ef-80e144c5ceb3'
+  changed:
+    value: '1571314839'
+  default_langcode:
+    value: '1'
+  trlx_menu_content: false
+  content_translation_source:
+    value: und
+  content_translation_outdated:
+    value: '0'
+  content_translation_uid:
+    target_id: '95680'
+  content_translation_status:
+    value: '1'
+  content_translation_created:
+    value: '1559201103'
+61:
+  id:
+    value: '61'
+  uuid:
+    value: 8a2b624e-6d39-430c-b6d8-323db4a3ccfe
+  langcode:
+    value: en
+  bundle:
+    value: menu_link_content
+  enabled:
+    value: '1'
+  title:
+    value: 'Manage Brands'
+  description: false
+  menu_name:
+    value: backend-user-top-menu
+  link:
+    uri: 'internal:/admin/structure/taxonomy/manage/brands/overview'
+    title: ''
+    options:
+      menu_icon:
+        fid: false
+  external:
+    value: '0'
+  rediscover:
+    value: '1'
+  weight:
+    value: '-51'
+  expanded:
+    value: '0'
+  parent:
+    value: 'menu_link_content:4e827f4b-a6d4-4145-ac81-ecc5841ec5a3'
+  changed:
+    value: '1571909862'
+  default_langcode:
+    value: '1'
+  trlx_menu_content: false
+  content_translation_source:
+    value: und
+  content_translation_outdated:
+    value: '0'
+  content_translation_uid:
+    target_id: '95680'
+  content_translation_status:
+    value: '1'
+  content_translation_created:
+    value: '1559200820'
+56:
+  id:
+    value: '56'
+  uuid:
+    value: 8a6a124f-21c8-4c3f-948d-e9bb19c42a8d
+  langcode:
+    value: en
+  bundle:
+    value: menu_link_content
+  enabled:
+    value: '1'
+  title:
+    value: FAQ
+  description: false
+  menu_name:
+    value: backend-user-top-menu
+  link:
+    uri: 'internal:/node/add/faq'
+    title: ''
+    options:
+      menu_icon:
+        fid: false
+  external:
+    value: '0'
+  rediscover:
+    value: '1'
+  weight:
+    value: '-46'
+  expanded:
+    value: '0'
+  parent:
+    value: 'menu_link_content:2a8683d0-5a22-493b-a476-95e522aa998c'
+  changed:
+    value: '1571905068'
+  default_langcode:
+    value: '1'
+  trlx_menu_content: false
+  content_translation_source:
+    value: und
+  content_translation_outdated:
+    value: '0'
+  content_translation_uid:
+    target_id: '95680'
+  content_translation_status:
+    value: '1'
+  content_translation_created:
+    value: '1559200372'
+71:
+  id:
+    value: '71'
+  uuid:
+    value: 8ee67529-910d-4590-b1b5-832b917be8b9
+  langcode:
+    value: en
+  bundle:
+    value: menu_link_content
+  enabled:
+    value: '0'
+  title:
+    value: 'Global Explore Learning Levels'
+  description: false
+  menu_name:
+    value: backend-user-top-menu
+  link:
+    uri: 'internal:/admin/structure/entityqueue/explore_learning_levels/explore_learning_levels'
+    title: ''
+    options:
+      menu_icon:
+        fid: false
+  external:
+    value: '0'
+  rediscover:
+    value: '1'
+  weight:
+    value: '-50'
+  expanded:
+    value: '0'
+  parent:
+    value: 'menu_link_content:44b77a58-2d48-4cac-8ddb-ada3b4091367'
+  changed:
+    value: '1571909862'
+  default_langcode:
+    value: '1'
+  trlx_menu_content: false
+  content_translation_source:
+    value: und
+  content_translation_outdated:
+    value: '0'
+  content_translation_uid:
+    target_id: '95680'
+  content_translation_status:
+    value: '1'
+  content_translation_created:
+    value: '1559201266'
+84:
+  id:
+    value: '84'
+  uuid:
+    value: 902f6b0c-0364-4dad-8f58-fcbd4751c99b
+  langcode:
+    value: en
+  bundle:
+    value: menu_link_content
+  enabled:
+    value: '0'
+  title:
+    value: 'Active User List'
+  description: false
+  menu_name:
+    value: backend-user-top-menu
+  link:
+    uri: 'internal:/admin/active-users'
+    title: ''
+    options:
+      menu_icon:
+        fid: false
+  external:
+    value: '0'
+  rediscover:
+    value: '1'
+  weight:
+    value: '-49'
+  expanded:
+    value: '0'
+  parent:
+    value: 'menu_link_content:f48327d7-4803-4bc9-9646-cd4cecdaafff'
+  changed:
+    value: '1570175331'
+  default_langcode:
+    value: '1'
+  trlx_menu_content: false
+  content_translation_source:
+    value: und
+  content_translation_outdated:
+    value: '0'
+  content_translation_uid:
+    target_id: '95680'
+  content_translation_status:
+    value: '1'
+  content_translation_created:
+    value: '1559202405'
+64:
+  id:
+    value: '64'
+  uuid:
+    value: 9543e0bd-a392-4020-98c5-ee113bd78ed9
+  langcode:
+    value: en
+  bundle:
+    value: menu_link_content
+  enabled:
+    value: '0'
+  title:
+    value: 'Add Market'
+  description: false
+  menu_name:
+    value: backend-user-top-menu
+  link:
+    uri: 'internal:/admin/structure/taxonomy/manage/markets/add'
+    title: ''
+    options:
+      menu_icon:
+        fid: false
+  external:
+    value: '0'
+  rediscover:
+    value: '1'
+  weight:
+    value: '-50'
+  expanded:
+    value: '0'
+  parent:
+    value: 'menu_link_content:483c6747-1538-4038-8a56-9ad281b4e96e'
+  changed:
+    value: '1571908449'
+  default_langcode:
+    value: '1'
+  trlx_menu_content: false
+  content_translation_source:
+    value: und
+  content_translation_outdated:
+    value: '0'
+  content_translation_uid:
+    target_id: '95680'
+  content_translation_status:
+    value: '1'
+  content_translation_created:
+    value: '1559200943'
+104:
+  id:
+    value: '104'
+  uuid:
+    value: a10e7783-250b-4689-a77d-15e52bc89755
+  langcode:
+    value: en
+  bundle:
+    value: menu_link_content
+  enabled:
+    value: '1'
+  title:
+    value: Spotlight
+  description: false
+  menu_name:
+    value: backend-user-top-menu
+  link:
+    uri: 'internal:/admin/structure/entityqueue/spotlight_section/spotlight_section'
+    title: ''
+    options:
+      menu_icon:
+        fid: false
+  external:
+    value: '0'
+  rediscover:
+    value: '1'
+  weight:
+    value: '0'
+  expanded:
+    value: '0'
+  parent:
+    value: 'menu_link_content:f7af230e-718b-401f-b63c-d3043858d949'
+  changed:
+    value: '1571904757'
+  default_langcode:
+    value: '1'
+  trlx_menu_content: false
+  content_translation_source:
+    value: und
+  content_translation_outdated:
+    value: '0'
+  content_translation_uid:
+    target_id: '1'
+  content_translation_status:
+    value: '1'
+  content_translation_created:
+    value: '1571904757'
+78:
+  id:
+    value: '78'
+  uuid:
+    value: a48cb164-fe91-4eb2-aeca-d8c3adb13061
+  langcode:
+    value: en
+  bundle:
+    value: menu_link_content
+  enabled:
+    value: '1'
+  title:
+    value: 'Static Translations'
+  description: false
+  menu_name:
+    value: backend-user-top-menu
+  link:
+    uri: 'internal:/admin/structure/taxonomy/manage/static_translation/overview'
+    title: ''
+    options:
+      menu_icon:
+        fid: false
+  external:
+    value: '0'
+  rediscover:
+    value: '1'
+  weight:
+    value: '-48'
+  expanded:
+    value: '0'
+  parent: false
+  changed:
+    value: '1571909071'
+  default_langcode:
+    value: '1'
+  trlx_menu_content: false
+  content_translation_source:
+    value: und
+  content_translation_outdated:
+    value: '0'
+  content_translation_uid:
+    target_id: '95680'
+  content_translation_status:
+    value: '1'
+  content_translation_created:
+    value: '1559201795'
+40:
+  id:
+    value: '40'
+  uuid:
+    value: b97f785b-8e27-4358-821c-fe2c6d98d021
+  langcode:
+    value: en
+  bundle:
+    value: menu_link_content
+  enabled:
+    value: '0'
+  title:
+    value: 'Manage Users'
+  description: false
+  menu_name:
+    value: backend-user-top-menu
+  link:
+    uri: 'internal:/admin/people'
+    title: ''
+    options:
+      menu_icon:
+        fid: false
+  external:
+    value: '0'
+  rediscover:
+    value: '1'
+  weight:
+    value: '-45'
+  expanded:
+    value: '0'
+  parent: false
+  changed:
+    value: '1571909862'
+  default_langcode:
+    value: '1'
+  trlx_menu_content: false
+  content_translation_source:
+    value: und
+  content_translation_outdated:
+    value: '0'
+  content_translation_uid:
+    target_id: '95680'
+  content_translation_status:
+    value: '1'
+  content_translation_created:
+    value: '1559199192'
+59:
+  id:
+    value: '59'
+  uuid:
+    value: b9b5a2ce-f5ef-4b86-81a8-3ca75246e8af
+  langcode:
+    value: en
+  bundle:
+    value: menu_link_content
+  enabled:
+    value: '1'
+  title:
+    value: 'Manage Learning Level'
+  description: false
+  menu_name:
+    value: backend-user-top-menu
+  link:
+    uri: 'internal:/admin/structure/taxonomy/manage/learning_category/overview'
+    title: ''
+    options:
+      menu_icon:
+        fid: false
+  external:
+    value: '0'
+  rediscover:
+    value: '1'
+  weight:
+    value: '-52'
+  expanded:
+    value: '0'
+  parent:
+    value: 'menu_link_content:4e827f4b-a6d4-4145-ac81-ecc5841ec5a3'
+  changed:
+    value: '1571909862'
+  default_langcode:
+    value: '1'
+  trlx_menu_content: false
+  content_translation_source:
+    value: und
+  content_translation_outdated:
+    value: '0'
+  content_translation_uid:
+    target_id: '95680'
+  content_translation_status:
+    value: '1'
+  content_translation_created:
+    value: '1559200726'
+51:
+  id:
+    value: '51'
+  uuid:
+    value: bb62fbde-34f3-4496-a800-2b31fd2c2f7b
+  langcode:
+    value: en
+  bundle:
+    value: menu_link_content
+  enabled:
+    value: '1'
+  title:
+    value: 'Brand Story'
+  description: false
+  menu_name:
+    value: backend-user-top-menu
+  link:
+    uri: 'internal:/node/add/brand_story'
+    title: ''
+    options:
+      menu_icon:
+        fid: false
+  external:
+    value: '0'
+  rediscover:
+    value: '1'
+  weight:
+    value: '-49'
+  expanded:
+    value: '0'
+  parent:
+    value: 'menu_link_content:2a8683d0-5a22-493b-a476-95e522aa998c'
+  changed:
+    value: '1571905068'
+  default_langcode:
+    value: '1'
+  trlx_menu_content: false
+  content_translation_source:
+    value: und
+  content_translation_outdated:
+    value: '0'
+  content_translation_uid:
+    target_id: '95680'
+  content_translation_status:
+    value: '1'
+  content_translation_created:
+    value: '1559200225'
+77:
+  id:
+    value: '77'
+  uuid:
+    value: bba473ca-f223-403a-bd87-7f9283c3e73f
+  langcode:
+    value: en
+  bundle:
+    value: menu_link_content
+  enabled:
+    value: '0'
+  title:
+    value: 'Stories (Market Wise)'
+  description: false
+  menu_name:
+    value: backend-user-top-menu
+  link:
+    uri: 'internal:/admin/structure/entityqueue/stories_market_wise/list'
+    title: ''
+    options:
+      menu_icon:
+        fid: false
+  external:
+    value: '0'
+  rediscover:
+    value: '1'
+  weight:
+    value: '-46'
+  expanded:
+    value: '0'
+  parent:
+    value: 'menu_link_content:44b77a58-2d48-4cac-8ddb-ada3b4091367'
+  changed:
+    value: '1571909862'
+  default_langcode:
+    value: '1'
+  trlx_menu_content: false
+  content_translation_source:
+    value: und
+  content_translation_outdated:
+    value: '0'
+  content_translation_uid:
+    target_id: '95680'
+  content_translation_status:
+    value: '1'
+  content_translation_created:
+    value: '1559201437'
+74:
+  id:
+    value: '74'
+  uuid:
+    value: bd3e0faf-c14c-4e65-b4a2-c8b7c97dd6e4
+  langcode:
+    value: en
+  bundle:
+    value: menu_link_content
+  enabled:
+    value: '0'
+  title:
+    value: 'Browse Products (Market Wise)'
+  description: false
+  menu_name:
+    value: backend-user-top-menu
+  link:
+    uri: 'internal:/admin/structure/entityqueue/browse_products_market_wise/list'
+    title: ''
+    options:
+      menu_icon:
+        fid: false
+  external:
+    value: '0'
+  rediscover:
+    value: '1'
+  weight:
+    value: '-51'
+  expanded:
+    value: '0'
+  parent:
+    value: 'menu_link_content:44b77a58-2d48-4cac-8ddb-ada3b4091367'
+  changed:
+    value: '1571909862'
+  default_langcode:
+    value: '1'
+  trlx_menu_content: false
+  content_translation_source:
+    value: und
+  content_translation_outdated:
+    value: '0'
+  content_translation_uid:
+    target_id: '95680'
+  content_translation_status:
+    value: '1'
+  content_translation_created:
+    value: '1559201356'
+49:
+  id:
+    value: '49'
+  uuid:
+    value: bdcb6315-9bb2-462c-a315-dc6e15c0d772
+  langcode:
+    value: en
+  bundle:
+    value: menu_link_content
+  enabled:
+    value: '1'
+  title:
+    value: 'Level Interactive Content'
+  description: false
+  menu_name:
+    value: backend-user-top-menu
+  link:
+    uri: 'internal:/node/add/level_interactive_content'
+    title: ''
+    options:
+      menu_icon:
+        fid: false
+  external:
+    value: '0'
+  rediscover:
+    value: '1'
+  weight:
+    value: '-50'
+  expanded:
+    value: '0'
+  parent:
+    value: 'menu_link_content:2a8683d0-5a22-493b-a476-95e522aa998c'
+  changed:
+    value: '1571905068'
+  default_langcode:
+    value: '1'
+  trlx_menu_content: false
+  content_translation_source:
+    value: und
+  content_translation_outdated:
+    value: '0'
+  content_translation_uid:
+    target_id: '95680'
+  content_translation_status:
+    value: '1'
+  content_translation_created:
+    value: '1559200174'
+72:
+  id:
+    value: '72'
+  uuid:
+    value: bfaeb7f0-715a-485a-84f3-7f6c4a324707
+  langcode:
+    value: en
+  bundle:
+    value: menu_link_content
+  enabled:
+    value: '0'
+  title:
+    value: 'Global Spotlight'
+  description: false
+  menu_name:
+    value: backend-user-top-menu
+  link:
+    uri: 'internal:/admin/structure/entityqueue/spotlight/spotlight'
+    title: ''
+    options:
+      menu_icon:
+        fid: false
+  external:
+    value: '0'
+  rediscover:
+    value: '1'
+  weight:
+    value: '-45'
+  expanded:
+    value: '0'
+  parent:
+    value: 'menu_link_content:44b77a58-2d48-4cac-8ddb-ada3b4091367'
+  changed:
+    value: '1571909862'
+  default_langcode:
+    value: '1'
+  trlx_menu_content: false
+  content_translation_source:
+    value: und
+  content_translation_outdated:
+    value: '0'
+  content_translation_uid:
+    target_id: '95680'
+  content_translation_status:
+    value: '1'
+  content_translation_created:
+    value: '1559201300'
+73:
+  id:
+    value: '73'
+  uuid:
+    value: c486d5ee-fd55-4194-8621-b5369a69c2f1
+  langcode:
+    value: en
+  bundle:
+    value: menu_link_content
+  enabled:
+    value: '0'
+  title:
+    value: 'Global Stories'
+  description: false
+  menu_name:
+    value: backend-user-top-menu
+  link:
+    uri: 'internal:/admin/structure/entityqueue/stories/stories'
+    title: ''
+    options:
+      menu_icon:
+        fid: false
+  external:
+    value: '0'
+  rediscover:
+    value: '1'
+  weight:
+    value: '-47'
+  expanded:
+    value: '0'
+  parent:
+    value: 'menu_link_content:44b77a58-2d48-4cac-8ddb-ada3b4091367'
+  changed:
+    value: '1571909862'
+  default_langcode:
+    value: '1'
+  trlx_menu_content: false
+  content_translation_source:
+    value: und
+  content_translation_outdated:
+    value: '0'
+  content_translation_uid:
+    target_id: '95680'
+  content_translation_status:
+    value: '1'
+  content_translation_created:
+    value: '1559201328'
+55:
+  id:
+    value: '55'
+  uuid:
+    value: cb254bb2-6871-42eb-bc5c-fb836d618bb1
+  langcode:
+    value: en
+  bundle:
+    value: menu_link_content
+  enabled:
+    value: '0'
+  title:
+    value: 'Welcome Message'
+  description: false
+  menu_name:
+    value: backend-user-top-menu
+  link:
+    uri: 'internal:/node/add/welcome_message'
+    title: ''
+    options:
+      menu_icon:
+        fid: false
+  external:
+    value: '0'
+  rediscover:
+    value: '1'
+  weight:
+    value: '-43'
+  expanded:
+    value: '0'
+  parent:
+    value: 'menu_link_content:2a8683d0-5a22-493b-a476-95e522aa998c'
+  changed:
+    value: '1571905068'
+  default_langcode:
+    value: '1'
+  trlx_menu_content: false
+  content_translation_source:
+    value: und
+  content_translation_outdated:
+    value: '0'
+  content_translation_uid:
+    target_id: '95680'
+  content_translation_status:
+    value: '1'
+  content_translation_created:
+    value: '1559200335'
+76:
+  id:
+    value: '76'
+  uuid:
+    value: d0cf2795-18ce-40aa-849d-e370d005b4a9
+  langcode:
+    value: en
+  bundle:
+    value: menu_link_content
+  enabled:
+    value: '0'
+  title:
+    value: 'Spotlight (Market Wise)'
+  description: false
+  menu_name:
+    value: backend-user-top-menu
+  link:
+    uri: 'internal:/admin/structure/entityqueue/spotlight_market_wise/list'
+    title: ''
+    options:
+      menu_icon:
+        fid: false
+  external:
+    value: '0'
+  rediscover:
+    value: '1'
+  weight:
+    value: '-49'
+  expanded:
+    value: '0'
+  parent:
+    value: 'menu_link_content:44b77a58-2d48-4cac-8ddb-ada3b4091367'
+  changed:
+    value: '1571909862'
+  default_langcode:
+    value: '1'
+  trlx_menu_content: false
+  content_translation_source:
+    value: und
+  content_translation_outdated:
+    value: '0'
+  content_translation_uid:
+    target_id: '95680'
+  content_translation_status:
+    value: '1'
+  content_translation_created:
+    value: '1559201407'
+41:
+  id:
+    value: '41'
+  uuid:
+    value: d1e94968-a761-4dee-91c1-0db739659c5d
+  langcode:
+    value: en
+  bundle:
+    value: menu_link_content
+  enabled:
+    value: '1'
+  title:
+    value: Logout
+  description: false
+  menu_name:
+    value: backend-user-top-menu
+  link:
+    uri: 'internal:/user/logout'
+    title: ''
+    options:
+      menu_icon:
+        fid: false
+  external:
+    value: '0'
+  rediscover:
+    value: '1'
+  weight:
+    value: '-42'
+  expanded:
+    value: '0'
+  parent: false
+  changed:
+    value: '1571909071'
+  default_langcode:
+    value: '1'
+  trlx_menu_content: false
+  content_translation_source:
+    value: und
+  content_translation_outdated:
+    value: '0'
+  content_translation_uid:
+    target_id: '95680'
+  content_translation_status:
+    value: '1'
+  content_translation_created:
+    value: '1559199214'
+60:
+  id:
+    value: '60'
+  uuid:
+    value: d3ad1199-f7b6-4e5d-bb3d-e463d7d6100c
+  langcode:
+    value: en
+  bundle:
+    value: menu_link_content
+  enabled:
+    value: '1'
+  title:
+    value: 'Add Learning Level'
+  description: false
+  menu_name:
+    value: backend-user-top-menu
+  link:
+    uri: 'internal:/admin/structure/taxonomy/manage/learning_category/add'
+    title: ''
+    options:
+      menu_icon:
+        fid: false
+  external:
+    value: '0'
+  rediscover:
+    value: '1'
+  weight:
+    value: '-50'
+  expanded:
+    value: '0'
+  parent:
+    value: 'menu_link_content:b9b5a2ce-f5ef-4b86-81a8-3ca75246e8af'
+  changed:
+    value: '1571917201'
+  default_langcode:
+    value: '1'
+  trlx_menu_content: false
+  content_translation_source:
+    value: und
+  content_translation_outdated:
+    value: '0'
+  content_translation_uid:
+    target_id: '95680'
+  content_translation_status:
+    value: '1'
+  content_translation_created:
+    value: '1559200777'
+50:
+  id:
+    value: '50'
+  uuid:
+    value: d3d54be1-58b2-4967-b692-ec85453f8aec
+  langcode:
+    value: en
+  bundle:
+    value: menu_link_content
+  enabled:
+    value: '1'
+  title:
+    value: 'Product Detail'
+  description: false
+  menu_name:
+    value: backend-user-top-menu
+  link:
+    uri: 'internal:/node/add/product_detail'
+    title: ''
+    options:
+      menu_icon:
+        fid: false
+  external:
+    value: '0'
+  rediscover:
+    value: '1'
+  weight:
+    value: '-48'
+  expanded:
+    value: '0'
+  parent:
+    value: 'menu_link_content:2a8683d0-5a22-493b-a476-95e522aa998c'
+  changed:
+    value: '1571905068'
+  default_langcode:
+    value: '1'
+  trlx_menu_content: false
+  content_translation_source:
+    value: und
+  content_translation_outdated:
+    value: '0'
+  content_translation_uid:
+    target_id: '95680'
+  content_translation_status:
+    value: '1'
+  content_translation_created:
+    value: '1559200203'
+105:
+  id:
+    value: '105'
+  uuid:
+    value: e0553789-8388-4306-856a-37349271b33b
+  langcode:
+    value: en
+  bundle:
+    value: menu_link_content
+  enabled:
+    value: '1'
+  title:
+    value: 'Manage Stamps'
+  description: false
+  menu_name:
+    value: backend-user-top-menu
+  link:
+    uri: 'internal:/admin/structure/taxonomy/manage/badges/overview'
+    title: ''
+    options:
+      menu_icon:
+        fid: false
+  external:
+    value: '0'
+  rediscover:
+    value: '1'
+  weight:
+    value: '-50'
+  expanded:
+    value: '0'
+  parent:
+    value: 'menu_link_content:4e827f4b-a6d4-4145-ac81-ecc5841ec5a3'
+  changed:
+    value: '1571909862'
+  default_langcode:
+    value: '1'
+  trlx_menu_content: false
+  content_translation_source:
+    value: und
+  content_translation_outdated:
+    value: '0'
+  content_translation_uid:
+    target_id: '1'
+  content_translation_status:
+    value: '1'
+  content_translation_created:
+    value: '1571908538'
+98:
+  id:
+    value: '98'
+  uuid:
+    value: eff5f60d-0d07-43cb-957e-5d8663a8cf6c
+  langcode:
+    value: en
+  bundle:
+    value: menu_link_content
+  enabled:
+    value: '1'
+  title:
+    value: 'Add Consumer Category'
+  description: false
+  menu_name:
+    value: backend-user-top-menu
+  link:
+    uri: 'internal:/admin/structure/taxonomy/manage/consumer_category/add'
+    title: ''
+    options:
+      menu_icon:
+        fid: false
+  external:
+    value: '0'
+  rediscover:
+    value: '1'
+  weight:
+    value: '-50'
+  expanded:
+    value: '0'
+  parent:
+    value: 'menu_link_content:7ee1f6fb-34c8-4980-89a1-bf5bb646e429'
+  changed:
+    value: '1571399954'
+  default_langcode:
+    value: '1'
+  trlx_menu_content: false
+  content_translation_source:
+    value: und
+  content_translation_outdated:
+    value: '0'
+  content_translation_uid:
+    target_id: '1'
+  content_translation_status:
+    value: '1'
+  content_translation_created:
+    value: '1571399875'
+81:
+  id:
+    value: '81'
+  uuid:
+    value: f48327d7-4803-4bc9-9646-cd4cecdaafff
+  langcode:
+    value: en
+  bundle:
+    value: menu_link_content
+  enabled:
+    value: '0'
+  title:
+    value: Reports
+  description: false
+  menu_name:
+    value: backend-user-top-menu
+  link:
+    uri: 'internal:/admin/report/learner-summary-report'
+    title: ''
+    options:
+      menu_icon:
+        fid: false
+  external:
+    value: '0'
+  rediscover:
+    value: '1'
+  weight:
+    value: '-43'
+  expanded:
+    value: '0'
+  parent: false
+  changed:
+    value: '1571909862'
+  default_langcode:
+    value: '1'
+  trlx_menu_content: false
+  content_translation_source:
+    value: und
+  content_translation_outdated:
+    value: '0'
+  content_translation_uid:
+    target_id: '95680'
+  content_translation_status:
+    value: '1'
+  content_translation_created:
+    value: '1559202281'
+39:
+  id:
+    value: '39'
+  uuid:
+    value: f7af230e-718b-401f-b63c-d3043858d949
+  langcode:
+    value: en
+  bundle:
+    value: menu_link_content
+  enabled:
+    value: '1'
+  title:
+    value: 'Home Page Order'
+  description: false
+  menu_name:
+    value: backend-user-top-menu
+  link:
+    uri: 'internal:/entityqueue/homepage-content'
+    title: ''
+    options:
+      menu_icon:
+        fid: false
+  external:
+    value: '0'
+  rediscover:
+    value: '1'
+  weight:
+    value: '-51'
+  expanded:
+    value: '0'
+  parent: false
+  changed:
+    value: '1571909071'
+  default_langcode:
+    value: '1'
+  trlx_menu_content: false
+  content_translation_source:
+    value: und
+  content_translation_outdated:
+    value: '0'
+  content_translation_uid:
+    target_id: '95680'
+  content_translation_status:
+    value: '1'
+  content_translation_created:
+    value: '1559199160'
+52:
+  id:
+    value: '52'
+  uuid:
+    value: fe7b966a-7f29-4773-8c85-d14e199cd0fa
+  langcode:
+    value: en
+  bundle:
+    value: menu_link_content
+  enabled:
+    value: '1'
+  title:
+    value: Stories
+  description: false
+  menu_name:
+    value: backend-user-top-menu
+  link:
+    uri: 'internal:/node/add/stories'
+    title: ''
+    options:
+      menu_icon:
+        fid: false
+  external:
+    value: '0'
+  rediscover:
+    value: '1'
+  weight:
+    value: '-45'
+  expanded:
+    value: '0'
+  parent:
+    value: 'menu_link_content:2a8683d0-5a22-493b-a476-95e522aa998c'
+  changed:
+    value: '1571905068'
+  default_langcode:
+    value: '1'
+  trlx_menu_content: false
+  content_translation_source:
+    value: und
+  content_translation_outdated:
+    value: '0'
+  content_translation_uid:
+    target_id: '95680'
+  content_translation_status:
+    value: '1'
+  content_translation_created:
+    value: '1559200244'
+108:
+  id:
+    value: '108'
+  uuid:
+    value: 038bcef0-12bb-4a98-b99d-c2cbdd350efc
+  langcode:
+    value: en
+  bundle:
+    value: menu_link_content
+  enabled:
+    value: '1'
+  title:
+    value: 'Home Page Order'
+  description: false
+  menu_name:
+    value: backend-user-top-menu-for-m
+  link:
+    uri: 'internal:/entityqueue/homepage-content'
+    title: ''
+    options:
+      menu_icon:
+        fid: false
+  external:
+    value: '0'
+  rediscover:
+    value: '1'
+  weight:
+    value: '-49'
+  expanded:
+    value: '0'
+  parent: false
+  changed:
+    value: '1571914940'
+  default_langcode:
+    value: '1'
+  trlx_menu_content: false
+  content_translation_source:
+    value: und
+  content_translation_outdated:
+    value: '0'
+  content_translation_uid:
+    target_id: '1'
+  content_translation_status:
+    value: '1'
+  content_translation_created:
+    value: '1571912694'
+113:
+  id:
+    value: '113'
+  uuid:
+    value: 07de22e4-065d-4ed3-916e-c48efbd04006
+  langcode:
+    value: en
+  bundle:
+    value: menu_link_content
+  enabled:
+    value: '1'
+  title:
+    value: Stories
+  description: false
+  menu_name:
+    value: backend-user-top-menu-for-m
+  link:
+    uri: 'internal:/node/add/stories'
+    title: ''
+    options:
+      menu_icon:
+        fid: false
+  external:
+    value: '0'
+  rediscover:
+    value: '1'
+  weight:
+    value: '0'
+  expanded:
+    value: '0'
+  parent:
+    value: 'menu_link_content:5990bddf-02e2-49d6-af7f-b1187c6a8263'
+  changed:
+    value: '1571915138'
+  default_langcode:
+    value: '1'
+  trlx_menu_content: false
+  content_translation_source:
+    value: und
+  content_translation_outdated:
+    value: '0'
+  content_translation_uid:
+    target_id: '1'
+  content_translation_status:
+    value: '1'
+  content_translation_created:
+    value: '1571915138'
+118:
+  id:
+    value: '118'
+  uuid:
+    value: 10dc0a9d-43bf-4519-92ae-3da04731d37c
+  langcode:
+    value: en
+  bundle:
+    value: menu_link_content
+  enabled:
+    value: '1'
+  title:
+    value: 'Add Stamps'
+  description: false
+  menu_name:
+    value: backend-user-top-menu-for-m
+  link:
+    uri: 'internal:/admin/structure/taxonomy/manage/badges/add'
+    title: ''
+    options:
+      menu_icon:
+        fid: false
+  external:
+    value: '0'
+  rediscover:
+    value: '1'
+  weight:
+    value: '0'
+  expanded:
+    value: '0'
+  parent:
+    value: 'menu_link_content:b27e0d1c-8e47-41c1-a94f-c498c93e34cf'
+  changed:
+    value: '1571917475'
+  default_langcode:
+    value: '1'
+  trlx_menu_content: false
+  content_translation_source:
+    value: und
+  content_translation_outdated:
+    value: '0'
+  content_translation_uid:
+    target_id: '1'
+  content_translation_status:
+    value: '1'
+  content_translation_created:
+    value: '1571917475'
+119:
+  id:
+    value: '119'
+  uuid:
+    value: 11ad2a66-ead6-45bb-93fb-dd71cd025bf1
+  langcode:
+    value: en
+  bundle:
+    value: menu_link_content
+  enabled:
+    value: '1'
+  title:
+    value: 'Manage Listing Images'
+  description: false
+  menu_name:
+    value: backend-user-top-menu-for-m
+  link:
+    uri: 'internal:/admin/structure/taxonomy/manage/listing_image/overview'
+    title: ''
+    options:
+      menu_icon:
+        fid: false
+  external:
+    value: '0'
+  rediscover:
+    value: '1'
+  weight:
+    value: '-48'
+  expanded:
+    value: '0'
+  parent:
+    value: 'menu_link_content:2a219b8e-b15e-494e-99e9-b4359eea2f7b'
+  changed:
+    value: '1571917580'
+  default_langcode:
+    value: '1'
+  trlx_menu_content: false
+  content_translation_source:
+    value: und
+  content_translation_outdated:
+    value: '0'
+  content_translation_uid:
+    target_id: '1'
+  content_translation_status:
+    value: '1'
+  content_translation_created:
+    value: '1571917534'
+120:
+  id:
+    value: '120'
+  uuid:
+    value: 1417102c-b6f0-424e-aa42-c0a6b35487cb
+  langcode:
+    value: en
+  bundle:
+    value: menu_link_content
+  enabled:
+    value: '1'
+  title:
+    value: 'Add Listing Images'
+  description: false
+  menu_name:
+    value: backend-user-top-menu-for-m
+  link:
+    uri: 'internal:/admin/structure/taxonomy/manage/listing_image/add'
+    title: ''
+    options:
+      menu_icon:
+        fid: false
+  external:
+    value: '0'
+  rediscover:
+    value: '1'
+  weight:
+    value: '0'
+  expanded:
+    value: '0'
+  parent:
+    value: 'menu_link_content:11ad2a66-ead6-45bb-93fb-dd71cd025bf1'
+  changed:
+    value: '1571917625'
+  default_langcode:
+    value: '1'
+  trlx_menu_content: false
+  content_translation_source:
+    value: und
+  content_translation_outdated:
+    value: '0'
+  content_translation_uid:
+    target_id: '1'
+  content_translation_status:
+    value: '1'
+  content_translation_created:
+    value: '1571917625'
+121:
+  id:
+    value: '121'
+  uuid:
+    value: 1adf402d-423f-4e87-90b1-3b808339a1e0
+  langcode:
+    value: en
+  bundle:
+    value: menu_link_content
+  enabled:
+    value: '1'
+  title:
+    value: 'Manage Consumer Category'
+  description: false
+  menu_name:
+    value: backend-user-top-menu-for-m
+  link:
+    uri: 'internal:/admin/structure/taxonomy/manage/consumer_category/overview'
+    title: ''
+    options:
+      menu_icon:
+        fid: false
+  external:
+    value: '0'
+  rediscover:
+    value: '1'
+  weight:
+    value: '0'
+  expanded:
+    value: '0'
+  parent:
+    value: 'menu_link_content:2a219b8e-b15e-494e-99e9-b4359eea2f7b'
+  changed:
+    value: '1571917699'
+  default_langcode:
+    value: '1'
+  trlx_menu_content: false
+  content_translation_source:
+    value: und
+  content_translation_outdated:
+    value: '0'
+  content_translation_uid:
+    target_id: '1'
+  content_translation_status:
+    value: '1'
+  content_translation_created:
+    value: '1571917699'
+116:
+  id:
+    value: '116'
+  uuid:
+    value: 28824374-6b36-4f96-aba1-88f9ab1e0fd6
+  langcode:
+    value: en
+  bundle:
+    value: menu_link_content
+  enabled:
+    value: '1'
+  title:
+    value: 'Add Learning Level'
+  description: false
+  menu_name:
+    value: backend-user-top-menu-for-m
+  link:
+    uri: 'internal:/admin/structure/taxonomy/manage/learning_category/add'
+    title: ''
+    options:
+      menu_icon:
+        fid: false
+  external:
+    value: '0'
+  rediscover:
+    value: '1'
+  weight:
+    value: '0'
+  expanded:
+    value: '0'
+  parent:
+    value: 'menu_link_content:e9f176d0-f750-470f-93cb-81532851165c'
+  changed:
+    value: '1571915440'
+  default_langcode:
+    value: '1'
+  trlx_menu_content: false
+  content_translation_source:
+    value: und
+  content_translation_outdated:
+    value: '0'
+  content_translation_uid:
+    target_id: '1'
+  content_translation_status:
+    value: '1'
+  content_translation_created:
+    value: '1571915440'
+114:
+  id:
+    value: '114'
+  uuid:
+    value: 2a219b8e-b15e-494e-99e9-b4359eea2f7b
+  langcode:
+    value: en
+  bundle:
+    value: menu_link_content
+  enabled:
+    value: '1'
+  title:
+    value: 'Manage Content Category'
+  description: false
+  menu_name:
+    value: backend-user-top-menu-for-m
+  link:
+    uri: 'route:<nolink>'
+    title: ''
+    options:
+      menu_icon:
+        fid: false
+  external:
+    value: '0'
+  rediscover:
+    value: '0'
+  weight:
+    value: '0'
+  expanded:
+    value: '0'
+  parent: false
+  changed:
+    value: '1571915246'
+  default_langcode:
+    value: '1'
+  trlx_menu_content: false
+  content_translation_source:
+    value: und
+  content_translation_outdated:
+    value: '0'
+  content_translation_uid:
+    target_id: '1'
+  content_translation_status:
+    value: '1'
+  content_translation_created:
+    value: '1571915246'
+109:
+  id:
+    value: '109'
+  uuid:
+    value: 44ae698f-438c-494f-a6a5-35486540b817
+  langcode:
+    value: en
+  bundle:
+    value: menu_link_content
+  enabled:
+    value: '1'
+  title:
+    value: 'Insider''s Corner'
+  description: false
+  menu_name:
+    value: backend-user-top-menu-for-m
+  link:
+    uri: 'internal:/admin/structure/entityqueue/insider_corner_hompage/insider_corner_hompage'
+    title: ''
+    options:
+      menu_icon:
+        fid: false
+  external:
+    value: '0'
+  rediscover:
+    value: '1'
+  weight:
+    value: '0'
+  expanded:
+    value: '0'
+  parent:
+    value: 'menu_link_content:038bcef0-12bb-4a98-b99d-c2cbdd350efc'
+  changed:
+    value: '1571917097'
+  default_langcode:
+    value: '1'
+  trlx_menu_content: false
+  content_translation_source:
+    value: und
+  content_translation_outdated:
+    value: '0'
+  content_translation_uid:
+    target_id: '1'
+  content_translation_status:
+    value: '1'
+  content_translation_created:
+    value: '1571912726'
+111:
+  id:
+    value: '111'
+  uuid:
+    value: 5990bddf-02e2-49d6-af7f-b1187c6a8263
+  langcode:
+    value: en
+  bundle:
+    value: menu_link_content
+  enabled:
+    value: '1'
+  title:
+    value: 'Add Content'
+  description: false
+  menu_name:
+    value: backend-user-top-menu-for-m
+  link:
+    uri: 'route:<nolink>'
+    title: ''
+    options:
+      menu_icon:
+        fid: false
+  external:
+    value: '0'
+  rediscover:
+    value: '0'
+  weight:
+    value: '-48'
+  expanded:
+    value: '0'
+  parent: false
+  changed:
+    value: '1571914940'
+  default_langcode:
+    value: '1'
+  trlx_menu_content: false
+  content_translation_source:
+    value: und
+  content_translation_outdated:
+    value: '0'
+  content_translation_uid:
+    target_id: '1'
+  content_translation_status:
+    value: '1'
+  content_translation_created:
+    value: '1571912882'
+123:
+  id:
+    value: '123'
+  uuid:
+    value: 771e0412-6cf6-4779-b067-dcc16c54e47b
+  langcode:
+    value: en
+  bundle:
+    value: menu_link_content
+  enabled:
+    value: '1'
+  title:
+    value: 'Static Translations'
+  description: false
+  menu_name:
+    value: backend-user-top-menu-for-m
+  link:
+    uri: 'internal:/admin/structure/taxonomy/manage/static_translation/overview'
+    title: ''
+    options:
+      menu_icon:
+        fid: false
+  external:
+    value: '0'
+  rediscover:
+    value: '1'
+  weight:
+    value: '0'
+  expanded:
+    value: '0'
+  parent: false
+  changed:
+    value: '1571917945'
+  default_langcode:
+    value: '1'
+  trlx_menu_content: false
+  content_translation_source:
+    value: und
+  content_translation_outdated:
+    value: '0'
+  content_translation_uid:
+    target_id: '1'
+  content_translation_status:
+    value: '1'
+  content_translation_created:
+    value: '1571917945'
+107:
+  id:
+    value: '107'
+  uuid:
+    value: ab727800-5176-4063-8f2b-8062bbb21bd1
+  langcode:
+    value: en
+  bundle:
+    value: menu_link_content
+  enabled:
+    value: '1'
+  title:
+    value: 'Content Dashboard'
+  description: false
+  menu_name:
+    value: backend-user-top-menu-for-m
+  link:
+    uri: 'internal:/dashboard/published'
+    title: ''
+    options:
+      menu_icon:
+        fid: false
+  external:
+    value: '0'
+  rediscover:
+    value: '1'
+  weight:
+    value: '-50'
+  expanded:
+    value: '0'
+  parent: false
+  changed:
+    value: '1571914940'
+  default_langcode:
+    value: '1'
+  trlx_menu_content: false
+  content_translation_source:
+    value: und
+  content_translation_outdated:
+    value: '0'
+  content_translation_uid:
+    target_id: '1'
+  content_translation_status:
+    value: '1'
+  content_translation_created:
+    value: '1571912444'
+122:
+  id:
+    value: '122'
+  uuid:
+    value: b158ca11-8105-4508-a586-0df3735efc27
+  langcode:
+    value: en
+  bundle:
+    value: menu_link_content
+  enabled:
+    value: '1'
+  title:
+    value: 'Add Consumer Category'
+  description: false
+  menu_name:
+    value: backend-user-top-menu-for-m
+  link:
+    uri: 'internal:/admin/structure/taxonomy/manage/consumer_category/add'
+    title: ''
+    options:
+      menu_icon:
+        fid: false
+  external:
+    value: '0'
+  rediscover:
+    value: '1'
+  weight:
+    value: '0'
+  expanded:
+    value: '0'
+  parent:
+    value: 'menu_link_content:1adf402d-423f-4e87-90b1-3b808339a1e0'
+  changed:
+    value: '1571917819'
+  default_langcode:
+    value: '1'
+  trlx_menu_content: false
+  content_translation_source:
+    value: und
+  content_translation_outdated:
+    value: '0'
+  content_translation_uid:
+    target_id: '1'
+  content_translation_status:
+    value: '1'
+  content_translation_created:
+    value: '1571917819'
+117:
+  id:
+    value: '117'
+  uuid:
+    value: b27e0d1c-8e47-41c1-a94f-c498c93e34cf
+  langcode:
+    value: en
+  bundle:
+    value: menu_link_content
+  enabled:
+    value: '1'
+  title:
+    value: 'Manage Stamps'
+  description: false
+  menu_name:
+    value: backend-user-top-menu-for-m
+  link:
+    uri: 'internal:/admin/structure/taxonomy/manage/badges/overview'
+    title: ''
+    options:
+      menu_icon:
+        fid: false
+  external:
+    value: '0'
+  rediscover:
+    value: '1'
+  weight:
+    value: '-49'
+  expanded:
+    value: '0'
+  parent:
+    value: 'menu_link_content:2a219b8e-b15e-494e-99e9-b4359eea2f7b'
+  changed:
+    value: '1571917580'
+  default_langcode:
+    value: '1'
+  trlx_menu_content: false
+  content_translation_source:
+    value: und
+  content_translation_outdated:
+    value: '0'
+  content_translation_uid:
+    target_id: '1'
+  content_translation_status:
+    value: '1'
+  content_translation_created:
+    value: '1571917423'
+110:
+  id:
+    value: '110'
+  uuid:
+    value: e72cf434-22fe-48fb-bc43-86755d23082b
+  langcode:
+    value: en
+  bundle:
+    value: menu_link_content
+  enabled:
+    value: '1'
+  title:
+    value: Spotlight
+  description: false
+  menu_name:
+    value: backend-user-top-menu-for-m
+  link:
+    uri: 'internal:/admin/structure/entityqueue/spotlight_section/spotlight_section'
+    title: ''
+    options:
+      menu_icon:
+        fid: false
+  external:
+    value: '0'
+  rediscover:
+    value: '1'
+  weight:
+    value: '0'
+  expanded:
+    value: '0'
+  parent:
+    value: 'menu_link_content:038bcef0-12bb-4a98-b99d-c2cbdd350efc'
+  changed:
+    value: '1571912773'
+  default_langcode:
+    value: '1'
+  trlx_menu_content: false
+  content_translation_source:
+    value: und
+  content_translation_outdated:
+    value: '0'
+  content_translation_uid:
+    target_id: '1'
+  content_translation_status:
+    value: '1'
+  content_translation_created:
+    value: '1571912773'
+115:
+  id:
+    value: '115'
+  uuid:
+    value: e9f176d0-f750-470f-93cb-81532851165c
+  langcode:
+    value: en
+  bundle:
+    value: menu_link_content
+  enabled:
+    value: '1'
+  title:
+    value: 'Manage Learning Level'
+  description: false
+  menu_name:
+    value: backend-user-top-menu-for-m
+  link:
+    uri: 'internal:/admin/structure/taxonomy/manage/learning_category/overview'
+    title: ''
+    options:
+      menu_icon:
+        fid: false
+  external:
+    value: '0'
+  rediscover:
+    value: '1'
+  weight:
+    value: '-50'
+  expanded:
+    value: '0'
+  parent:
+    value: 'menu_link_content:2a219b8e-b15e-494e-99e9-b4359eea2f7b'
+  changed:
+    value: '1571917580'
+  default_langcode:
+    value: '1'
+  trlx_menu_content: false
+  content_translation_source:
+    value: und
+  content_translation_outdated:
+    value: '0'
+  content_translation_uid:
+    target_id: '1'
+  content_translation_status:
+    value: '1'
+  content_translation_created:
+    value: '1571915398'
+112:
+  id:
+    value: '112'
+  uuid:
+    value: f00e9849-d5ee-48e3-abdf-a31db3752229
+  langcode:
+    value: en
+  bundle:
+    value: menu_link_content
+  enabled:
+    value: '1'
+  title:
+    value: 'Level Interactive Content'
+  description: false
+  menu_name:
+    value: backend-user-top-menu-for-m
+  link:
+    uri: 'internal:/node/add/level_interactive_content'
+    title: ''
+    options:
+      menu_icon:
+        fid: false
+  external:
+    value: '0'
+  rediscover:
+    value: '1'
+  weight:
+    value: '0'
+  expanded:
+    value: '0'
+  parent:
+    value: 'menu_link_content:5990bddf-02e2-49d6-af7f-b1187c6a8263'
+  changed:
+    value: '1571915078'
+  default_langcode:
+    value: '1'
+  trlx_menu_content: false
+  content_translation_source:
+    value: und
+  content_translation_outdated:
+    value: '0'
+  content_translation_uid:
+    target_id: '1'
+  content_translation_status:
+    value: '1'
+  content_translation_created:
+    value: '1571915078'

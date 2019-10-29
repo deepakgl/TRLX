@@ -200,7 +200,7 @@ class NotificationConfigurationForm extends ConfigFormBase {
     $commonUtility = new CommonUtility();
     // Load module config for editing.
     $config = $this->configFactory->getEditable(self::NOTIFICATION_SETTINGS);
-    $commonUtility->getNotificationTranslation($config->get('stamps_heading'), 'en');
+    // $commonUtility->getNotificationTranslation($config->get('stamps_heading'), 'en');
     // Iterate through form fields.
     foreach ($form_state->getValues() as $key => $value) {
       // Set config value.

@@ -1,6 +1,9 @@
 <?php
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Drupal\Core\Url;
+use Drupal\elx_user\Utility\UserUtility;
+use Drupal\views\ViewExecutable;
+
 /**
  * @file
  * Dashboard module file.
@@ -29,3 +32,58 @@ function trlx_dashboard_user_login($account) {
     return;
   }
 }
+
+/**
+ * Implements hook_views_post_render().
+ */
+function trlx_dashboard_views_post_render(ViewExecutable $view) {
+  if ($view->id() == 'dashboard') {
+    $roles = getUserRoles(\Drupal::currentUser()->id());
+    // Set the view title.
+    $view->setTitle('Welcome GA User !!');
+    if ($roles) {
+      $view->setTitle('Welcome MA User !!');
+    }
+  }
+}
+
+/**
+   * Fetch user roles.
+   *
+   * @param int $uid
+   *   User uid.
+   * @param string $key
+   *   Key name.
+   * @param array $user_role
+   *   Role of users.
+   *
+   * @return array
+   *   User roles.
+   */
+function getUserRoles($uid, $key = NULL, array $user_role = []) {
+    $query = db_select('user__roles', 'ur')
+      ->distinct()
+      ->fields('ur', ['roles_target_id'])
+      ->condition('ur.entity_id', $uid, '=')
+      ->execute()->fetchAll();
+    $roles = array_map(function ($e) {
+      return is_object($e) ? $e->roles_target_id : $e['roles_target_id'];
+    }, $query);
+    //print_r($roles);exit;
+    if (empty($key)) {
+      if (in_array('administrator', $roles) || in_array('el_nyo_global_education_system_admin', $roles)) {
+        return FALSE;
+      }
+    }
+    elseif (!empty($user_role) && is_array($user_role)) {
+      foreach ($user_role as $key => $value) {
+        if (in_array($value, $roles)) {
+          return TRUE;
+        }
+      }
+
+      return FALSE;
+    }
+
+    return $roles;
+  }
