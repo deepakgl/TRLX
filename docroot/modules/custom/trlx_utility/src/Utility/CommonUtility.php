@@ -758,9 +758,7 @@ class CommonUtility {
       $query = $query->select('node__field_product_carousel', 'fpc');
       $query->join('paragraphs_item_field_data', 'pifd', 'pifd.id = fpc.field_product_carousel_target_id');
       $query->condition('fpc.entity_id', $nid);
-      $query->condition('fpc.langcode', $language);
       $query->condition('pifd.type', 'product_carousel');
-      $query->condition('pifd.langcode', $language);
       $query->condition('pifd.status', 1);
       $query->condition('pifd.parent_type', 'node');
       $query->fields('fpc', ['field_product_carousel_target_id']);
@@ -772,7 +770,6 @@ class CommonUtility {
 
     if (!empty($result)) {
       $entityUtility = new EntityUtility();
-
       // Fetch paragraph data from views.
       list($view_results) = $entityUtility->fetchApiResult(
         '',
