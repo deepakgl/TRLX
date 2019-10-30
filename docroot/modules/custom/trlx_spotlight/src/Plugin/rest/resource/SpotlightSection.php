@@ -129,7 +129,7 @@ class SpotlightSection extends ResourceBase {
             $result[$key]['nid'] = $value['nid'];
             $node = $this->getNodeData($value, $language);
             $result[$key]['displayTitle'] = $node->hasTranslation($language) ? $node->getTranslation($language)->get('field_display_title')->value : '';
-            $result[$key]['type'] = '';
+            $result[$key]['type'] = 'video';
             $result[$key]['body'] = $node->hasTranslation($language) ? $node->getTranslation($language)->get('field_tool_description')->value : '';
             $result[$key]['imageSmall'] = $value['imageSmall'];
             $result[$key]['imageMedium'] = $value['imageMedium'];
@@ -171,9 +171,6 @@ class SpotlightSection extends ResourceBase {
           $result[$key]['imageMedium'] = $value['imageMedium'];
           $result[$key]['imageLarge'] = $value['imageLarge'];
           $result[$key]['pointValue'] = $value['pointValue'];
-          break;
-          case 'video':
-          $result[$key]['type'] = 'video';
           break;
       }
     }
