@@ -112,7 +112,7 @@ class SpotlightSection extends ResourceBase {
           if (in_array($brand_id, $user_brands)) {
             $result[$key]['nid'] = $value['nid'];
             $result[$key]['displayTitle'] = $node->hasTranslation($language) ? $node->getTranslation($language)->get('field_display_title')->value : '';
-            $result[$key]['type'] = '';
+            $result[$key]['type'] = 'brandStory';
             $result[$key]['body'] = $node->hasTranslation($language) ? $node->getTranslation($language)->get('body')->value : '';
             $result[$key]['imageSmall'] = $value['imageSmall'];
             $result[$key]['imageMedium'] = $value['imageMedium'];
@@ -146,7 +146,7 @@ class SpotlightSection extends ResourceBase {
             $result[$key]['nid'] = $value['nid'];
             $node = $this->getNodeData($value, $language);
             $result[$key]['displayTitle'] = $node->hasTranslation($language) ? $node->getTranslation($language)->get('field_display_title')->value : '';
-            $result[$key]['type'] = '';
+            $result[$key]['type'] = 'factsheet';
             $result[$key]['body'] = $node->hasTranslation($language) ? $node->getTranslation($language)->get('body')->value : '';
             $result[$key]['imageSmall'] = $value['imageSmall'];
             $result[$key]['imageMedium'] = $value['imageMedium'];
@@ -158,7 +158,7 @@ class SpotlightSection extends ResourceBase {
           $result[$key]['nid'] = $value['nid'];
           $node = $this->getNodeData($value, $language);
           $result[$key]['displayTitle'] = $node->hasTranslation($language) ? $node->getTranslation($language)->get('field_headline')->value : '';
-          $result[$key]['type'] = '';
+          $result[$key]['type'] = 'learningLessons';
           $intro_text = $node->get('field_interactive_content')->referencedEntities();
           if (!empty($intro_text)) {
             $interactive_content = array_shift($intro_text);
@@ -171,6 +171,9 @@ class SpotlightSection extends ResourceBase {
           $result[$key]['imageMedium'] = $value['imageMedium'];
           $result[$key]['imageLarge'] = $value['imageLarge'];
           $result[$key]['pointValue'] = $value['pointValue'];
+          break;
+          case 'video':
+          $result[$key]['type'] = 'video';
           break;
       }
     }

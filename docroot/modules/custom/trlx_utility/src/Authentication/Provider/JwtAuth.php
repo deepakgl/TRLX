@@ -41,6 +41,10 @@ class JwtAuth implements AuthenticationProviderInterface {
       $jwt = $this->transcoder->decode($raw_jwt);
       $userId = $commonUtility->getUserRealId($jwt->uid);
       $jwt->userId = $userId;
+      if (isset($jwt->subRegion)) {
+        $subregions = $jwt->subRegion;
+        $jwt->subregion = $subregions;
+      }
     }
     catch (JwtDecodeException $e) {
       throw new AccessDeniedHttpException($e->getMessage(), $e);
