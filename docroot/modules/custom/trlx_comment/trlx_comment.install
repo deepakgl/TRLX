@@ -91,8 +91,9 @@ function trlx_comment_update_8601() {
     'langcode' => [
       'description' => "Stores language code of associated nid.",
       'type' => 'varchar',
-      'not null' => TRUE,
       'length' => 12,
+      'not null' => TRUE,
+      'default' => '',
     ],
   ];
 
