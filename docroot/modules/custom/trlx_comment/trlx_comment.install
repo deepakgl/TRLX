@@ -91,12 +91,17 @@ function trlx_comment_update_8601() {
     'langcode' => [
       'description' => "Stores language code of associated nid.",
       'type' => 'varchar',
-      'not null' => TRUE,
       'length' => 12,
+      'not null' => TRUE,
+      'default' => '',
     ],
   ];
 
   $schema = Database::getConnection()->schema();
-  $schema->addField('trlx_comment', 'comment_tags', $spec['comment_tags']);
-  $schema->addField('trlx_comment', 'langcode', $spec['langcode']);
+  if (!$schema->fieldExists('trlx_comment', 'comment_tags')) {
+    $schema->addField('trlx_comment', 'comment_tags', $spec['comment_tags']);
+  }
+  if (!$schema->fieldExists('trlx_comment', 'langcode')) {
+    $schema->addField('trlx_comment', 'langcode', $spec['langcode']);
+  }
 }
