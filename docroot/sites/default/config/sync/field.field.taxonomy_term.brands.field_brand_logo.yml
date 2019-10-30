@@ -12,7 +12,7 @@ field_name: field_brand_logo
 entity_type: taxonomy_term
 bundle: brands
 label: 'Brand Logo'
-description: 'Allowed file types:<b> png, jpg, jpeg.</b><br>Image Resolution:<b> 400X134px</b>'
+description: ''
 required: true
 translatable: false
 default_value: {  }
@@ -22,7 +22,7 @@ settings:
   file_extensions: 'png jpg jpeg'
   max_filesize: ''
   max_resolution: ''
-  min_resolution: ''
+  min_resolution: 400x134
   alt_field: false
   alt_field_required: true
   title_field: false

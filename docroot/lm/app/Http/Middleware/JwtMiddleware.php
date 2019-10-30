@@ -44,6 +44,10 @@ class JwtMiddleware {
       }
       try {
         $_userData = JWT::decode($token, env('JWT_SECRET'), ['HS256']);
+        if (isset($_userData->subRegion)) {
+          $subregions = $_userData->subRegion;
+          $_userData->subregion = $subregions;
+        }
         $query = DB::table('user_records as ur');
         $query->select('ur.id');
         $query->where('ur.uid', '=', $_userData->uid);
