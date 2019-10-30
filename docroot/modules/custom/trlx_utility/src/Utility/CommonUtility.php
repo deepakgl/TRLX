@@ -91,8 +91,8 @@ class CommonUtility {
    * @return \Symfony\Component\HttpFoundation\JsonResponse
    *   Json response.
    */
-  public function validateLanguageCode($langcode, $request) {
-    if (!$request->query->has('language') || empty($langcode)) {
+  public function validateLanguageCode($langcode, $request, $skipRequestCheck = FALSE) {
+    if ((!$request->query->has('language') || empty($langcode)) && empty($skipRequestCheck)) {
       return $this->errorResponse(t('Language parameter is required.'), Response::HTTP_BAD_REQUEST);
     }
 
@@ -925,6 +925,28 @@ class CommonUtility {
       $query->condition('ur.uid', $externalId);
       $result = $query->execute()->fetchColumn();
       return (int) $result;
+    }
+    catch (\Exception $e) {
+      return FALSE;
+    }
+  }
+
+  /**
+   * Get external id mapped with user real id.
+   *
+   * @param int $userId
+   *   User real id.
+   *
+   * @return string
+   *   External id.
+   */
+  public function getExternalUserId($userId) {
+    try {
+      $query = \Drupal::database()->select('user_records', 'ur');
+      $query->fields('ur', ['uid']);
+      $query->condition('ur.id', $userId);
+      $result = $query->execute()->fetchColumn();
+      return $result;
     }
     catch (\Exception $e) {
       return FALSE;

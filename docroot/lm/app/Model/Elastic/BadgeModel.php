@@ -103,7 +103,10 @@ class BadgeModel {
           $badge['status'] = FALSE;
         }
         $all_badges['results'][] = $badge;
+
       }
+      $key = array_column($all_badges['results'], 'status');
+      array_multisort($key, SORT_DESC, $all_badges['results']);
     }
 
     if ($url == 'myStamps') {
@@ -111,12 +114,12 @@ class BadgeModel {
       $i = 1;
       $keys = array_column($badge_data['badge_master'], 'tid');
       array_multisort($keys, SORT_ASC, $badge_data['badge_master']);
-      foreach ($badge_data['badge_master'] as $key => $value) {
+      foreach ($badge_data['user_badge'] as $key => $value) {
         if (isset($flag) && $flag == TRUE && $i <= 3) {
-          if (isset($badge_data['user_badge'][$key])) {
-            $image_style = Helper::buildImageResponse($result, $value['tid']);
-            $badge['tid'] = (int) $value['tid'];
-            $badge['title'] = $value['title'];
+          if (isset($badge_data['badge_master'][$key])) {
+            $image_style = Helper::buildImageResponse($result, $badge_data['badge_master'][$key]['tid']);
+            $badge['tid'] = (int) $badge_data['badge_master'][$key]['tid'];
+            $badge['title'] = $badge_data['badge_master'][$key]['title'];
             $badge['imageSmall'] = $image_style['imageSmall'];
             $badge['imageMedium'] = $image_style['imageMedium'];
             $badge['imageLarge'] = $image_style['imageLarge'];
