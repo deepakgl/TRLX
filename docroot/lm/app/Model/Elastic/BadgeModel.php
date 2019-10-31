@@ -181,13 +181,15 @@ class BadgeModel {
     else {
       $response['_source']['badge'] = [];
     }
+    $new_stamp = [];
     foreach ($badge as $key => $value) {
-      $response['_source']['badge'][$value] = 1;
+      $new_stamp[$value] = 1;
     }
+    $final_stamps = array_merge($new_stamp, $response['_source']['badge']);
     $params['body'] = [
       'doc' => [
         'badge' => [
-          $response['_source']['badge'],
+          $final_stamps,
         ],
       ],
       'doc_as_upsert' => TRUE,
