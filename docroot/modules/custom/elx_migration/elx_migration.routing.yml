@@ -1,6 +1,0 @@
-elx_migration.translated_content_migration:
-  path: 'admin/translated-content-migration'
-  defaults:
-    _form: '\Drupal\elx_migration\Form\TranslatedContentMigrationForm'
-  requirements:
-    _permission: 'access content'

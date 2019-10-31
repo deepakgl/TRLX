@@ -678,13 +678,12 @@ class CommonUtility {
       foreach ($brandTerms as $delta => $term) {
         // Convert Object to Array.
         $term = $term->toArray();
-
         if ($brandTid == $term['tid'][0]['value']) {
           $brandKey = $term['field_brand_key'][0]['value'];
         }
       }
     }
-    return (int) $brandKey;
+    return $brandKey;
   }
 
   /**

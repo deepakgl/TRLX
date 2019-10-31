@@ -39,7 +39,6 @@ module:
   elx_menu: 0
   elx_points_migration: 0
   elx_products: 0
-  elx_redis_purge: 0
   elx_reports: 0
   elx_search: 0
   elx_stories: 0

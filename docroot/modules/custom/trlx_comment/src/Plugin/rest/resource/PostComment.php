@@ -106,7 +106,7 @@ class PostComment extends ResourceBase {
       "parentId" => (int) $saved_data->pid,
       "commentId" => (int) $saved_data->id,
       "comment" => $saved_data->comment_body,
-      "commentTags" => Json::decode($saved_data->comment_tags, TRUE),
+      "tags" => !empty($saved_data->comment_tags) ? Json::decode($saved_data->comment_tags, TRUE) : [],
       "language" => $saved_data->langcode,
       "commentTime" => (int) $saved_data->comment_timestamp,
       "message" => $this->t("Comment successfully added."),

@@ -257,6 +257,7 @@ function trlx_utility_form_alter(&$form, FormStateInterface $form_state, $form_i
 
     case 'taxonomy_term_learning_category_form':
       $entity = $form_state->getFormObject()->getEntity();
+      $form['#validate'][] = 'learning_category_validate';
       $form['actions']['submit']['#submit'][] = 'trlx_utility_taxonomy_submit';
 
       // Create CommonUtility Object.
@@ -429,6 +430,17 @@ function set_section_based_point_value(array &$form, FormStateInterface $form_st
   }
   catch (\Exception $e) {
     return FALSE;
+  }
+}
+
+/**
+ * Custom validate handler for learning category validation(s).
+ */
+function learning_category_validate(array &$form, FormStateInterface $form_state) {
+  if (isset($form_state->getValue('field_badges')[0]['target_id']) && !empty($form_state->getValue('field_badges')[0]['target_id'])) {
+    if (empty($form_state->getValue('field_percentage')[0]['value'])) {
+      $form_state->setErrorByName("field_percentage", t('Stamp Percentage cannot be empty.'));
+    }
   }
 }
 

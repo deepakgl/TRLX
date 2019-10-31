@@ -1,5 +1,0 @@
-services:
-  elx_utility.subscriber:
-    class: Drupal\elx_custom_service\EventSubscriber\ElxCustomServiceEventsSubscriber
-    tags:
-      - {name: event_subscriber}
