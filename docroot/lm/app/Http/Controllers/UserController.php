@@ -88,7 +88,7 @@ class UserController extends Controller
 	/**
 	 * @param $data
 	 */
-	private function updateUsersIndex($data)
+	private function updateUserIndex($data)
 	{
 		$params = [];
 		$uid = ContentModel::getUserRealId($data['uid']);
