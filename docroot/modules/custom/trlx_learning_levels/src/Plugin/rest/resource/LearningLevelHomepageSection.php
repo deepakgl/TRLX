@@ -6,6 +6,7 @@ use Drupal\rest\Plugin\ResourceBase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Drupal\trlx_utility\Utility\CommonUtility;
+use Drupal\trlx_learning_levels\Utility\LevelUtility;
 
 /**
  * Provides a learning levels homepage section.
@@ -31,6 +32,7 @@ class  LearningLevelHomepageSection extends ResourceBase {
   */
   public function get(Request $request) {
     $commonUtility = new CommonUtility();
+    $levelUtility = new LevelUtility();
 
     // Required parameters.
     $requiredParams = [
@@ -65,18 +67,25 @@ class  LearningLevelHomepageSection extends ResourceBase {
     $all_tids = $this->getDistingTids($_userData->userId);
     $progress = [];
     $count = 1;
-    foreach ($all_tids as $key  => $tid) {
-       if (!empty($tid->tid)) {
-         $all_nids = $this->getAllNids($tid->tid);
-         $level_status = $this->getLevelStatus($all_nids, $tid->tid);
-         if ($level_status['status'] == 'inprogress') {
-           $progress[$count]['tid'] = $level_status['term_id'];
-           $count ++;
-           if ($count >= 4 ) {
-             break;
-           }
-         }
-       }
+    if (!empty($all_tids)) {
+      $tids = array_column($all_tids, 'tid');
+      $term_nodes = $levelUtility->getTermNodes($tids, $_userData, $language);
+      foreach ($all_tids as $key  => $tid) {
+        if (!empty($tid->tid)) {
+          $all_nids = $this->getAllNids($tid->tid);
+          $nids = $term_nodes[$tid->tid];
+          $pointValue = array_column($nids, 'point_value');
+          $level_status = $this->getLevelStatus($all_nids, $tid->tid);
+          $progress[$count]['pointValue'] = array_sum($pointValue);
+          if ($level_status['status'] == 'inprogress') {
+            $progress[$count]['tid'] = $level_status['term_id'];
+            $count ++;
+            if ($count >= 4 ) {
+              break;
+            }
+          }
+        }
+      }
     }
 
     $result = [];
@@ -86,7 +95,7 @@ class  LearningLevelHomepageSection extends ResourceBase {
       $result[$count1]['id'] = $term ->id();
       $result[$count1]['displayTitle'] = $term->hasTranslation($language) ? $term->getTranslation($language)->get('name')->value : '';
       $result[$count1]['subTitle'] = $term->hasTranslation($language) ? $term->getTranslation($language)->get('field_sub_title')->value : '';
-      $result[$count1]['subTitle'] = $term->hasTranslation($language) ? $term->getTranslation($language)->get('description')->value : '';
+      $result[$count1]['body'] = $term->hasTranslation($language) ? $term->getTranslation($language)->get('description')->value : '';
       $featured_image = $term->get('field_image')->referencedEntities();
       if (!empty($featured_image)) {
         $image = array_shift($featured_image)->get(field_media_image)->referencedEntities();
@@ -100,7 +109,7 @@ class  LearningLevelHomepageSection extends ResourceBase {
         $result[$count1]['imageMedium'] = '';
         $result[$count1]['imageLarge'] = '';
       }
-      $result[$count1]['percentage'] = empty($term->get('field_percentage')->value) ? '' : $term->get('field_percentage')->value;
+      $result[$count1]['pointValue'] = $tid['pointValue'];
       $count1++;
     }
 

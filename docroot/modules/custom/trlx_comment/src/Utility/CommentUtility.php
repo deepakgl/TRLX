@@ -94,6 +94,8 @@ class CommentUtility {
       $commonUtility = new CommonUtility();
       // Update tags data from elastic.
       $result->user_id = $commonUtility->getExternalUserId($result->user_id);
+      $result->comment_tags = empty($result->comment_tags) ? [] : $result->comment_tags;
+      $result->langcode = empty($result->langcode) ? self::DEFAULT_LANGUAGE : $result->langcode;
       // Unset variable.
       unset($commonUtility);
     }
@@ -141,6 +143,8 @@ class CommentUtility {
       foreach ($result as $comment) {
         // Fetch external user id.
         $comment->user_id = $commonUtility->getExternalUserId($comment->user_id);
+        $comment->comment_tags = empty($comment->comment_tags) ? [] : $comment->comment_tags;
+        $comment->langcode = empty($comment->langcode) ? self::DEFAULT_LANGUAGE : $comment->langcode;
 
         // Update tags data from elastic.
         if ($updateTags) {
