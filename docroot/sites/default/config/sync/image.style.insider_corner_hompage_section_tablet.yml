@@ -1,0 +1,15 @@
+uuid: dec6fa26-8507-4ec8-9196-f272cbf694a1
+langcode: en
+status: true
+dependencies: {  }
+name: insider_corner_hompage_section_tablet
+label: 'Insider Corner Hompage Section Tablet (770 X 355)'
+effects:
+  b96f4468-796d-4034-adfe-c86f5e746d1c:
+    uuid: b96f4468-796d-4034-adfe-c86f5e746d1c
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 770
+      height: 355
+      anchor: center-center

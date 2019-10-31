@@ -9,7 +9,6 @@ use App\Model\Mysql\ContentModel;
 use App\Model\Mysql\UserModel;
 use App\Model\Elastic\ElasticUserModel;
 use App\Model\Elastic\FlagModel;
-use App\Model\Elastic\BadgeModel;
 use App\Traits\ApiResponser;
 
 /**
@@ -49,28 +48,52 @@ class FlagController extends Controller {
    */
   public function setFlag(Request $request) {
     global $_userData;
+    $faq_config_data = ContentModel::getTrlxUtilityConfigValues();
     $validatedData = $this->validate($request, [
       'nid' => 'sometimes|required|positiveinteger|exists:node,nid',
       'flag' => 'required|likebookmarkflag',
       'status' => 'required|boolean',
       '_format' => 'required|format',
+      'brandId' => 'sometimes|required|positiveinteger|brandid',
     ]);
     $this->uid = $_userData->userId;
-    $nid = isset($validatedData['nid']) ? $validatedData['nid'] : 0;
-    // Check node status.
-    if (empty(ContentModel::getStatusByNid($nid))) {
-      return $this->errorResponse('Node is not published.', Response::HTTP_UNPROCESSABLE_ENTITY);
+    $pageType = $request->get('type');
+    if (isset($pageType) && empty($pageType)) {
+      return $this->errorResponse('Valid page type is required.', Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
+    $brand_id = 0;
+    // Get brand id if faq is part of brand section.
+    if (isset($validatedData['brandId'])) {
+      $brand_id = $validatedData['brandId'];
+    }
+    elseif (!empty($pageType) && !isset($validatedData['nid'])) {
+      // Set brand id zero if faq not part of brand section.
+      $brand_id = 0;
+    }
+    // Set node id value.
+    if (isset($validatedData['nid'])) {
+      $nid = $validatedData['nid'];
+    }
+    else {
+      $nid = !empty($faq_config_data['faq_id']) ? (int) $faq_config_data['faq_id'] : 9999999;
+      // Unique faq id summed with respective brand id.
+      $nid = $nid + $brand_id;
+    }
+    if (empty($pageType) && !empty($nid)) {
+      // Check node status.
+      if (empty(ContentModel::getStatusByNid($nid))) {
+        return $this->errorResponse('Node is not published.', Response::HTTP_UNPROCESSABLE_ENTITY);
+      }
     }
     $flag = $validatedData['flag'];
     $status = $validatedData['status'];
 
-    $type = $request->get('type');
-    if ($type != 'faq') {
-      $this->errorResponse('Type param value must only be faq', Response::HTTP_UNPROCESSABLE_ENTITY);
+    if (isset($pageType) && $pageType != 'faq') {
+      return $this->errorResponse('Type param value must only be faq', Response::HTTP_UNPROCESSABLE_ENTITY);
     }
     $this->elasticClient = Helper::checkElasticClient();
     if (!$this->elasticClient) {
-      $this->errorResponse('No alive nodes found in cluster.', Response::HTTP_INTERNAL_SERVER_ERROR);
+      return $this->errorResponse('No alive nodes found in cluster.', Response::HTTP_INTERNAL_SERVER_ERROR);
     }
     $this->updateUserIndex($nid, $flag, $status);
     $this->updateNodeIndex($nid, $flag, $status);
@@ -210,107 +233,196 @@ class FlagController extends Controller {
    *   Rest resource query parameters.
    *
    * @return json
-   *   User bookmark and favorites data.
+   *   User bookmarks data.
    */
-  public function myFlags(Request $request) {
-    $this->uid = Helper::getJtiToken($request);
+  public function myBookmarks(Request $request) {
+    global $_userData;
+    $this->uid = $_userData->userId;
+    $validatedData = $this->validate($request, [
+      'limit' => 'sometimes|required|integer|min:0',
+      'offset' => 'sometimes|required|integer|min:0',
+      '_format' => 'required|format',
+      'language' => 'required|languagecode',
+      'type' => 'required|bookmarklisttype',
+    ]);
     try {
       $this->elasticClient = Helper::checkElasticClient();
     }
     catch (\Exception $e) {
-      return Helper::jsonError($e->getMessage(), 400);
+      return $this->errorResponse($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
     }
-    $lang = UserModel::getUserInfoByUid($this->uid, 'language');
     $img_url = getenv("SITE_IMAGE_URL");
-    if (!$this->uid) {
-      return Helper::jsonError('Please provide user id.', 422);
-    }
-    $this->limit = !empty($request->input('limit')) ? $request->input('limit') : $this->limit;
-    $this->offset = !empty($request->input('offset')) ? $request->input('offset') : $this->offset;
-    $this->type = !empty($request->input('contentType')) ? $request->input('contentType') : $this->type;
+    $lang = $validatedData['language'];
+    $this->type = $validatedData['type'];
+    $this->limit = isset($validatedData['limit']) ? $validatedData['limit'] : 10;
+    $this->offset = isset($validatedData['offset']) ? $validatedData['offset'] : 0;
     $exist = ElasticUserModel::checkElasticUserIndex($this->uid, $this->elasticClient);
     if ($exist) {
       $response = ElasticUserModel::fetchElasticUserData($this->uid, $this->elasticClient);
-      if (empty($response['_source']['bookmarks'])) {
-        return new Response(NULL, 204);
+      if (empty($response['_source']['bookmark'])) {
+        return $this->successResponse([], Response::HTTP_OK);
       }
       $results = $nid_user_activity = $bookmark_data = [];
       $pages = 0;
-      if ($this->type != 'all') {
-        foreach ($response['_source']['bookmarks'] as $key => $value) {
-          $type = ContentModel::getTypeByLang($value, $lang[0]->language);
-          if (!empty($type) && $type->type == $this->type) {
-            array_push($bookmark_data, $value);
-          }
-        }
+      $i = 0;
+      // To get all brand keys.
+      $brands_terms_ids = ContentModel::getBrandTermIds();
+      $brand_keys = array_column($brands_terms_ids, 'field_brand_key_value');
+      // To get faq page id.
+      $faq_config_data = ContentModel::getTrlxUtilityConfigValues();
+      $default_faq_id = !empty($faq_config_data['faq_id']) ? (int) $faq_config_data['faq_id'] : 9999999;
+      // Array of sum of brands key and faq page id.
+      $faq_ids = [$default_faq_id];
+      foreach ($brand_keys as $value) {
+        $faq_ids[] = (int) $value + (int) $default_faq_id;
       }
-      else {
-        $bookmark_data = $response['_source']['bookmarks'];
-      }
-      $bookmark_data_by_type = [];
-      foreach ($bookmark_data as $key => $values) {
-        $this->type = ContentModel::getTypeByLang($values, $lang[0]->language);
-        if (!empty($this->type)) {
-          array_push($bookmark_data_by_type, $values);
-        }
-      }
-      if (empty(array_slice($bookmark_data_by_type, $this->offset, $this->limit))) {
-        return new Response(NULL, 204);
-      }
-      foreach (array_slice($bookmark_data_by_type, $this->offset, $this->limit) as $key => $value) {
-        $type = ContentModel::getTypeByLang($value, $lang[0]->language);
-        $lang = UserModel::getUserInfoByUid($this->uid, 'language');
-        $point_value = ContentModel::getPointValueByNid($value, $lang[0]->language);
-        $body = $title = $image_id = $url = '';
-        if (isset($type->type)) {
-          if ($type->type == 'product_detail') {
-            list($title, $image_id, $body, $sub_title) = ContentModel::getProductsContent($value, $lang[0]->language);
-          }
-          elseif ($type->type == 'tools' || $type->type == 'tools-pdf') {
-            $sub_title = '';
-            list($title, $image_id, $body) = ContentModel::getToolsContent($value, $lang[0]->language);
-          }
-          elseif ($type->type == 'stories') {
-            list($title, $image_id, $body, $sub_title) = ContentModel::getStoriesContent($value, $lang[0]->language);
-          }
-          elseif ($type->type == 'level_interactive_content') {
-            list($title, $image_id, $id) = ContentModel::getLevelContent($value, $lang[0]->language);
-            if (!empty($id)) {
-              list($body, $sub_title) = ContentModel::getLevelParagraphById($id, $lang[0]->language);
+      // Bookmark ids in latest bookmarked order.
+      $bookmark_ids = array_reverse($response['_source']['bookmark']);
+      // TRLX section names.
+      $sectionNames = ContentModel::getTrlxSectionNames();
+      $brandinfo = ContentModel::getBrandTermIds();
+      $bookmark_data = [];
+      foreach ($bookmark_ids as $bookmark_id) {
+        if (!in_array($bookmark_id, $faq_ids)) {
+          $node_data = ContentModel::getNodeDataByNid($bookmark_id, $lang);
+          if (!is_null($node_data)) {
+            $node_type = ContentModel::getTypeByNid($bookmark_id);
+            $bookmark_data[$i]['id'] = $node_data->nid;
+            $bookmark_data[$i]['title'] = ($node_type->type == 'level_interactive_content') ? $node_data->field_headline_value : $node_data->field_display_title_value;
+            $bookmark_data[$i]['brandKey'] = 0;
+            $bookmark_data[$i]['brandName'] = "";
+            $bookmark_data[$i]['sectionKey'] = "";
+            $bookmark_data[$i]['sectionName'] = array_key_exists($node_type->type, $sectionNames) ? $sectionNames[$node_type->type] : "";
+            $bookmark_data[$i]['pointValue'] = 0;
+            $bookmark_data[$i]['imageSmall'] = "";
+            $bookmark_data[$i]['imageMedium'] = "";
+            $bookmark_data[$i]['imageLarge'] = "";
+            $bookmark_data[$i]['faqId'] = 0;
+            if ($node_type->type == 'level_interactive_content') {
+              $bookmark_data[$i]['sectionKey'] = 'lesson';
+            }
+            if ($node_type->type == 'product_detail') {
+              $bookmark_data[$i]['sectionKey'] = 'productDetail';
+            }
+            if ($node_type->type == 'brand_story') {
+              $bookmark_data[$i]['sectionKey'] = 'brandStory';
+            }
+            if ($node_type->type == 'tools') {
+              $bookmark_data[$i]['sectionKey'] = 'video';
+            }
+            if ($node_data->field_brands_target_id != NULL) {
+              foreach ($brandinfo as $brand) {
+                if ($brand['entity_id'] == $node_data->field_brands_target_id) {
+                  $brand_key = (int) $brand['field_brand_key_value'];
+                }
+              }
+              $bookmark_data[$i]['brandKey'] = $brand_key;
+              $bookmark_data[$i]['brandName'] = ContentModel::getTermName([$node_data->field_brands_target_id])[0];
+            }
+            if ($node_data->field_content_section_target_id != NULL) {
+              $bookmark_data[$i]['sectionKey'] = ContentModel::getContentSectionKeyByTid($node_data->field_content_section_target_id);
+              $bookmark_data[$i]['sectionName'] = array_key_exists($bookmark_data[$i]['sectionKey'], $sectionNames) ? $sectionNames[$bookmark_data[$i]['sectionKey']] : "";
+            }
+            if ($node_data->field_point_value_value != NULL) {
+              $bookmark_data[$i]['pointValue'] = (int) $node_data->field_point_value_value;
+            }
+            if ($node_data->field_hero_image_target_id != NULL && !in_array($node_type->type, [
+              'product_detail',
+              'tools',
+              'brand_story',
+            ])) {
+              $bookmark_data[$i]['imageSmall'] = ContentModel::getBookmarkImageUrlByFid($node_data->field_hero_image_target_id)[0];
+              $bookmark_data[$i]['imageMedium'] = ContentModel::getBookmarkImageUrlByFid($node_data->field_hero_image_target_id)[1];
+              $bookmark_data[$i]['imageLarge'] = ContentModel::getBookmarkImageUrlByFid($node_data->field_hero_image_target_id)[2];
+            }
+            if ($node_data->field_field_product_image_target_id != NULL  && $node_type->type == 'product_detail') {
+              $bookmark_data[$i]['imageSmall'] = ContentModel::getBookmarkImageUrlByFid($node_data->field_field_product_image_target_id)[0];
+              $bookmark_data[$i]['imageMedium'] = ContentModel::getBookmarkImageUrlByFid($node_data->field_field_product_image_target_id)[1];
+              $bookmark_data[$i]['imageLarge'] = ContentModel::getBookmarkImageUrlByFid($node_data->field_field_product_image_target_id)[2];
+            }
+            if ($node_data->field_tool_thumbnail_target_id != NULL && $node_type->type == 'tools') {
+              $bookmark_data[$i]['imageSmall'] = ContentModel::getBookmarkImageUrlByFid($node_data->field_tool_thumbnail_target_id)[0];
+              $bookmark_data[$i]['imageMedium'] = ContentModel::getBookmarkImageUrlByFid($node_data->field_tool_thumbnail_target_id)[1];
+              $bookmark_data[$i]['imageLarge'] = ContentModel::getBookmarkImageUrlByFid($node_data->field_tool_thumbnail_target_id)[2];
+            }
+            if ($node_data->field_featured_image_target_id != NULL  && $node_type->type == 'brand_story') {
+              $bookmark_data[$i]['imageSmall'] = ContentModel::getBookmarkImageUrlByFid($node_data->field_featured_image_target_id)[0];
+              $bookmark_data[$i]['imageMedium'] = ContentModel::getBookmarkImageUrlByFid($node_data->field_featured_image_target_id)[1];
+              $bookmark_data[$i]['imageLarge'] = ContentModel::getBookmarkImageUrlByFid($node_data->field_featured_image_target_id)[2];
             }
           }
-          if (!empty($image_id)) {
-            $url = ContentModel::getImageUrlByFid($image_id);
-          }
+          $i++;
         }
-        $body = !(empty($body)) ? str_replace('"/sites/default/files', '"' . $img_url, $body) : '';
-        $nid_user_activity[] = $value;
-        $results['results'][] = [
-          "nid" => $value,
-          "imageLarge" => isset($url) ? $url : '',
-          "imageMedium" => isset($url) ? $url : '',
-          "imageSmall" => isset($url) ? $url : '',
-          "title" => isset($title) ? $title : '',
-          "subTitle" => isset($sub_title) ? $sub_title : '',
-          "description" => isset($body) ? $body : '',
-          "pointValue" => isset($point_value) ? $point_value : '',
-          "type" => $type->type,
-        ];
+        if (in_array($bookmark_id, $faq_ids)) {
+          $brand_key = $bookmark_id - $default_faq_id;
+          if ($brand_key > 0) {
+            $brand_data = ContentModel::getBrandDataFromBrandKey($brand_key);
+            if (!empty($brand_data)) {
+              $bookmark_data[$i]['id'] = 0;
+              $bookmark_data[$i]['title'] = mb_strtoupper($brand_data['name']) . ' CUSTOMER QUESTIONS';
+              $bookmark_data[$i]['brandKey'] = $brand_key;
+              $bookmark_data[$i]['brandName'] = $brand_data['name'];
+              $bookmark_data[$i]['sectionKey'] = "faq";
+              $bookmark_data[$i]['sectionName'] = $sectionNames['faq'];
+              $bookmark_data[$i]['pointValue'] = (int) $faq_config_data['faq_points'];
+              $bookmark_data[$i]['imageSmall'] = "";
+              $bookmark_data[$i]['imageMedium'] = "";
+              $bookmark_data[$i]['imageLarge'] = "";
+              $bookmark_data[$i]['faqId'] = $bookmark_id;
+            }
+          }
+          else {
+            $bookmark_data[$i]['id'] = 0;
+            $bookmark_data[$i]['title'] = 'HELP QUESTIONS';
+            $bookmark_data[$i]['brandKey'] = 0;
+            $bookmark_data[$i]['brandName'] = "";
+            $bookmark_data[$i]['sectionKey'] = "helpFaq";
+            $bookmark_data[$i]['sectionName'] = $sectionNames['faq'];
+            $bookmark_data[$i]['pointValue'] = (int) $faq_config_data['faq_points'];
+            $bookmark_data[$i]['imageSmall'] = "";
+            $bookmark_data[$i]['imageMedium'] = "";
+            $bookmark_data[$i]['imageLarge'] = "";
+            $bookmark_data[$i]['faqId'] = $bookmark_id;
+          }
+          $i++;
+        }
       }
-
-      $total_count = count($bookmark_data_by_type) - $this->offset;
-      $pages = ceil($total_count / $this->limit);
     }
-    $results['pager'] = [
+    else {
+      return $this->successResponse([], Response::HTTP_OK);
+    }
+    // Filter bookmark data by type value.
+    $filterBy = 'VIDEOS';
+    $bookmark_data = array_values($bookmark_data);
+    if ($this->type == 'video') {
+      $bookmark_data = array_filter($bookmark_data, function ($var) use ($filterBy) {
+          return ($var['sectionName'] == $filterBy);
+      });
+    }
+    else {
+      $bookmark_data = array_filter($bookmark_data, function ($var) use ($filterBy) {
+          return ($var['sectionName'] != $filterBy);
+      });
+    }
+    // Pagination logic.
+    $total_count = count($bookmark_data) - $this->offset;
+    $pages = ceil($total_count / $this->limit);
+    $bookmark_data = array_slice($bookmark_data, $this->offset, $this->limit);
+    $results['bookmark'] = $bookmark_data;
+    $pager = [
       "count" => $total_count,
       "pages" => $pages,
-      "items_per_page" => $this->limit,
+      "items_per_page" => (int) $this->limit,
       "current_page" => 0,
-      "next_page" => 1,
+      "next_page" => 0,
     ];
-    header('Content-language: ' . $lang[0]->language);
-
-    return new Response($results, 200);
+    header('Content-language: ' . $lang);
+    if (empty($results['bookmark'])) {
+      return $this->successResponse([], Response::HTTP_OK);
+    }
+    else {
+      return $this->successResponse($results, Response::HTTP_OK, $pager);
+    }
   }
 
   /**
@@ -324,18 +436,43 @@ class FlagController extends Controller {
    */
   public function contentViewFlag(Request $request) {
     global $_userData;
+    $faq_config_data = ContentModel::getTrlxUtilityConfigValues();
     $validatedData = $this->validate($request, [
-      'nid' => 'required|positiveinteger|exists:node,nid',
+      'nid' => 'sometimes|required|positiveinteger|exists:node,nid',
+      'brandId' => 'sometimes|required|positiveinteger|brandid',
       '_format' => 'required|format',
     ]);
     $this->uid = $_userData->userId;
-    $nid = $validatedData['nid'];
-    // Check node type.
-    $type = ContentModel::getTypeByNid($nid);
+    $pageType = $request->get('type');
+    // Get brand id if faq is part of brand section.
+    if (isset($validatedData['brandId'])) {
+      $brand_id = $validatedData['brandId'];
+    }
+    elseif (!empty($pageType) && !isset($validatedData['nid'])) {
+      // Set brand id zero if faq not part of brand section.
+      $brand_id = 0;
+    }
+    $brand_id = isset($validatedData['brandId']) ? $validatedData['brandId'] : 0;
+    // Set node id value.
+    if (isset($validatedData['nid'])) {
+      $nid = $validatedData['nid'];
+    }
+    else {
+      $nid = !empty($faq_config_data['faq_id']) ? (int) $faq_config_data['faq_id'] : 9999999;
+      // Unique faq id summed with respective brand id.
+      $nid = $nid + $brand_id;
+    }
+    if (isset($pageType) && $pageType != 'faq') {
+      return $this->errorResponse('Type param value must only be faq', Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
 
-    // Check node status.
-    if (empty(ContentModel::getStatusByNid($nid))) {
-      return $this->errorResponse('Node is not published.', Response::HTTP_UNPROCESSABLE_ENTITY);
+    if (empty($pageType) && !empty($nid)) {
+      // Check node status.
+      if (empty(ContentModel::getStatusByNid($nid))) {
+        return $this->errorResponse('Node is not published.', Response::HTTP_UNPROCESSABLE_ENTITY);
+      }
+      // Check node type.
+      $type = ContentModel::getTypeByNid($nid);
     }
     // Check whether elastic client exists.
     $this->elasticClient = Helper::checkElasticClient();
@@ -351,15 +488,16 @@ class FlagController extends Controller {
     }
     // Fetch user data from elastic index.
     $response = ElasticUserModel::fetchElasticUserData($this->uid, $this->elasticClient);
-    if (isset($response['_source']['node_views_' . $type->type])) {
-      $node_ids = $response['_source']['node_views_' . $type->type];
+    $content_type = empty($type->type) ? 'faq' : $type->type;
+    if (isset($response['_source']['node_views_' . $content_type])) {
+      $node_ids = $response['_source']['node_views_' . $content_type];
       if (in_array($nid, $node_ids)) {
-        return $this->errorResponse('Node id already exist.', Response::HTTP_BAD_REQUEST);
+        return $this->errorResponse('Node id already exist.', Response::HTTP_OK);
       }
       $node_ids[] = $nid;
       $params['body'] = [
         'doc' => [
-          'node_views_' . $type->type => $node_ids,
+          'node_views_' . $content_type => $node_ids,
         ],
         'doc_as_upsert' => TRUE,
       ];
@@ -370,7 +508,7 @@ class FlagController extends Controller {
       $node_ids[] = $nid;
       $params['body'] = [
         'doc' => [
-          'node_views_' . $type->type => $node_ids,
+          'node_views_' . $content_type => $node_ids,
         ],
         'doc_as_upsert' => TRUE,
       ];
@@ -381,21 +519,22 @@ class FlagController extends Controller {
     $language = isset($lang[0]) ? $lang[0]->language : 'en';
     // Get point value by node id.
     $point_value = ContentModel::getPointValueByNid($nid, $language);
+    if ($point_value === 0 && $pageType == 'faq') {
+      $point_value = !empty($faq_config_data['faq_points']) ? (int) $faq_config_data['faq_points'] : 50;
+    }
     if (isset($response['_source']['total_points'])) {
-      $badge_info['old_points'] = $response['_source']['total_points'];
       $response['_source']['total_points'] = $response['_source']['total_points'] + $point_value;
       // Prepare the elastic params and update the user index.
       $params['body'] = [
         'doc' => [
           'total_points' => $response['_source']['total_points'],
-          'node_views_' . $type->type => $node_ids,
+          'node_views_' . $content_type => $node_ids,
         ],
         'doc_as_upsert' => TRUE,
       ];
       $output = ElasticUserModel::updateElasticUserData($params, $this->uid, $this->elasticClient);
     }
     else {
-      $badge_info['old_points'] = 0;
       $params['body'] = [
         'doc' => [
           'total_points' => $point_value,
@@ -405,26 +544,12 @@ class FlagController extends Controller {
       $output = ElasticUserModel::updateElasticUserData($params, $this->uid, $this->elasticClient);
       $response = ElasticUserModel::fetchElasticUserData($this->uid, $this->elasticClient);
     }
-    // New points of user.
-    $badge_info['new_points'] = $response['_source']['total_points'];
-    $new_points = $badge_info['new_points'];
-    $badge_info['uid'] = $this->uid;
-    // Old points of user.
-    $old_points = $badge_info['old_points'];
-    $badge = [];
-    // Allocate badge to user on the basis of old points & new points.
-    if ($old_points < 1000 && $new_points >= 1000) {
-      $badge[] = 'first_1_000_points_badge';
-    }
-    if ($old_points < 5000 && $new_points >= 5000) {
-      $badge[] = 'first_5_000_points_badge';
-    }
-    if ($old_points < 10000 && $new_points >= 10000) {
-      $badge[] = 'first_10000_points_badge';
-    }
-    $set_user_point = BadgeModel::allocateBadgeToUser($nid, $badge_info, $badge, $this->elasticClient);
 
-    return $set_user_point;
+    return $this->successResponse([
+      'nid' => $nid,
+      'status' => TRUE,
+      'message' => 'Successfully updated',
+    ], Response::HTTP_OK);
   }
 
 }

@@ -42,10 +42,15 @@ class BrandCategoryListing extends ResourceBase {
       return $response;
     }
 
-    // Query to get all brand term ids.
-    $query = \Drupal::entityQuery('taxonomy_term');
-    $query->condition('vid', 'brands');
-    $term_ids = $query->execute();
+    try {
+      // Query to get all brand term ids.
+      $query = \Drupal::entityQuery('taxonomy_term');
+      $query->condition('vid', 'brands');
+      $term_ids = $query->execute();
+    }
+    catch (\Exception $e) {
+      $term_ids = [];
+    }
     $brands_list = [];
     $i = 0;
     foreach ($term_ids as $term) {

@@ -1,0 +1,15 @@
+uuid: e8db2003-b10a-4d72-832b-565972088fdf
+langcode: en
+status: true
+dependencies: {  }
+name: level_home_page_mobile
+label: 'Level Home Page Mobile (375 X 270)'
+effects:
+  2818905d-6a74-4f5d-977e-969228f5f7f4:
+    uuid: 2818905d-6a74-4f5d-977e-969228f5f7f4
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 375
+      height: 270
+      anchor: center-center

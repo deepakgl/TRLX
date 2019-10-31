@@ -11,7 +11,7 @@ field_name: field_field_product_image
 entity_type: node
 bundle: product_detail
 label: 'Product Image'
-description: 'Allowed file types:<b> jpg, jpeg and png.</b><br>Image Resolution:<b> 309 x 425px</b>'
+description: 'Allowed file types:<b> png, jpg, jpeg.</b><br>Image Resolution:<b> 188X200px</b>'
 required: false
 translatable: true
 default_value: {  }

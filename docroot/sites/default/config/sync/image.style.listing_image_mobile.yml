@@ -1,0 +1,15 @@
+uuid: de42523a-c824-4afe-8de2-97018cbc1e91
+langcode: en
+status: true
+dependencies: {  }
+name: listing_image_mobile
+label: 'Listing Image Mobile (375×375)'
+effects:
+  ba738899-fefd-4ec2-8422-c5e49ea1dac0:
+    uuid: ba738899-fefd-4ec2-8422-c5e49ea1dac0
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 375
+      height: 375
+      anchor: center-center

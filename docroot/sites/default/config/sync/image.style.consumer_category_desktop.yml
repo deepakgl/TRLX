@@ -1,0 +1,15 @@
+uuid: 30c9f613-ca3e-40db-a379-843923eb08d2
+langcode: en
+status: true
+dependencies: {  }
+name: consumer_category_desktop
+label: 'Consumer Category Hero Desktop (1440×437)'
+effects:
+  83804d5f-0406-46bf-a5c1-63a5cbaa4e83:
+    uuid: 83804d5f-0406-46bf-a5c1-63a5cbaa4e83
+    id: image_scale_and_crop
+    weight: 2
+    data:
+      width: 1440
+      height: 437
+      anchor: center-center

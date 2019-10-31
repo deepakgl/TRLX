@@ -1,0 +1,18 @@
+uuid: 0e494127-e3a3-4021-b42a-1de24e734320
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.badges
+id: taxonomy_term.badges.name
+field_name: name
+entity_type: taxonomy_term
+bundle: badges
+label: Name
+description: ''
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

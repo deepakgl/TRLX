@@ -15,4 +15,4 @@ id: taxonomy_term.badges
 target_entity_type_id: taxonomy_term
 target_bundle: badges
 default_langcode: site_default
-language_alterable: false
+language_alterable: true

@@ -1,0 +1,18 @@
+uuid: 4f65d346-87b9-4cc6-b560-914308cd68ff
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.tools_by_role
+id: taxonomy_term.tools_by_role.name
+field_name: name
+entity_type: taxonomy_term
+bundle: tools_by_role
+label: Name
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

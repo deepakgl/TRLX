@@ -1,0 +1,15 @@
+uuid: 63f0ac68-5957-49c0-b437-a72887965b6f
+langcode: en
+status: true
+dependencies: {  }
+name: video_detail_tablet
+label: 'Video Detail Tablet (734X568)'
+effects:
+  7464a403-e636-4273-becb-8b16ccdfb96a:
+    uuid: 7464a403-e636-4273-becb-8b16ccdfb96a
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 734
+      height: 568
+      anchor: center-center

@@ -1,0 +1,15 @@
+uuid: 38c38e53-d9f5-411c-bf2c-551b81b9b589
+langcode: en
+status: true
+dependencies: {  }
+name: stories_listing_tablet
+label: 'Stories Listing Tablet (1194×357)'
+effects:
+  927f0408-641b-488f-ac98-dc8a6d27b1ae:
+    uuid: 927f0408-641b-488f-ac98-dc8a6d27b1ae
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 1194
+      height: 357
+      anchor: center-center

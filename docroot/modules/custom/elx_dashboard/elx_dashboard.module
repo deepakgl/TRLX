@@ -11,7 +11,7 @@ use Drupal\Core\Link;
 use Drupal\Core\Entity\ContentEntityForm;
 use Drupal\views\ViewExecutable;
 use Drupal\elx_user\Utility\UserUtility;
-use Drupal\elx_lang_translation\Utility\LangUtility;
+use Drupal\trlx_lang_translation\Utility\LangUtility;
 use Drupal\elx_utility\Utility\CommonUtility;
 
 /**
@@ -37,8 +37,7 @@ function elx_dashboard_form_alter(&$form, FormStateInterface $form_state, $form_
     case 'views_form_user_admin_people_page_1':
       $roles = $user_utility->getUserRoles(\Drupal::currentUser()->id(), 'all');
       if (in_array('el_regional_market_admin', $roles)) {
-        unset($form['header']['user_bulk_form']['action']['#options']
-        ['user_cancel_user_action']);
+        unset($form['header']['user_bulk_form']['action']['#options']['user_cancel_user_action']);
       }
       break;
 
@@ -335,44 +334,44 @@ function elx_dashboard_views_post_render(ViewExecutable $view) {
   }
 }
 
-/**
- * Implements hook_views_query_alter().
- */
-function elx_dashboard_views_query_alter(ViewExecutable $view, $query) {
-  if ($view->id() == 'dashboard') {
-    $user_utility = new UserUtility();
-    $lang_utility = new LangUtility();
-    $uid = \Drupal::currentUser()->id();
-    $markets = $user_utility->getMarketByUserId($uid,
-    'all');
-    $market = array_column($markets, 'field_default_market_target_id');
-    if ($view->current_display == 'dashboard_published' ||
-      $view->current_display == 'dashboard_unpublished') {
-      $roles = $user_utility->getUserRoles($uid);
-      if ($roles) {
-        $all_lang = array_keys(
-        $lang_utility->getMarketPrimaryAndSecondaryLanguage($market));
-        // Add langcode condition based on the user market lang.
-        $query->addWhere(1, 'node_field_data.langcode', $all_lang, 'IN');
-        // Add translation table to the query.
-        $query->queueTable('node__field_translation',
-        "node_field_data", NULL, 'node__field_translation');
-        // Add translation condition based on the translation status.
-        $query->addWhere(1,
-        'node__field_translation.field_translation_value', 'draft', 'NOT IN');
-      }
-    }
-    if ($view->current_display == 'dashboard_archive') {
-      // Add archive and unarchive table to the query.
-      $query->queueTable('node__field_archive_and_unarchive',
-      "node_field_data", NULL, 'node__field_archive_and_unarchive');
-      // Add archive and unarchive condition based on the current user market.
-      $query->addWhere(1,
-      'node__field_archive_and_unarchive.field_archive_and_unarchive_target_id',
-       $market, 'IN');
-    }
-  }
-}
+// /**
+//  * Implements hook_views_query_alter().
+//  */
+// function elx_dashboard_views_query_alter(ViewExecutable $view, $query) {
+//   if ($view->id() == 'dashboard') {
+//     $user_utility = new UserUtility();
+//     $lang_utility = new LangUtility();
+//     $uid = \Drupal::currentUser()->id();
+//     $markets = $user_utility->getMarketByUserId($uid,
+//     'all');
+//     $market = array_column($markets, 'field_default_market_target_id');
+//     if ($view->current_display == 'dashboard_published' ||
+//       $view->current_display == 'dashboard_unpublished') {
+//       $roles = $user_utility->getUserRoles($uid);
+//       if ($roles) {
+//         $all_lang = array_keys(
+//         $lang_utility->getMarketPrimaryAndSecondaryLanguage($market));
+//         // Add langcode condition based on the user market lang.
+//         //$query->addWhere(1, 'node_field_data.langcode', $all_lang, 'IN');
+//         // Add translation table to the query.
+//         $query->queueTable('node__field_translation',
+//         "node_field_data", NULL, 'node__field_translation');
+//         // Add translation condition based on the translation status.
+//         $query->addWhere(1,
+//         'node__field_translation.field_translation_value', 'draft', 'NOT IN');
+//       }
+//     }
+//     if ($view->current_display == 'dashboard_archive') {
+//       // Add archive and unarchive table to the query.
+//       $query->queueTable('node__field_archive_and_unarchive',
+//       "node_field_data", NULL, 'node__field_archive_and_unarchive');
+//       // Add archive and unarchive condition based on the current user market.
+//       $query->addWhere(1,
+//       'node__field_archive_and_unarchive.field_archive_and_unarchive_target_id',
+//        $market, 'IN');
+//     }
+//   }
+// }
 
 /**
  * Fetch primary language.

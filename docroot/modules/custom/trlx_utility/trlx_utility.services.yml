@@ -4,3 +4,12 @@ services:
     arguments: ['@config.factory', '@entity.manager']
     tags:
       - { name: authentication_provider, provider_id: 'jwt_Auth', global: TRUE, priority: 100 }
+  trlx_utility.commands:
+    class: \Drupal\trlx_utility\Commands\OtmMigrationCommands
+    tags:
+      - { name: drush.command }
+  logger.stdout:
+    class: Drupal\trlx_utility\Logger\TrlxLogger
+    arguments: ['@logger.log_message_parser', '@request_stack']
+    tags:
+      - { name: logger }

@@ -1,0 +1,22 @@
+--- a/modules/content_translation/src/Controller/ContentTranslationController.php
++++ b/modules/content_translation/src/Controller/ContentTranslationController.php
+@@ -11,6 +11,7 @@
+ use Drupal\Core\Routing\RouteMatchInterface;
+ use Drupal\Core\Url;
+ use Symfony\Component\DependencyInjection\ContainerInterface;
++use Drupal\trlx_lang_translation\Utility\LangUtility;
+
+ /**
+  * Base class for entity translation controllers.
+@@ -125,7 +126,10 @@
+       foreach ($languages as $language) {
+         $language_name = $language->getName();
+         $langcode = $language->getId();
+-
++        $lang_utility = new LangUtility();
++        $user_languages = $lang_utility->getMarketLanguageByUserId();
++        if (!in_array($langcode, array_keys($user_languages))) { continue; }
++
+         // If the entity type is revisionable, we may have pending revisions
+         // with translations not available yet in the default revision. Thus we
+         // need to load the latest translation-affecting revision for each

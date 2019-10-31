@@ -7,6 +7,7 @@ dependencies:
     - field.field.taxonomy_term.learning_category.field_access_by_role
     - field.field.taxonomy_term.learning_category.field_badges
     - field.field.taxonomy_term.learning_category.field_brands
+    - field.field.taxonomy_term.learning_category.field_consumer_category
     - field.field.taxonomy_term.learning_category.field_content_section
     - field.field.taxonomy_term.learning_category.field_image
     - field.field.taxonomy_term.learning_category.field_percentage
@@ -29,14 +30,26 @@ content:
       placeholder: ''
       rows: 5
     third_party_settings: {  }
+  field_badges:
+    type: options_select
+    weight: 7
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   field_brands:
-    weight: 4
+    weight: 5
+    settings: {  }
+    third_party_settings: {  }
+    type: options_buttons
+    region: content
+  field_consumer_category:
+    weight: 6
     settings: {  }
     third_party_settings: {  }
     type: options_buttons
     region: content
   field_content_section:
-    weight: 5
+    weight: 4
     settings: {  }
     third_party_settings: {  }
     type: options_buttons
@@ -46,16 +59,23 @@ content:
     settings:
       entity_browser: media_entity_browser
       field_widget_display: rendered_entity
-      field_widget_edit: true
       field_widget_remove: true
       selection_mode: selection_append
       field_widget_display_settings:
         view_mode: default
-      open: false
+      field_widget_edit: false
       field_widget_replace: false
+      open: false
     third_party_settings: {  }
     type: entity_browser_entity_reference
     region: content
+  field_percentage:
+    type: number
+    weight: 8
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
   field_sub_title:
     weight: 1
     settings:
@@ -66,7 +86,7 @@ content:
     region: content
   langcode:
     type: language_select
-    weight: 6
+    weight: 9
     region: content
     settings:
       include_locked: true
@@ -81,16 +101,14 @@ content:
     third_party_settings: {  }
   path:
     type: path
-    weight: 8
+    weight: 11
     region: content
     settings: {  }
     third_party_settings: {  }
   translation:
-    weight: 7
+    weight: 10
     region: content
     settings: {  }
     third_party_settings: {  }
 hidden:
   field_access_by_role: true
-  field_badges: true
-  field_percentage: true

@@ -25,7 +25,6 @@ module:
   csv_serialization: 0
   ctools: 0
   datetime: 0
-  dblog: 0
   delete_all: 0
   draggableviews: 0
   dropzonejs: 0
@@ -35,14 +34,10 @@ module:
   editor_file: 0
   elasticsearch_connector: 0
   elasticsearch_connector_views: 0
-  elx_audit_log: 0
-  elx_bulk_mail: 0
-  elx_custom_service: 0
-  elx_dashboard: 0
+  elc_password_policy: 0
   elx_elastic_user: 0
-  elx_entityqueue_alter: 0
-  elx_lang_translation: 0
   elx_menu: 0
+  elx_points_migration: 0
   elx_products: 0
   elx_redis_purge: 0
   elx_reports: 0
@@ -84,18 +79,13 @@ module:
   mailsystem: 0
   media: 0
   media_entity_browser: 0
+  menu_export: 0
   menu_link_attributes: 0
   menu_ui: 0
   migrate: 0
   migrate_drupal: 0
-  migrate_drupal_ui: 0
-  migrate_example: 0
-  migrate_example_advanced: 0
-  migrate_example_advanced_setup: 0
-  migrate_example_setup: 0
   migrate_plus: 0
   migrate_tools: 0
-  migrate_upgrade: 0
   multiselect: 0
   node: 0
   notification: 0
@@ -105,6 +95,7 @@ module:
   password_encrypt: 0
   path: 0
   persistent_login: 0
+  queue_ui: 0
   rdf: 0
   rest: 0
   rest_password: 0
@@ -126,18 +117,30 @@ module:
   toolbar: 0
   tour: 0
   translation_views: 0
+  trlx_audit_log: 0
+  trlx_banner: 0
   trlx_brand: 0
   trlx_brand_story: 0
+  trlx_comment: 0
+  trlx_consumer: 0
   trlx_dashboard: 0
+  trlx_entityqueue_alter: 0
   trlx_factsheets: 0
   trlx_faq: 0
+  trlx_insider_corner: 0
+  trlx_lang_translation: 0
   trlx_learning_levels: 0
   trlx_market_hierarchy: 0
+  trlx_notification: 0
   trlx_products: 0
+  trlx_security: 0
   trlx_spotlight: 0
+  trlx_static_translation: 0
   trlx_story: 0
+  trlx_tnc_privacy_policy: 0
   trlx_trends: 0
   trlx_utility: 0
+  trlx_banner: 0
   trlx_video: 0
   user: 0
   video_embed_field: 0

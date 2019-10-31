@@ -1,0 +1,58 @@
+uuid: a88fceb0-9cfc-42d6-a2db-d26811bfe10f
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_product_carousel
+    - node.type.stories
+    - paragraphs.paragraphs_type.product_carousel
+  module:
+    - entity_reference_revisions
+id: node.stories.field_product_carousel
+field_name: field_product_carousel
+entity_type: node
+bundle: stories
+label: 'Product Details'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    negate: 0
+    target_bundles:
+      product_carousel: product_carousel
+    target_bundles_drag_drop:
+      best_sellers_template_four:
+        weight: 11
+        enabled: false
+      best_sellers_template_three:
+        weight: 12
+        enabled: false
+      best_sellers_template_two:
+        weight: 13
+        enabled: false
+      field_slides_bs_t3:
+        weight: 14
+        enabled: false
+      field_slids_bs_t4:
+        weight: 15
+        enabled: false
+      interactive_content:
+        weight: 16
+        enabled: false
+      media_template_two:
+        weight: 17
+        enabled: false
+      multiple_answer_choice:
+        weight: 18
+        enabled: false
+      product_carousel:
+        enabled: true
+        weight: 19
+      social_media_handle:
+        weight: 20
+        enabled: false
+field_type: entity_reference_revisions

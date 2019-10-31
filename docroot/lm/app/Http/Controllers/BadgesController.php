@@ -3,17 +3,18 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Response;
-use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use App\Support\Helper;
-use App\Model\Mysql\UserModel;
 use App\Model\Elastic\BadgeModel;
 use App\Model\Elastic\ElasticUserModel;
+use App\Traits\ApiResponser;
 
 /**
  * Purpose of building this class is to allocate badges to user.
  */
 class BadgesController extends Controller {
+
+  use ApiResponser;
 
   /**
    * Inspiration badges.
@@ -65,50 +66,57 @@ class BadgesController extends Controller {
   }
 
   /**
-   * Get User Badge by UID.
+   * Get all stamps by UID.
    *
    * @param \Illuminate\Http\Request $request
    *   Rest resource query parameters.
    *
    * @return json
-   *   All badges.
+   *   All stamps.
    */
-  public function userBadges(Request $request) {
+  public function userStamps(Request $request) {
+    $uri = strtok($request->getRequestUri(), '?');
+    $url = explode("/", $uri);
+    $validatedData = $this->validate($request, [
+      '_format' => 'required|format',
+      'language' => 'required|languagecode',
+    ]);
+    // Get user language.
+    $lang = $request->input('language');
+    global $_userData;
     // User id.
-    $this->uid = Helper::getJtiToken($request);
-    if (!$this->uid) {
-      return Helper::jsonError('Please provide user id.', 422);
-    }
+    $this->uid = $_userData->userId;
     // Check whether elastic connectivity is there.
     $this->client = Helper::checkElasticClient();
-    // Check whether badge master Index exists.
+    // Check whether stamps master Index exists.
     $exist_badge = BadgeModel::checkBadgeMasterIndex($this->client);
     if (!$exist_badge || !$this->client) {
       return FALSE;
     }
     $badge_data = $all_badges = [];
-    // Get user language.
-    $lang = UserModel::getUserInfoByUid($this->uid, 'language');
-    // Fetch all the badges from elastic.
-    $badge_data = BadgeModel::fetchBadgeMasterData($lang[0]->language, $this->client);
+    // Fetch all the stamps from elastic.
+    $badge_data = BadgeModel::fetchBadgeMasterData($lang, $this->client);
     // Check whether user index exists in elastic.
     $exist = ElasticUserModel::checkElasticUserIndex($this->uid, $this->client);
     if ($exist) {
       // Fetch respective user data from elastic.
       $response = ElasticUserModel::fetchElasticUserData($this->uid, $this->client);
       if (empty($response['_source']['badge'])) {
-        // Update badge master & user activity badges.
-        $all_badges = BadgeModel::setBadgeMasterData($badge_data);
+        // Update master stamps.
+        $all_badges = BadgeModel::setBadgeMasterData($badge_data, FALSE, $url[4]);
       }
       else {
         $badge_data['user_badge'] = $response['_source']['badge'][0];
-        // Update badge master & user activity badges.
-        $all_badges = BadgeModel::setBadgeMasterData($badge_data, TRUE);
+        // Update master stamps.
+        $all_badges = BadgeModel::setBadgeMasterData($badge_data, TRUE, $url[4]);
       }
     }
     else {
-      // Update badge master & user activity badges.
-      $all_badges = BadgeModel::setBadgeMasterData($badge_data, FALSE);
+      // Update master stamps.
+      $all_badges = BadgeModel::setBadgeMasterData($badge_data, FALSE, $url[4]);
+    }
+    if (empty($all_badges)) {
+      return $this->successResponse([], Response::HTTP_OK);
     }
 
     return new Response($all_badges, 200);
@@ -224,7 +232,7 @@ class BadgesController extends Controller {
     // Update user badges.
     $response = $this->updateBadgeParams($this->uid, $this->client, $set_badges);
 
-    return;
+    return [];
   }
 
   /**

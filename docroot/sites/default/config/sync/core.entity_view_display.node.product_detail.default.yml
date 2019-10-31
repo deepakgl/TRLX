@@ -12,11 +12,11 @@ dependencies:
     - field.field.node.product_detail.field_customer_questions
     - field.field.node.product_detail.field_demonstration
     - field.field.node.product_detail.field_display_title
-    - field.field.node.product_detail.field_downloadable
     - field.field.node.product_detail.field_end_date
     - field.field.node.product_detail.field_featured_image
     - field.field.node.product_detail.field_field_product_image
     - field.field.node.product_detail.field_fun_fact_sheet
+    - field.field.node.product_detail.field_headline
     - field.field.node.product_detail.field_how_to_sell_this_product
     - field.field.node.product_detail.field_if_she_asks_share
     - field.field.node.product_detail.field_just_for_you
@@ -26,6 +26,7 @@ dependencies:
     - field.field.node.product_detail.field_perfect_partners_text
     - field.field.node.product_detail.field_point_value
     - field.field.node.product_detail.field_price
+    - field.field.node.product_detail.field_product_carousel
     - field.field.node.product_detail.field_product_categories
     - field.field.node.product_detail.field_product_family
     - field.field.node.product_detail.field_product_video
@@ -43,6 +44,7 @@ dependencies:
     - node.type.product_detail
   module:
     - datetime
+    - entity_reference_revisions
     - options
     - text
     - user
@@ -121,16 +123,6 @@ content:
     third_party_settings: {  }
     type: string
     region: content
-  field_downloadable:
-    weight: 37
-    label: above
-    settings:
-      format: default
-      format_custom_false: ''
-      format_custom_true: ''
-    third_party_settings: {  }
-    type: boolean
-    region: content
   field_end_date:
     weight: 18
     label: above
@@ -165,6 +157,14 @@ content:
       view_mode: default
       link: false
     third_party_settings: {  }
+    region: content
+  field_headline:
+    weight: 37
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
     region: content
   field_how_to_sell_this_product:
     type: entity_reference_entity_view
@@ -236,6 +236,15 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     type: string
+    region: content
+  field_product_carousel:
+    type: entity_reference_revisions_entity_view
+    weight: 38
+    label: above
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
     region: content
   field_product_categories:
     weight: 4

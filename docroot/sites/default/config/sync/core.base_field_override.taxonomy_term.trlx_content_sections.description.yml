@@ -1,0 +1,20 @@
+uuid: 34dba52e-ea8b-4b64-9cca-8e23c16bf6d1
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.trlx_content_sections
+  module:
+    - text
+id: taxonomy_term.trlx_content_sections.description
+field_name: description
+entity_type: taxonomy_term
+bundle: trlx_content_sections
+label: Description
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long

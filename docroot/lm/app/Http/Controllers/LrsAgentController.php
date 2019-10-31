@@ -162,29 +162,37 @@ class LrsAgentController extends Controller {
    */
   public function put(Request $request, $arg1, $arg2 = NULL) {
     $decode = json_decode($request->getcontent(), TRUE);
-    if (isset($decode['verb']['display']['und'])) {
-      $statement_status = $decode['verb']['display']['und'];
+    if (!empty($decode['verb']['display'])) {
+      $displayKey = array_keys($decode['verb']['display']);
+      $statement_status = $decode['verb']['display'][$displayKey[0]];
       $statement_id = $decode['id'];
       $uid = $request->input('uid');
       $nid = $request->input('nid');
       $tid = $request->input('tid');
+      $lang = $request->input('lang');
+      $market = $request->input('market');
       $lrs = [
         'uid' => $uid,
         'nid' => $nid,
         'tid' => $tid,
         'statement_status' => $statement_status,
         'statement_id' => $statement_id,
+        'lang' => $lang,
+        'market' => $market,
       ];
       if (!empty($statement_id)) {
         // Update LRS data.
         ContentModel::setLrsData($lrs);
+      }
+      else {
+        file_put_contents('/tmp/curl_lrs_log.txt', print_r($decode, 1), FILE_APPEND);
       }
     }
     // Building url and headers.
     $build = $this->build($arg1, $arg2, $request->all(), $request->headers->all());
     $post_field = $request->getcontent();
     $curl = curl_init();
-    curl_setopt_array($curl, array(
+    curl_setopt_array($curl, [
       CURLOPT_URL => $build['url'],
       CURLOPT_RETURNTRANSFER => TRUE,
       CURLOPT_ENCODING => "",
@@ -195,7 +203,7 @@ class LrsAgentController extends Controller {
       CURLOPT_POSTFIELDS => $post_field,
       CURLOPT_HTTPHEADER => $build['header'],
       CURLOPT_HEADER => TRUE,
-    ));
+    ]);
     $response = curl_exec($curl);
     $err = curl_error($curl);
     curl_close($curl);
@@ -204,7 +212,7 @@ class LrsAgentController extends Controller {
     }, array_filter(array_map("trim", explode("\n", $response))));
     $res = Response('');
     foreach ($parsed as $value) {
-      if (!empty($value[1])) {
+      if (!empty($value[1]) && isset($value[0])) {
         $res->header($value[0], $value[1]);
       }
     }
@@ -226,7 +234,7 @@ class LrsAgentController extends Controller {
    */
   protected function processCurl(array $build, $method) {
     $curl = curl_init();
-    curl_setopt_array($curl, array(
+    curl_setopt_array($curl, [
       CURLOPT_URL => $build['url'],
       CURLOPT_RETURNTRANSFER => TRUE,
       CURLOPT_ENCODING => "",
@@ -235,7 +243,7 @@ class LrsAgentController extends Controller {
       CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
       CURLOPT_CUSTOMREQUEST => $method,
       CURLOPT_HTTPHEADER => $build['header'],
-    ));
+    ]);
 
     $response = curl_exec($curl);
     $err = curl_error($curl);

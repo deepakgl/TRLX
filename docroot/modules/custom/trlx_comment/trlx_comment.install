@@ -1,0 +1,107 @@
+<?php
+
+/**
+ * @file
+ * Create and update table.
+ */
+
+use Drupal\Core\Database\Database;
+
+/**
+ * Create new table in the database.
+ *
+ * @return array
+ *   New tables.
+ */
+function trlx_comment_schema() {
+  $schema['trlx_comment'] = [
+    'fields' => [
+      'id' => [
+        'type' => 'serial',
+        'not null' => TRUE,
+      ],
+      'user_id' => [
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'The user ID of the author who posted a comment on the node.',
+      ],
+      'entity_id' => [
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'The entity_id of the entity for which the statistics are compiled.',
+      ],
+      'pid' => [
+        'type' => 'int',
+        'not null' => FALSE,
+        'default' => 0,
+        'description' => 'The parent comment id if it is a reply to the existing comment.',
+      ],
+      'comment_body' => [
+        'type' => 'text',
+        'not null' => FALSE,
+        'size' => 'big',
+      ],
+      'comment_timestamp' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'The Unix timestamp of the comment that was posted within the node.',
+      ],
+    ],
+    'primary key' => ['id'],
+    'mysql_character_set' => 'utf8mb4',
+  ];
+
+  return $schema;
+
+}
+
+/**
+ * Implements hook_update_n().
+ *
+ * Create the table without re-installing the module.
+ */
+function trlx_comment_update_8504() {
+
+  $schema = trlx_comment_schema();
+  if (!db_table_exists('trlx_comment')) {
+    db_create_table('trlx_comment', $schema['trlx_comment']);
+  }
+}
+
+/**
+ * Add new columns: "comment_tags" & "langcode".
+ *
+ * Column: "comment_tags" - comment tag data.
+ * Column: "langcode" - Language code of associated nid.
+ */
+function trlx_comment_update_8601() {
+  // Specifications for comment_tags column.
+  $spec = [
+    'comment_tags' => [
+      'description' => "Stores tag data.",
+      'type' => 'blob',
+      'not null' => FALSE,
+      'size' => 'big',
+    ],
+    'langcode' => [
+      'description' => "Stores language code of associated nid.",
+      'type' => 'varchar',
+      'length' => 12,
+      'not null' => TRUE,
+      'default' => '',
+    ],
+  ];
+
+  $schema = Database::getConnection()->schema();
+  if (!$schema->fieldExists('trlx_comment', 'comment_tags')) {
+    $schema->addField('trlx_comment', 'comment_tags', $spec['comment_tags']);
+  }
+  if (!$schema->fieldExists('trlx_comment', 'langcode')) {
+    $schema->addField('trlx_comment', 'langcode', $spec['langcode']);
+  }
+}

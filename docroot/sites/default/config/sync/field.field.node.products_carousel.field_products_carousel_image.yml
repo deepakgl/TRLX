@@ -11,7 +11,7 @@ field_name: field_products_carousel_image
 entity_type: node
 bundle: products_carousel
 label: 'Products Carousel Image'
-description: 'Allowed file types:<b> png, gif, jpg, jpeg.</b><br>Image Resolution:<b> 1440 x 528px</b>'
+description: 'Allowed file types:<b> png, gif, jpg, jpeg.</b><br>Image Resolution:<b> 1040 x 422px</b>'
 required: false
 translatable: false
 default_value: {  }

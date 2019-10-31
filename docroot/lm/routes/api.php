@@ -15,20 +15,26 @@ $router->get('/', function () use ($router) {
   return $router->app->version();
 });
 
+// LRS Routes.
+$router->group(['prefix' => 'v1/slrsa'], function () use ($router) {
+  $router->options('{arg1}[/{arg2}]', 'LrsAgentController@option');
+  $router->get('{arg1}[/{arg2}]', 'LrsAgentController@get');
+  $router->put('{arg1}[/{arg2}]', 'LrsAgentController@put');
+  $router->delete('{arg1}[/{arg2}]', 'LrsAgentController@delete');
+});
+// Index users in elastic.
+$router->group(['prefix' => 'v1'], function () use ($router) {
+  $router->post('users', 'UserController@updateUsersIndex');
+  $router->post('update/user/elastic/index', 'UserActivitiesController@updateUserElasticBody');
+});
+
 $router->group(
   ['middleware' => 'jwt.auth'], function () use ($router) {
-    // LRS Routes.
-    $router->group(['prefix' => 'v1/slrsa'], function () use ($router) {
-      $router->options('{arg1}[/{arg2}]', 'LrsAgentController@option');
-      $router->get('{arg1}[/{arg2}]', 'LrsAgentController@get');
-      $router->put('{arg1}[/{arg2}]', 'LrsAgentController@put');
-      $router->delete('{arg1}[/{arg2}]', 'LrsAgentController@delete');
-    });
 
     // Leaderboard.
     $router->group(['prefix' => 'v1'], function () use ($router) {
-      $router->get('userLeaderBoard', 'LeaderboardController@userLeaderBoard');
-      $router->get('currentUserRank', 'LeaderboardController@currentUserRank');
+      $router->get('leaderboard', 'LeaderboardController@userLeaderBoard');
+      $router->get('userProfileRank', 'LeaderboardController@userProfileRank');
     });
 
     // Content.
@@ -47,7 +53,8 @@ $router->group(
 
     // Badges.
     $router->group(['prefix' => 'v1'], function () use ($router) {
-      $router->get('getUserBadges', 'BadgesController@userBadges');
+      $router->get('allStamps', 'BadgesController@userStamps');
+      $router->get('myStamps', 'BadgesController@userStamps');
       $router->get('getUserBadgesByUid', 'BadgesController@userBadgesByUid');
       $router->get('allocateBadge', 'BadgesController@allocateBadge');
       $router->get('allocateInspirationBadge', 'BadgesController@allocateInspirationBadge');
@@ -56,7 +63,7 @@ $router->group(
     // Flag.
     $router->group(['prefix' => 'v1'], function () use ($router) {
       $router->post('flag', 'FlagController@setFlag');
-      $router->get('myFlags', 'FlagController@myFlags');
+      $router->get('bookmarksListing', 'FlagController@myBookmarks');
       $router->post('contentViewFlag', 'FlagController@contentViewFlag');
     });
 
@@ -71,17 +78,18 @@ $router->group(
       $router->post('quiz', 'QuizController@quiz');
     });
 
+    // JWT token API.
+    $router->group(['prefix' => 'v1'], function () use ($router) {
+      $router->get('token', 'JwtTokenController@jwtToken');
+    });
+
     // User Activity.
     $router->group(['prefix' => 'v1'], function () use ($router) {
       $router->get('getUserActivities', 'UserActivitiesController@getUserActivities');
       $router->get('userActivities', 'UserActivitiesController@userActivities');
       $router->get('getUserLevelActivities', 'UserActivitiesController@getUserLevelActivities');
       $router->get('userActivitiesLevel', 'UserActivitiesController@userActivitiesLevel');
-    });
-
-    // User Rank.
-    $router->group(['prefix' => 'v1'], function () use ($router) {
-      $router->get('userProfileRank', 'UserRankController@userProfileRank');
+      $router->get('userActivitiesLevel', 'UserActivitiesController@userActivitiesLevel');
     });
 
     // Global activity.
@@ -89,4 +97,16 @@ $router->group(
       $router->get('userActivity', 'UserActivitiesController@userActivity');
       $router->get('globalActivity', 'UserActivitiesController@globalActivity');
     });
+
+    // Notification Routes.
+    $router->group(['prefix' => 'v1'], function () use ($router) {
+      $router->get('notification', 'NotificationController@getByUserId');
+      $router->post('notification/status/save', 'NotificationController@updateNotificationsFlag');
+    });
   });
+
+// Index users in elastic.
+$router->group(['prefix' => 'v1'], function () use ($router) {
+  $router->post('users', 'UserController@updateUsersIndex');
+  $router->get('users', 'UserController@getUsersListing');
+});

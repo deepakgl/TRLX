@@ -1,0 +1,15 @@
+uuid: e9cadd7e-8199-4854-b971-c8c97ee9dc44
+langcode: en
+status: true
+dependencies: {  }
+name: stories_level_listing_mobile
+label: 'Stories Level Listing Mobile (150x150)'
+effects:
+  5e5af9e4-2cbb-4a2f-8956-3e2016bb7aba:
+    uuid: 5e5af9e4-2cbb-4a2f-8956-3e2016bb7aba
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 150
+      height: 150
+      anchor: center-center

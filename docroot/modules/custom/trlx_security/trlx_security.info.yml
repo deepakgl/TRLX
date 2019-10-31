@@ -1,0 +1,6 @@
+name: TRLX Security
+type: module
+description: TRLX Security
+core: 8.x
+package: TRLX
+

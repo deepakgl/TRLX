@@ -218,6 +218,75 @@ class Helper {
   }
 
   /**
+   * Get the file url from fid.
+   *
+   * @param mixed $fid
+   *   Media id.
+   *
+   * @return array
+   *   The file url.
+   */
+  public static function getUriByFid($fid) {
+    $query = DB::table('file_managed as mf')
+      ->select('mf.uri', 'mf.fid')
+      ->whereIn('mf.fid', array_filter($fid))
+      ->get();
+    $result = [];
+    foreach ($query as $key => $value) {
+      $result[$value->fid] = $value->uri;
+    }
+
+    return $result;
+  }
+
+  /**
+   * Fetch stamps image styles by fid and file uri.
+   *
+   * @param mixed $fids
+   *   File id's.
+   * @param mixed $image_uris
+   *   Relative image path.
+   *
+   * @return array
+   *   Image styles array.
+   */
+  public static function buildStampsImageStyles($fids, $image_uris) {
+    $result = [];
+    foreach ($fids as $fileData) {
+      if (array_key_exists($fileData['imageId'], $image_uris)) {
+        $path = str_replace("public://", NULL, $image_uris[$fileData['imageId']]);
+        // Generate the respective image styles.
+        $result[$fileData['tid']]['large'] = getenv("SITE_URL")
+        . "/sites/default/files/styles/stamp_detail/public/"
+        . $path
+        . '?itok='
+        . self::getPathToken(
+          'search_listings_tablet',
+          $image_uris[$fileData['imageId']]
+        );
+
+        $result[$fileData['tid']]['medium'] = getenv("SITE_URL")
+        . "/sites/default/files/styles/stamp_tablet/public/" . $path
+        . '?itok='
+        . self::getPathToken(
+          'search_listings_desktop',
+          $image_uris[$fileData['imageId']]
+        );
+
+        $result[$fileData['tid']]['small'] = getenv("SITE_URL")
+        . "/sites/default/files/styles/stamp_mobile/public/" . $path
+        . '?itok='
+        . self::getPathToken(
+          'search_listings_mobile',
+          $image_uris[$fileData['imageId']]
+        );
+      }
+    }
+
+    return $result;
+  }
+
+  /**
    * Generate itok for the images.
    *
    * @param string $style_name
@@ -255,9 +324,9 @@ class Helper {
   /**
    * Fetch image styles by fid and file uri.
    *
-   * @param  mixed $fids
+   * @param mixed $fids
    *   File id's.
-   * @param  mixed $image_uris
+   * @param mixed $image_uris
    *   Relative image path.
    *
    * @return array
@@ -270,27 +339,27 @@ class Helper {
         $path = str_replace("public://", NULL, $image_uris[$fileData['imageId']]);
         // Generate the respective image styles.
         $result[$fileData['nid']]['large'] = getenv("SITE_URL")
-        . "/sites/default/files/styles/product_listing_310_425/public/"
+        . "/sites/default/files/styles/search_listings_desktop/public/"
         . $path
         . '?itok='
         . self::getPathToken(
-          'product_listing_310_425',
+          'search_listings_tablet',
           $image_uris[$fileData['imageId']]
         );
 
         $result[$fileData['nid']]['medium'] = getenv("SITE_URL")
-        . "/sites/default/files/styles/product_listings_tablet_180_245/public/" . $path
+        . "/sites/default/files/styles/search_listings_tablet/public/" . $path
         . '?itok='
         . self::getPathToken(
-          'product_listings_tablet_180_245',
+          'search_listings_desktop',
           $image_uris[$fileData['imageId']]
         );
 
         $result[$fileData['nid']]['small'] = getenv("SITE_URL")
-        . "/sites/default/files/styles/product_listings_mobile_300_410/public/" . $path
+        . "/sites/default/files/styles/search_listings_mobile/public/" . $path
         . '?itok='
         . self::getPathToken(
-          'product_listings_mobile_300_410',
+          'search_listings_mobile',
           $image_uris[$fileData['imageId']]
         );
       }
@@ -302,9 +371,9 @@ class Helper {
   /**
    * Prepare image styles response.
    *
-   * @param  mixed $result
+   * @param mixed $result
    *   Data with respective image styles.
-   * @param  int $nid
+   * @param int $nid
    *   Node id.
    *
    * @return array

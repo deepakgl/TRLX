@@ -1,0 +1,15 @@
+uuid: 9d264353-fdba-489c-943d-d2fcf45f6ac2
+langcode: en
+status: true
+dependencies: {  }
+name: level_home_page_desktop
+label: 'Level Home Page Desktop (1194 X 357)'
+effects:
+  a338bdef-82c8-455c-9391-dd52a427260f:
+    uuid: a338bdef-82c8-455c-9391-dd52a427260f
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 1194
+      height: 357
+      anchor: center-center

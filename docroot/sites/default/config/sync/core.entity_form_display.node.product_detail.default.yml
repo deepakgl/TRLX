@@ -13,11 +13,11 @@ dependencies:
     - field.field.node.product_detail.field_customer_questions
     - field.field.node.product_detail.field_demonstration
     - field.field.node.product_detail.field_display_title
-    - field.field.node.product_detail.field_downloadable
     - field.field.node.product_detail.field_end_date
     - field.field.node.product_detail.field_featured_image
     - field.field.node.product_detail.field_field_product_image
     - field.field.node.product_detail.field_fun_fact_sheet
+    - field.field.node.product_detail.field_headline
     - field.field.node.product_detail.field_how_to_sell_this_product
     - field.field.node.product_detail.field_if_she_asks_share
     - field.field.node.product_detail.field_just_for_you
@@ -27,6 +27,7 @@ dependencies:
     - field.field.node.product_detail.field_perfect_partners_text
     - field.field.node.product_detail.field_point_value
     - field.field.node.product_detail.field_price
+    - field.field.node.product_detail.field_product_carousel
     - field.field.node.product_detail.field_product_categories
     - field.field.node.product_detail.field_product_family
     - field.field.node.product_detail.field_product_video
@@ -45,6 +46,7 @@ dependencies:
   module:
     - entity_browser
     - field_group
+    - paragraphs
     - path
     - term_reference_tree
     - text
@@ -62,6 +64,20 @@ third_party_settings:
         required_fields: true
       label: 'Perfect partners'
       region: hidden
+    group_product_carousel:
+      children:
+        - field_headline
+        - field_product_carousel
+      parent_name: ''
+      weight: 8
+      format_type: fieldset
+      format_settings:
+        id: ''
+        classes: ''
+        description: ''
+        required_fields: false
+      label: 'Product Carousel'
+      region: content
 id: node.product_detail.default
 targetEntityType: node
 bundle: product_detail
@@ -75,12 +91,6 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: text_textarea_with_summary
-    region: content
-  field_archive_and_unarchive:
-    weight: 19
-    settings: {  }
-    third_party_settings: {  }
-    type: options_select
     region: content
   field_brands:
     weight: 15
@@ -96,23 +106,16 @@ content:
     third_party_settings: {  }
     type: string_textfield
     region: content
-  field_downloadable:
-    weight: 11
-    settings:
-      display_label: true
-    third_party_settings: {  }
-    type: boolean_checkbox
-    region: content
   field_featured_image:
     weight: 5
     settings:
       entity_browser: media_entity_browser
       field_widget_display: rendered_entity
-      field_widget_edit: true
       field_widget_remove: true
       selection_mode: selection_append
       field_widget_display_settings:
         view_mode: default
+      field_widget_edit: false
       field_widget_replace: false
       open: false
     third_party_settings: {  }
@@ -123,15 +126,23 @@ content:
     settings:
       entity_browser: media_entity_browser
       field_widget_display: rendered_entity
-      field_widget_edit: true
       field_widget_remove: true
       selection_mode: selection_append
       field_widget_display_settings:
         view_mode: default
-      open: false
+      field_widget_edit: false
       field_widget_replace: false
+      open: false
     third_party_settings: {  }
     type: entity_browser_entity_reference
+    region: content
+  field_headline:
+    weight: 13
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
     region: content
   field_markets:
     weight: 16
@@ -145,23 +156,35 @@ content:
     type: term_reference_tree
     region: content
   field_point_value:
-    weight: 8
+    weight: 9
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
     region: content
+  field_product_carousel:
+    type: entity_reference_paragraphs
+    weight: 14
+    settings:
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: open
+      add_mode: button
+      form_display_mode: default
+      default_paragraph_type: product_carousel
+    third_party_settings: {  }
+    region: content
   field_product_video:
     weight: 6
     settings:
       entity_browser: video_entity_browser
       field_widget_display: rendered_entity
-      field_widget_edit: true
       field_widget_remove: true
       selection_mode: selection_append
       field_widget_display_settings:
         view_mode: default
+      field_widget_edit: false
       field_widget_replace: false
       open: false
     third_party_settings: {  }
@@ -172,11 +195,11 @@ content:
     settings:
       entity_browser: media_entity_browser
       field_widget_display: rendered_entity
-      field_widget_edit: true
       field_widget_remove: true
       selection_mode: selection_append
       field_widget_display_settings:
         view_mode: default
+      field_widget_edit: false
       field_widget_replace: false
       open: false
     third_party_settings: {  }
@@ -256,6 +279,7 @@ hidden:
   created: true
   field_access_by_role: true
   field_ar_search: true
+  field_archive_and_unarchive: true
   field_benefits: true
   field_customer_questions: true
   field_demonstration: true

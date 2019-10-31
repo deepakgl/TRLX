@@ -8,19 +8,21 @@ dependencies:
     - field.field.node.stories.field_access_by_role
     - field.field.node.stories.field_archive_and_unarchive
     - field.field.node.stories.field_comment
+    - field.field.node.stories.field_consumer_category
     - field.field.node.stories.field_content_section
     - field.field.node.stories.field_country
     - field.field.node.stories.field_department
     - field.field.node.stories.field_display_title
-    - field.field.node.stories.field_downloadable
     - field.field.node.stories.field_featured_image
     - field.field.node.stories.field_featured_on_elx_specialty
     - field.field.node.stories.field_first_name
+    - field.field.node.stories.field_headline
     - field.field.node.stories.field_hero_image
     - field.field.node.stories.field_last_name
     - field.field.node.stories.field_markets
     - field.field.node.stories.field_occupation
     - field.field.node.stories.field_point_value
+    - field.field.node.stories.field_product_carousel
     - field.field.node.stories.field_product_categories
     - field.field.node.stories.field_product_family
     - field.field.node.stories.field_pulsed_content
@@ -31,6 +33,7 @@ dependencies:
     - field.field.node.stories.field_sub_title
     - field.field.node.stories.field_tags
     - field.field.node.stories.field_translation
+    - field.field.node.stories.field_try_this
     - field.field.node.stories.field_video
     - field.field.node.stories.field_video_thumbnail
     - node.type.stories
@@ -60,6 +63,14 @@ content:
       pager_id: 0
     third_party_settings: {  }
     type: comment_default
+    region: content
+  field_consumer_category:
+    weight: 23
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
     region: content
   field_content_section:
     weight: 13
@@ -92,16 +103,6 @@ content:
     third_party_settings: {  }
     type: string
     region: content
-  field_downloadable:
-    weight: 12
-    label: above
-    settings:
-      format: default
-      format_custom_false: ''
-      format_custom_true: ''
-    third_party_settings: {  }
-    type: boolean
-    region: content
   field_featured_image:
     weight: 3
     label: above
@@ -112,6 +113,14 @@ content:
     region: content
   field_first_name:
     weight: 14
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_headline:
+    weight: 24
     label: above
     settings:
       link_to_entity: false
@@ -158,6 +167,15 @@ content:
     third_party_settings: {  }
     type: string
     region: content
+  field_product_carousel:
+    weight: 25
+    label: above
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    type: entity_reference_revisions_entity_view
+    region: content
   field_pulsed_content:
     weight: 5
     label: above
@@ -197,6 +215,13 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: list_default
+    region: content
+  field_try_this:
+    weight: 26
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
     region: content
   field_video:
     type: entity_reference_entity_view

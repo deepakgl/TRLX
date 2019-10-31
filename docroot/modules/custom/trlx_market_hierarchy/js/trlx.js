@@ -4,16 +4,19 @@
       $('.user-register-form .term-reference-tree-button, .user-form.term-reference-tree button, .user-form .term-reference-tree-button, .user-form.term-reference-tree button').next('div').find('input[type="checkbox"]').attr('disabled', 'disabled');
       $('.user-register-form .term-reference-tree-button, .user-form.term-reference-tree button, .user-form .term-reference-tree-button, .user-form.term-reference-tree button').next('div').find('input[type="checkbox"]').prop("checked", false);
 
-      // Js for select all markets by default.
-      $('.node-level-interactive-content-form .term-reference-tree-level .form-type-checkbox input:checkbox').prop("checked", true);
-      $('.node-product-detail-form .term-reference-tree-level .form-type-checkbox input:checkbox').prop("checked", true);
-      $('.node-stories-form .term-reference-tree-level .form-type-checkbox input:checkbox').prop("checked", true);
-      $('.node-tools-form .term-reference-tree-level .form-type-checkbox input:checkbox').prop("checked", true);
-      $('.node-faq-form .term-reference-tree-level .form-type-checkbox input:checkbox').prop("checked", true);
-      $('.node-brand-story-form .term-reference-tree-level .form-type-checkbox input:checkbox').prop("checked", true);
-      $('.node-t-c-form .term-reference-tree-level .form-type-checkbox input:checkbox').prop("checked", true);
-      $('.node-welcome-message-form .term-reference-tree-level .form-type-checkbox input:checkbox').prop("checked", true);
-
+      if(window.location.href.indexOf('translations') == -1) {
+        // Js for select all markets by default.
+        $('.node-level-interactive-content-form .term-reference-tree-level .form-type-checkbox input:checkbox').prop("checked", true);
+        $('.node-product-detail-form .term-reference-tree-level .form-type-checkbox input:checkbox').prop("checked", true);
+        $('.node-stories-form .term-reference-tree-level .form-type-checkbox input:checkbox').prop("checked", true);
+        $('.node-tools-form .term-reference-tree-level .form-type-checkbox input:checkbox').prop("checked", true);
+        $('.node-faq-form .term-reference-tree-level .form-type-checkbox input:checkbox').prop("checked", true);
+        $('.node-brand-story-form .term-reference-tree-level .form-type-checkbox input:checkbox').prop("checked", true);
+        $('.node-t-c-form .term-reference-tree-level .form-type-checkbox input:checkbox').prop("checked", true);
+        $('.node-welcome-message-form .term-reference-tree-level .form-type-checkbox input:checkbox').prop("checked", true);
+        $('.node-privacy-policy-form .term-reference-tree-level .form-type-checkbox input:checkbox').prop("checked", true);
+      }
+      $(".form-item-send-notifications .translation-entity-all-languages").hide();
       // Js for select all markets on select of region.
       var $region = $('.path-node .term-reference-tree-button').next('div').find('input[type="checkbox"]');
       $region.on('click', function() {

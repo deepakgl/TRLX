@@ -1,5 +1,5 @@
-elastic_host: elasticsearch
-elastic_port: '80'
+elastic_host: 10.252.56.18
+elastic_port: '9200'
 elastic_scheme: http
 lrs_statement_id: 'Basic vdsfsd'
 elx_environment: lmx_local
@@ -21,8 +21,8 @@ redis_base: '0'
 elastic_username: ''
 elastic_password: ''
 submit: 'Save configuration'
-form_build_id: form-t6IUbNShpNSyl4MmZa65lCsqhebE3XhLGTRoKYelrO8
-form_token: QkG-atdw19UQawiLl8cMvsQ3U67R0ajI9uzXNUay0zA
+form_build_id: form-auCmEODx0iqtC9DMdnF0ntxrugOoV_OqYW8psK5LACk
+form_token: q6kPNq-GOlQnIChT2ArKioGKo9vaWNgsndd6BGwm9AY
 form_id: elx_external_integration
 op: 'Save configuration'
 elx_users_list_access_on_site_down: ''

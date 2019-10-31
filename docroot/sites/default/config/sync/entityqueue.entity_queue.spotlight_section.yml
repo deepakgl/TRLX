@@ -1,0 +1,29 @@
+uuid: f3f0622c-0a9f-4c43-be3f-940a729b284b
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: spotlight_section
+label: Spotlight
+handler: simple
+handler_configuration: {  }
+entity_settings:
+  target_type: node
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      brand_story: brand_story
+      level_interactive_content: level_interactive_content
+      product_detail: product_detail
+      stories: stories
+      tools: tools
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: brand_story
+queue_settings:
+  min_size: 0
+  max_size: 4
+  act_as_queue: false
+  reverse_in_admin: false

@@ -39,6 +39,7 @@ class LearningLevels extends ResourceBase {
     $requiredParams = [
       '_format',
       'language',
+      'brandId',
     ];
 
     // Check for required parameters.
@@ -63,8 +64,9 @@ class LearningLevels extends ResourceBase {
     if (!($response->getStatusCode() === Response::HTTP_OK)) {
       return $response;
     }
-
+    $content_section = '';
     $brandId = $request->query->get('brandId');
+    $params = ['language' => $language];
     if (!empty($brandId)) {
       // Prepare view response for valid brand key.
       list($view_results, $status_code) = $entityUtility->fetchApiResult(
@@ -79,8 +81,9 @@ class LearningLevels extends ResourceBase {
       if (empty($view_results)) {
         return $commonUtility->errorResponse($this->t('Brand Id (@brandId) does not exist.', ['@brandId' => $brandId]), Response::HTTP_UNPROCESSABLE_ENTITY);
       }
+      $content_section = 'brandLevel';
+      $params = ['language' => $language, 'brand' => $brandId, 'section' => $content_section];
     }
-
     // Prepare array of keys for alteration in response.
     $data = [
       'title' => 'decode',
@@ -99,7 +102,7 @@ class LearningLevels extends ResourceBase {
         NULL,
         'learning_levels',
         'rest_export_learning_levels',
-        $data, ['language' => $language, 'brand' => $brandId],
+        $data, $params,
         'level_listing'
       );
 
@@ -145,7 +148,13 @@ class LearningLevels extends ResourceBase {
         $decode['results'][$key] = $value;
         $tmp++;
       }
+      $point = $term_nodes[$value['categoryId']];
+      $point_value = array_sum(array_column($point, 'point_value'));
+      if (!empty($point_value)) {
+        $decode['results'][$key]['pointValue'] = $point_value;
+      }
     }
+
     $data = array_values(array_filter($decode['results']));
     $decode['results'] = array_slice($data, $offset, $limit);
     $decode['pager']['count'] = count($data) - $offset;

@@ -1,0 +1,22 @@
+uuid: b8a8eea4-2e60-4084-9555-97bef20dc29e
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.privacy_policy
+id: node.privacy_policy.promote
+field_name: promote
+entity_type: node
+bundle: privacy_policy
+label: 'Promoted to front page'
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

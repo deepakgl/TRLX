@@ -1,0 +1,18 @@
+uuid: 99fabf16-3b27-4bc9-b0d1-fc81dd37a3e7
+langcode: en
+status: true
+dependencies:
+  module:
+    - serialization
+    - trlx_consumer
+    - trlx_utility
+id: consumer_category_listing
+plugin_id: consumer_category_listing
+granularity: resource
+configuration:
+  methods:
+    - GET
+  formats:
+    - json
+  authentication:
+    - jwt_Auth

@@ -554,7 +554,7 @@ display:
           empty: false
           tokenize: false
           content:
-            value: '<a href="/admin/structure/taxonomy/manage/static_translation/add">Add New</a>'
+            value: "<a href=\"/admin/structure/taxonomy/manage/static_translation/add\">Add New</a>"
             format: full_html
           plugin_id: text
       footer: {  }

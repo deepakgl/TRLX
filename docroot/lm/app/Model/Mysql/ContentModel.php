@@ -3,7 +3,6 @@
 namespace App\Model\Mysql;
 
 use Illuminate\Support\Facades\DB;
-use App\Model\Elastic\PointsModel;
 use App\Support\Helper;
 use App\Model\Elastic\BadgeModel;
 
@@ -26,6 +25,7 @@ class ContentModel {
   public static function getTermName($tid, $vid = NULL) {
     $query = DB::table('taxonomy_term_field_data as ttfd');
     $query->whereIn('ttfd.tid', $tid);
+    $query->where('ttfd.langcode', '=', 'en');
     if (!empty($vid) && $vid == 'leaderboard_comparison') {
       $query->where('ttfd.vid', '=', $vid);
       $query->where('ttfd.langcode', '=', 'en');
@@ -122,21 +122,15 @@ class ContentModel {
       ->select('records.statement_status')
       ->where('records.nid', '=', $params['nid'])
       ->where('records.uid', '=', $params['uid'])
-      ->get();
-    if (!empty($query[0])) {
-      // If level status is in complete state return.
-      if ($query[0]->statement_status != 'progress') {
+      ->get()->all();
+    if (isset($query[0]) && !empty($query[0])) {
+      // If level status is in passed state return.
+      if ($query[0]->statement_status == 'passed') {
         return FALSE;
       }
-      // Allocate points to user on completion of level.
-      PointsModel::allocatePointsOnLevelComplete($params);
       return DB::table('lm_lrs_records')
         ->where('nid', $params['nid'])
         ->update(['statement_status' => $params['statement_status'], 'tid' => $params['tid']]);
-    }
-    if ($params['statement_status'] != 'progress') {
-      // Allocate points to user on completion of level.
-      PointsModel::allocatePointsOnLevelComplete($params);
     }
 
     DB::table('lm_lrs_records')->insert([
@@ -521,37 +515,6 @@ class ContentModel {
     if (!$elastic_client) {
       return FALSE;
     }
-    $lang = UserModel::getUserInfoByUid($params['uid'], 'language');
-    $market = UserModel::getUserInfoByUid($params['uid'], ['market']);
-    // Fetch all completed level by user id.
-    $results = DB::select(DB::raw("SELECT lm.tid , GROUP_CONCAT(COALESCE(lrs.statement_status, 'NULL'))
-    as status FROM lm_terms_node as lm LEFT JOIN lm_lrs_records
-    as lrs on  lm.nid = lrs.nid AND  lm.tid = lrs.tid AND lrs.uid = {$params['uid']} LEFT
-    JOIN node_field_data as nfd on nfd.nid  = lm.nid INNER JOIN node__field_markets as nfm on nfm.entity_id = lm.nid WHERE nfd.langcode =
-    '{$lang[0]->language}' AND nfm.field_markets_target_id = {$market[0]->market}  AND nfd.status = 1 GROUP BY lm.tid"));
-    $status = [];
-    foreach ($results as $key => $result) {
-      $status_array = explode(",", $result->status);
-      $count_null = array_count_values($status_array);
-      // Get the in-progress/completed levels.
-      if (!in_array('progress', $status_array) && !isset($count_null['NULL'])) {
-        $status[] = $result->tid;
-      }
-    }
-    // Allocate badge to user on completion of respective level.
-    $badge_name = [];
-    if (count($status) == 1) {
-      $badge_name[] = 'on_your_way_badge';
-    }
-    elseif (count($status) == 5) {
-      $badge_name[] = 'high_five_badge';
-    }
-    elseif (count($status) == 10) {
-      $badge_name[] = 'perfect_10_badge';
-    }
-    if (!empty($badge_name)) {
-      BadgeModel::allocateBadgeToUser($params['nid'], $params, $badge_name, $elastic_client);
-    }
     // Allocate badge to user on level percentage.
     $level_info = self::getLevelModules($params);
     $percentage = self::getLevelModulePercentage($params, $level_info);
@@ -574,7 +537,7 @@ class ContentModel {
    *   Level related nids.
    */
   public static function getLevelModules($params) {
-    $user_info = UserModel::getUserInfoByUid($params['uid'], ['market', 'language']);
+    $market = explode(", ", $params['market']);
     // Query for get all module by category id.
     $query = DB::table('node_field_data as n');
     $query->leftJoin('node__field_learning_category as nflc', 'n.nid', '=', 'nflc.entity_id');
@@ -583,11 +546,12 @@ class ContentModel {
     $query->distinct('n.nid');
     $query->where('n.type', '=', 'level_interactive_content');
     $query->where('n.status', '=', 1);
-    $query->where('n.langcode', '=', $user_info[0]->language);
-    $query->where('nflc.langcode', '=', $user_info[0]->language);
+    $query->where('n.langcode', '=', $params['lang']);
+    $query->where('nflc.langcode', '=', $params['lang']);
     $query->where('nflc.field_learning_category_target_id', '=', $params['tid']);
-    $query->where('nfm.field_markets_target_id', '=', $user_info[0]->market);
+    $query->whereIn('nfm.field_markets_target_id', $market);
     $result = $query->get();
+    $nids = [];
     foreach ($result as $key => $value) {
       $nids[] = $value->nid;
     }
@@ -690,6 +654,333 @@ class ContentModel {
       ->first();
 
     return $query->status;
+  }
+
+  /**
+   * Get brand term ids.
+   *
+   * @return array
+   *   Brand term ids.
+   */
+  public static function getBrandTermIds() {
+    $query = DB::table('taxonomy_term__field_brand_key as ttfbk')
+      ->select('ttfbk.entity_id', 'ttfbk.field_brand_key_value')
+      ->get()->all();
+
+    return json_decode(json_encode((array) $query), TRUE);
+  }
+
+  /**
+   * Get trlx utility config form values.
+   *
+   * @return array
+   *   Content config form data.
+   */
+  public static function getTrlxUtilityConfigValues() {
+    $query = DB::table('config')
+      ->select('config.data')
+      ->where('config.name', '=', 'trlx_utility.settings')
+      ->first();
+    return unserialize($query->data);
+  }
+
+  /**
+   * Get trlx notification config form values.
+   *
+   * @return array
+   *   Notification config form data.
+   */
+  public static function getNotificationConfigValues() {
+    $query = DB::table('config')
+      ->select('config.data')
+      ->where('config.name', '=', 'trlx_notification.settings')
+      ->first();
+    return unserialize($query->data);
+  }
+
+  /**
+   * Get term by name.
+   *
+   * @param int $name
+   *   Taxonomy name.
+   * @param mixed $vid
+   *   Vocabulary id.
+   * @param mixed $lang
+   *   Language.
+   *
+   * @return string
+   *   Term name.
+   */
+  public static function getTermByName($name, $vid, $lang) {
+    $query = DB::table('taxonomy_term_field_data as ttfd');
+    $query->leftJoin('taxonomy_term__field_translation_key as tk', 'tk.entity_id', '=', 'ttfd.tid');
+    $query->select('tk.field_translation_key_value');
+    $query->where('ttfd.name', '=', $name);
+    $query->where('ttfd.langcode', '=', $lang);
+    $query->where('tk.langcode', '=', $lang);
+    $query->where('ttfd.vid', '=', $vid);
+
+    $results = $query->get();
+    if (empty($query)) {
+      return FALSE;
+    }
+    $data = [];
+    foreach ($results as $key => $result) {
+      $data[] = $result->field_translation_key_value;
+    }
+
+    return $data;
+  }
+
+  /**
+   * Get content section key by tid.
+   *
+   * @param int $tid
+   *   Taxonomy id.
+   *
+   * @return string
+   *   Key name.
+   */
+  public static function getContentSectionKeyByTid($tid) {
+    $query = DB::table('taxonomy_term_data as ttfd');
+    $query->leftJoin('taxonomy_term__field_content_section_key as tk', 'tk.entity_id', '=', 'ttfd.tid');
+    $query->where('ttfd.tid', '=', $tid);
+    $query->where('ttfd.langcode', '=', 'en');
+
+    $results = $query->get();
+    if (empty($query)) {
+      return FALSE;
+    }
+    foreach ($results as $key => $result) {
+      $data = $result->field_content_section_key_value;
+    }
+    return $data;
+  }
+
+  /**
+   * Get trlx section names.
+   *
+   * @return array
+   *   Section names.
+   */
+  public static function getTrlxSectionNames() {
+    $sectionData = [];
+    $sectionData = [
+      'trend' => 'TR TRENDS',
+      'consumer' => 'CONSUMERS',
+      'sellingTips' => 'SELLING TIPS',
+      'insiderCorner' => "INSIDER'S CORNER",
+      'tools' => 'VIDEOS',
+      'faq' => 'FAQ',
+      'product_detail' => 'FACT SHEETS',
+      'brand_story' => 'BRAND STORY',
+      'level_interactive_content' => 'MY LESSONS',
+    ];
+    return $sectionData;
+  }
+
+  /**
+   * Get node data by nid.
+   *
+   * @param int $nid
+   *   Node id.
+   * @param int $language
+   *   Language code.
+   *
+   * @return string
+   *   Node type.
+   */
+  public static function getNodeDataByNid($nid, $language) {
+    $query = DB::table('node_field_data as n')
+      ->select('n.nid',
+       'nfdt.field_display_title_value',
+       'nfh.field_headline_value',
+       'nfpv.field_point_value_value',
+        'nfb.field_brands_target_id',
+         'nfcs.field_content_section_target_id',
+          'nfhi.field_hero_image_target_id',
+           'nfpi.field_field_product_image_target_id',
+            'nftt.field_tool_thumbnail_target_id',
+             'nffi.field_featured_image_target_id')
+      ->leftJoin('node__field_display_title as nfdt', function ($join) {
+          $join->on('n.nid', '=', 'nfdt.entity_id');
+          $join->on('n.langcode', '=', 'nfdt.langcode');
+      })
+      ->leftJoin('node__field_headline as nfh', function ($join) {
+          $join->on('n.nid', '=', 'nfh.entity_id');
+          $join->on('n.langcode', '=', 'nfh.langcode');
+      })
+      ->leftJoin('node__field_point_value as nfpv', function ($join) {
+          $join->on('n.nid', '=', 'nfpv.entity_id');
+          $join->on('n.langcode', '=', 'nfpv.langcode');
+      })
+      ->leftJoin('node__field_brands as nfb', function ($join) {
+          $join->on('n.nid', '=', 'nfb.entity_id');
+      })
+      ->leftJoin('node__field_content_section as nfcs', function ($join) {
+          $join->on('n.nid', '=', 'nfcs.entity_id');
+      })
+      ->leftJoin('node__field_hero_image as nfhi', function ($join) {
+          $join->on('n.nid', '=', 'nfhi.entity_id');
+          $join->on('n.langcode', '=', 'nfhi.langcode');
+      })
+      ->leftJoin('node__field_field_product_image as nfpi', function ($join) {
+          $join->on('n.nid', '=', 'nfpi.entity_id');
+          $join->on('n.langcode', '=', 'nfpi.langcode');
+      })
+      ->leftJoin('node__field_tool_thumbnail as nftt', function ($join) {
+          $join->on('n.nid', '=', 'nftt.entity_id');
+          $join->on('n.langcode', '=', 'nftt.langcode');
+      })
+      ->leftJoin('node__field_featured_image as nffi', function ($join) {
+          $join->on('n.nid', '=', 'nffi.entity_id');
+          $join->on('n.langcode', '=', 'nffi.langcode');
+      })
+      ->distinct('n.nid')
+      ->where('n.nid', '=', $nid)
+      ->where('n.status', '=', 1)
+      ->where('n.langcode', '=', $language)
+      ->first();
+    return $query;
+  }
+
+  /**
+   * Fetch bookmark image url by fid.
+   *
+   * @param int $fid
+   *   File Id.
+   *
+   * @return string
+   *   Image url.
+   */
+  public static function getBookmarkImageUrlByFid($fid) {
+    $small_image_url = getenv("SITE_IMAGE_URL") . 'styles/bookmark_image_mobile/public/';
+    $medium_image_url = getenv("SITE_IMAGE_URL") . 'styles/bookmark_image_tablet/public/';
+    $large_image_url = getenv("SITE_IMAGE_URL") . 'styles/bookmark_image_desktop/public/';
+    $url = [];
+    if (!empty($fid)) {
+      $query = DB::table('file_managed as fm');
+      $query->select('fm.uri');
+      $query->leftJoin('media_field_data as mfd', 'mfd.thumbnail__target_id', '=', 'fm.fid');
+      $query->where('mfd.mid', '=', $fid);
+      $result = $query->get();
+    }
+    $url[0] = isset($result[0]->uri) ? str_replace("public://", $small_image_url, $result[0]->uri) : '';
+    $url[1] = isset($result[0]->uri) ? str_replace("public://", $medium_image_url, $result[0]->uri) : '';
+    $url[2] = isset($result[0]->uri) ? str_replace("public://", $large_image_url, $result[0]->uri) : '';
+
+    return $url;
+  }
+
+  /**
+   * Get brand data from brand key.
+   *
+   * @return array
+   *   Brand data.
+   */
+  public static function getBrandDataFromBrandKey($brand_key) {
+    $query = DB::table('taxonomy_term__field_brand_key as ttfbk')
+      ->select('ttfbk.entity_id', 'ttfbk.field_brand_key_value', 'ttfd.name')
+      ->leftJoin('taxonomy_term_field_data as ttfd', 'ttfd.tid', '=', 'ttfbk.entity_id')
+      ->where('ttfbk.field_brand_key_value', '=', $brand_key)
+      ->first();
+
+    return json_decode(json_encode((array) $query), TRUE);
+  }
+
+  /**
+   * Get all trlx regions.
+   *
+   * @return array
+   *   Regions data.
+   */
+  public static function getAllRegions() {
+    $query = DB::table('taxonomy_term__parent as ttp')
+      ->select('ttp.entity_id')
+      ->where('ttp.parent_target_id', '=', 0)
+      ->where('ttp.bundle', '=', 'markets')
+      ->where('ttp.deleted', '=', 0)
+      ->get()->all();
+
+    return json_decode(json_encode((array) $query), TRUE);
+  }
+
+  /**
+   * Get all trlx sub regions.
+   *
+   * @return array
+   *   Sub regions data.
+   */
+  public static function getAllSubRegions() {
+    $regions = ContentModel::getAllRegions();
+    $query = DB::table('taxonomy_term__parent as ttp')
+      ->select('ttp.entity_id')
+      ->whereIn('ttp.parent_target_id', $regions)
+      ->where('ttp.bundle', '=', 'markets')
+      ->where('ttp.deleted', '=', 0)
+      ->get()->all();
+
+    return json_decode(json_encode((array) $query), TRUE);
+  }
+
+  /**
+   * Get all trlx countries.
+   *
+   * @return array
+   *   Countries data.
+   */
+  public static function getAllCountries() {
+    $subRegions = ContentModel::getAllSubRegions();
+    $query = DB::table('taxonomy_term__parent as ttp')
+      ->select('ttp.entity_id')
+      ->whereIn('ttp.parent_target_id', $subRegions)
+      ->where('ttp.bundle', '=', 'markets')
+      ->where('ttp.deleted', '=', 0)
+      ->get()->all();
+
+    return json_decode(json_encode((array) $query), TRUE);
+  }
+
+  /**
+   * Get region subregion country key by tid.
+   *
+   * @param array $tids
+   *   Taxonomy ids.
+   *
+   * @return array
+   *   Key ids.
+   */
+  public static function getRegionSubregionCountryKeyByTid(array $tids) {
+    $query = DB::table('taxonomy_term__field_region_subreg_country_id as tfrsc');
+    $query->select('tfrsc.field_region_subreg_country_id_value');
+    $query->whereIn('tfrsc.entity_id', $tids);
+    $query->where('tfrsc.langcode', '=', 'en');
+    $query->where('tfrsc.deleted', '=', 0);
+    $results = $query->get()->all();
+    return json_decode(json_encode((array) $results), TRUE);
+  }
+
+  /**
+   * Insert user id in drupal table and send set user id.
+   *
+   * @return int
+   *   User id.
+   */
+  public static function setUserData($params) {
+    $query = DB::table('user_records as records')
+      ->select('records.id')
+      ->where('records.uid', '=', $params['body']['uid'])
+      ->get()->all();
+    $insert = 0;
+    if (empty($query)) {
+      $insert = DB::table('user_records')->insertGetId(
+       [
+         'uid' => $params['body']['uid'],
+         'created_on' => time(),
+       ]
+      );
+      return $insert;
+    }
   }
 
 }

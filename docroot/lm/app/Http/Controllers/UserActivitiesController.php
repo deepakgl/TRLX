@@ -9,6 +9,8 @@ use App\Model\Elastic\FlagModel;
 use App\Model\Mysql\ContentModel;
 use App\Traits\ApiResponser;
 use App\Model\Mysql\UserModel;
+use Illuminate\Support\Facades\DB;
+use App\Model\Elastic\ElasticUserModel;
 
 /**
  * Purpose of this class is to build and fetch user actitivities.
@@ -66,15 +68,35 @@ class UserActivitiesController extends Controller {
    */
   public function userActivities(Request $request) {
     global $_userData;
+    if ($request->has('nid')) {
+      $nids = array_filter($request->get('nid'));
+      if (empty($nids)) {
+        return $this->errorResponse('Node id is required.', Response::HTTP_BAD_REQUEST);
+      }
+    }
     $validatedData = $this->validate($request, [
-      'nid' => 'required|numericarray|exists:node,nid',
+      'nid' => 'required|numericarray',
       '_format' => 'required|format',
     ]);
     $this->uid = $_userData->userId;
+    $nids_status = $this->getStatusByNidsAndFaqIds($validatedData['nid']);
+    if (count($nids_status) == count($validatedData['nid'])) {
+      foreach ($nids_status as $value) {
+        if ($value['status'] == 0) {
+          $unpublished_node[] = $value['nid'];
+        }
+      }
+      if (!empty($unpublished_node)) {
+        return $this->errorResponse('Node ids are not valid.', Response::HTTP_UNPROCESSABLE_ENTITY);
+      }
+    }
+    else {
+      return $this->errorResponse('Node ids does not exists.', Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
     $nids = $validatedData['nid'];
     $client = Helper::checkElasticClient();
     if (!$client) {
-      $this->errorResponse('No alive nodes found in cluster.', Response::HTTP_INTERNAL_SERVER_ERROR);
+      return $this->errorResponse('No alive nodes found in cluster.', Response::HTTP_INTERNAL_SERVER_ERROR);
     }
     // Fetch node data from elastic.
     $response = FlagModel::fetchMultipleElasticNodeData($nids, $client);
@@ -321,6 +343,74 @@ class UserActivitiesController extends Controller {
       ];
     }
     return $user_activities;
+  }
+
+  /**
+   * Get nodes status by nids and faq ids.
+   *
+   * @param array $nids
+   *   Node ids.
+   *
+   * @return array
+   *   Nodes status.
+   */
+  public function getStatusByNidsAndFaqIds(array $nids) {
+    $query = DB::table('node_field_data as n')
+      ->select('n.nid', 'n.status')
+      ->whereIn('n.nid', $nids)
+      ->where('n.langcode', '=', 'en')
+      ->where('n.status', '=', 1)
+      ->get()->all();
+    $nodes_status = json_decode(json_encode($query), TRUE);
+    // To get brands key.
+    $brands_terms_ids = ContentModel::getBrandTermIds();
+    $brand_keys = array_column($brands_terms_ids, 'field_brand_key_value');
+    // To get faq page id.
+    $faq_config_data = ContentModel::getTrlxUtilityConfigValues();
+    $nid = !empty($faq_config_data['faq_id']) ? (int) $faq_config_data['faq_id'] : 9999999;
+    // Array of sum of brands key and faq page id.
+    $faq_ids = [];
+    foreach ($brand_keys as $value) {
+      $faq_ids[] = (int) $value + (int) $nid;
+    }
+    // Taking intersection to check if given faq page id exists in the array.
+    $array_intersection = array_intersect($nids, $faq_ids);
+    foreach ($array_intersection as $value) {
+      // Pushing nid and status in the array if value found.
+      array_push($nodes_status, ["nid" => (int) $value, "status" => 1]);
+    }
+    return $nodes_status;
+  }
+
+  /**
+   * To update user Elastic body.
+   */
+  public function updateUserElasticBody(Request $request) {
+    $uid = $request->get('uid');
+    $region = $request->get('region');
+    $subRegion = $request->get('subRegion');
+    $country = $request->get('country');
+    $brands = $request->get('brands');
+    $market = $request->get('market');
+    $userExternalId = $request->get('userExternalId');
+    $locations = $request->get('locations');
+    $client = Helper::checkElasticClient();
+    $params['body'] = [
+      'doc' => [
+        'uid' => $uid,
+        'region' => $region,
+        'subRegion' => $subRegion,
+        'country' => $country,
+        'brands' => $brands,
+        'market' => $market,
+        'userExternalId' => $userExternalId,
+        'locations' => $locations,
+      ],
+      'doc_as_upsert' => TRUE,
+    ];
+    ElasticUserModel::updateElasticUserData($params, $uid, $client);
+
+    return Helper::jsonSuccess(TRUE);
   }
 
 }

@@ -8,6 +8,7 @@ dependencies:
     - node.type.brand_story
     - node.type.faq
     - node.type.level_interactive_content
+    - node.type.privacy_policy
     - node.type.product_detail
     - node.type.quiz
     - node.type.stories
@@ -15,6 +16,7 @@ dependencies:
     - node.type.tools
     - node.type.tools-pdf
     - node.type.welcome_message
+    - taxonomy.vocabulary.brands
     - taxonomy.vocabulary.markets
     - user.role.administrator
     - user.role.authenticated
@@ -957,6 +959,7 @@ display:
             brand_story: brand_story
             faq: faq
             level_interactive_content: level_interactive_content
+            privacy_policy: privacy_policy
             product_detail: product_detail
             stories: stories
             t_c: t_c
@@ -1052,6 +1055,7 @@ display:
             brand_story: brand_story
             faq: faq
             level_interactive_content: level_interactive_content
+            privacy_policy: privacy_policy
             product_detail: product_detail
             stories: stories
             t_c: t_c
@@ -1671,6 +1675,7 @@ display:
             brand_story: brand_story
             faq: faq
             level_interactive_content: level_interactive_content
+            privacy_policy: privacy_policy
             product_detail: product_detail
             stories: stories
             t_c: t_c
@@ -1766,6 +1771,7 @@ display:
             brand_story: brand_story
             faq: faq
             level_interactive_content: level_interactive_content
+            privacy_policy: privacy_policy
             product_detail: product_detail
             stories: stories
             t_c: t_c
@@ -2501,6 +2507,7 @@ display:
             brand_story: brand_story
             faq: faq
             level_interactive_content: level_interactive_content
+            privacy_policy: privacy_policy
             product_detail: product_detail
             stories: stories
             t_c: t_c
@@ -2543,7 +2550,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          operator: '='
+          operator: regular_expression
           value: ''
           group: 1
           exposed: true
@@ -2555,7 +2562,7 @@ display:
             operator: title_op
             identifier: title
             required: false
-            remember: false
+            remember: true
             multiple: false
             remember_roles:
               authenticated: authenticated
@@ -2596,6 +2603,7 @@ display:
             brand_story: brand_story
             faq: faq
             level_interactive_content: level_interactive_content
+            privacy_policy: privacy_policy
             product_detail: product_detail
             stories: stories
             t_c: t_c
@@ -2692,6 +2700,58 @@ display:
           hierarchy: false
           error_message: true
           plugin_id: taxonomy_index_tid
+        field_brands_target_id:
+          id: field_brands_target_id
+          table: node__field_brands
+          field: field_brands_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_brands_target_id_op
+            label: Brand
+            description: ''
+            use_operator: false
+            operator: field_brands_target_id_op
+            identifier: field_brands_target_id
+            required: false
+            remember: true
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              administrator: '0'
+              beauty_advisor: '0'
+              store_management: '0'
+              multi_brand_sales_associate: '0'
+              brand_management_and_field: '0'
+              el_regional_market_admin: '0'
+              el_nyo_global_education_system_admin: '0'
+              el_regional_market_translator: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          type: select
+          limit: true
+          vid: brands
+          hierarchy: false
+          error_message: true
+          plugin_id: taxonomy_index_tid
         langcode:
           id: langcode
           table: node_field_data
@@ -2785,6 +2845,7 @@ display:
         filter_groups: false
         access: false
         fields: false
+        relationships: false
       filter_groups:
         operator: AND
         groups:
@@ -3172,6 +3233,16 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
+      relationships:
+        field_brands:
+          id: field_brands
+          table: node__field_brands
+          field: field_brands
+          relationship: none
+          group_type: group
+          admin_label: 'field_brands: Taxonomy term'
+          required: false
+          plugin_id: standard
     cache_metadata:
       max-age: -1
       contexts:
@@ -3770,6 +3841,7 @@ display:
             brand_story: brand_story
             faq: faq
             level_interactive_content: level_interactive_content
+            privacy_policy: privacy_policy
             product_detail: product_detail
             stories: stories
             t_c: t_c
@@ -3865,8 +3937,10 @@ display:
             brand_story: brand_story
             faq: faq
             level_interactive_content: level_interactive_content
+            privacy_policy: privacy_policy
             product_detail: product_detail
             stories: stories
+            t_c: t_c
             tools-pdf: tools-pdf
             tools: tools
           group: 1

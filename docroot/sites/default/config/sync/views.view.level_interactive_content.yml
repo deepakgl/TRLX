@@ -14,7 +14,6 @@ dependencies:
     - node
     - rest
     - serialization
-    - taxonomy
     - trlx_utility
     - user
 id: level_interactive_content
@@ -329,7 +328,7 @@ display:
           type: image_url
           settings:
             url_type: '0'
-            image_style: levels_module_414_256
+            image_style: levels_module_desktop
             image_link: ''
           group_column: ''
           group_columns: {  }
@@ -394,7 +393,7 @@ display:
           type: image_url
           settings:
             url_type: '0'
-            image_style: levels_tablet_module_209_129_
+            image_style: levels_module_tablet
             image_link: ''
           group_column: ''
           group_columns: {  }
@@ -459,7 +458,7 @@ display:
           type: image_url
           settings:
             url_type: '0'
-            image_style: levels_mobile_module_65_40_
+            image_style: levels_mobile_module
             image_link: ''
           group_column: ''
           group_columns: {  }
@@ -653,10 +652,10 @@ display:
           entity_type: node
           entity_field: langcode
           plugin_id: language
-        tid:
-          id: tid
-          table: taxonomy_index
-          field: tid
+        field_learning_category_target_id:
+          id: field_learning_category_target_id
+          table: node__field_learning_category
+          field: field_learning_category_target_id
           relationship: none
           group_type: group
           admin_label: ''
@@ -686,10 +685,8 @@ display:
             fail: 'not found'
           validate_options: {  }
           break_phrase: false
-          add_table: false
-          require_value: false
-          reduce_duplicates: false
-          plugin_id: taxonomy_index_tid
+          not: false
+          plugin_id: numeric
       display_extenders: {  }
     cache_metadata:
       max-age: -1

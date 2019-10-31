@@ -59,6 +59,7 @@ class ContentConfigForm extends ConfigFormBase {
       foreach ($sectionTerms as $tid => $term) {
         // Section key.
         $sectionKey = $term->get('field_content_section_key')->getValue()[0]['value'];
+        $term_name[$term->id()] = $term->get('name')->getValue()[0]['value'];
         // Section title.
         $sectionTitle = $term->get('name')->getValue()[0]['value'];
 
@@ -76,6 +77,45 @@ class ContentConfigForm extends ConfigFormBase {
           '#default_value' => $config->get($pointValueField),
         ];
       }
+
+      // Fieldset for learning levels.
+      $form['level_content_section'] = [
+        '#type' => 'fieldset',
+        '#title' => $this->t('Learning levels'),
+        '#collapsible' => TRUE,
+        '#collapsed' => TRUE,
+      ];
+
+      // Field to select sections for learning levels.
+      $form['level_content_section']['learning_levels'] = [
+        '#type' => 'select',
+        '#multiple' => TRUE,
+        '#title' => $this->t("Select Content Section(s) for Learning Levels."),
+        '#options' => $term_name,
+        '#default_value' => $config->get('learning_levels'),
+      ];
+
+      // Fieldset for faq values.
+      $form['faq_values'] = [
+        '#type' => 'fieldset',
+        '#title' => $this->t('FAQ Values'),
+        '#collapsible' => TRUE,
+        '#collapsed' => TRUE,
+      ];
+
+      // Add number field for faq point value.
+      $form['faq_values']['faq_points'] = [
+        '#type' => 'number',
+        '#title' => 'Point Value ( FAQ )',
+        '#default_value' => $config->get('faq_points'),
+      ];
+
+      // Add number field for faq bookmark id.
+      $form['faq_values']['faq_id'] = [
+        '#type' => 'number',
+        '#title' => 'Bookmark ID ( FAQ )',
+        '#default_value' => $config->get('faq_id'),
+      ];
 
       // Load all content types.
       $contentTypes = $entityTypeManager->getStorage('node_type')->loadMultiple();
@@ -138,6 +178,20 @@ class ContentConfigForm extends ConfigFormBase {
       }
     }
 
+    // Return all languages for global admin role.
+    $language = \Drupal::languageManager()->getLanguages();
+    foreach ($language as $key => $value) {
+      $lang[$value->getId()] = $value->getName();
+    }
+
+    // Add field to select required site languages.
+    $form['site_languages'] = [
+      '#type' => 'select',
+      '#multiple' => TRUE,
+      '#title' => $this->t("Select required site languages."),
+      '#options' => $lang,
+      '#default_value' => $config->get('site_languages'),
+    ];
     return parent::buildForm($form, $form_state);
   }
 
@@ -147,7 +201,6 @@ class ContentConfigForm extends ConfigFormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     // Load module config for editing.
     $config = $this->configFactory->getEditable(static::SETTINGS);
-
     // Iterate through form fields.
     foreach ($form_state->getValues() as $key => $value) {
       // Set config value.

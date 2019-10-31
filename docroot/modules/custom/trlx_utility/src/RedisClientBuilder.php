@@ -4,6 +4,7 @@ namespace Drupal\trlx_utility;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Drupal\Core\Logger\RfcLogLevel;
+use Drupal\Component\Serialization\Json;
 
 /**
  * Builds the redis client.
@@ -14,6 +15,7 @@ class RedisClientBuilder {
    * Returns the redis client object.
    */
   public static function getRedisClientObject($key) {
+    global $_userData;
     $client = [];
     // Get the redis settings variable for the site.
     $settings = \Drupal::config('elx_utility.settings')->getRawData();
@@ -43,7 +45,7 @@ class RedisClientBuilder {
       $request_uri = $base_url . \Drupal::request()->getRequestUri();
       \Drupal::service('logger.stdout')->log(RfcLogLevel::ERROR, $e
         ->getMessage(), [
-          'user' => \Drupal::currentUser(),
+          'user' => $_userData,
           'request_uri' => $request_uri,
           'data' => $e->getMessage(),
         ]);

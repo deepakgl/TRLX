@@ -1,0 +1,30 @@
+scheme: http
+host: 172.18.0.2
+port: '9200'
+search_index: trlx_notification
+search_index_type: notification
+delete_notifications: '30'
+cron_requirement_notifications: 0
+nodetype:
+  brand_story: brand_story
+  level_interactive_content: level_interactive_content
+  product_detail: product_detail
+  stories: stories
+  tools: tools
+notificationFlag: 1
+brand_story_heading: 'New Brand Stroy content.'
+brand_story_text: 'Check out new brand story:'
+module_heading: test
+module_text: test
+factsheet_heading: test
+factsheet_text: test
+video_heading: test
+video_text: test
+insider_corner_heading: test
+insider_corner_text: test
+selling_tips_heading: test
+selling_tips_text: test
+consumer_heading: test
+consumer_text: test
+user_index: trlx_local_user
+user_index_type: user

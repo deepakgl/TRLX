@@ -9,10 +9,10 @@ id: paragraph.social_media_handle.field_social_media_handle
 field_name: field_social_media_handle
 entity_type: paragraph
 bundle: social_media_handle
-label: 'Social Media Handle'
+label: 'Social Media URL'
 description: ''
 required: false
-translatable: false
+translatable: true
 default_value: {  }
 default_value_callback: ''
 settings: {  }

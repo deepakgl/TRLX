@@ -68,7 +68,7 @@ class ProductDetails extends ResourceBase {
       return $response;
     }
 
-    if (empty($commonUtility->isValidNid($nid, $language))) {
+    if (empty($commonUtility->isValidNid($nid, $language, 'product_detail'))) {
       return $commonUtility->errorResponse($this->t('Node id does not exist or requested language data is not available.'), Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
@@ -79,8 +79,9 @@ class ProductDetails extends ResourceBase {
       'subTitle' => 'decode',
       'nid' => 'int',
       'pointValue' => 'int',
-      'body' => 'decode',
+      'body' => 'string_replace',
       'video' => 'append_host',
+      'productCarouselTitle' => 'decode',
     ];
 
     // Prepare redis key.
@@ -97,8 +98,11 @@ class ProductDetails extends ResourceBase {
 
     // Check for empty / no result from views.
     if (empty($view_results)) {
-      $status_code = Response::HTTP_NO_CONTENT;
+      return $commonUtility->successResponse([], Response::HTTP_OK);
     }
+
+    // Load Product Carousel.
+    $view_results['productCarousel'] = $commonUtility->fetchProductCarouselByNodeId($nid, $language);
 
     return $commonUtility->successResponse($view_results, $status_code);
   }

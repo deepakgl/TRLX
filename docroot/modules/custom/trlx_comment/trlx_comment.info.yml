@@ -1,0 +1,8 @@
+name: TRLX COMMENT
+type: module
+description: TRLX custom module for comments.
+core: 8.x
+package: TRLX
+dependencies:
+  - trxl_utility
+  - trxl_notification

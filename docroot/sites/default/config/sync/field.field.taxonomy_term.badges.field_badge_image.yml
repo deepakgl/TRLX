@@ -6,27 +6,20 @@ dependencies:
     - field.storage.taxonomy_term.field_badge_image
     - taxonomy.vocabulary.badges
   module:
-    - content_translation
     - image
-third_party_settings:
-  content_translation:
-    translation_sync:
-      alt: alt
-      title: title
-      file: '0'
 id: taxonomy_term.badges.field_badge_image
 field_name: field_badge_image
 entity_type: taxonomy_term
 bundle: badges
-label: 'Badge Image'
-description: ''
+label: 'Stamp Image'
+description: 'Image Resolution:<b> 120X120px</b>'
 required: true
-translatable: true
+translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
   file_directory: '[date:custom:Y]-[date:custom:m]'
-  file_extensions: 'png gif jpg jpeg svg'
+  file_extensions: 'png jpg jpeg'
   max_filesize: ''
   max_resolution: ''
   min_resolution: ''

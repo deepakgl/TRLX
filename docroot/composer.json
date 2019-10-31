@@ -75,7 +75,10 @@
         "drupal/allowed_formats": "^1.1",
         "drupal/menu_export": "^1.2",
         "drupal/menu_per_role":"^1.0",
-        "drupal/password_encrypt": "^1.0"
+        "drupal/password_encrypt": "^1.0",
+        "drupal/queue_ui": "^2.0",
+        "drupal/simpleautologout": "^1.4",
+        "drupal/menu_export":"^1.2"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
@@ -110,8 +113,6 @@
             },
             "drupal/entityqueue": {
                 "entityqueue title": "patches/entityqueue/entityqueue_title.patch",
-                "entityqueue subqueue list alter": "patches/entityqueue/entity_subqueue_list_builders.patch",
-                "entityqueue queue list alter": "patches/entityqueue/entity_queue_list_builder.patch",
                 "entityqueue queue actions alter": "patches/entityqueue/entityqueue_links_action.patch",
                 "entityqueue queue routing alter": "patches/entityqueue/entityqueue_routing.patch"
             },
@@ -133,7 +134,7 @@
                 "status check": "patches/user/user_status_access.patch",
                 "string translation": "patches/translation/drupal_core_translatablemarkup.patch",
                 "admin people view": "patches/user/admin_people_view.patch",
-                "content translation": "patches/translation/content_translation.patch",
+                "content translation": "patches/translation/content_translation_dependency.patch",
                 "content translation temp": "patches/translation/content_translation_temp.patch",
                 "Update user validation messages": "patches/user/user_login_link.patch"
             },
@@ -145,6 +146,9 @@
             },
             "drupal/password_encrypt": {
                 "Password decryption": "patches/password_encrypt/password_decryption.patch"
+            },
+            "drupal/dropzonejs": {
+                "Zero timeout setting": "patches/dropzonejs/dropzonejs-upload-timeout--2977463-17.patch"
             }
         },
         "installer-paths": {

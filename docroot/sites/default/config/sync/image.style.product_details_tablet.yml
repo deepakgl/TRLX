@@ -1,0 +1,15 @@
+uuid: 94ba2335-611f-4d3f-ab39-a8f3ede0c1ae
+langcode: en
+status: true
+dependencies: {  }
+name: product_details_tablet
+label: 'Product Details Tablet (1194×357)'
+effects:
+  0d718111-9285-4ce4-9f0e-8285a7ce61e6:
+    uuid: 0d718111-9285-4ce4-9f0e-8285a7ce61e6
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 1194
+      height: 357
+      anchor: center-center

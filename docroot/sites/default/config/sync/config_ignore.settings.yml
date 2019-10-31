@@ -11,5 +11,9 @@ ignored_config_entities:
   18: simple_oauth.settings
   20: 'elasticsearch_connector.*'
   22: system.file
+  24: trlx_utility.settings
+  26: trlx_notification.settings
+  28: entityqueue.entity_queue.spotlight_section
+  30: entityqueue.entity_queue.insider_corner_hompage
 _core:
   default_config_hash: UVH1aJ4b44UM-VdPVN7hNNuuVqfReJxwfVeDQH1Hvsk

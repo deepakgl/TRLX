@@ -24,13 +24,9 @@ function migrate_badge_master() {
     // Tree by Term name
     foreach ($terms as $term) {
       $translated_term = \Drupal::service('entity.repository')->getTranslationFromContext($term, $value);
-      $file = \Drupal\file\Entity\File::load($translated_term->field_badge_image->target_id); // Fid
-      $path = file_create_url($file->getFileUri());
       $badge_master[$translated_term->name->value] = [
         'tid' => $translated_term->id(), // Term id.
-        'src' => str_replace('public:/', 'sites/default/files', $path), // Badge Image.
-        'earned_description' => $translated_term->field_earned_badge_description->value, // Earned Badge Description
-        'unearned_description' => $translated_term->field_unearned_badge_description->value, // Unearned Badge Description
+        'src' => $translated_term->field_badge_image->target_id,
         'title' => $translated_term->field_badges_title->value,
       ];
     }

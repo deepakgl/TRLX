@@ -1,0 +1,18 @@
+uuid: 808e4944-a0f0-47b7-a6ab-f091683f28dd
+langcode: en
+status: true
+dependencies:
+  module:
+    - serialization
+    - trlx_learning_levels
+    - trlx_utility
+id: user_activities_level
+plugin_id: user_activities_level
+granularity: resource
+configuration:
+  methods:
+    - GET
+  formats:
+    - json
+  authentication:
+    - jwt_Auth

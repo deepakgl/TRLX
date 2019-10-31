@@ -1,0 +1,15 @@
+uuid: b4fcd56f-0388-4632-a5e8-9c626b4a74b4
+langcode: en
+status: true
+dependencies: {  }
+name: bookmark_image_desktop
+label: 'Bookmark Image Desktop (120X120)'
+effects:
+  dee501ad-31d6-4cbb-be86-f227cf824ab2:
+    uuid: dee501ad-31d6-4cbb-be86-f227cf824ab2
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 120
+      height: 120
+      anchor: center-center

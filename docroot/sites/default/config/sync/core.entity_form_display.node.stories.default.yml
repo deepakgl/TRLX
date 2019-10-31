@@ -8,19 +8,21 @@ dependencies:
     - field.field.node.stories.field_access_by_role
     - field.field.node.stories.field_archive_and_unarchive
     - field.field.node.stories.field_comment
+    - field.field.node.stories.field_consumer_category
     - field.field.node.stories.field_content_section
     - field.field.node.stories.field_country
     - field.field.node.stories.field_department
     - field.field.node.stories.field_display_title
-    - field.field.node.stories.field_downloadable
     - field.field.node.stories.field_featured_image
     - field.field.node.stories.field_featured_on_elx_specialty
     - field.field.node.stories.field_first_name
+    - field.field.node.stories.field_headline
     - field.field.node.stories.field_hero_image
     - field.field.node.stories.field_last_name
     - field.field.node.stories.field_markets
     - field.field.node.stories.field_occupation
     - field.field.node.stories.field_point_value
+    - field.field.node.stories.field_product_carousel
     - field.field.node.stories.field_product_categories
     - field.field.node.stories.field_product_family
     - field.field.node.stories.field_pulsed_content
@@ -31,6 +33,7 @@ dependencies:
     - field.field.node.stories.field_sub_title
     - field.field.node.stories.field_tags
     - field.field.node.stories.field_translation
+    - field.field.node.stories.field_try_this
     - field.field.node.stories.field_video
     - field.field.node.stories.field_video_thumbnail
     - node.type.stories
@@ -53,14 +56,42 @@ third_party_settings:
         - field_country
         - field_social_media_handles
       parent_name: ''
-      weight: 5
+      weight: 6
+      format_type: fieldset
+      format_settings:
+        label: 'Insider Corner'
+        description: ''
+        id: ''
+        classes: ''
+        required_fields: false
+      label: 'Insider Corner'
+      region: content
+    group_product_carousel:
+      children:
+        - field_headline
+        - field_product_carousel
+      parent_name: ''
+      weight: 14
       format_type: fieldset
       format_settings:
         id: ''
         classes: ''
-        description: 'Group of fields for Insider Corner Section.'
+        description: ''
         required_fields: false
-      label: 'Insider Corner'
+      label: 'Product Carousel'
+      region: content
+    group_tr_trends:
+      children:
+        - field_try_this
+      parent_name: ''
+      weight: 7
+      format_type: fieldset
+      format_settings:
+        id: ''
+        classes: ''
+        description: ''
+        required_fields: true
+      label: 'TR Trends'
       region: content
 id: node.stories.default
 targetEntityType: node
@@ -69,7 +100,7 @@ mode: default
 content:
   body:
     type: text_textarea_with_summary
-    weight: 6
+    weight: 8
     settings:
       rows: 9
       summary_rows: 3
@@ -77,10 +108,16 @@ content:
     third_party_settings: {  }
     region: content
   field_comment:
-    weight: 14
+    weight: 17
     settings: {  }
     third_party_settings: {  }
     type: comment_default
+    region: content
+  field_consumer_category:
+    weight: 1
+    settings: {  }
+    third_party_settings: {  }
+    type: options_buttons
     region: content
   field_content_section:
     weight: 0
@@ -105,30 +142,23 @@ content:
     type: string_textarea
     region: content
   field_display_title:
-    weight: 2
+    weight: 3
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
     region: content
-  field_downloadable:
-    weight: 18
-    settings:
-      display_label: true
-    third_party_settings: {  }
-    type: boolean_checkbox
-    region: content
   field_featured_image:
-    weight: 7
+    weight: 9
     settings:
       entity_browser: media_entity_browser
       field_widget_display: rendered_entity
-      field_widget_edit: true
       field_widget_remove: true
       selection_mode: selection_append
       field_widget_display_settings:
         view_mode: default
+      field_widget_edit: false
       field_widget_replace: false
       open: false
     third_party_settings: {  }
@@ -142,16 +172,24 @@ content:
     third_party_settings: {  }
     type: string_textfield
     region: content
+  field_headline:
+    weight: 14
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
   field_hero_image:
-    weight: 9
+    weight: 11
     settings:
       entity_browser: media_entity_browser
       field_widget_display: rendered_entity
-      field_widget_edit: true
       field_widget_remove: true
       selection_mode: selection_append
       field_widget_display_settings:
         view_mode: default
+      field_widget_edit: false
       field_widget_replace: false
       open: false
     third_party_settings: {  }
@@ -166,7 +204,7 @@ content:
     type: string_textfield
     region: content
   field_markets:
-    weight: 13
+    weight: 16
     settings:
       start_minimized: true
       leaves_only: false
@@ -185,12 +223,24 @@ content:
     type: string_textfield
     region: content
   field_point_value:
-    weight: 12
+    weight: 15
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
+    region: content
+  field_product_carousel:
+    weight: 15
+    settings:
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: open
+      add_mode: button
+      form_display_mode: default
+      default_paragraph_type: product_carousel
+    third_party_settings: {  }
+    type: entity_reference_paragraphs
     region: content
   field_social_media_handles:
     type: entity_reference_paragraphs
@@ -205,7 +255,7 @@ content:
     third_party_settings: {  }
     region: content
   field_sub_title:
-    weight: 4
+    weight: 5
     settings:
       size: 60
       placeholder: ''
@@ -214,35 +264,44 @@ content:
     region: content
   field_translation:
     type: options_buttons
-    weight: 17
+    weight: 20
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_try_this:
+    weight: 21
+    settings:
+      rows: 9
+      summary_rows: 3
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea_with_summary
+    region: content
   field_video:
-    weight: 10
+    weight: 12
     settings:
       entity_browser: video_entity_browser
       field_widget_display: rendered_entity
-      field_widget_edit: true
       field_widget_remove: true
       selection_mode: selection_append
       field_widget_display_settings:
         view_mode: default
+      field_widget_edit: false
       field_widget_replace: false
       open: false
     third_party_settings: {  }
     type: entity_browser_entity_reference
     region: content
   field_video_thumbnail:
-    weight: 11
+    weight: 13
     settings:
       entity_browser: media_entity_browser
       field_widget_display: rendered_entity
-      field_widget_edit: true
       field_widget_remove: true
       selection_mode: selection_append
       field_widget_display_settings:
         view_mode: default
+      field_widget_edit: false
       field_widget_replace: false
       open: false
     third_party_settings: {  }
@@ -250,34 +309,34 @@ content:
     region: content
   langcode:
     type: language_select
-    weight: 3
+    weight: 4
     region: content
     settings:
       include_locked: true
     third_party_settings: {  }
   path:
     type: path
-    weight: 15
+    weight: 18
     region: content
     settings: {  }
     third_party_settings: {  }
   status:
     type: boolean_checkbox
-    weight: 16
+    weight: 19
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   title:
     type: string_textfield
-    weight: 1
+    weight: 2
     region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
   translation:
-    weight: 8
+    weight: 10
     region: content
     settings: {  }
     third_party_settings: {  }

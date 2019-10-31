@@ -1,0 +1,22 @@
+uuid: 64b3c731-1e13-4455-8bf5-6c21681b5622
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.ar_key_value
+id: taxonomy_term.ar_key_value.status
+field_name: status
+entity_type: taxonomy_term
+bundle: ar_key_value
+label: Published
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 1
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

@@ -22,6 +22,8 @@ class EntityUtility {
     $this->userUtility = new UserUtility();
     // fixMe.
     $this->config = \Drupal::config('elx_utility.settings');
+    $this->configuration = \Drupal::config('trlx_utility.settings');
+    $this->commonUtility = new CommonUtility();
   }
 
   /**
@@ -53,7 +55,7 @@ class EntityUtility {
           $$key = $argument;
         }
         else {
-          $args[] = (count($argument) > 1) ? implode("+", $argument) : $argument;
+          $args[] = (is_array($argument) && count($argument) > 1) ? implode("+", $argument) : $argument;
         }
       }
       $arguments = $args;
@@ -79,12 +81,20 @@ class EntityUtility {
 
     $view->execute();
     $view_result = \Drupal::service('renderer')->renderRoot($view->render());
-    $view_results = JSON::decode($view_result->jsonSerialize(), TRUE);
+    $view_results = (is_object($view_result)) ? JSON::decode($view_result->jsonSerialize(), TRUE) : [];
     if ((isset($view_results['results']) && empty($view_results['results']))
     || empty($view_results)) {
       // No results found.
       return [[], Response::HTTP_NO_CONTENT];
     }
+
+    // Views listing response without pager e.g. /api/v1/consumerCategories.
+    if (!empty($view_results) && ($view->getItemsPerPage() == 0) && !isset($view_results['results']) && !isset($view_results['pager'])) {
+      $view_results_without_pager = $view_results;
+      unset($view_results);
+      $view_results['results'] = $view_results_without_pager;
+    }
+
     // Build the response of listings and details respectively.
     $response = isset($view_results['results']) ? $this
       ->buildListingResponse($view_results, $data, $field_replace) : $this
@@ -142,14 +152,14 @@ class EntityUtility {
     // Get current user roles.
     // fixMe.
     $roles = $this->userUtility->getUserRoles(\Drupal::currentUser()->id());
-    if ($roles && !empty($redis_key[1])) {
+    if (!empty($redis_key[1])) {
       try {
         // Creating Redis connection object.
         list($cached_data, $redis_client) =
         RedisClientBuilder::getRedisClientObject($key);
         // Get the data from the redis cache with key value.
         if (!empty($cached_data)) {
-          return [$cached_data, 200];
+          return [JSON::decode($cached_data), 200];
         }
       }
       catch (\Exception $e) {
@@ -162,8 +172,12 @@ class EntityUtility {
       list($view_results, $status_code) = $this->getViewContent($view_name, $current_display, $filter, $data, $type, $field_replace);
       // Only set redis cache if there is some data.
       $decode = array_filter(JSON::decode($view_results, TRUE));
-      if (!empty($decode) && !empty($redis_key[1])) {
-        $redis_client->set($view_results, $redis_key[0], $redis_key[1], $redis_key[2]);
+      if (!empty($redis_key[1])) {
+        $response = JSON::encode($view_results);
+        if (is_object($response)) {
+          $response = $response->getContent();
+        }
+        $redis_client->set($response, $redis_key[0], $redis_key[1], $redis_key[2]);
       }
 
       return [$view_results, $status_code];
@@ -186,11 +200,13 @@ class EntityUtility {
    *   Response key value pair.
    * @param array $field_replace
    *   Fields to replace.
+   * @param array $field_remove
+   *   Fields to remove.
    *
    * @return json
    *   API response.
    */
-  public function buildListingResponse($output, $data, $field_replace = []) {
+  public function buildListingResponse($output, $data, $field_replace = [], $field_remove = []) {
     if (!empty($data)) {
       foreach ($output['results'] as $view_key => $result) {
         foreach ($data as $key => $value) {
@@ -198,14 +214,43 @@ class EntityUtility {
             $output['results'][$view_key][$key] = Html::decodeEntities($result[$key]);
           }
           elseif ($value == 'int') {
-            $output['results'][$view_key][$key] = (int) $result[$key];
+            if (isset($result[$key])) {
+              $output['results'][$view_key][$key] = (int) $result[$key];
+            }
           }
           elseif ($value == 'string_replace') {
             $output['results'][$view_key][$key] = $this->stringReplace($result[$key]);
           }
+          elseif ($value == 'append_host') {
+            $output['results'][$view_key][$key] = !empty($result[$key]) ? \Drupal::request()->getSchemeAndHttpHost() . $result[$key] : $result[$key];
+          }
           // Set value for boolean by default unselected fields.
           elseif ($value == 'boolean') {
             $output['results'][$view_key][$key] = empty($result[$key]) ? FALSE : TRUE;
+          }
+          // Set point value specific to section from config.
+          elseif ($value == 'point_value_' . $this->commonUtility::INSIDER_CORNER) {
+            $pointValue = $this->configuration->get($value);
+            $output['results'][$view_key][$key] = !empty($pointValue) ? $pointValue : $result[$key];
+          }
+          // Set point value specific to section from config.
+          elseif ($value == 'point_value_' . $this->commonUtility::TREND) {
+            $pointValue = $this->configuration->get($value);
+            $output['results'][$view_key][$key] = !empty($pointValue) ? $pointValue : $result[$key];
+          }
+          // Set point value specific to section from config.
+          elseif ($value == 'point_value_' . $this->commonUtility::SELLING_TIPS) {
+            $pointValue = $this->configuration->get($value);
+            $output['results'][$view_key][$key] = !empty($pointValue) ? $pointValue : $result[$key];
+          }
+          // Calculate point value for "Learning Level".
+          // Based on associated "Level Interactive Content".
+          elseif ($value == 'point_value_level') {
+            if (isset($output['results'][$view_key][$key])) {
+              // Calculate aggregate point value.
+              $output['results'][$view_key][$key] = $this->commonUtility->getLearningLevelPointValue($result[$key]);
+              $output['results'][$view_key]['pointValue'] = $output['results'][$view_key][$key];
+            }
           }
           else {
             $output['results'][$view_key] = $result;
@@ -225,6 +270,16 @@ class EntityUtility {
             }
             // We don't need this data in response.
             unset($output['results'][$view_key][$replace_field]);
+          }
+        }
+      }
+      // Remove unwanted fields.
+      if (!empty($field_remove)) {
+        foreach ($field_remove as $field_key) {
+          foreach ($output['results'] as $view_key => $result) {
+            if (isset($output['results'][$view_key][$field_key])) {
+              unset($output['results'][$view_key][$field_key]);
+            }
           }
         }
       }
@@ -271,6 +326,26 @@ class EntityUtility {
           elseif ($value == 'boolean') {
             $output[$view_key][$key] = empty($result[$key]) ? FALSE : TRUE;
           }
+          // Set point value specific to section from config.
+          elseif ($value == 'point_value_' . $this->commonUtility::INSIDER_CORNER) {
+            $pointValue = $this->configuration->get($value);
+            $output[$view_key][$key] = !empty($pointValue) ? $pointValue : $result[$key];
+          }
+          // Set point value specific to section from config.
+          elseif ($value == 'point_value_' . $this->commonUtility::TREND) {
+            $pointValue = $this->configuration->get($value);
+            $output[$view_key][$key] = !empty($pointValue) ? $pointValue : $result[$key];
+          }
+          // Set point value specific to section from config.
+          elseif ($value == 'point_value_' . $this->commonUtility::SELLING_TIPS) {
+            $pointValue = $this->configuration->get($value);
+            $output[$view_key][$key] = !empty($pointValue) ? $pointValue : $result[$key];
+          }
+          elseif ($value == 'social_media_handles') {
+            // Fetch social media handles for Insider Corner section.
+            $socialMediaHandles = $this->commonUtility->getSocialMediaHandles($result[$key]);
+            $output[$view_key][$key] = $socialMediaHandles;
+          }
           else {
             $output[$view_key] = $result;
             if (isset($output[$view_key][$key])) {
@@ -280,6 +355,7 @@ class EntityUtility {
         }
       }
     }
+
     $response = (isset($output[0])) ? $output[0] : $output;
 
     return $response;

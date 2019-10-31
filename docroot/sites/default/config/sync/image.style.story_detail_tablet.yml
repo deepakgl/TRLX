@@ -1,0 +1,15 @@
+uuid: bda5a729-d77a-4451-ba0c-ae2c55270a79
+langcode: en
+status: true
+dependencies: {  }
+name: story_detail_tablet
+label: 'Story Detail Tablet (1194X357)'
+effects:
+  ace46c99-d1e4-4dc1-be93-5f471dd4c359:
+    uuid: ace46c99-d1e4-4dc1-be93-5f471dd4c359
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 1194
+      height: 357
+      anchor: center-center

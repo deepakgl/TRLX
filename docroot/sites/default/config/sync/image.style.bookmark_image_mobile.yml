@@ -1,0 +1,15 @@
+uuid: c23b871d-2246-4030-96f1-09fab7e5da34
+langcode: en
+status: true
+dependencies: {  }
+name: bookmark_image_mobile
+label: 'Bookmark Image Mobile (50X50)'
+effects:
+  a2ec9b1f-3ffc-4da8-9ba5-33bd97e86944:
+    uuid: a2ec9b1f-3ffc-4da8-9ba5-33bd97e86944
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 50
+      height: 50
+      anchor: center-center

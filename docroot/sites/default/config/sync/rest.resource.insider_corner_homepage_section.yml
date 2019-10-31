@@ -1,0 +1,18 @@
+uuid: a951d2a0-4579-447e-a51e-c743ee2a240f
+langcode: en
+status: true
+dependencies:
+  module:
+    - serialization
+    - trlx_insider_corner
+    - trlx_utility
+id: insider_corner_homepage_section
+plugin_id: insider_corner_homepage_section
+granularity: resource
+configuration:
+  methods:
+    - GET
+  formats:
+    - json
+  authentication:
+    - jwt_Auth

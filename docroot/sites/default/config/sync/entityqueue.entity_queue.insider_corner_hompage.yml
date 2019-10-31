@@ -1,0 +1,25 @@
+uuid: 71a8cbf2-309f-4f46-82f9-3c001e47e9d5
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: insider_corner_hompage
+label: 'Insider Corner'
+handler: simple
+handler_configuration: {  }
+entity_settings:
+  target_type: node
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      stories: stories
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+queue_settings:
+  min_size: 0
+  max_size: 4
+  act_as_queue: false
+  reverse_in_admin: false

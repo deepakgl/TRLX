@@ -9,7 +9,7 @@ id: taxonomy_term.badges.field_badges_title
 field_name: field_badges_title
 entity_type: taxonomy_term
 bundle: badges
-label: 'Badge Title'
+label: 'Stamp Title'
 description: ''
 required: false
 translatable: true
