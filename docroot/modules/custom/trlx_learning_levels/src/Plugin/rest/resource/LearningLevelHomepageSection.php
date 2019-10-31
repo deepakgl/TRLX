@@ -86,7 +86,7 @@ class  LearningLevelHomepageSection extends ResourceBase {
       $result[$count1]['id'] = $term ->id();
       $result[$count1]['displayTitle'] = $term->hasTranslation($language) ? $term->getTranslation($language)->get('name')->value : '';
       $result[$count1]['subTitle'] = $term->hasTranslation($language) ? $term->getTranslation($language)->get('field_sub_title')->value : '';
-      $result[$count1]['subTitle'] = $term->hasTranslation($language) ? $term->getTranslation($language)->get('description')->value : '';
+      $result[$count1]['body'] = $term->hasTranslation($language) ? $term->getTranslation($language)->get('description')->value : '';
       $featured_image = $term->get('field_image')->referencedEntities();
       if (!empty($featured_image)) {
         $image = array_shift($featured_image)->get(field_media_image)->referencedEntities();
