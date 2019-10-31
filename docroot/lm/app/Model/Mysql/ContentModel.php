@@ -983,4 +983,23 @@ class ContentModel {
     }
   }
 
+  /**
+   * Fetch user id from drupal table based on uid.
+   *
+   * @return int
+   *   User id.
+   */
+  public static function getUserRealId($uid) {
+    try {
+      $query = DB::table('user_records as ur');
+      $query->select('ur.id');
+      $query->where('ur.uid', '=', $uid);
+      $result = $query->get()->first();
+      return $result->id;
+    }
+    catch (\Exception $e) {
+      return FALSE;
+    }
+  }
+
 }
