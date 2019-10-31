@@ -35,6 +35,7 @@ class StaticTranslationsOperations {
       $translated_fields['name'] = $val['name'];
       $translated_fields['string_translation'] = $val['string_translation'];
       $translated_entity_array = array_merge($entity_array, $translated_fields);
+      $translated_entity_array['field_translation_key'][0]['value'] = $val['string_translation'];
       $term->addTranslation($val['language'], $translated_entity_array)->save();
     }
     $context['results']['processed'][] = $val['name'];
