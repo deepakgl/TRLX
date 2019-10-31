@@ -34,6 +34,7 @@ class NotificationConfigurationForm extends ConfigFormBase {
   const BRAND_LEVEL_HEADING = 'brand_level_heading';
   const SELLING_TIPS_LEVEL_HEADING = 'selling_tips_level_heading';
   const CONSUMER_LEVEL_HEADING = 'consumer_level_heading';
+  const COMMENT_TAGS_HEADING = 'comment_tags_heading';
   const STAMPS_HEADING = 'stamps_heading';
 
   /**
@@ -177,6 +178,12 @@ class NotificationConfigurationForm extends ConfigFormBase {
       self::HASH_DEFAULT_VALUE => $config->get(self::CONSUMER_LEVEL_HEADING),
       self::HASH_REQUIRED => TRUE,
     ];
+    $form[self::COMMENT_TAGS_HEADING] = [
+      self::HASH_TYPE => self::TEXTFIELD,
+      self::HASH_TITLE => $this->t('Comment tags heading.'),
+      self::HASH_DEFAULT_VALUE => $config->get(self::COMMENT_TAGS_HEADING),
+      self::HASH_REQUIRED => TRUE,
+    ];
     $form[self::STAMPS_HEADING] = [
       self::HASH_TYPE => self::TEXTFIELD,
       self::HASH_TITLE => $this->t('Stamps heading.'),
@@ -193,7 +200,7 @@ class NotificationConfigurationForm extends ConfigFormBase {
     $commonUtility = new CommonUtility();
     // Load module config for editing.
     $config = $this->configFactory->getEditable(self::NOTIFICATION_SETTINGS);
-    $commonUtility->getNotificationTranslation($config->get('stamps_heading'), 'en');
+    // $commonUtility->getNotificationTranslation($config->get('stamps_heading'), 'en');
     // Iterate through form fields.
     foreach ($form_state->getValues() as $key => $value) {
       // Set config value.

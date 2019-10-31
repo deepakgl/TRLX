@@ -91,8 +91,8 @@ class CommonUtility {
    * @return \Symfony\Component\HttpFoundation\JsonResponse
    *   Json response.
    */
-  public function validateLanguageCode($langcode, $request) {
-    if (!$request->query->has('language') || empty($langcode)) {
+  public function validateLanguageCode($langcode, $request, $skipRequestCheck = FALSE) {
+    if ((!$request->query->has('language') || empty($langcode)) && empty($skipRequestCheck)) {
       return $this->errorResponse(t('Language parameter is required.'), Response::HTTP_BAD_REQUEST);
     }
 
@@ -758,9 +758,7 @@ class CommonUtility {
       $query = $query->select('node__field_product_carousel', 'fpc');
       $query->join('paragraphs_item_field_data', 'pifd', 'pifd.id = fpc.field_product_carousel_target_id');
       $query->condition('fpc.entity_id', $nid);
-      $query->condition('fpc.langcode', $language);
       $query->condition('pifd.type', 'product_carousel');
-      $query->condition('pifd.langcode', $language);
       $query->condition('pifd.status', 1);
       $query->condition('pifd.parent_type', 'node');
       $query->fields('fpc', ['field_product_carousel_target_id']);
@@ -772,7 +770,6 @@ class CommonUtility {
 
     if (!empty($result)) {
       $entityUtility = new EntityUtility();
-
       // Fetch paragraph data from views.
       list($view_results) = $entityUtility->fetchApiResult(
         '',
@@ -785,6 +782,31 @@ class CommonUtility {
 
     if (!empty($view_results['results'])) {
       $carouselData = $view_results['results'];
+
+      // Carousel Keys to validate.
+      $carouselKeys = [
+        'title',
+        'subTitle',
+        'imageSmall',
+        'imageMedium',
+        'imageLarge',
+      ];
+
+      // Iterate each carousel entity.
+      foreach ($carouselData as $delta => $carousel) {
+        $emptyCnt = 0;
+        // Check for empty carousel entity.
+        foreach ($carouselKeys as $carouselKey) {
+          if (empty($carousel[$carouselKey])) {
+            $emptyCnt++;
+          }
+        }
+
+        // Unset/remove empty carousel entity.
+        if ($emptyCnt == count($carouselKeys)) {
+          unset($carouselData[$delta]);
+        }
+      }
     }
 
     return $carouselData;
@@ -925,6 +947,28 @@ class CommonUtility {
       $query->condition('ur.uid', $externalId);
       $result = $query->execute()->fetchColumn();
       return (int) $result;
+    }
+    catch (\Exception $e) {
+      return FALSE;
+    }
+  }
+
+  /**
+   * Get external id mapped with user real id.
+   *
+   * @param int $userId
+   *   User real id.
+   *
+   * @return string
+   *   External id.
+   */
+  public function getExternalUserId($userId) {
+    try {
+      $query = \Drupal::database()->select('user_records', 'ur');
+      $query->fields('ur', ['uid']);
+      $query->condition('ur.id', $userId);
+      $result = $query->execute()->fetchColumn();
+      return $result;
     }
     catch (\Exception $e) {
       return FALSE;
