@@ -1,7 +1,0 @@
-elx_quiz.config:
-  path: '/admin/config/system/quiz_config'
-  defaults:
-    _form: '\Drupal\elx_quiz\Form\QuizConfigForm'
-    _title: 'Quiz config'
-  requirements:
-    _permission: 'administer site configuration'

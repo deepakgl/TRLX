@@ -1,9 +1,0 @@
-name: ELX Translated Content Migration
-type: module
-description: ELX translated content migration module.
-core: 8.x
-package: ELX
-dependencies:
-  - migrate
-  - migrate_plus
-  - migrate_tools
