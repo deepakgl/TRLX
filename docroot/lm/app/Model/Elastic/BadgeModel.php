@@ -114,6 +114,7 @@ class BadgeModel {
       $i = 1;
       $keys = array_column($badge_data['badge_master'], 'tid');
       array_multisort($keys, SORT_ASC, $badge_data['badge_master']);
+      arsort($badge_data['user_badge']);
       if (isset($badge_data['user_badge'])) {
         foreach ($badge_data['user_badge'] as $key => $value) {
           if (isset($flag) && $flag == TRUE && $i <= 3) {
@@ -181,15 +182,13 @@ class BadgeModel {
     else {
       $response['_source']['badge'] = [];
     }
-    $new_stamp = [];
     foreach ($badge as $key => $value) {
-      $new_stamp[$value] = 1;
+      $response['_source']['badge'][$value] = time();
     }
-    $final_stamps = array_merge($new_stamp, $response['_source']['badge']);
     $params['body'] = [
       'doc' => [
         'badge' => [
-          $final_stamps,
+          $response['_source']['badge'],
         ],
       ],
       'doc_as_upsert' => TRUE,
