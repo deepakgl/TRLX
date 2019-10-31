@@ -373,7 +373,7 @@ function trlx_notification_video_related_content($node) {
 function trlx_notification_comment_user_tags(int $nid, $language = CommentUtility::DEFAULT_LANGUAGE, $commenTags = []) {
   $commonUtility = new CommonUtility();
   $config = \Drupal::config('trlx_notification.settings');
-  $node = fetchNodeData($nid, $language);
+  $node = fetch_node_data($nid, $language);
 
   if ($node->hasField('field_brands')) {
     $brand_id[] = $node->get('field_brands')->first()->getValue()['target_id'];
@@ -412,7 +412,7 @@ function trlx_notification_comment_user_tags(int $nid, $language = CommentUtilit
           $sectionKey = $commonUtility->getSectionKeyByTermId($sectionTid);
 
           switch ($sectionKey) {
-            // Insider Corner
+            // Insider Corner.
             case CommonUtility::INSIDER_CORNER:
               $linkType = CommonUtility::INSIDER_CORNER;
               break;
@@ -448,7 +448,7 @@ function trlx_notification_comment_user_tags(int $nid, $language = CommentUtilit
         $notificationArray[NOTIFICATION_HEADING] = $commonUtility->getNotificationTranslation($config->get('comment_tags_heading'), $content_language);
         $notificationArray[NOTIFICATION_TEXT] = $node->get('field_display_title')->first()->getValue()['value'];
         $notificationArray[NOTIFICATION_LINK] = $node->id();
-        $notificationArray[NOTIFICATION_LINK_TYPE] = t($linkType);
+        $notificationArray[NOTIFICATION_LINK_TYPE] = $linkType;
         $notificationArray[NOTIFICATION_BRAND_KEY] = reset($brand_key);
         $notificationArray[NOTIFICATION_BRAND_NAME] = reset($brand_data);
         $notificationArray[NOTIFICATIONS_LANGUAGE] = $content_language;
@@ -471,7 +471,7 @@ function trlx_notification_comment_user_tags(int $nid, $language = CommentUtilit
  * @return mixed
  *   Node data.
  */
-function fetchNodeData($nid, $language) {
+function fetch_node_data($nid, $language) {
   // Load node by nid and language code.
   try {
     $node = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
