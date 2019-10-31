@@ -1,0 +1,9 @@
+message_en: 'Welcome budd!'
+lang_code_en: en
+message_zh-hans: 'Welcome budd! in Chinese'
+lang_code_zh-hans: zh-hans
+submit: 'Save configuration'
+form_build_id: form-pJUXJZxOlb76qZ1JrDdwXvVoEudQrrmbXuRztydlM3c
+form_token: '-8Nvq6GPcRlMUJtdvy_mQpYGWtIpn2Zm9EJlKS_3zYM'
+form_id: welcome_message_admin_settings
+op: 'Save configuration'
