@@ -15,7 +15,7 @@ class WelcomeMessageForm extends ConfigFormBase {
    *
    * @var string
    */
-  const SETTINGS = 'welcome_message.settings';
+  const SETTINGS = 'trlx_banner.welcome_message.settings';
 
   /**
    * Get editable config names of external integration.

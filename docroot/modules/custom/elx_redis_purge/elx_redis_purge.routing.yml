@@ -1,7 +1,0 @@
-elx_redis_purge.redis_purge:
-  path: '/admin/structure/purge-redis'
-  defaults:
-    _form: '\Drupal\elx_redis_purge\Form\RedisCacheConfigForm'
-    _title: 'Purge Redis Data'
-  requirements:
-    _permission: 'administer redis purge'
