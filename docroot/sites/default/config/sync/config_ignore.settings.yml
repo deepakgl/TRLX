@@ -15,5 +15,6 @@ ignored_config_entities:
   26: trlx_notification.settings
   28: entityqueue.entity_queue.spotlight_section
   30: entityqueue.entity_queue.insider_corner_hompage
+  32: welcome_message.settings
 _core:
   default_config_hash: UVH1aJ4b44UM-VdPVN7hNNuuVqfReJxwfVeDQH1Hvsk
