@@ -31,6 +31,7 @@ class FaqListing extends ResourceBase {
    *   Resource response.
    */
   public function get(Request $request) {
+    global $_userData;
     $commonUtility = new CommonUtility();
     $entityUtility = new EntityUtility();
 
@@ -86,7 +87,10 @@ class FaqListing extends ResourceBase {
       if (empty($view_results)) {
         return $commonUtility->errorResponse($this->t('Brand Id (@brandId) does not exist.', ['@brandId' => $brand_id]), Response::HTTP_UNPROCESSABLE_ENTITY);
       }
-
+      // Validation for brand key exists in user token or not.
+      if (!in_array($brand_id, $_userData->brands)) {
+        return $commonUtility->successResponse([], Response::HTTP_OK);
+      }
       // Prepare view response.
       list($view_results, $status_code) = $entityUtility->fetchApiResult(
         '',

@@ -32,6 +32,7 @@ class LearningLevels extends ResourceBase {
    *   Resource response.
    */
   public function get(Request $request) {
+    global $_userData;
     $commonUtility = new CommonUtility();
     $entityUtility = new EntityUtility();
 
@@ -64,26 +65,26 @@ class LearningLevels extends ResourceBase {
     if (!($response->getStatusCode() === Response::HTTP_OK)) {
       return $response;
     }
-    $content_section = '';
-    $brandId = $request->query->get('brandId');
-    $params = ['language' => $language];
-    if (!empty($brandId)) {
-      // Prepare view response for valid brand key.
-      list($view_results, $status_code) = $entityUtility->fetchApiResult(
-        '',
-        'brand_key_validation',
-        'rest_export_brand_key_validation',
-        '',
-        $brandId
-      );
 
-      // Check for empty resultset.
-      if (empty($view_results)) {
-        return $commonUtility->errorResponse($this->t('Brand Id (@brandId) does not exist.', ['@brandId' => $brandId]), Response::HTTP_UNPROCESSABLE_ENTITY);
-      }
-      $content_section = 'brandLevel';
-      $params = ['language' => $language, 'brand' => $brandId, 'section' => $content_section];
+    // Prepare view response for valid brand key.
+    list($view_results, $status_code) = $entityUtility->fetchApiResult(
+      '',
+      'brand_key_validation',
+      'rest_export_brand_key_validation',
+      '',
+      $brandId
+    );
+
+    // Check for empty resultset.
+    if (empty($view_results)) {
+      return $commonUtility->errorResponse($this->t('Brand Id (@brandId) does not exist.', ['@brandId' => $brandId]), Response::HTTP_UNPROCESSABLE_ENTITY);
     }
+
+    // Validation for brand key exists in user token or not.
+    if (!in_array($brandId, $_userData->brands)) {
+      return $commonUtility->successResponse([], Response::HTTP_OK);
+    }
+
     // Prepare array of keys for alteration in response.
     $data = [
       'title' => 'decode',
@@ -96,7 +97,7 @@ class LearningLevels extends ResourceBase {
     if (!empty($errorResponse)) {
       return $errorResponse;
     }
-
+    $params = ['language' => $language, 'brand' => $brandId, 'section' => 'brandLevel'];
     // Prepare response.
     list($view_results, $status_code) = $entityUtility->fetchApiResult(
         NULL,
