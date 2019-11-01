@@ -77,11 +77,11 @@ class SellingTipsListing extends ResourceBase {
 
     // Fetch learning_category term response.
     /*list($term_view_results, $term_status_code) = $entityUtility->fetchApiResult(
-      '',
-      'selling_tips_learning_level_vocabulary',
-      'rest_export_selling_tips_learning_level_listing',
-      '',
-      ['language' => $language]
+    '',
+    'selling_tips_learning_level_vocabulary',
+    'rest_export_selling_tips_learning_level_listing',
+    '',
+    ['language' => $language]
     );*/
 
     // Fetch stories bundle content response.

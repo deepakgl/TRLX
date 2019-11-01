@@ -79,4 +79,5 @@ class StaticTranslationForm extends FormBase {
       batch_set($batch);
     }
   }
+
 }

@@ -83,7 +83,7 @@ class TrlxDashboardUtility {
         if (!empty($fid)) {
           $file = File::load($fid);
           if (!empty($file)) {
-           $icon_path = file_create_url($file->getFileUri());
+            $icon_path = file_create_url($file->getFileUri());
           }
         }
         // Get link attributes.
@@ -97,7 +97,8 @@ class TrlxDashboardUtility {
           'type' => $type,
           'attributes' => isset($options['attributes']) ? $options['attributes'] : "",
         ];
-      } catch (\Exception $e) {
+      }
+      catch (\Exception $e) {
         $menu_result = [];
       }
     }

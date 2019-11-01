@@ -23,7 +23,8 @@ class UserUtility {
       $query->condition('tfrsc.field_region_subreg_country_id_value', $region_subregion_country_ids, 'IN');
       // Fetch user markets.
       return $query->execute()->fetchAll();
-    } catch (\Exception $e) {
+    }
+    catch (\Exception $e) {
       return FALSE;
     }
   }
@@ -73,8 +74,9 @@ class UserUtility {
       $query->condition('tfrsc.entity_id', $market_ids, 'IN');
       // Fetch user markets.
       return $query->execute()->fetchAll();
-    } catch (\Exception $e) {
-      // Return FALSE
+    }
+    catch (\Exception $e) {
+      // Return FALSE.
       return FALSE;
     }
   }
