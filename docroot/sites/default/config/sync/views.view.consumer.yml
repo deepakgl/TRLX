@@ -1653,6 +1653,7 @@ display:
         fields: false
         filters: false
         filter_groups: false
+        query: false
       path: consumerStoriesListing
       row:
         type: data_field
@@ -2583,6 +2584,14 @@ display:
         type: none
         options:
           offset: 0
+      query:
+        type: views_query
+        options:
+          disable_sql_rewrite: false
+          distinct: true
+          replica: false
+          query_comment: ''
+          query_tags: null
     cache_metadata:
       max-age: -1
       contexts:
