@@ -439,7 +439,7 @@ class LeaderboardController extends Controller {
       $position = 1;
       $j = 0;
       foreach ($all_users_data['hits']['hits'] as $value) {
-        $all_users_data_array[$j]['uid'] = isset($value['_source']['userExternalId']) ? $value['_source']['userExternalId'] : (int) $value['_source']['uid'];
+        $all_users_data_array[$j]['uid'] = isset($value['_source']['userExternalId']) ? $value['_source']['userExternalId'] : 0;
         $all_users_data_array[$j]['rank'] = "#" . $position;
         $all_users_data_array[$j]['pointValue'] = isset($value['_source']['total_points']) ? $value['_source']['total_points'] : 0;
         $j++;
