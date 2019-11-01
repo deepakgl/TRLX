@@ -22,6 +22,9 @@ class JwtAuth implements AuthenticationProviderInterface {
   public function applies(Request $request) {
     $commonUtility = new CommonUtility();
     $auth = $request->headers->get('Authorization');
+    if ($auth == NULL) {
+      throw new BadRequestHttpException('Authorization header is required.');
+    }
     return preg_match('/^Bearer .+/', $auth);
   }
 
