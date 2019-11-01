@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\elx_redis_purge\Form;
+namespace Drupal\trlx_redis_purge\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -15,7 +15,7 @@ class RedisCacheConfigForm extends FormBase {
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'elx_redis_cache_config_form';
+    return 'trlx_redis_cache_config_form';
   }
 
   /**

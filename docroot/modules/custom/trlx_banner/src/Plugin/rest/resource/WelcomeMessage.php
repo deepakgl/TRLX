@@ -65,7 +65,7 @@ class WelcomeMessage extends ResourceBase {
       return $response;
     }
 
-    $config = \Drupal::config('welcome_message.settings');
+    $config = \Drupal::config('trlx_banner.welcome_message.settings');
     // Return all languages for global admin role.
     $response = [];
     $message = 'message_' . $language;

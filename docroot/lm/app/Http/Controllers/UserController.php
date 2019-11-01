@@ -91,21 +91,22 @@ class UserController extends Controller
 	private function updateUserIndex($data)
 	{
 		$params = [];
-		$exist = ElasticUserModel::checkElasticUserIndex($data['uid'], $this->elasticClient);
+		$uid = ContentModel::getUserRealId($data['uid']);
+		$exist = ElasticUserModel::checkElasticUserIndex($uid, $this->elasticClient);
 		// If index not exist, create new index.
 		if ($exist) {
-			$elastic_data = ElasticUserModel::fetchElasticUserData($data['uid'], $this->elasticClient);
+			$elastic_data = ElasticUserModel::fetchElasticUserData($uid, $this->elasticClient);
 			$elastic_arr = $elastic_data['_source'];
 			$params['body'] = $this->createUserBody($elastic_arr, $data, 'update');
-			ElasticUserModel::updateElasticUserData($params, $data['uid'], $this->elasticClient);
+			ElasticUserModel::updateElasticUserData($params, $uid, $this->elasticClient);
 		}
 		$elastic_arr = $this->getEmptyUserDataArr();
 		$params['body'] = $this->createUserBody($elastic_arr, $data, 'add');
 		// Update User information inside CMS.
-       $userId = ContentModel::setUserData($params);
-       $params['body']['userExternalId'] = $params['body']['uid'];
-       $params['body']['uid'] = $userId;
-		ElasticUserModel::createElasticUserIndex($params, $userId, $this->elasticClient);
+        $userId = ContentModel::setUserData($params);
+        $params['body']['userExternalId'] = $params['body']['uid'];
+        $params['body']['uid'] = $userId;
+	    ElasticUserModel::createElasticUserIndex($params, $userId, $this->elasticClient);
 	}
 
 	/**
