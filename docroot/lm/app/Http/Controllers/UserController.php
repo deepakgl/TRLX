@@ -98,7 +98,7 @@ class UserController extends Controller
 			$elastic_data = ElasticUserModel::fetchElasticUserData($uid, $this->elasticClient);
 			$elastic_arr = $elastic_data['_source'];
 			$params['body'] = $this->createUserBody($elastic_arr, $data, 'update');
-			ElasticUserModel::updateElasticUserData($params, $data['uid'], $this->elasticClient);
+			ElasticUserModel::updateElasticUserData($params, $uid, $this->elasticClient);
 		}
 		$elastic_arr = $this->getEmptyUserDataArr();
 		$params['body'] = $this->createUserBody($elastic_arr, $data, 'add');
