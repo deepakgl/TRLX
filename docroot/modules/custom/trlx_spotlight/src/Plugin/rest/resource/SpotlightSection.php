@@ -177,7 +177,7 @@ class SpotlightSection extends ResourceBase {
       $i++;
     }
     $response = [];
-    $response['results'] = $result;
+    $response['results'] = array_values($result);
     if (empty($response['results'])) {
       return $commonUtility->successResponse([], Response::HTTP_OK);
     }
