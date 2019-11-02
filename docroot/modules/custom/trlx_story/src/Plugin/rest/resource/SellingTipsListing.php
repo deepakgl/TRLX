@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Drupal\trlx_utility\Utility\CommonUtility;
 use Drupal\trlx_utility\Utility\EntityUtility;
+use Drupal\trlx_utility\Utility\UserUtility;
 
 /**
  * Provides an Selling Tips listing resource.
@@ -173,6 +174,11 @@ class SellingTipsListing extends ResourceBase {
    *   Array or levels data.
    */
   private function fetchSellingTipsLevels(string $sectionKey, string $language) {
+    global $_userData;
+    $userUtility = new UserUtility();
+    // Get current user markets.
+    $markets = $userUtility->getMarketByUserData($_userData);
+    unset($userUtility);
 
     // Database connection.
     $connection = \Drupal::database();
@@ -190,6 +196,9 @@ class SellingTipsListing extends ResourceBase {
       $query->addJoin('LEFT', 'media_field_data', 'mfd', 'mfd.mid = tfi.field_image_target_id');
       $query->addJoin('LEFT', 'media__field_media_image', 'mfmi', 'mfmi.entity_id = mfd.mid');
       $query->addJoin('LEFT', 'file_managed', 'fm', 'fm.fid = mfmi.field_media_image_target_id');
+      if (!empty($markets)) {
+        $query->addJoin('', 'node__field_markets', 'nfm', 'nfm.entity_id = fd.nid');
+      }
 
       // Conditions.
       // Learning level vocabulary.
@@ -204,6 +213,9 @@ class SellingTipsListing extends ResourceBase {
       $query->condition('fd.status', 1);
       $query->condition('fd.langcode', $language);
       $query->condition('fpv.langcode', $language);
+      if (!empty($markets)) {
+        $query->condition('nfm.field_markets_target_id', $markets, 'IN');
+      }
 
       // Fields.
       $query->distinct();
@@ -216,11 +228,13 @@ class SellingTipsListing extends ResourceBase {
       $query->addField('fd', 'nid', 'nid');
       $query->addField('fpv', 'field_point_value_value', 'pointValue');
       $query->addField('tfi', 'field_image_target_id', 'fid');
+      $query->addField('tfi', 'langcode', 'fileLanguage');
       $query->addField('fm', 'uri', 'image');
       // Order by.
       $query->orderBy('timestamp');
       $results = $query->execute()->fetchAll();
-    } catch (\Exception $e) {
+    }
+    catch (\Exception $e) {
       $results = [];
     }
 
@@ -231,25 +245,28 @@ class SellingTipsListing extends ResourceBase {
       foreach ($results as $result) {
         $result = (array) $result;
 
-        if (isset($levelsListing[$result['id']])) {
-          $levelsListing[$result['id']]['pointValue'] = $levelsListing[$result['id']]['pointValue'] + $result['pointValue'];
-        }
-        else {
-          $levelsListing[$result['id']]['id'] = $result['id'];
-          $levelsListing[$result['id']]['displayTitle'] = $result['displayTitle'];
-          $levelsListing[$result['id']]['subTitle'] = $result['subTitle'];
-          $levelsListing[$result['id']]['body'] = $result['body'];
-          $levelsListing[$result['id']]['type'] = 'level';
-          $levelsListing[$result['id']]['pointValue'] = $result['pointValue'];
-          $levelsListing[$result['id']]['timestamp'] = $result['timestamp'];
+        // Filter druplicate records of other field_image languages.
+        if (in_array($result['fileLanguage'], [$language, ''])) {
+          if (isset($levelsListing[$result['id']])) {
+            $levelsListing[$result['id']]['pointValue'] = $levelsListing[$result['id']]['pointValue'] + $result['pointValue'];
+          }
+          else {
+            $levelsListing[$result['id']]['id'] = $result['id'];
+            $levelsListing[$result['id']]['displayTitle'] = $result['displayTitle'];
+            $levelsListing[$result['id']]['subTitle'] = $result['subTitle'];
+            $levelsListing[$result['id']]['body'] = $result['body'];
+            $levelsListing[$result['id']]['type'] = 'level';
+            $levelsListing[$result['id']]['pointValue'] = $result['pointValue'];
+            $levelsListing[$result['id']]['timestamp'] = $result['timestamp'];
 
-          $levelsListing[$result['id']]['imageSmall'] = $levelsListing[$result['id']]['imageMedium'] = $levelsListing[$result['id']]['imageLarge'] = '';
+            $levelsListing[$result['id']]['imageSmall'] = $levelsListing[$result['id']]['imageMedium'] = $levelsListing[$result['id']]['imageLarge'] = '';
 
-          // Create image urls for three different display screens.
-          if (!empty($result['image'])) {
-            $levelsListing[$result['id']]['imageSmall'] = $commonUtility->getImageStyleBasedUrl('stories_level_listing_mobile', $result['image']);
-            $levelsListing[$result['id']]['imageMedium'] = $commonUtility->getImageStyleBasedUrl('stories_level_listing_tablet', $result['image']);
-            $levelsListing[$result['id']]['imageLarge'] = $commonUtility->getImageStyleBasedUrl('stories_level_listing_desktop', $result['image']);
+            // Create image urls for three different display screens.
+            if (!empty($result['image'])) {
+              $levelsListing[$result['id']]['imageSmall'] = $commonUtility->getImageStyleBasedUrl('stories_level_listing_mobile', $result['image']);
+              $levelsListing[$result['id']]['imageMedium'] = $commonUtility->getImageStyleBasedUrl('stories_level_listing_tablet', $result['image']);
+              $levelsListing[$result['id']]['imageLarge'] = $commonUtility->getImageStyleBasedUrl('stories_level_listing_desktop', $result['image']);
+            }
           }
         }
 
