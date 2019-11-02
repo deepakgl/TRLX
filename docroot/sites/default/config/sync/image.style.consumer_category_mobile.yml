@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 name: consumer_category_mobile
-label: 'Consumer Category Hero Mobile (375×375)'
+label: 'Consumer Category Hero Mobile (375×208)'
 effects:
   7e851a62-31bf-42d9-b8c9-53f7feccb4b3:
     uuid: 7e851a62-31bf-42d9-b8c9-53f7feccb4b3
@@ -11,5 +11,5 @@ effects:
     weight: 1
     data:
       width: 375
-      height: 375
+      height: 208
       anchor: center-center

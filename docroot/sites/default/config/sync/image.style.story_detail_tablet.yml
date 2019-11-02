@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 name: story_detail_tablet
-label: 'Story Detail Tablet (1194X357)'
+label: 'Story Detail Tablet (1194×664)'
 effects:
   ace46c99-d1e4-4dc1-be93-5f471dd4c359:
     uuid: ace46c99-d1e4-4dc1-be93-5f471dd4c359
@@ -11,5 +11,5 @@ effects:
     weight: 1
     data:
       width: 1194
-      height: 357
+      height: 664
       anchor: center-center
