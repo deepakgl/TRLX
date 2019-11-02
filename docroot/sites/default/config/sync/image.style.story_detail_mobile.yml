@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 name: story_detail_mobile
-label: 'Story Detail Mobile (375X375)'
+label: 'Story Detail Mobile (375×208)'
 effects:
   5950a083-5b76-4bd8-a9e7-ab63faf62b7e:
     uuid: 5950a083-5b76-4bd8-a9e7-ab63faf62b7e
@@ -11,5 +11,5 @@ effects:
     weight: 1
     data:
       width: 375
-      height: 375
+      height: 208
       anchor: center-center
