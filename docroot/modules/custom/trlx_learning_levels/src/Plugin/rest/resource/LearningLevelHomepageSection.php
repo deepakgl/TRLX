@@ -132,7 +132,7 @@ class  LearningLevelHomepageSection extends ResourceBase {
     try {
       // Query to get the nid for in-progress learning level content.
       $database = \Drupal::database();
-      $query = $database->query("select distinct tid from lm_lrs_records where uid =" . $uid );
+      $query = $database->query("select distinct tid from lm_lrs_records where statement_status !='passed' && uid =" . $uid );
       $result = $query->fetchAll();
       return array_reverse($result);
     } catch (\Exception $e) {
