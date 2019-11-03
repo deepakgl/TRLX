@@ -6,11 +6,13 @@ dependencies:
     - entity_browser.browser.media_entity_browser
     - field.field.node.level_interactive_content.field_access_by_role
     - field.field.node.level_interactive_content.field_archive_and_unarchive
+    - field.field.node.level_interactive_content.field_best_seller_title
     - field.field.node.level_interactive_content.field_content_object_type
     - field.field.node.level_interactive_content.field_featured
     - field.field.node.level_interactive_content.field_featured_image
     - field.field.node.level_interactive_content.field_headline
     - field.field.node.level_interactive_content.field_hero_image
+    - field.field.node.level_interactive_content.field_image_home_page
     - field.field.node.level_interactive_content.field_interactive_content
     - field.field.node.level_interactive_content.field_learning_category
     - field.field.node.level_interactive_content.field_markets
@@ -51,6 +53,8 @@ third_party_settings:
         - field_featured_image
         - field_headline
         - field_subtitle
+        - field_image_home_page
+        - field_best_seller_title
         - field_point_value
         - field_markets
       parent_name: group_general
@@ -83,6 +87,14 @@ targetEntityType: node
 bundle: level_interactive_content
 mode: default
 content:
+  field_best_seller_title:
+    weight: 15
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
   field_featured_image:
     weight: 11
     settings:
@@ -121,9 +133,24 @@ content:
     third_party_settings: {  }
     type: entity_browser_entity_reference
     region: content
+  field_image_home_page:
+    weight: 14
+    settings:
+      entity_browser: media_entity_browser
+      field_widget_display: rendered_entity
+      field_widget_remove: true
+      selection_mode: selection_append
+      field_widget_display_settings:
+        view_mode: default
+      field_widget_edit: false
+      field_widget_replace: false
+      open: false
+    third_party_settings: {  }
+    type: entity_browser_entity_reference
+    region: content
   field_interactive_content:
     type: entity_reference_paragraphs
-    weight: 1
+    weight: 29
     settings:
       title: Paragraph
       title_plural: Paragraphs
@@ -140,7 +167,7 @@ content:
     type: options_select
     region: content
   field_markets:
-    weight: 15
+    weight: 17
     settings:
       start_minimized: true
       leaves_only: false
@@ -151,7 +178,7 @@ content:
     type: term_reference_tree
     region: content
   field_point_value:
-    weight: 14
+    weight: 16
     settings:
       size: 60
       placeholder: ''
@@ -168,26 +195,26 @@ content:
     region: content
   field_translation:
     type: options_buttons
-    weight: 5
+    weight: 6
     region: content
     settings: {  }
     third_party_settings: {  }
   langcode:
     type: language_select
-    weight: 2
+    weight: 3
     region: content
     settings:
       include_locked: true
     third_party_settings: {  }
   path:
     type: path
-    weight: 1
+    weight: 2
     region: content
     settings: {  }
     third_party_settings: {  }
   status:
     type: boolean_checkbox
-    weight: 4
+    weight: 5
     region: content
     settings:
       display_label: true
@@ -201,7 +228,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
   translation:
-    weight: 3
+    weight: 4
     region: content
     settings: {  }
     third_party_settings: {  }

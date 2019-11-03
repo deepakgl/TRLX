@@ -4,12 +4,14 @@ status: true
 dependencies:
   config:
     - entity_browser.browser.media_entity_browser
+    - field.field.node.tools.field_best_seller_title
     - field.field.node.tools.field_brands
     - field.field.node.tools.field_display_title
     - field.field.node.tools.field_downloadable
     - field.field.node.tools.field_featured
     - field.field.node.tools.field_featured_image
     - field.field.node.tools.field_headline
+    - field.field.node.tools.field_image_home_page
     - field.field.node.tools.field_markets
     - field.field.node.tools.field_point_value
     - field.field.node.tools.field_tool_description
@@ -35,8 +37,16 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_best_seller_title:
+    weight: 9
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
   field_brands:
-    weight: 16
+    weight: 18
     settings: {  }
     third_party_settings: {  }
     type: options_buttons
@@ -51,7 +61,7 @@ content:
     region: content
   field_featured_image:
     type: entity_browser_entity_reference
-    weight: 10
+    weight: 12
     region: content
     settings:
       entity_browser: media_entity_browser
@@ -64,9 +74,24 @@ content:
       field_widget_replace: false
       open: false
     third_party_settings: {  }
+  field_image_home_page:
+    weight: 8
+    settings:
+      entity_browser: media_entity_browser
+      field_widget_display: rendered_entity
+      field_widget_remove: true
+      selection_mode: selection_append
+      field_widget_display_settings:
+        view_mode: default
+      field_widget_edit: false
+      field_widget_replace: false
+      open: false
+    third_party_settings: {  }
+    type: entity_browser_entity_reference
+    region: content
   field_markets:
     type: term_reference_tree
-    weight: 17
+    weight: 19
     region: content
     settings:
       start_minimized: true
@@ -76,7 +101,7 @@ content:
       max_depth: 0
     third_party_settings: {  }
   field_point_value:
-    weight: 8
+    weight: 10
     settings:
       size: 60
       placeholder: ''
@@ -93,7 +118,7 @@ content:
     type: text_textarea_with_summary
     region: content
   field_tool_pdf:
-    weight: 11
+    weight: 13
     settings:
       entity_browser: video_entity_browser
       field_widget_display: rendered_entity
@@ -108,7 +133,7 @@ content:
     type: entity_browser_entity_reference
     region: content
   field_tool_thumbnail:
-    weight: 12
+    weight: 14
     settings:
       entity_browser: media_entity_browser
       field_widget_display: rendered_entity
@@ -124,12 +149,12 @@ content:
     region: content
   field_translation:
     type: options_buttons
-    weight: 14
+    weight: 16
     region: content
     settings: {  }
     third_party_settings: {  }
   field_video_sub_titles:
-    weight: 13
+    weight: 15
     settings:
       progress_indicator: throbber
     third_party_settings: {  }
@@ -157,7 +182,7 @@ content:
     third_party_settings: {  }
   status:
     type: boolean_checkbox
-    weight: 15
+    weight: 17
     region: content
     settings:
       display_label: true
@@ -171,7 +196,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
   translation:
-    weight: 9
+    weight: 11
     region: content
     settings: {  }
     third_party_settings: {  }

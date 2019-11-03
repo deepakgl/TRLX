@@ -7,6 +7,7 @@ dependencies:
     - field.field.node.stories.body
     - field.field.node.stories.field_access_by_role
     - field.field.node.stories.field_archive_and_unarchive
+    - field.field.node.stories.field_best_seller_title
     - field.field.node.stories.field_comment
     - field.field.node.stories.field_consumer_category
     - field.field.node.stories.field_content_section
@@ -18,6 +19,7 @@ dependencies:
     - field.field.node.stories.field_first_name
     - field.field.node.stories.field_headline
     - field.field.node.stories.field_hero_image
+    - field.field.node.stories.field_image_home_page
     - field.field.node.stories.field_last_name
     - field.field.node.stories.field_markets
     - field.field.node.stories.field_occupation
@@ -54,6 +56,14 @@ content:
     weight: 1
     settings: {  }
     third_party_settings: {  }
+    region: content
+  field_best_seller_title:
+    weight: 28
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
     region: content
   field_comment:
     weight: 9
@@ -129,6 +139,14 @@ content:
     region: content
   field_hero_image:
     weight: 10
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_image_home_page:
+    weight: 27
     label: above
     settings:
       link: true
