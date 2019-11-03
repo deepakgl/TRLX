@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 name: consumer_category_tablet
-label: 'Consumer Category Hero Tablet (1194x357)'
+label: 'Consumer Category Hero Tablet (1194×664)'
 effects:
   60c1202f-5526-4831-927a-9228806f61f2:
     uuid: 60c1202f-5526-4831-927a-9228806f61f2
@@ -11,5 +11,5 @@ effects:
     weight: 1
     data:
       width: 1194
-      height: 357
+      height: 664
       anchor: center-center

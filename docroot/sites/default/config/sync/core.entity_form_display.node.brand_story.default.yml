@@ -5,9 +5,11 @@ dependencies:
   config:
     - entity_browser.browser.video_entity_browser
     - field.field.node.brand_story.body
+    - field.field.node.brand_story.field_best_seller_title
     - field.field.node.brand_story.field_brands
     - field.field.node.brand_story.field_display_title
     - field.field.node.brand_story.field_featured_image
+    - field.field.node.brand_story.field_image_home_page
     - field.field.node.brand_story.field_markets
     - field.field.node.brand_story.field_point_value
     - field.field.node.brand_story.field_subtitle
@@ -39,8 +41,16 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_best_seller_title:
+    weight: 15
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
   field_brands:
-    weight: 27
+    weight: 18
     settings: {  }
     third_party_settings: {  }
     type: options_buttons
@@ -68,8 +78,23 @@ content:
     third_party_settings: {  }
     type: entity_browser_entity_reference
     region: content
+  field_image_home_page:
+    weight: 14
+    settings:
+      entity_browser: media_entity_browser
+      field_widget_display: rendered_entity
+      field_widget_remove: true
+      selection_mode: selection_append
+      field_widget_display_settings:
+        view_mode: default
+      field_widget_edit: false
+      field_widget_replace: false
+      open: false
+    third_party_settings: {  }
+    type: entity_browser_entity_reference
+    region: content
   field_markets:
-    weight: 28
+    weight: 19
     settings:
       start_minimized: true
       leaves_only: false
@@ -80,7 +105,7 @@ content:
     type: term_reference_tree
     region: content
   field_point_value:
-    weight: 14
+    weight: 16
     settings:
       size: 60
       placeholder: ''
@@ -111,7 +136,7 @@ content:
     type: entity_browser_entity_reference
     region: content
   field_translation:
-    weight: 26
+    weight: 17
     settings: {  }
     third_party_settings: {  }
     type: options_buttons

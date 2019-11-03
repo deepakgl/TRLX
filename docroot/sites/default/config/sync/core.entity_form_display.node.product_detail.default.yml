@@ -9,6 +9,7 @@ dependencies:
     - field.field.node.product_detail.field_ar_search
     - field.field.node.product_detail.field_archive_and_unarchive
     - field.field.node.product_detail.field_benefits
+    - field.field.node.product_detail.field_best_seller_title
     - field.field.node.product_detail.field_brands
     - field.field.node.product_detail.field_customer_questions
     - field.field.node.product_detail.field_demonstration
@@ -20,6 +21,7 @@ dependencies:
     - field.field.node.product_detail.field_headline
     - field.field.node.product_detail.field_how_to_sell_this_product
     - field.field.node.product_detail.field_if_she_asks_share
+    - field.field.node.product_detail.field_image_home_page
     - field.field.node.product_detail.field_just_for_you
     - field.field.node.product_detail.field_learning_category
     - field.field.node.product_detail.field_markets
@@ -55,7 +57,7 @@ third_party_settings:
     group_perfect_partners:
       children: {  }
       parent_name: ''
-      weight: 46
+      weight: 49
       format_type: fieldset
       format_settings:
         id: ''
@@ -92,8 +94,16 @@ content:
     third_party_settings: {  }
     type: text_textarea_with_summary
     region: content
+  field_best_seller_title:
+    weight: 10
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
   field_brands:
-    weight: 15
+    weight: 18
     settings: {  }
     third_party_settings: {  }
     type: options_buttons
@@ -144,8 +154,23 @@ content:
     third_party_settings: {  }
     type: string_textfield
     region: content
+  field_image_home_page:
+    weight: 9
+    settings:
+      entity_browser: media_entity_browser
+      field_widget_display: rendered_entity
+      field_widget_remove: true
+      selection_mode: selection_append
+      field_widget_display_settings:
+        view_mode: default
+      field_widget_edit: false
+      field_widget_replace: false
+      open: false
+    third_party_settings: {  }
+    type: entity_browser_entity_reference
+    region: content
   field_markets:
-    weight: 16
+    weight: 19
     settings:
       start_minimized: true
       leaves_only: false
@@ -156,7 +181,7 @@ content:
     type: term_reference_tree
     region: content
   field_point_value:
-    weight: 9
+    weight: 12
     settings:
       size: 60
       placeholder: ''
@@ -214,7 +239,7 @@ content:
     type: string_textfield
     region: content
   field_tags_keywords:
-    weight: 14
+    weight: 17
     settings:
       match_operator: CONTAINS
       size: 60
@@ -224,7 +249,7 @@ content:
     region: content
   field_translation:
     type: options_buttons
-    weight: 17
+    weight: 20
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -237,14 +262,14 @@ content:
     region: content
   langcode:
     type: language_select
-    weight: 10
+    weight: 13
     region: content
     settings:
       include_locked: true
     third_party_settings: {  }
   path:
     type: path
-    weight: 12
+    weight: 15
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -252,12 +277,12 @@ content:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 11
+    weight: 14
     region: content
     third_party_settings: {  }
   status:
     type: boolean_checkbox
-    weight: 18
+    weight: 21
     region: content
     settings:
       display_label: true
@@ -271,7 +296,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
   translation:
-    weight: 13
+    weight: 16
     region: content
     settings: {  }
     third_party_settings: {  }
