@@ -104,6 +104,7 @@ class SpotlightSection extends ResourceBase {
           $result[$i]['imageMedium'] = $value['imageMedium'];
           $result[$i]['imageLarge'] = $value['imageLarge'];
           $result[$i]['pointValue'] = $value['pointValue'];
+          $result[$i]['textOverlay'] = $value['textOverlay'];
           break;
         case 'brand_story':
           $node = $this->getNodeData($value, $language);
@@ -119,6 +120,7 @@ class SpotlightSection extends ResourceBase {
             $result[$i]['imageMedium'] = $value['imageMedium'];
             $result[$i]['imageLarge'] = $value['imageLarge'];
             $result[$i]['pointValue'] = $value['pointValue'];
+            $result[$i]['textOverlay'] = $value['textOverlay'];
           }
           break;
         case 'tools':
@@ -136,6 +138,7 @@ class SpotlightSection extends ResourceBase {
             $result[$i]['imageMedium'] = $value['imageMedium'];
             $result[$i]['imageLarge'] = $value['imageLarge'];
             $result[$i]['pointValue'] = $value['pointValue'];
+            $result[$i]['textOverlay'] = $value['textOverlay'];
           }
           break;
         case 'product_detail':
@@ -153,6 +156,7 @@ class SpotlightSection extends ResourceBase {
             $result[$i]['imageMedium'] = $value['imageMedium'];
             $result[$i]['imageLarge'] = $value['imageLarge'];
             $result[$i]['pointValue'] = $value['pointValue'];
+            $result[$i]['textOverlay'] = $value['textOverlay'];
           }
           break;
         case 'level_interactive_content':
@@ -172,12 +176,13 @@ class SpotlightSection extends ResourceBase {
           $result[$i]['imageMedium'] = $value['imageMedium'];
           $result[$i]['imageLarge'] = $value['imageLarge'];
           $result[$i]['pointValue'] = $value['pointValue'];
+          $result[$i]['textOverlay'] = $value['textOverlay'];
           break;
       }
       $i++;
     }
     $response = [];
-    $response['results'] = $result;
+    $response['results'] = array_values($result);
     if (empty($response['results'])) {
       return $commonUtility->successResponse([], Response::HTTP_OK);
     }

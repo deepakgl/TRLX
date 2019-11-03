@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 name: listing_image_tablet
-label: 'Listing Image Tablet (1194×357)'
+label: 'Listing Image Tablet (1194×664)'
 effects:
   4b0bc758-2485-4c80-8845-bf11114807a2:
     uuid: 4b0bc758-2485-4c80-8845-bf11114807a2
@@ -11,5 +11,5 @@ effects:
     weight: 1
     data:
       width: 1194
-      height: 357
+      height: 664
       anchor: center-center

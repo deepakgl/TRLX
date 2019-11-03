@@ -897,6 +897,7 @@ display:
         filter_groups: false
         cache: false
         sorts: false
+        query: false
       relationships:
         field_content_section:
           id: field_content_section
@@ -1682,6 +1683,14 @@ display:
         type: none
         options: {  }
       sorts: {  }
+      query:
+        type: views_query
+        options:
+          disable_sql_rewrite: false
+          distinct: true
+          replica: false
+          query_comment: ''
+          query_tags: null
     cache_metadata:
       max-age: -1
       contexts:

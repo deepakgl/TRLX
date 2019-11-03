@@ -1,0 +1,19 @@
+uuid: 3f9e7e49-ee33-4dbf-b278-5aeafc3d1f18
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_best_seller_title
+    - node.type.brand_story
+id: node.brand_story.field_best_seller_title
+field_name: field_best_seller_title
+entity_type: node
+bundle: brand_story
+label: 'Spotlight Text Overlay'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string
