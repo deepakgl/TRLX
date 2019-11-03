@@ -1,0 +1,28 @@
+uuid: 40b938e9-380a-4e1c-bb67-50f1e92a8125
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_image_home_page
+    - media.type.image
+    - node.type.level_interactive_content
+id: node.level_interactive_content.field_image_home_page
+field_name: field_image_home_page
+entity_type: node
+bundle: level_interactive_content
+label: 'Mobile Spotlight Image'
+description: 'Allowed file types:<b> png, jpg, jpeg.</b><br>Image Resolution:<b> 375X500px</b>'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      image: image
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

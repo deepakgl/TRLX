@@ -11,7 +11,7 @@ field_name: field_hero_image
 entity_type: taxonomy_term
 bundle: listing_image
 label: 'Listing Image'
-description: 'Allowed file types:<b> png, jpg, jpeg.</b><br>Image Resolution:<b> 1440X437px</b>'
+description: 'Allowed file types:<b> png, jpg, jpeg.</b><br>Image Resolution:<b> 1440X800px</b>'
 required: true
 translatable: true
 default_value: {  }

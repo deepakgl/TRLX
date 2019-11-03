@@ -1,17 +1,17 @@
-uuid: cd7b3dee-0402-49ae-ba57-4d2e721cb14b
+uuid: 6738e0d6-847d-4c6c-9efe-1cbb44a960f9
 langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_featured_image
+    - field.storage.node.field_image_home_page
     - media.type.image
-    - node.type.product_detail
-id: node.product_detail.field_featured_image
-field_name: field_featured_image
+    - node.type.tools
+id: node.tools.field_image_home_page
+field_name: field_image_home_page
 entity_type: node
-bundle: product_detail
-label: 'Featured Image'
-description: 'Allowed file types:<b> png, jpg, jpeg.</b><br>Image Resolution:<b> 1440X800px</b>'
+bundle: tools
+label: 'Mobile Spotlight Image'
+description: 'Allowed file types:<b> png, jpg, jpeg.</b><br>Image Resolution:<b> 375X500px</b>'
 required: false
 translatable: true
 default_value: {  }

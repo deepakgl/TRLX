@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 name: product_details_mobile
-label: 'Product Details Mobile (375×375)'
+label: 'Product Details Mobile (375×208)'
 effects:
   7bf0fe3a-2809-44b1-9b1f-1412d873ae9f:
     uuid: 7bf0fe3a-2809-44b1-9b1f-1412d873ae9f
@@ -11,5 +11,5 @@ effects:
     weight: 1
     data:
       width: 375
-      height: 375
+      height: 208
       anchor: center-center

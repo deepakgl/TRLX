@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 name: listing_image_desktop
-label: 'Listing Image Desktop (1440×437)'
+label: 'Listing Image Desktop (1440×800)'
 effects:
   fefec7ef-805e-46d8-bf33-9e85599f18e2:
     uuid: fefec7ef-805e-46d8-bf33-9e85599f18e2
@@ -11,5 +11,5 @@ effects:
     weight: 1
     data:
       width: 1440
-      height: 437
+      height: 800
       anchor: center-center
