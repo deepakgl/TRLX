@@ -11,7 +11,7 @@ field_name: field_hero_image
 entity_type: node
 bundle: stories
 label: 'Hero Image'
-description: 'Allowed file types:<b> png, jpg, jpeg.</b><br>Image Resolution:<b> 188X200px</b>'
+description: 'Allowed file types:<b> png, jpg, jpeg.</b><br>Image Resolution:<b> 197X197px</b>'
 required: false
 translatable: true
 default_value: {  }
