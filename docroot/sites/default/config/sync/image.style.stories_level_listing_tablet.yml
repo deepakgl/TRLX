@@ -3,13 +3,13 @@ langcode: en
 status: true
 dependencies: {  }
 name: stories_level_listing_tablet
-label: 'Stories Level Listing Tablet (230×195)'
+label: 'Stories Level Listing Tablet (200×200)'
 effects:
   ad3d0c79-b14a-4225-94f2-62359fd9dfd8:
     uuid: ad3d0c79-b14a-4225-94f2-62359fd9dfd8
     id: image_scale_and_crop
     weight: 1
     data:
-      width: 230
-      height: 195
+      width: 200
+      height: 200
       anchor: center-center
