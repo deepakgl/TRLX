@@ -13,12 +13,10 @@ label: Percentage
 description: ''
 required: false
 translatable: false
-default_value:
-  -
-    value: 100
+default_value: {  }
 default_value_callback: ''
 settings:
-  min: null
+  min: 0
   max: 100
   prefix: ''
   suffix: ''
