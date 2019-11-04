@@ -9,6 +9,7 @@ use Drupal\trlx_utility\Utility\CommonUtility;
 use Drupal\trlx_utility\Utility\EntityUtility;
 use Drupal\trlx_learning_levels\Utility\LevelUtility;
 use Drupal\trlx_utility\Utility\UserUtility;
+use Drupal\Core\Site\Settings;
 
 /**
  * Provides a modules details resource.
