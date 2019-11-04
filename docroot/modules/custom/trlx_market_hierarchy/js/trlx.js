@@ -55,6 +55,14 @@
           })
         }
     });
+    $('.form-item-field-badges select').on('change', function() {
+      if ($('.form-item-field-badges select').val() != '_none') {
+        $('.form-item-field-percentage-0-value input').val(100);
+      }
+      if ($('.form-item-field-badges select').val() == '_none') {
+        $('.form-item-field-percentage-0-value input').val("");
+      }
+    });
   }
 };
 })(jQuery, Drupal);
