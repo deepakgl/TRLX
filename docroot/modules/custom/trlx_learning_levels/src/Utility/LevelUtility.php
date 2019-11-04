@@ -63,7 +63,7 @@ class LevelUtility {
       $query->condition('n.status', '1');
       $query->condition('n.langcode', $language);
       $query->condition('n.type', 'level_interactive_content');
-      $query->condition('nflc.langcode', $language);
+      // $query->condition('nflc.langcode', $language);
       $query->join('node__field_markets', 'nfm', 'n.nid = nfm.entity_id');
       $query->condition('nfm.field_markets_target_id', $markets, 'IN');
       $result = $query->execute()->fetchAll();
