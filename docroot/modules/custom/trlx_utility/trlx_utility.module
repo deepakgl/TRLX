@@ -364,6 +364,9 @@ function trlx_utility_taxonomy_submit(array &$form, FormStateInterface $form_sta
       'stories_level_listing_mobile',
       'stories_level_listing_tablet',
       'stories_level_listing_desktop',
+      'level_home_page_mobile',
+      'level_home_page_tablet',
+      'level_home_page_desktop',
     ]
     );
   }

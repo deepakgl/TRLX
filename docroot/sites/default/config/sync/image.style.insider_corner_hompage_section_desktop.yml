@@ -3,13 +3,13 @@ langcode: en
 status: true
 dependencies: {  }
 name: insider_corner_hompage_section_desktop
-label: 'Insider Corner Hompage Section Desktop (1194 × 357)'
+label: 'Insider Corner Hompage Section Desktop (220×220)'
 effects:
   a2ce7359-cd69-496c-aa98-cfeb5a2d0761:
     uuid: a2ce7359-cd69-496c-aa98-cfeb5a2d0761
     id: image_scale_and_crop
     weight: 1
     data:
-      width: 1194
-      height: 357
+      width: 220
+      height: 220
       anchor: center-center

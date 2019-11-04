@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 name: brand_story_tablet
-label: 'Brand Story Tablet (800X324)'
+label: 'Brand Story Tablet (800×464)'
 effects:
   12d0968b-2a58-4f17-89b5-96538ebb8dc8:
     uuid: 12d0968b-2a58-4f17-89b5-96538ebb8dc8
@@ -11,5 +11,5 @@ effects:
     weight: 1
     data:
       width: 800
-      height: 324
+      height: 464
       anchor: center-center
