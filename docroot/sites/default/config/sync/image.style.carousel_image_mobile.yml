@@ -1,0 +1,15 @@
+uuid: a6e59856-e6e6-4060-b40d-19c1b6cb8349
+langcode: en
+status: true
+dependencies: {  }
+name: carousel_image_mobile
+label: 'Carousel Image Mobile (172X172)'
+effects:
+  ab0ff5ae-420d-4ff3-b94c-ba2613d390e5:
+    uuid: ab0ff5ae-420d-4ff3-b94c-ba2613d390e5
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 172
+      height: 172
+      anchor: center-center

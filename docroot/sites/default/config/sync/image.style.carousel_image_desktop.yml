@@ -1,0 +1,15 @@
+uuid: 25ea6415-df1f-4fba-ad2b-4c002bc76f9b
+langcode: en
+status: true
+dependencies: {  }
+name: carousel_image_desktop
+label: 'Carousel Image Desktop (400X400)'
+effects:
+  c987ae37-e149-4571-a4e5-ed6e7d13482f:
+    uuid: c987ae37-e149-4571-a4e5-ed6e7d13482f
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 400
+      height: 400
+      anchor: center-center

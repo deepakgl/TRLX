@@ -1,0 +1,15 @@
+uuid: 17a8bf25-0b5f-4fe5-9896-d3879cf01532
+langcode: en
+status: true
+dependencies: {  }
+name: carousel_image_tablet
+label: 'Carousel Image Tablet (400X400)'
+effects:
+  86051b19-2dfb-4481-9909-3cec22c2cf20:
+    uuid: 86051b19-2dfb-4481-9909-3cec22c2cf20
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 400
+      height: 400
+      anchor: center-center
