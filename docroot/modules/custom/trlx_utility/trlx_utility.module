@@ -62,7 +62,6 @@ function trlx_utility_form_alter(&$form, FormStateInterface $form_state, $form_i
     case 'node_faq_edit_form':
     case 'node_privacy_policy_form':
     case 'node_privacy_policy_edit_form':
-    case 'taxonomy_term_learning_category_form':  
       $form['#attached']['library'][] = 'trlx_market_hierarchy/trlx_market';
       break;
 
@@ -257,6 +256,7 @@ function trlx_utility_form_alter(&$form, FormStateInterface $form_state, $form_i
       break;
 
     case 'taxonomy_term_learning_category_form':
+      $form['#attached']['library'][] = 'trlx_market_hierarchy/trlx_market';
       $entity = $form_state->getFormObject()->getEntity();
       $form['#validate'][] = 'learning_category_validate';
       $form['actions']['submit']['#submit'][] = 'trlx_utility_taxonomy_submit';
