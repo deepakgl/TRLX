@@ -75,6 +75,24 @@ class PostComment extends ResourceBase {
     if (!isset($data['tags'])) {
       return $this->commonUtility->errorResponse($this->t('Tags is required.'), Response::HTTP_BAD_REQUEST);
     }
+    else {
+      // Check for invalid tagged users.
+      $invalidTaggedUsers = [];
+
+      if (!empty($data['tags'])) {
+        foreach ($data['tags'] as $tags) {
+          $userId = $this->commonUtility->getUserRealId($tags['id']);
+          if (empty($userId)) {
+            $invalidTaggedUsers[] = $tags['id'];
+          }
+        }
+      }
+
+      // Response for invalid tagged users.
+      if (!empty($invalidTaggedUsers)) {
+        return $this->commonUtility->errorResponse($this->t('Invalid user(s) in comment tags: @tagUsers.', ['@tagUsers' => implode(', ', $invalidTaggedUsers)]), Response::HTTP_BAD_REQUEST);
+      }
+    }
     if (isset($data['language'])) {
       // Checkfor valid language code.
       $response = $this->commonUtility->validateLanguageCode($data['language'], $request, TRUE);
