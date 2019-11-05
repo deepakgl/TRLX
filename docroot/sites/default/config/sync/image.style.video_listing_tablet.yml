@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 name: video_listing_tablet
-label: 'Video Listing Tablet (560X196)'
+label: 'Video Listing Tablet (560×243)'
 effects:
   bb89f19f-aaf0-432f-b956-fabef892bc30:
     uuid: bb89f19f-aaf0-432f-b956-fabef892bc30
@@ -11,5 +11,5 @@ effects:
     weight: 1
     data:
       width: 560
-      height: 196
+      height: 243
       anchor: center-center
