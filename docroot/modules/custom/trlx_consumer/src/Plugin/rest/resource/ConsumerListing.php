@@ -83,11 +83,11 @@ class ConsumerListing extends ResourceBase {
 
     // Fetch learning_category term response.
     /*list($term_view_results, $term_status_code) = $entityUtility->fetchApiResult(
-      '',
-      'consumer_categories',
-      'rest_export_consumer_learning_level_listing',
-      '',
-      ['language' => $language, 'categoryId' => $categoryId]
+    '',
+    'consumer_categories',
+    'rest_export_consumer_learning_level_listing',
+    '',
+    ['language' => $language, 'categoryId' => $categoryId]
     );*/
 
     // Fetch stories bundle content response.

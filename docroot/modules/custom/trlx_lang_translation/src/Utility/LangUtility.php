@@ -2,9 +2,6 @@
 
 namespace Drupal\trlx_lang_translation\Utility;
 
-use Drupal\elx_user\Utility\UserUtility;
-use PHPUnit\Exception;
-
 /**
  * Purpose of this class is to build language object.
  */
@@ -55,7 +52,8 @@ class LangUtility {
       $results = array_column($results, 'langcode');
 
       return $results;
-    } catch (\Exception $e) {
+    }
+    catch (\Exception $e) {
       return FALSE;
     }
   }
@@ -99,7 +97,8 @@ class LangUtility {
         }
       }
       return $response;
-    } catch (\Exception $e) {
+    }
+    catch (\Exception $e) {
       return FALSE;
     }
   }

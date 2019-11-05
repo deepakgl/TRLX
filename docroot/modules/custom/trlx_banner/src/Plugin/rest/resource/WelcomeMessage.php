@@ -6,7 +6,6 @@ use Drupal\rest\Plugin\ResourceBase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Drupal\trlx_utility\Utility\CommonUtility;
-use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * Provides a Welcome Message resource.
@@ -21,15 +20,15 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class WelcomeMessage extends ResourceBase {
 
- /**
-  * Fetch Image listing.
-  *
-  * @param \Symfony\Component\HttpFoundation\Request $request
-  *   Rest resource query parameters.
-  *
-  * @return \Drupal\rest\ResourceResponse
-  *   Image Listing.
-  */
+  /**
+   * Fetch Image listing.
+   *
+   * @param \Symfony\Component\HttpFoundation\Request $request
+   *   Rest resource query parameters.
+   *
+   * @return \Drupal\rest\ResourceResponse
+   *   Image Listing.
+   */
   public function get(Request $request) {
     $commonUtility = new CommonUtility();
 
@@ -76,6 +75,5 @@ class WelcomeMessage extends ResourceBase {
 
     return $commonUtility->successResponse($response['results'], 200);
   }
+
 }
-
-

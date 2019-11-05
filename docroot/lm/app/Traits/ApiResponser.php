@@ -4,13 +4,16 @@ namespace App\Traits;
 
 use Illuminate\Http\Response;
 
+/**
+ *
+ */
 trait ApiResponser {
 
   /**
-   * Build success response
+   * Build success response.
    *
-   * @param  string|array $data
-   * @param  int $code
+   * @param string|array $data
+   * @param int $code
    *
    * @return Illuminate\Http\JsonResponse
    */
@@ -26,10 +29,10 @@ trait ApiResponser {
   }
 
   /**
-   * Build error responses
+   * Build error responses.
    *
-   * @param  string|array $message
-   * @param  int $code
+   * @param string|array $message
+   * @param int $code
    *
    * @return Illuminate\Http\JsonResponse
    */

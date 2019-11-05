@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @file
+ */
+
 define('UNAUTHORIZED', 'unauthorized');
 define('UNAUTHORIZED_MESSAGE', 'Sorry, You are not authorized to access this page.');
 
