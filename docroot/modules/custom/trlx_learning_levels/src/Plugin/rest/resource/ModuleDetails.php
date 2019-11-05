@@ -138,7 +138,7 @@ class ModuleDetails extends ResourceBase {
     $uuid = $uuid_service->generate();
     $learning_category = $levelUtility->getLevelCategory($nid);
     $filePublicUrl = Settings::get('file_public_base_url');
-    $fileDomain = str_replace('sites/default/files/', '', $filePublicUrl);
+    $fileDomain = str_replace('sites/default/files', '', ltrm($filePublicUrl,'/'));
     $decode['articulateFile'] = $fileDomain . $decode['articulateFile']
      . '?tincan=true&endpoint=' . $lumen_url . '/lm/api/v1/slrsa&auth='
      . $statement_id . '&actor=' . $actor . '&registration=' .
