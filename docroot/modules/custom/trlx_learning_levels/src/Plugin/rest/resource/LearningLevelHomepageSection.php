@@ -39,7 +39,6 @@ class  LearningLevelHomepageSection extends ResourceBase {
       '_format',
       'language',
     ];
-
     // Check for required parameters.
     $missingParams = [];
     foreach ($requiredParams as $param) {
@@ -92,25 +91,27 @@ class  LearningLevelHomepageSection extends ResourceBase {
     $count1 = 0;
     foreach ($progress as $tid) {
       $term = $this->getTaxonomyTerm($tid['tid'], $language);
-      $result[$count1]['id'] = $term ->id();
-      $result[$count1]['displayTitle'] = $term->hasTranslation($language) ? $term->getTranslation($language)->get('name')->value : '';
-      $result[$count1]['subTitle'] = $term->hasTranslation($language) ? $term->getTranslation($language)->get('field_sub_title')->value : '';
-      $result[$count1]['body'] = $term->hasTranslation($language) ? $term->getTranslation($language)->get('description')->value : '';
-      $featured_image = $term->get('field_image')->referencedEntities();
-      if (!empty($featured_image)) {
-        $image = array_shift($featured_image)->get(field_media_image)->referencedEntities();
-        $uri = (!empty($image)) ? (array_shift($image)->get(uri)->value) : '';
-        $result[$count1]['imageSmall'] = (!empty($uri)) ? ($commonUtility->loadImageStyle('level_home_page_mobile', $uri)) : '';
-        $result[$count1]['imageMedium'] = (!empty($uri)) ? ($commonUtility->loadImageStyle('level_home_page_tablet', $uri)) : '';
-        $result[$count1]['imageLarge'] = (!empty($uri)) ? ($commonUtility->loadImageStyle('level_home_page_desktop', $uri)) : '';
+      if (!empty($term)) {
+        $result[$count1]['id'] = $term->id();
+        $result[$count1]['displayTitle'] = $term->hasTranslation($language) ? $term->getTranslation($language)->get('name')->value : '';
+        $result[$count1]['subTitle'] = $term->hasTranslation($language) ? $term->getTranslation($language)->get('field_sub_title')->value : '';
+        $result[$count1]['body'] = $term->hasTranslation($language) ? $term->getTranslation($language)->get('description')->value : '';
+        $featured_image = $term->get('field_image')->referencedEntities();
+        if (!empty($featured_image)) {
+          $image = array_shift($featured_image)->get(field_media_image)->referencedEntities();
+          $uri = (!empty($image)) ? (array_shift($image)->get(uri)->value) : '';
+          $result[$count1]['imageSmall'] = (!empty($uri)) ? ($commonUtility->loadImageStyle('level_home_page_mobile', $uri)) : '';
+          $result[$count1]['imageMedium'] = (!empty($uri)) ? ($commonUtility->loadImageStyle('level_home_page_tablet', $uri)) : '';
+          $result[$count1]['imageLarge'] = (!empty($uri)) ? ($commonUtility->loadImageStyle('level_home_page_desktop', $uri)) : '';
+        }
+        else {
+          $result[$count1]['imageSmall'] = '';
+          $result[$count1]['imageMedium'] = '';
+          $result[$count1]['imageLarge'] = '';
+        }
+        $result[$count1]['pointValue'] = $tid['pointValue'];
+        $count1++;
       }
-      else {
-        $result[$count1]['imageSmall'] = '';
-        $result[$count1]['imageMedium'] = '';
-        $result[$count1]['imageLarge'] = '';
-      }
-      $result[$count1]['pointValue'] = $tid['pointValue'];
-      $count1++;
     }
 
     $response = [];
