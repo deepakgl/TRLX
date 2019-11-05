@@ -196,6 +196,15 @@ function elx_translation_workflow_generate_img_styles($entity) {
     ]
     );
   }
+  // Carousel image.
+  if ($entity->hasField('field_product_carousel')) {
+    $commonUtility->setMediaEntity($entity, 'field_product_carousel', [
+      'carousel_image_mobile',
+      'carousel_image_tablet',
+      'carousel_image_desktop',
+    ]
+    );
+  }
   // Hero image.
   if ($entity->hasField('field_hero_image')) {
     $commonUtility->setMediaEntity($entity, 'field_hero_image', [

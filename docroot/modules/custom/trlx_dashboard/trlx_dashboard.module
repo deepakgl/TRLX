@@ -1,14 +1,17 @@
 <?php
+
+/**
+ * @file
+ */
+
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Drupal\Core\Url;
-use Drupal\elx_user\Utility\UserUtility;
 use Drupal\views\ViewExecutable;
 
 /**
  * @file
  * Dashboard module file.
  */
-  
+
 /**
  * Implements hook_preprocess_html().
  */
@@ -21,12 +24,13 @@ function trlx_dashboard_preprocess_page(&$variables) {
  */
 function trlx_dashboard_user_login($account) {
   $roles = $account->getRoles();
-  //$url = Url::fromRoute('view.dashboard.dashboard_unpublished');
-  if(in_array('el_regional_market_admin', $roles)) {
+  // $url = Url::fromRoute('view.dashboard.dashboard_unpublished');
+  if (in_array('el_regional_market_admin', $roles)) {
     $response = new RedirectResponse('/dashboard/published');
     $response->send();
     return;
-  } elseif (in_array('el_nyo_global_education_system_admin', $roles)) {
+  }
+  elseif (in_array('el_nyo_global_education_system_admin', $roles)) {
     $response = new RedirectResponse('/dashboard/published');
     $response->send();
     return;
@@ -48,42 +52,42 @@ function trlx_dashboard_views_post_render(ViewExecutable $view) {
 }
 
 /**
-   * Fetch user roles.
-   *
-   * @param int $uid
-   *   User uid.
-   * @param string $key
-   *   Key name.
-   * @param array $user_role
-   *   Role of users.
-   *
-   * @return array
-   *   User roles.
-   */
+ * Fetch user roles.
+ *
+ * @param int $uid
+ *   User uid.
+ * @param string $key
+ *   Key name.
+ * @param array $user_role
+ *   Role of users.
+ *
+ * @return array
+ *   User roles.
+ */
 function getUserRoles($uid, $key = NULL, array $user_role = []) {
-    $query = db_select('user__roles', 'ur')
-      ->distinct()
-      ->fields('ur', ['roles_target_id'])
-      ->condition('ur.entity_id', $uid, '=')
-      ->execute()->fetchAll();
-    $roles = array_map(function ($e) {
-      return is_object($e) ? $e->roles_target_id : $e['roles_target_id'];
-    }, $query);
-    //print_r($roles);exit;
-    if (empty($key)) {
-      if (in_array('administrator', $roles) || in_array('el_nyo_global_education_system_admin', $roles)) {
-        return FALSE;
-      }
-    }
-    elseif (!empty($user_role) && is_array($user_role)) {
-      foreach ($user_role as $key => $value) {
-        if (in_array($value, $roles)) {
-          return TRUE;
-        }
-      }
-
+  $query = db_select('user__roles', 'ur')
+    ->distinct()
+    ->fields('ur', ['roles_target_id'])
+    ->condition('ur.entity_id', $uid, '=')
+    ->execute()->fetchAll();
+  $roles = array_map(function ($e) {
+    return is_object($e) ? $e->roles_target_id : $e['roles_target_id'];
+  }, $query);
+  // print_r($roles);exit;
+  if (empty($key)) {
+    if (in_array('administrator', $roles) || in_array('el_nyo_global_education_system_admin', $roles)) {
       return FALSE;
     }
-
-    return $roles;
   }
+  elseif (!empty($user_role) && is_array($user_role)) {
+    foreach ($user_role as $key => $value) {
+      if (in_array($value, $roles)) {
+        return TRUE;
+      }
+    }
+
+    return FALSE;
+  }
+
+  return $roles;
+}
