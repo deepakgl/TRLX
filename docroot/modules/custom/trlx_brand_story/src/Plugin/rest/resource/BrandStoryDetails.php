@@ -93,7 +93,6 @@ class BrandStoryDetails extends ResourceBase {
       'title' => 'decode',
       'nid' => 'int',
       'pointValue' => 'int',
-      'video' => 'append_host',
       'body' => 'string_replace',
     ];
     // Prepare redis key.

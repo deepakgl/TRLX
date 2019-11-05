@@ -80,7 +80,6 @@ class ProductDetails extends ResourceBase {
       'nid' => 'int',
       'pointValue' => 'int',
       'body' => 'string_replace',
-      'video' => 'append_host',
       'productCarouselTitle' => 'decode',
     ];
 
