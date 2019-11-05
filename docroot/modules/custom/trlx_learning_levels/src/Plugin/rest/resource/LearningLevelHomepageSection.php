@@ -32,7 +32,6 @@ class LearningLevelHomepageSection extends ResourceBase {
    */
   public function get(Request $request) {
     $commonUtility = new CommonUtility();
-    $levelUtility = new LevelUtility();
 
     // Required parameters.
     $requiredParams = [
@@ -67,20 +66,19 @@ class LearningLevelHomepageSection extends ResourceBase {
     $progress = [];
     $count = 1;
     if (!empty($all_tids)) {
-      $tids = array_column($all_tids, 'tid');
-      $term_nodes = $levelUtility->getTermNodes($tids, $_userData, $language);
       foreach ($all_tids as $key => $tid) {
         if (!empty($tid->tid)) {
-          $all_nids = $this->getAllNids($tid->tid);
-          $nids = $term_nodes[$tid->tid];
-          $pointValue = array_column($nids, 'point_value');
-          $level_status = $this->getLevelStatus($all_nids, $tid->tid);
-          $progress[$count]['pointValue'] = array_sum($pointValue);
-          if ($level_status['status'] == 'inprogress') {
-            $progress[$count]['tid'] = $level_status['term_id'];
-            $count++;
-            if ($count >= 4) {
-              break;
+          $all_nids = $this->getAllNids($tid->tid, $language);
+          if (!empty($all_nids)) {
+            $pointValue = $this->getPointValues($all_nids, $language);
+            $level_status = $this->getLevelStatus($all_nids, $tid->tid);
+            $progress[$count]['pointValue'] = $pointValue;
+            if ($level_status['status'] == 'inprogress') {
+              $progress[$count]['tid'] = $level_status['term_id'];
+              $count++;
+              if ($count >= 4) {
+                break;
+              }
             }
           }
         }
@@ -109,7 +107,12 @@ class LearningLevelHomepageSection extends ResourceBase {
           $result[$count1]['imageMedium'] = '';
           $result[$count1]['imageLarge'] = '';
         }
-        $result[$count1]['pointValue'] = $tid['pointValue'];
+
+        if (empty($tid['pointValue']) || ($tid['pointValue'] == null)) {
+          $result[$count1]['pointValue'] = 0;
+        } else {
+          $result[$count1]['pointValue'] = $tid['pointValue'];
+        }
         $count1++;
       }
     }
@@ -151,8 +154,17 @@ class LearningLevelHomepageSection extends ResourceBase {
    * @return array
    *   tid data.
    */
-  public function getAllNids($tid) {
+  public function getAllNids($tid, $langcode) {
+    // Check term translation
+    $term = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($tid);
+    if (!$term->hasTranslation($langcode)) {
+      return FALSE;
+    }
+
     $tid = (int) $tid;
+    $result = '';
+    $response = [];
+
     try {
       // Query to get the nid for in-progress learning level content.
       $query = \Drupal::database()->select('node__field_learning_category', 'n');
@@ -160,9 +172,26 @@ class LearningLevelHomepageSection extends ResourceBase {
       $query->condition('n.bundle', 'level_interactive_content');
       $query->condition('n.field_learning_category_target_id', $tid);
       $result = $query->execute()->fetchAll();
-      return $result;
     }
     catch (\Exception $e) {
+      return FALSE;
+    }
+
+    $count = 0;
+    if (!empty($result)) {
+      foreach ($result as $nids) {
+        $nid = $nids->entity_id;
+        $node = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
+        if ($node->hasTranslation($langcode)) {
+          $response[] = $nids;
+          $count++;
+        }
+      }
+    }
+
+    if (!empty($response)) {
+      return $response;
+    } else {
       return FALSE;
     }
   }
@@ -221,4 +250,31 @@ class LearningLevelHomepageSection extends ResourceBase {
     }
   }
 
+
+ /**
+  * Method to get point value
+  *
+  * @param array $nids
+  *   node data
+  * @param $langcode
+  *   lang data
+  *
+  * @return integer
+  *   point value
+  */
+  public function getPointValues($nids, $langcode) {
+    // Fetch point values
+    $points_value = 0;
+    foreach ($nids as $nid) {
+      if (!empty($nid->entity_id)) {
+        $node = \Drupal::entityTypeManager()->getStorage('node')->load($nid->entity_id);
+        if ($node->hasTranslation($langcode)) {
+          $points = $node->get('field_point_value')->value;
+          $points_value = $points_value + $points;
+        }
+      }
+    }
+
+    return $points_value;
+  }
 }
