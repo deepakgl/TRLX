@@ -76,8 +76,8 @@ class VideoDetails extends ResourceBase {
       'displayTitle' => 'decode',
       'nid' => 'int',
       'pointValue' => 'int',
-      'video' => 'append_host',
-      'videoSubtitle' => 'append_host',
+     // 'video' => 'append_host',
+     // 'videoSubtitle' => 'append_host',
     ];
 
     // Prepare redis key.
