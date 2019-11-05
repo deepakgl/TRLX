@@ -46,7 +46,7 @@ class StaticTranslationsOperations {
   /**
    * Batch 'finished' callback.
    */
-  function finishedCallback($success, $results, $operations) {
+  public function finishedCallback($success, $results, $operations) {
     $messenger = \Drupal::messenger();
     if ($success) {
       $messenger->addMessage(t('@count results processed.', ['@count' => count($results['processed'])]));
@@ -64,4 +64,5 @@ class StaticTranslationsOperations {
       );
     }
   }
+
 }

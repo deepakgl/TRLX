@@ -5,6 +5,9 @@ namespace App\Services\Validation;
 use Illuminate\Validation\Validator as IlluminateValidator;
 use App\Model\Mysql\ContentModel;
 
+/**
+ *
+ */
 class ValidatorExtended extends IlluminateValidator {
 
   private $_custom_messages = [
@@ -18,7 +21,10 @@ class ValidatorExtended extends IlluminateValidator {
     'leaderboardsection' => 'The :attribute value is not valid',
   ];
 
-  public function __construct($translator, $data, $rules, $messages = array(), $customAttributes = []) {
+  /**
+   *
+   */
+  public function __construct($translator, $data, $rules, $messages = [], $customAttributes = []) {
     parent::__construct($translator, $data, $rules, $messages, $customAttributes);
     $this->_set_custom_stuff();
   }
@@ -29,7 +35,7 @@ class ValidatorExtended extends IlluminateValidator {
    * @return void
    */
   protected function _set_custom_stuff() {
-    //setup our custom error messages
+    // Setup our custom error messages.
     $this->setCustomMessages($this->_custom_messages);
   }
 

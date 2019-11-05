@@ -93,6 +93,7 @@ class StoryDetails extends ResourceBase {
         $data['productCarouselTitle'] = 'decode';
         $productCarousel = TRUE;
         break;
+
       case $commonUtility::SELLING_TIPS:
         $views = 'selling_tips';
         $viewsDisplay = 'rest_export_selling_tips_details';
@@ -102,12 +103,14 @@ class StoryDetails extends ResourceBase {
         $data['productCarouselTitle'] = 'decode';
         $productCarousel = TRUE;
         break;
+
       case $commonUtility::CONSUMER:
         $views = 'consumer';
         $data['video'] = 'append_host';
         $viewsDisplay = 'rest_export_consumer_details';
         $type = $commonUtility::CONSUMER;
         break;
+
       default:
         $views = 'stories_listing';
         $viewsDisplay = 'rest_export_story_details';

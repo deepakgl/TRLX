@@ -40,8 +40,6 @@ module:
   elx_points_migration: 0
   elx_products: 0
   elx_reports: 0
-  elx_search: 0
-  elx_stories: 0
   elx_tnc: 0
   elx_tools: 0
   elx_translation_workflow: 0
