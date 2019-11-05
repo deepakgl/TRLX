@@ -3,13 +3,13 @@ langcode: en
 status: true
 dependencies: {  }
 name: insider_corner_hompage_section_tablet
-label: 'Insider Corner Hompage Section Tablet (770 X 355)'
+label: 'Insider Corner Hompage Section Tablet (220×220)'
 effects:
   b96f4468-796d-4034-adfe-c86f5e746d1c:
     uuid: b96f4468-796d-4034-adfe-c86f5e746d1c
     id: image_scale_and_crop
     weight: 1
     data:
-      width: 770
-      height: 355
+      width: 220
+      height: 220
       anchor: center-center

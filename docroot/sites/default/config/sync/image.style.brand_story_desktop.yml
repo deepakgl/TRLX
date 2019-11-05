@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 name: brand_story_desktop
-label: 'Brand Story Desktop (1040X422)'
+label: 'Brand Story Desktop (1040×603)'
 effects:
   258160b6-7674-40bf-88ef-72e27ed973b9:
     uuid: 258160b6-7674-40bf-88ef-72e27ed973b9
@@ -11,5 +11,5 @@ effects:
     weight: 1
     data:
       width: 1040
-      height: 422
+      height: 603
       anchor: center-center

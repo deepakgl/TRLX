@@ -187,6 +187,12 @@ function elx_translation_workflow_generate_img_styles($entity) {
       'bookmark_image_mobile',
       'bookmark_image_tablet',
       'bookmark_image_desktop',
+      'trends_homepage_desktop',
+      'trends_homepage_tablet',
+      'trends_homepage_mobile',
+      'insider_corner_hompage_section_desktop',
+      'insider_corner_hompage_section_tablet',
+      'insider_corner_hompage_section_mobile',
     ]
     );
   }
