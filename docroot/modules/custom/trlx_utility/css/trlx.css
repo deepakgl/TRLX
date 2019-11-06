@@ -3,3 +3,6 @@
 .node-level-interactive-content-edit-form .paragraph-type-top {
   display: none !important;
 }
+.role-el_regional_market_admin.path-node ul.tabs.primary li.tabs__tab:nth-child(2) {
+  display: none;
+}
