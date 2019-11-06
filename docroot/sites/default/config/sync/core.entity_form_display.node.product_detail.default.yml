@@ -323,6 +323,7 @@ hidden:
   field_related_products_stories: true
   field_related_products_tools: true
   field_related_products_videos: true
+  field_tags_keywords: true
   field_season: true
   field_story: true
   field_why_there_s_only_one: true
