@@ -17,6 +17,7 @@ dependencies:
     - node.type.product_detail
     - node.type.stories
     - node.type.tools
+    - node.type.tools-pdf
     - taxonomy.vocabulary.markets
   module:
     - entityqueue
@@ -1586,6 +1587,8 @@ display:
         arguments: false
         query: false
         sorts: false
+        filters: false
+        filter_groups: false
       relationships:
         entityqueue_relationship:
           id: entityqueue_relationship
@@ -1676,6 +1679,67 @@ display:
             label: ''
           entity_type: node
           plugin_id: entity_queue_position
+      filters:
+        status:
+          value: '1'
+          table: node_field_data
+          field: status
+          plugin_id: boolean
+          entity_type: node
+          entity_field: status
+          id: status
+          expose:
+            operator: ''
+          group: 1
+        type:
+          id: type
+          table: node_field_data
+          field: type
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: in
+          value:
+            brand_story: brand_story
+            level_interactive_content: level_interactive_content
+            product_detail: product_detail
+            stories: stories
+            tools-pdf: tools-pdf
+            tools: tools
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          entity_type: node
+          entity_field: type
+          plugin_id: bundle
+      filter_groups:
+        operator: AND
+        groups:
+          1: AND
     cache_metadata:
       max-age: -1
       contexts:
