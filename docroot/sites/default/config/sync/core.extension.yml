@@ -129,6 +129,7 @@ module:
   trlx_market_hierarchy: 0
   trlx_notification: 0
   trlx_products: 0
+  trlx_redis_purge: 0
   trlx_security: 0
   trlx_spotlight: 0
   trlx_static_translation: 0
