@@ -109,10 +109,13 @@ class LangUtility {
    * @return array
    *   User primary and secondary language.
    */
-  public function getMarketLanguageByUserId() {
+  public function getMarketLanguageByUserId($flag = NULL) {
     $config = \Drupal::config('trlx_utility.settings');
     // Return all languages for global admin role.
     $language = $config->get('site_languages');
+    if (is_null($flag)) {
+      unset($language['en']);
+    }
 
     return $language;
   }
