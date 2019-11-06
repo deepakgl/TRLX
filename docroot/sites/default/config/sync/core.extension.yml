@@ -103,6 +103,7 @@ module:
   simple_menu_icons: 0
   simple_oauth: 0
   simple_oauth_extras: 0
+  single_user_role: 0
   superfish: 0
   svg_image: 0
   system: 0
@@ -136,6 +137,7 @@ module:
   trlx_story: 0
   trlx_tnc_privacy_policy: 0
   trlx_trends: 0
+  trlx_user: 0
   trlx_utility: 0
   trlx_banner: 0
   trlx_video: 0
