@@ -64,14 +64,14 @@ class LearningLevelHomepageSection extends ResourceBase {
     global $_userData;
     $all_tids = $this->getDistingTids($_userData->userId);
     $progress = [];
-    $count = 1;
+    $count = 0;
     if (!empty($all_tids)) {
       foreach ($all_tids as $key => $tid) {
-        if (!empty($tid->tid)) {
-          $all_nids = $this->getAllNids($tid->tid, $language);
+        if (!empty($tid)) {
+          $all_nids = $this->getAllNids($tid, $language);
           if (!empty($all_nids)) {
             $pointValue = $this->getPointValues($all_nids, $language);
-            $level_status = $this->getLevelStatus($all_nids, $tid->tid);
+            $level_status = $this->getLevelStatus($all_nids, $tid);
             $progress[$count]['pointValue'] = $pointValue;
             if ($level_status['status'] == 'inprogress') {
               $progress[$count]['tid'] = $level_status['term_id'];
@@ -133,12 +133,32 @@ class LearningLevelHomepageSection extends ResourceBase {
    *   tid data.
    */
   public function getDistingTids($uid) {
+    // Exception handling
     try {
       // Query to get the nid for in-progress learning level content.
       $database = \Drupal::database();
-      $query = $database->query("select distinct tid from lm_lrs_records where statement_status !='passed' && uid =" . $uid );
-      $result = $query->fetchAll();
-      return array_reverse($result);
+      $query = $database->select('lm_lrs_records', 'n');
+      $query->fields('n', array('id','tid'));
+      $query->condition('uid', $uid, "=");
+      $query->condition('statement_status', 'passed', "!=");
+      $query->orderBy('id', 'DESC');
+      $result = $query->execute()->fetchAll();
+
+      $result_array = [];
+      foreach ($result as $key => $value) {
+        $value = (array) $value;
+        $result_array[$key] = $value;
+      }
+
+      // Early return
+      if (empty($result_array)) {
+        return FALSE;
+      }
+
+      $tid_array = array_column($result_array , 'tid');
+      $uniqueArray = array_unique($tid_array);
+
+      return  $uniqueArray;
     }
     catch (\Exception $e) {
       return FALSE;
