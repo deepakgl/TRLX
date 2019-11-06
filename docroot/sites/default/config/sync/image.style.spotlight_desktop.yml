@@ -3,13 +3,13 @@ langcode: en
 status: true
 dependencies: {  }
 name: spotlight_desktop
-label: 'Spotlight Desktop (1194×357)'
+label: 'Spotlight Desktop (1440×800)'
 effects:
   0cd3d6e7-dc1e-4b19-8225-24fd70423304:
     uuid: 0cd3d6e7-dc1e-4b19-8225-24fd70423304
     id: image_scale_and_crop
     weight: 1
     data:
-      width: 1194
-      height: 375
+      width: 1440
+      height: 800
       anchor: center-center

@@ -157,6 +157,9 @@ function elx_translation_workflow_generate_img_styles($entity) {
       'bookmark_image_mobile',
       'bookmark_image_tablet',
       'bookmark_image_desktop',
+      'stories_level_listing_mobile',
+      'stories_level_listing_tablet',
+      'stories_level_listing_desktop',
     ]
     );
   }
