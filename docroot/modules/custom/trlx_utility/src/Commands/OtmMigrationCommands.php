@@ -41,7 +41,6 @@ class OtmMigrationCommands extends DrushCommands {
             'name' => $value1->region_name,
             'vid' => 'markets',
           ]);
-        file_put_contents(DRUPAL_ROOT . '/sites/default/files/terms.txt', $value1->region_name . '##', FILE_APPEND);
         if (!empty($term)) {
           $tid = key($term);
           $term[$tid]->set('field_region_subreg_country_id', $value1->_id);
@@ -89,7 +88,6 @@ class OtmMigrationCommands extends DrushCommands {
             ]);
           $parentId = key($parent);
           foreach ($value1->subregions as $sub) {
-            file_put_contents(DRUPAL_ROOT . '/sites/default/files/terms.txt', $value1->region_name . '##', FILE_APPEND);
             $term = \Drupal::entityTypeManager()
               ->getStorage('taxonomy_term')
               ->loadByProperties([
@@ -146,7 +144,6 @@ class OtmMigrationCommands extends DrushCommands {
             ]);
           $parentId = key($parent);
           foreach ($value1->countries as $country) {
-            file_put_contents(DRUPAL_ROOT . '/sites/default/files/terms.txt', $value1->region_name . '##', FILE_APPEND);
             $term = \Drupal::entityTypeManager()
               ->getStorage('taxonomy_term')
               ->loadByProperties([
