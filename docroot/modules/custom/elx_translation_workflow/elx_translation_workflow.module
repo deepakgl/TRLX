@@ -253,4 +253,11 @@ function elx_translation_workflow_generate_img_styles($entity) {
     ]
     );
   }
+  // Spotlight mobile image.
+  if ($entity->hasField('field_image_home_page')) {
+    $commonUtility->setMediaEntity($entity, 'field_image_home_page', [
+      'spotlight_mobile',
+    ]
+    );
+  }
 }
