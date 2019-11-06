@@ -64,7 +64,6 @@ module:
   help: 0
   image: 0
   image_raw_formatter: 0
-  image_style_warmer: 0
   image_url_formatter: 0
   inline_entity_form: 0
   key: 0
