@@ -1,0 +1,5 @@
+name: TRLX User Module
+type: module
+description: TRLX user custom module
+core: 8.x
+package: TRLX
