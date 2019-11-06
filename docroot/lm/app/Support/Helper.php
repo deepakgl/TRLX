@@ -256,8 +256,8 @@ class Helper {
       if (array_key_exists($fileData['imageId'], $image_uris)) {
         $path = str_replace("public://", NULL, $image_uris[$fileData['imageId']]);
         // Generate the respective image styles.
-        $result[$fileData['tid']]['large'] = getenv("SITE_URL")
-        . "/sites/default/files/styles/stamp_detail/public/"
+        $result[$fileData['tid']]['large'] = getenv("SITE_IMAGE_URL")
+        . "styles/stamp_detail/public/"
         . $path
         . '?itok='
         . self::getPathToken(
@@ -265,16 +265,16 @@ class Helper {
           $image_uris[$fileData['imageId']]
         );
 
-        $result[$fileData['tid']]['medium'] = getenv("SITE_URL")
-        . "/sites/default/files/styles/stamp_tablet/public/" . $path
+        $result[$fileData['tid']]['medium'] = getenv("SITE_IMAGE_URL")
+        . "styles/stamp_tablet/public/" . $path
         . '?itok='
         . self::getPathToken(
           'search_listings_desktop',
           $image_uris[$fileData['imageId']]
         );
 
-        $result[$fileData['tid']]['small'] = getenv("SITE_URL")
-        . "/sites/default/files/styles/stamp_mobile/public/" . $path
+        $result[$fileData['tid']]['small'] = getenv("SITE_IMAGE_URL")
+        . "styles/stamp_mobile/public/" . $path
         . '?itok='
         . self::getPathToken(
           'search_listings_mobile',
