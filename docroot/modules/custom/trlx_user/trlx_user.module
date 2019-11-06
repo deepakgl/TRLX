@@ -30,5 +30,7 @@ function trlx_user_form_alter(array &$form, FormStateInterface $form_state, $for
     // Unset the select option of administrator and authenticated role
     unset($form['account']['roles']['#options']['administrator']);
     unset($form['account']['roles']['#options']['authenticated']);
+    // Unset notify user when new account checkbox
+    unset($form['account']['notify']);
   }
 }
