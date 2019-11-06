@@ -145,19 +145,6 @@ class ConsumerListing extends ResourceBase {
       // Set results, pager & status code.
       $view_results['results'] = $results;
 
-      // Fetch consumer cateogory image.
-      $categoryImage = [];
-      list($category_image_view) = $entityUtility->fetchApiResult(
-        '',
-        'consumer_categories',
-        'rest_export_consumer_category_image',
-        '',
-        ['categoryId' => $categoryId, 'language' => $language]
-      );
-      if (!empty($category_image_view)) {
-        $categoryImage['categoryImage'] = $category_image_view;
-      }
-
       $data = [
         'id' => 'int',
         'displayTitle' => 'decode',
@@ -174,9 +161,28 @@ class ConsumerListing extends ResourceBase {
       $status_code = Response::HTTP_OK;
     }
 
+    // Fetch consumer cateogory image.
+    $categoryImage = [];
+    list($category_image_view) = $entityUtility->fetchApiResult(
+      '',
+      'consumer_categories',
+      'rest_export_consumer_category_image',
+      '',
+      ['categoryId' => $categoryId, 'language' => $language]
+    );
+    if (!empty($category_image_view)) {
+      $categoryImage['categoryImage'] = $category_image_view;
+    }
+
     // Check for empty / no result from views.
-    if (empty($view_results)) {
+    if (empty($view_results) && empty($categoryImage)) {
       return $commonUtility->successResponse([], Response::HTTP_OK);
+    }
+
+    if (!empty($categoryImage) && empty($view_results)) {
+      $status_code = Response::HTTP_OK;
+      $view_results['results'] = [];
+      $view_results['pager'] = "{}";
     }
 
     return $commonUtility->successResponse($view_results['results'], $status_code, $view_results['pager'], '', [], [], $categoryImage);
