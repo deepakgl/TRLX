@@ -1717,7 +1717,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          operator: word
+          operator: regular_expression
           value: ''
           group: 1
           exposed: true
@@ -1854,6 +1854,100 @@ display:
           entity_type: node
           entity_field: langcode
           plugin_id: language
+        field_brands_target_id:
+          id: field_brands_target_id
+          table: node__field_brands
+          field: field_brands_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_brands_target_id_op
+            label: Brand
+            description: ''
+            use_operator: false
+            operator: field_brands_target_id_op
+            identifier: field_brands_target_id
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              administrator: '0'
+              el_regional_market_admin: '0'
+              el_nyo_global_education_system_admin: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          type: select
+          limit: true
+          vid: brands
+          hierarchy: false
+          error_message: true
+          plugin_id: taxonomy_index_tid
+        field_markets_target_id:
+          id: field_markets_target_id
+          table: node__field_markets
+          field: field_markets_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_markets_target_id_op
+            label: Region
+            description: ''
+            use_operator: false
+            operator: field_markets_target_id_op
+            identifier: field_markets_target_id
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              administrator: '0'
+              el_regional_market_admin: '0'
+              el_nyo_global_education_system_admin: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          type: select
+          limit: true
+          vid: markets
+          hierarchy: false
+          error_message: true
+          plugin_id: taxonomy_index_tid
         field_translation_value:
           id: field_translation_value
           table: node__field_translation
@@ -2405,6 +2499,7 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
+        - user
         - 'user.node_grants:view'
         - user.roles
       tags:
@@ -2483,7 +2578,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          operator: word
+          operator: regular_expression
           value: ''
           group: 1
           exposed: true
@@ -2570,110 +2665,6 @@ display:
           entity_type: node
           entity_field: type
           plugin_id: bundle
-        field_markets_target_id:
-          id: field_markets_target_id
-          table: node__field_markets
-          field: field_markets_target_id
-          relationship: none
-          group_type: group
-          admin_label: ''
-          operator: or
-          value: {  }
-          group: 1
-          exposed: true
-          expose:
-            operator_id: field_markets_target_id_op
-            label: Market
-            description: ''
-            use_operator: false
-            operator: field_markets_target_id_op
-            identifier: field_markets_target_id
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-              anonymous: '0'
-              administrator: '0'
-              beauty_advisor: '0'
-              store_management: '0'
-              multi_brand_sales_associate: '0'
-              brand_management_and_field: '0'
-              el_regional_market_admin: '0'
-              el_nyo_global_education_system_admin: '0'
-              el_regional_market_translator: '0'
-            reduce: false
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-          reduce_duplicates: false
-          type: select
-          limit: true
-          vid: markets
-          hierarchy: false
-          error_message: true
-          plugin_id: taxonomy_index_tid
-        field_brands_target_id:
-          id: field_brands_target_id
-          table: node__field_brands
-          field: field_brands_target_id
-          relationship: none
-          group_type: group
-          admin_label: ''
-          operator: or
-          value: {  }
-          group: 1
-          exposed: true
-          expose:
-            operator_id: field_brands_target_id_op
-            label: Brand
-            description: ''
-            use_operator: false
-            operator: field_brands_target_id_op
-            identifier: field_brands_target_id
-            required: false
-            remember: true
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-              anonymous: '0'
-              administrator: '0'
-              beauty_advisor: '0'
-              store_management: '0'
-              multi_brand_sales_associate: '0'
-              brand_management_and_field: '0'
-              el_regional_market_admin: '0'
-              el_nyo_global_education_system_admin: '0'
-              el_regional_market_translator: '0'
-            reduce: false
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-          reduce_duplicates: false
-          type: select
-          limit: true
-          vid: brands
-          hierarchy: false
-          error_message: true
-          plugin_id: taxonomy_index_tid
         langcode:
           id: langcode
           table: node_field_data
@@ -2724,6 +2715,100 @@ display:
           entity_type: node
           entity_field: langcode
           plugin_id: language
+        field_brands_target_id:
+          id: field_brands_target_id
+          table: node__field_brands
+          field: field_brands_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_brands_target_id_op
+            label: Brand
+            description: ''
+            use_operator: false
+            operator: field_brands_target_id_op
+            identifier: field_brands_target_id
+            required: false
+            remember: true
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              administrator: '0'
+              el_regional_market_admin: '0'
+              el_nyo_global_education_system_admin: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          type: select
+          limit: true
+          vid: brands
+          hierarchy: false
+          error_message: true
+          plugin_id: taxonomy_index_tid
+        field_markets_target_id:
+          id: field_markets_target_id
+          table: node__field_markets
+          field: field_markets_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_markets_target_id_op
+            label: Region
+            description: ''
+            use_operator: false
+            operator: field_markets_target_id_op
+            identifier: field_markets_target_id
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              administrator: '0'
+              el_regional_market_admin: '0'
+              el_nyo_global_education_system_admin: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          type: select
+          limit: true
+          vid: markets
+          hierarchy: false
+          error_message: true
+          plugin_id: taxonomy_index_tid
         status:
           id: status
           table: node_field_data
@@ -2762,46 +2847,6 @@ display:
           entity_type: node
           entity_field: status
           plugin_id: boolean
-        langcode_1:
-          id: langcode_1
-          table: node_field_data
-          field: langcode
-          relationship: none
-          group_type: group
-          admin_label: ''
-          operator: 'not in'
-          value:
-            en: en
-          group: 1
-          exposed: false
-          expose:
-            operator_id: ''
-            label: ''
-            description: ''
-            use_operator: false
-            operator: ''
-            identifier: ''
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-            reduce: false
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-          entity_type: node
-          entity_field: langcode
-          plugin_id: language
       defaults:
         filters: false
         filter_groups: false
@@ -3291,7 +3336,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          operator: word
+          operator: regular_expression
           value: ''
           group: 1
           exposed: true
@@ -3379,58 +3424,6 @@ display:
           entity_type: node
           entity_field: type
           plugin_id: bundle
-        field_markets_target_id:
-          id: field_markets_target_id
-          table: node__field_markets
-          field: field_markets_target_id
-          relationship: none
-          group_type: group
-          admin_label: ''
-          operator: or
-          value: {  }
-          group: 1
-          exposed: true
-          expose:
-            operator_id: field_markets_target_id_op
-            label: Market
-            description: ''
-            use_operator: false
-            operator: field_markets_target_id_op
-            identifier: field_markets_target_id
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-              anonymous: '0'
-              administrator: '0'
-              beauty_advisor: '0'
-              store_management: '0'
-              multi_brand_sales_associate: '0'
-              brand_management_and_field: '0'
-              el_regional_market_admin: '0'
-              el_nyo_global_education_system_admin: '0'
-              el_regional_market_translator: '0'
-            reduce: false
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-          reduce_duplicates: false
-          type: select
-          limit: true
-          vid: markets
-          hierarchy: false
-          error_message: true
-          plugin_id: taxonomy_index_tid
         langcode:
           id: langcode
           table: node_field_data
@@ -3481,6 +3474,100 @@ display:
           entity_type: node
           entity_field: langcode
           plugin_id: language
+        field_brands_target_id:
+          id: field_brands_target_id
+          table: node__field_brands
+          field: field_brands_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_brands_target_id_op
+            label: Brand
+            description: ''
+            use_operator: false
+            operator: field_brands_target_id_op
+            identifier: field_brands_target_id
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              administrator: '0'
+              el_regional_market_admin: '0'
+              el_nyo_global_education_system_admin: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          type: select
+          limit: true
+          vid: brands
+          hierarchy: false
+          error_message: true
+          plugin_id: taxonomy_index_tid
+        field_markets_target_id:
+          id: field_markets_target_id
+          table: node__field_markets
+          field: field_markets_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_markets_target_id_op
+            label: Region
+            description: ''
+            use_operator: false
+            operator: field_markets_target_id_op
+            identifier: field_markets_target_id
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              administrator: '0'
+              el_regional_market_admin: '0'
+              el_nyo_global_education_system_admin: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          type: select
+          limit: true
+          vid: markets
+          hierarchy: false
+          error_message: true
+          plugin_id: taxonomy_index_tid
         status:
           id: status
           table: node_field_data
@@ -3519,46 +3606,6 @@ display:
           entity_type: node
           entity_field: status
           plugin_id: boolean
-        langcode_1:
-          id: langcode_1
-          table: node_field_data
-          field: langcode
-          relationship: none
-          group_type: group
-          admin_label: ''
-          operator: 'not in'
-          value:
-            en: en
-          group: 1
-          exposed: false
-          expose:
-            operator_id: ''
-            label: ''
-            description: ''
-            use_operator: false
-            operator: ''
-            identifier: ''
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-            reduce: false
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-          entity_type: node
-          entity_field: langcode
-          plugin_id: language
       defaults:
         filters: false
         filter_groups: false
