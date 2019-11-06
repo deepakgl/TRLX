@@ -3,13 +3,13 @@ langcode: en
 status: true
 dependencies: {  }
 name: spotlight_tablet
-label: 'Spotlight Tablet (770 X 355)'
+label: 'Spotlight Tablet (1194 * 664)'
 effects:
   cfdccd1d-0fe6-4b21-89d5-e1540969a851:
     uuid: cfdccd1d-0fe6-4b21-89d5-e1540969a851
     id: image_scale_and_crop
     weight: 1
     data:
-      width: 770
-      height: 355
+      width: 1194
+      height: 664
       anchor: center-center
