@@ -6,6 +6,7 @@
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Drupal\views\ViewExecutable;
+use Drupal\trlx_lang_translation\Utility\LangUtility;
 
 /**
  * @file
@@ -90,4 +91,29 @@ function getUserRoles($uid, $key = NULL, array $user_role = []) {
   }
 
   return $roles;
+}
+
+/**
+ * Implements hook_views_pre_render().
+ */
+function trlx_dashboard_views_pre_render(ViewExecutable $view) {
+  if ($view->id() == 'dashboard') {
+    foreach ($view->result as $key => $result) {
+      $entity = $result->_entity;
+      switch ($view->current_display) {
+        case 'dashboard_available_for_a_translation':
+          $lang_utility = new LangUtility();
+          // Get node availabe translation.
+          $available_translation = $lang_utility->getTranslationLanguageByNid($entity->id());
+          // Get system languages.
+          $system_lang = $lang_utility->getMarketLanguageByUserId('lang');
+          $diff = array_diff(array_keys($system_lang), $available_translation);
+          if (empty($diff)) {
+            // Delete a row.
+            unset($view->result[$key]);
+          }
+          break;
+      }
+    }
+  }
 }
