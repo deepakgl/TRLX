@@ -215,7 +215,7 @@ function elx_utility_entity_insert(EntityInterface $entity) {
     }
     $uid = $entity->id();
     // Insert index in elastic_host.
-    set_user_object_elastic($uid);
+    // set_user_object_elastic($uid);
   }
   elseif ($entity->getEntityTypeId() == 'entity_subqueue') {
     // Purge Redis data.
