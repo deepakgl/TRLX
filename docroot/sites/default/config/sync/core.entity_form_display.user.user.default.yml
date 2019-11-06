@@ -124,11 +124,6 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-  language:
-    weight: 2
-    region: content
-    settings: {  }
-    third_party_settings: {  }
   translation:
     weight: 10
     region: content
@@ -173,4 +168,5 @@ hidden:
   field_t_c_flag: true
   field_user_interest: true
   langcode: true
+  language: true
   timezone: true
