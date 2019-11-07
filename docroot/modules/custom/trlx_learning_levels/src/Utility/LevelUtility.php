@@ -164,9 +164,9 @@ class LevelUtility {
       foreach ($results as $key => $result) {
         $data[$result->nid] = $result;
       }
-      $incomplete_status = ['progress', NULL];
+      $complete_status = ['passed', 'completed'];
       foreach ($nid as $key => $value) {
-        $status = (isset($data[$value]) && !in_array($data[$value]->statement_status, $incomplete_status)) ? (int) 1 : (int) 0;
+        $status = (isset($data[$value]) && in_array($data[$value]->statement_status, $complete_status)) ? (int) 1 : (int) 0;
         $response[$value] = [
           "nid" => (int) $value,
           "status" => $status,
