@@ -45,3 +45,6 @@ ul.sf-menu.sf-style-black a.is-active {
 .path-user .tabs {
   display: none;
 }
+#block-backendusertopmenuforma {
+  display: inline-block !important;
+}
