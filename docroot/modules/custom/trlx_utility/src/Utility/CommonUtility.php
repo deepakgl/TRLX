@@ -542,7 +542,7 @@ class CommonUtility {
           $path = $media_entity->getFileUri();
         }
         else {
-          if ($entity->hasField('field_product_carousel')) {
+          if ($field == 'field_product_carousel' && $entity->hasField('field_product_carousel')) {
             $field_product_carousel = $entity->field_product_carousel->referencedEntities();
             if (!empty($field_product_carousel)) {
               foreach ($field_product_carousel as $value) {
