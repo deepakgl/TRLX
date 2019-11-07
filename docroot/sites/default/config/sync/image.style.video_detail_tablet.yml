@@ -3,13 +3,13 @@ langcode: en
 status: true
 dependencies: {  }
 name: video_detail_tablet
-label: 'Video Detail Tablet (734X568)'
+label: 'Video Detail Tablet (780X416)'
 effects:
   7464a403-e636-4273-becb-8b16ccdfb96a:
     uuid: 7464a403-e636-4273-becb-8b16ccdfb96a
     id: image_scale_and_crop
     weight: 1
     data:
-      width: 734
-      height: 568
+      width: 780
+      height: 416
       anchor: center-center

@@ -2080,7 +2080,7 @@ display:
           id: field_media_image
           table: media__field_media_image
           field: field_media_image
-          relationship: field_featured_image
+          relationship: field_hero_image
           group_type: group
           admin_label: ''
           label: ''
@@ -2128,7 +2128,7 @@ display:
           type: image_url
           settings:
             url_type: '0'
-            image_style: story_detail_mobile
+            image_style: insider_corner_hompage_section_mobile
             image_link: ''
           group_column: ''
           group_columns: {  }
@@ -2145,7 +2145,7 @@ display:
           id: field_media_image_1
           table: media__field_media_image
           field: field_media_image
-          relationship: field_featured_image
+          relationship: field_hero_image
           group_type: group
           admin_label: ''
           label: ''
@@ -2193,7 +2193,7 @@ display:
           type: image_url
           settings:
             url_type: '0'
-            image_style: story_detail_tablet
+            image_style: insider_corner_hompage_section_tablet
             image_link: ''
           group_column: ''
           group_columns: {  }
@@ -2210,7 +2210,7 @@ display:
           id: field_media_image_2
           table: media__field_media_image
           field: field_media_image
-          relationship: field_featured_image
+          relationship: field_hero_image
           group_type: group
           admin_label: ''
           label: ''
@@ -2258,7 +2258,7 @@ display:
           type: image_url
           settings:
             url_type: '0'
-            image_style: story_detail_desktop
+            image_style: insider_corner_hompage_section_desktop
             image_link: ''
           group_column: ''
           group_columns: {  }
