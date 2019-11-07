@@ -16,6 +16,7 @@ use Drupal\file\Entity\File;
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\ReplaceCommand;
 use Drupal\Core\Url;
+use Drupal\Core\Site\Settings;
 
 /**
  * Implements hook_entity_base_field_info().
@@ -720,3 +721,21 @@ function _trlx_file_name($fid) {
 
   return $file->getFilename();
 }
+
+/**
+ * Implements hook_file_url_alter().
+ *
+ * Alter the image to use file system rather than the CDN path in the backend.
+ */
+function trlx_utility_file_url_alter(&$uri) {
+  $requestUri = $_SERVER['REQUEST_URI'];
+  if((preg_match('/\/api\//', $requestUri) == 1)) {
+    $file_name = drupal_basename($uri);
+    // Update the file name to raw url format.
+    $uri = str_replace($file_name, rawurlencode($file_name), $uri);
+    $settings_cdn_url_array = explode("/", settings::get('cdn_file_public_base_url'), 4);
+    if (!empty($settings_cdn_url_array)) {
+      $uri = settings::get('cdn_file_public_base_url') . '/' . explode('//',$uri)[1];
+    }
+  }
+} 
