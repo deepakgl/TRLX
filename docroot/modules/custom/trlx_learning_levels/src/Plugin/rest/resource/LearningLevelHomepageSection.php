@@ -301,8 +301,11 @@ class LearningLevelHomepageSection extends ResourceBase {
       if (!empty($nid->entity_id)) {
         $node = \Drupal::entityTypeManager()->getStorage('node')->load($nid->entity_id);
         if ($node->hasTranslation($langcode)) {
-          $points = $node->get('field_point_value')->value;
-          $points_value = $points_value + $points;
+          // Checking publish content
+          if (($node->get('status')->value) == 1) {
+            $points = $node->get('field_point_value')->value;
+            $points_value = $points_value + $points;
+          }
         }
       }
     }
