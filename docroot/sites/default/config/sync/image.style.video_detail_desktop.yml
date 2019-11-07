@@ -3,13 +3,13 @@ langcode: en
 status: true
 dependencies: {  }
 name: video_detail_desktop
-label: 'Video Detail Desktop (375X200)'
+label: 'Video Detail Desktop (810X432)'
 effects:
   98852728-b704-41c0-ad8a-3414f590a256:
     uuid: 98852728-b704-41c0-ad8a-3414f590a256
     id: image_scale_and_crop
     weight: 1
     data:
-      width: 375
-      height: 200
+      width: 810
+      height: 432
       anchor: center-center
