@@ -379,7 +379,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          label: Translation
+          label: Action
           exclude: false
           alter:
             alter_text: true
@@ -445,7 +445,7 @@ display:
           exposed: true
           expose:
             operator_id: field_translation_key_value_op
-            label: String/Translation
+            label: 'Source String'
             description: ''
             use_operator: false
             operator: field_translation_key_value_op
@@ -457,13 +457,8 @@ display:
               authenticated: authenticated
               anonymous: '0'
               administrator: '0'
-              beauty_advisor: '0'
-              store_management: '0'
-              multi_brand_sales_associate: '0'
-              brand_management_and_field: '0'
               el_regional_market_admin: '0'
               el_nyo_global_education_system_admin: '0'
-              el_regional_market_translator: '0'
             placeholder: ''
           is_grouped: false
           group_info:
@@ -486,7 +481,9 @@ display:
           group_type: group
           admin_label: ''
           operator: in
-          value: {  }
+          value:
+            en: en
+            zh-hans: zh-hans
           group: 1
           exposed: true
           expose:
@@ -503,14 +500,9 @@ display:
               authenticated: authenticated
               anonymous: '0'
               administrator: '0'
-              beauty_advisor: '0'
-              store_management: '0'
-              multi_brand_sales_associate: '0'
-              brand_management_and_field: '0'
               el_regional_market_admin: '0'
               el_nyo_global_education_system_admin: '0'
-              el_regional_market_translator: '0'
-            reduce: false
+            reduce: true
           is_grouped: false
           group_info:
             label: ''
@@ -554,7 +546,7 @@ display:
           empty: false
           tokenize: false
           content:
-            value: "<a href=\"/admin/structure/taxonomy/manage/static_translation/add\">Add New</a>"
+            value: ''
             format: full_html
           plugin_id: text
       footer: {  }
