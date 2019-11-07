@@ -22,6 +22,7 @@ dependencies:
     - field.field.node.stories.field_image_home_page
     - field.field.node.stories.field_last_name
     - field.field.node.stories.field_markets
+    - field.field.node.stories.field_message
     - field.field.node.stories.field_occupation
     - field.field.node.stories.field_point_value
     - field.field.node.stories.field_product_carousel
@@ -168,6 +169,13 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
+  field_message:
+    weight: 29
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
     region: content
   field_occupation:
     weight: 17
