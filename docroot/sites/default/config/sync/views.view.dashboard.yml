@@ -61,7 +61,7 @@ display:
         type: basic
         options:
           submit_button: Apply
-          reset_button: false
+          reset_button: true
           reset_button_label: Reset
           exposed_sorts_label: 'Sort by'
           expose_sort_order: true
@@ -2043,6 +2043,7 @@ display:
           role:
             administrator: administrator
             el_regional_market_admin: el_regional_market_admin
+            el_nyo_global_education_system_admin: el_nyo_global_education_system_admin
       fields:
         title_1:
           id: title_1
