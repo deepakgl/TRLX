@@ -32,6 +32,7 @@ class LearningLevelHomepageSection extends ResourceBase {
    */
   public function get(Request $request) {
     $commonUtility = new CommonUtility();
+    $levelUtility = new LevelUtility();
 
     // Required parameters.
     $requiredParams = [
@@ -61,59 +62,54 @@ class LearningLevelHomepageSection extends ResourceBase {
       return $response;
     }
 
+    // Get user
     global $_userData;
     $all_tids = $this->getDistingTids($_userData->userId);
-    $progress = [];
-    $count = 0;
-    if (!empty($all_tids)) {
-      foreach ($all_tids as $key => $tid) {
-        if (!empty($tid)) {
-          $all_nids = $this->getAllNids($tid, $language);
-          if (!empty($all_nids)) {
-            $pointValue = $this->getPointValues($all_nids, $language);
-            $level_status = $this->getLevelStatus($all_nids, $tid);
-            $progress[$count]['pointValue'] = $pointValue;
-            if ($level_status['status'] == 'inprogress') {
-              $progress[$count]['tid'] = $level_status['term_id'];
-              $count++;
-              if ($count >= 4) {
-                break;
-              }
+    $count1 = 0;
+    foreach ($all_tids as $tid) {
+      // Query to fetch all associated nids
+      $query = \Drupal::entityQuery('node')
+        ->condition('status', 1)
+        ->condition('type', 'level_interactive_content', '=')
+        ->condition('field_learning_category', $tid, '=');
+      $nid = $query->execute();
+      $nids = array_values($nid);
+      if (!empty($nids)) {
+        // Get status in-progress in percentage
+        $status_array = $levelUtility->getLevelActivity($_userData, $tid, $nids, $language);
+        if (($status_array['percentageCompleted'] != 0) && ($status_array['percentageCompleted'] != 100)) {
+        //Get term by tid
+        $term = $this->getTaxonomyTerm($status_array['categoryId'], $language);
+          if (!empty($term)) {
+            $result[$count1]['id'] = $term->id();
+            $result[$count1]['displayTitle'] = $term->hasTranslation($language) ? $term->getTranslation($language)->get('name')->value : '';
+            $result[$count1]['subTitle'] = $term->hasTranslation($language) ? $term->getTranslation($language)->get('field_sub_title')->value : '';
+            $result[$count1]['body'] = $term->hasTranslation($language) ? ((!empty($term->getTranslation($language)->get('description')->value) ||
+            ($term->getTranslation($language)->get('description')->value != null) ? $term->getTranslation($language)->get('description')->value : '')) : '';
+            // Get image reference field
+            $featured_image = $term->get('field_image')->referencedEntities();
+            if (!empty($featured_image)) {
+              $image = array_shift($featured_image)->get('field_media_image')->referencedEntities();
+              $uri = (!empty($image)) ? (array_shift($image)->get('uri')->value) : '';
+              $result[$count1]['imageSmall'] = (!empty($uri)) ? ($commonUtility->loadImageStyle('level_home_page_mobile', $uri)) : '';
+              $result[$count1]['imageMedium'] = (!empty($uri)) ? ($commonUtility->loadImageStyle('level_home_page_tablet', $uri)) : '';
+              $result[$count1]['imageLarge'] = (!empty($uri)) ? ($commonUtility->loadImageStyle('level_home_page_desktop', $uri)) : '';
+            } else {
+              $result[$count1]['imageSmall'] = '';
+              $result[$count1]['imageMedium'] = '';
+              $result[$count1]['imageLarge'] = '';
             }
+            //Get point values count
+            $pointValues = $this->getPointValues($nids, $language);
+            if ((empty($pointValues)) || ($pointValues == null)) {
+              $result[$count1]['pointValue'] = 0;
+            } else {
+              $result[$count1]['pointValue'] = $pointValues;
+            }
+
+            $count1++;
           }
         }
-      }
-    }
-
-    $result = [];
-    $count1 = 0;
-    foreach ($progress as $tid) {
-      $term = $this->getTaxonomyTerm($tid['tid'], $language);
-      if (!empty($term)) {
-        $result[$count1]['id'] = $term->id();
-        $result[$count1]['displayTitle'] = $term->hasTranslation($language) ? $term->getTranslation($language)->get('name')->value : '';
-        $result[$count1]['subTitle'] = $term->hasTranslation($language) ? $term->getTranslation($language)->get('field_sub_title')->value : '';
-        $result[$count1]['body'] = $term->hasTranslation($language) ? $term->getTranslation($language)->get('description')->value : '';
-        $featured_image = $term->get('field_image')->referencedEntities();
-        if (!empty($featured_image)) {
-          $image = array_shift($featured_image)->get(field_media_image)->referencedEntities();
-          $uri = (!empty($image)) ? (array_shift($image)->get(uri)->value) : '';
-          $result[$count1]['imageSmall'] = (!empty($uri)) ? ($commonUtility->loadImageStyle('level_home_page_mobile', $uri)) : '';
-          $result[$count1]['imageMedium'] = (!empty($uri)) ? ($commonUtility->loadImageStyle('level_home_page_tablet', $uri)) : '';
-          $result[$count1]['imageLarge'] = (!empty($uri)) ? ($commonUtility->loadImageStyle('level_home_page_desktop', $uri)) : '';
-        }
-        else {
-          $result[$count1]['imageSmall'] = '';
-          $result[$count1]['imageMedium'] = '';
-          $result[$count1]['imageLarge'] = '';
-        }
-
-        if (empty($tid['pointValue']) || ($tid['pointValue'] == null)) {
-          $result[$count1]['pointValue'] = 0;
-        } else {
-          $result[$count1]['pointValue'] = $tid['pointValue'];
-        }
-        $count1++;
       }
     }
 
@@ -178,88 +174,6 @@ class LearningLevelHomepageSection extends ResourceBase {
   }
 
   /**
-   * Method to get node data.
-   *
-   * @param int $tid
-   *   Term data.
-   *
-   * @return array
-   *   tid data.
-   */
-  public function getAllNids($tid, $langcode) {
-    // Check term translation
-    $term = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($tid);
-    if (!$term->hasTranslation($langcode)) {
-      return FALSE;
-    }
-
-    $tid = (int) $tid;
-    $result = '';
-    $response = [];
-
-    try {
-      // Query to get the nid for in-progress learning level content.
-      $query = \Drupal::database()->select('node__field_learning_category', 'n');
-      $query->fields('n', ['entity_id']);
-      $query->condition('n.bundle', 'level_interactive_content');
-      $query->condition('n.field_learning_category_target_id', $tid);
-      $result = $query->execute()->fetchAll();
-    }
-    catch (\Exception $e) {
-      return FALSE;
-    }
-
-    $count = 0;
-    if (!empty($result)) {
-      foreach ($result as $nids) {
-        $nid = $nids->entity_id;
-        $node = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
-        if ($node->hasTranslation($langcode)) {
-          $response[] = $nids;
-          $count++;
-        }
-      }
-    }
-
-    if (!empty($response)) {
-      return $response;
-    } else {
-      return FALSE;
-    }
-  }
-
-  /**
-   * Method to get status data.
-   *
-   * @param array $nids
-   *   nid data.
-   * @param int $tid
-   *   Term data.
-   *
-   * @return array
-   *   status data.
-   */
-  public function getLevelStatus($nids, $tid) {
-    // Query to get the nid for in-progress learning level content.
-    try {
-      $database = \Drupal::database();
-      foreach ($nids as $nid) {
-        $nid->entity_id;
-        $query = $database->query("select tid from lm_lrs_records where statement_status= 'passed' and 'nid' = " . $nid->entity_id);
-        $result = $query->fetchAll();
-        if (empty($result)) {
-          return ['status' => 'inprogress', 'term_id' => $tid];
-          break;
-        }
-      }
-      return ['status' => 'pass', 'term_id' => $tid];
-    }
-    catch (\Exception $e) {
-      return FALSE;
-    }
-  }
-
-  /**
    * Method to get status data.
    *
    * @param int $tid
@@ -282,7 +196,6 @@ class LearningLevelHomepageSection extends ResourceBase {
     }
   }
 
-
  /**
   * Method to get point value
   *
@@ -298,8 +211,8 @@ class LearningLevelHomepageSection extends ResourceBase {
     // Fetch point values
     $points_value = 0;
     foreach ($nids as $nid) {
-      if (!empty($nid->entity_id)) {
-        $node = \Drupal::entityTypeManager()->getStorage('node')->load($nid->entity_id);
+      if (!empty($nid)) {
+        $node = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
         if ($node->hasTranslation($langcode)) {
           // Checking publish content
           if (($node->get('status')->value) == 1) {
