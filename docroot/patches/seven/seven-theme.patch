@@ -1,0 +1,15 @@
+--- a/core/themes/seven/seven.theme
++++ b/core/themes/seven/seven.theme
+@@ -21,6 +21,12 @@
+       }
+     }
+   }
++  // Get currently active user and his roles.
++  $account = \Drupal::currentUser();
++  $roles = $account->getRoles();
++  foreach ($roles as $role) {
++    $variables['attributes']['class'][] = 'role-' . $role;
++  }
+ }
+
+ /**
