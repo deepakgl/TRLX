@@ -124,7 +124,7 @@ class SearchController extends Controller {
     if (empty($this->search)) {
       return Helper::jsonError('Please enter search keyword.', 400);
     }
-    if (strlen(strlen(trim($this->search))) < 3) {
+    if (strlen(trim($this->search)) < 3) {
       return Helper::jsonError('You must include at least one positive keyword with 3 characters or more.', 422);
     }
     // Fetch the search response from elastic.
