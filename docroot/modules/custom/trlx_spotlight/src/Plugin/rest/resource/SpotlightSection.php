@@ -71,6 +71,7 @@ class SpotlightSection extends ResourceBase {
     // Prepare array for fields that need to be replaced.
     $data = [
       'nid' => 'int',
+      'textOverlay' => 'decode',
     ];
 
     // Prepare view response.
