@@ -185,14 +185,16 @@ class SearchController extends Controller {
       $tid = isset($value['_source']['tid'][0]) ? $value['_source']['tid'][0] : '';
       $img = !empty($nid) ? $nid : $tid;
       $image_style = Helper::buildImageResponse($result, $img);
-      $category_key = $category_value = 0;
+      $category_key = 'faqhelp';
+      $category_value = $category_name = 'FAQ Help';
       // Get displaytitle on based on content type.
       if (!empty($value['_source']['vid'][0])) {
         $display_title = isset($value['_source']['name'][0]) ? $value['_source']['name'][0] : '';
       }
       elseif ($value['_source']['type'][0] == 'level_interactive_content') {
         $display_title = isset($value['_source']['field_headline'][0]) ? $value['_source']['field_headline'][0] : '';
-        $category_key = $category_value = 'Levels';
+        $category_key = 'lessons';
+        $category_value = $category_name = 'Lessons';
       }
       elseif ($value['_source']['type'][0] == 'faq') {
         $display_title = isset($value['_source']['field_question'][0]) ? $value['_source']['field_question'][0] : '';
@@ -207,8 +209,9 @@ class SearchController extends Controller {
       if (isset($value['_source']['field_brands'][0])) {
         $category_name = ContentModel::getTermName([$value['_source']['field_brands'][0]]);
         // $category[] = ['key' => 'brands', 'value' => implode(" ", $category_name)];
-        $category_key = 'Brands';
-        $category_value = implode(" ", $category_name);
+        $category_key = 'brands';
+        $category_value = 'Brands';
+        $category_name = implode(" ", $category_name);
         foreach ($brandinfo as $key => $brand) {
           if ($brand['entity_id'] == $value['_source']['field_brands'][0]) {
             $brand_key = (int) $brand['field_brand_key_value'];
@@ -219,14 +222,15 @@ class SearchController extends Controller {
         $category_name = ContentModel::getTermName([$value['_source']['field_content_section'][0]]);
         $key = ContentModel::getContentSectionKeyByTid($value['_source']['field_content_section'][0]);
         $category_key = $key;
-        $category_value = implode(" ", $category_name);
+        $category_value = $category_name = implode(" ", $category_name);
         // $category[] = ['key' => $key, 'value' => implode(" ", $category_name)];
       }
       elseif (isset($value['_source']['field_brands_1'][0])) {
         $category_name = ContentModel::getTermName([$value['_source']['field_brands_1'][0]]);
         // $category[] = ['key' => 'brands', 'value' => implode(" ", $category_name)];
-        $category_key = 'Brands';
-        $category_value = implode(" ", $category_name);
+        $category_key = 'brands';
+        $category_value = 'Brands';
+        $category_name = implode(" ", $category_name);
         foreach ($brandinfo as $key => $brand) {
           if ($brand['entity_id'] == $value['_source']['field_brands_1'][0]) {
             $brand_key = (int) $brand['field_brand_key_value'];
@@ -237,7 +241,7 @@ class SearchController extends Controller {
         $category_name = ContentModel::getTermName([$value['_source']['field_content_section_1'][0]]);
         $key = ContentModel::getContentSectionKeyByTid($value['_source']['field_content_section_1'][0]);
         $category_key = $key;
-        $category_value = implode(" ", $category_name);
+        $category_value = $category_name = implode(" ", $category_name);
         // $category[] = ['key' => $key, 'value' => implode(" ", $category_name)];
       }
 
@@ -268,7 +272,8 @@ class SearchController extends Controller {
             'type' => $type,
             'pointValue' => isset($value['_source']['field_point_value'][0]) ? (int) $value['_source']['field_point_value'][0] : '',
             'categoryKey' => $category_key,
-            'categoryValue' => $category_value,
+            'categoryValue' => $category_name,
+            'categoryName' => $category_value,
           ];
         }
       }
@@ -285,19 +290,23 @@ class SearchController extends Controller {
           'type' => $type,
           'pointValue' => isset($value['_source']['field_point_value'][0]) ? (int) $value['_source']['field_point_value'][0] : '',
           'categoryKey' => $category_key,
-          'categoryValue' => $category_value,
+          'categoryValue' => $category_name,
+          'categoryName' => $category_value,
         ];
       }
     }
     foreach ($response as $key => $element) {
-      $alter_data[$element['categoryValue']]['response'][] = $element;
+      $alter_data[$element['categoryKey']]['response'][] = $element;
     }
     $results = array_values($alter_data);
     // Show response search category wise.
     $s_response['results'] = [];
     foreach ($results as $key => $value) {
       $s_response['results'][$key]['categoryKey'] = $value['response'][0]['categoryKey'];
-      $s_response['results'][$key]['categoryValue'] = $value['response'][0]['categoryValue'];
+      $s_response['results'][$key]['categoryValue'] = $value['response'][0]['categoryName'];
+      foreach ($value['response'] as $key_unset => $value_unset) {
+        unset($value['response'][$key_unset]['categoryName']);
+      }
       $s_response['results'][$key]['response'] = $value['response'];
     }
     $total_count = $data['hits']['total'] - $this->offset;
