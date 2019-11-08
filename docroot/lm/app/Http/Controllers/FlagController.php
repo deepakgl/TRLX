@@ -260,7 +260,7 @@ class FlagController extends Controller {
     if ($exist) {
       $response = ElasticUserModel::fetchElasticUserData($this->uid, $this->elasticClient);
       if (empty($response['_source']['bookmark'])) {
-        return $this->successResponse([], Response::HTTP_OK);
+        return $this->successResponse((Object) [], Response::HTTP_OK);
       }
       $results = $nid_user_activity = $bookmark_data = [];
       $pages = 0;
@@ -389,7 +389,7 @@ class FlagController extends Controller {
       }
     }
     else {
-      return $this->successResponse([], Response::HTTP_OK);
+      return $this->successResponse((Object) [], Response::HTTP_OK);
     }
     // Filter bookmark data by type value.
     $filterBy = 'VIDEOS';
@@ -418,7 +418,7 @@ class FlagController extends Controller {
     ];
     header('Content-language: ' . $lang);
     if (empty($results['bookmark'])) {
-      return $this->successResponse([], Response::HTTP_OK);
+      return $this->successResponse((Object) [], Response::HTTP_OK);
     }
     else {
       return $this->successResponse($results, Response::HTTP_OK, $pager);

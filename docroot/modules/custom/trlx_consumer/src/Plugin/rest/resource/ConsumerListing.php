@@ -182,7 +182,7 @@ class ConsumerListing extends ResourceBase {
     if (!empty($categoryImage) && empty($view_results)) {
       $status_code = Response::HTTP_OK;
       $view_results['results'] = [];
-      $view_results['pager'] = "{}";
+      $view_results['pager'] = (Object) [];
     }
 
     return $commonUtility->successResponse($view_results['results'], $status_code, $view_results['pager'], '', [], [], $categoryImage);
