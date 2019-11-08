@@ -68,7 +68,7 @@ class ListingImage extends ResourceBase {
     }
 
     if (empty($result)) {
-      return new JsonResponse(t('Something went wrong, please check the section: @reqParam', ['@reqParam' => 'section']), 422);
+      return new JsonResponse((Object) [], Response::HTTP_OK);
     }
 
     return new JsonResponse($result, 200);

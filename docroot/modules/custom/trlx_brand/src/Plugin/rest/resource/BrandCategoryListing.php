@@ -68,6 +68,12 @@ class BrandCategoryListing extends ResourceBase {
       }
       $i++;
     }
+
+    // Check for empty brand list.
+    if (empty($brands_list)) {
+      return $this->commonUtility->successResponse([], Response::HTTP_OK);
+    }
+
     return $this->commonUtility->successResponse(array_values($brands_list));
   }
 
