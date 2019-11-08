@@ -7,6 +7,7 @@
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Drupal\views\ViewExecutable;
 use Drupal\trlx_lang_translation\Utility\LangUtility;
+use Drupal\Core\Form\FormStateInterface;
 
 /**
  * @file
@@ -134,5 +135,21 @@ function trlx_dashboard_views_query_alter(ViewExecutable $view, $query) {
         $query->addWhere(1, 'node_field_data.langcode', array_keys($system_lang), 'IN');
       }
     }
+  }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function trlx_dashboard_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  switch ($form_id) {
+    case 'views_exposed_form':
+      $roles = getUserRoles(\Drupal::currentUser()->id());
+      if ($roles) {
+        if ($form['#id'] == 'views-exposed-form-dashboard-dashboard-published' ||
+        $form['#id'] == 'views-exposed-form-dashboard-dashboard-unpublished') {
+          unset($form['langcode']['#options']['en']);
+        }
+      }
   }
 }
