@@ -3,7 +3,6 @@
 #This script downloads the latest code based on the input branch information
 #Then it installs all the relavent packages required for the code (composer install)
 #does this happens in docker container ? 
-
 apt-get update
 apt install php-pear
 pecl install mongodb
