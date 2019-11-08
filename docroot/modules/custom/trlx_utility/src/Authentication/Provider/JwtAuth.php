@@ -23,7 +23,7 @@ class JwtAuth implements AuthenticationProviderInterface {
     $auth = $request->headers->get('Authorization');
     $uri = \Drupal::request()->getRequestUri();
     $matches = [];
-    if (preg_match('/\/api\//', $uri) == 1 || preg_match('/\/languageList/', $uri) != 1) {
+    if (preg_match('/\/api\//', $uri) == 1) {
       if ($auth == NULL) {
         throw new BadRequestHttpException('Authorization header is required.');
       }

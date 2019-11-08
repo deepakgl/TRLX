@@ -54,7 +54,7 @@ class FlagController extends Controller {
       'flag' => 'required|likebookmarkflag',
       'status' => 'required|boolean',
       '_format' => 'required|format',
-      'brandId' => 'sometimes|required|positiveinteger|brandid',
+      'brandId' => 'sometimes|required|regex:/^[0-9]+$/|brandid',
     ]);
     $this->uid = $_userData->userId;
     $pageType = $request->get('type');
@@ -439,7 +439,7 @@ class FlagController extends Controller {
     $faq_config_data = ContentModel::getTrlxUtilityConfigValues();
     $validatedData = $this->validate($request, [
       'nid' => 'sometimes|required|positiveinteger|exists:node,nid',
-      'brandId' => 'sometimes|required|positiveinteger|brandid',
+      'brandId' => 'sometimes|required|regex:/^[0-9]+$/|brandid',
       '_format' => 'required|format',
     ]);
     $this->uid = $_userData->userId;
