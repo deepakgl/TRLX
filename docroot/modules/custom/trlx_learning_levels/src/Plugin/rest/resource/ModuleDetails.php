@@ -137,7 +137,7 @@ class ModuleDetails extends ResourceBase {
     $uuid_service = \Drupal::service('uuid');
     $uuid = $uuid_service->generate();
     $learning_category = $levelUtility->getLevelCategory($nid);
-    $filePublicUrl = Settings::get('file_public_base_url');
+    $filePublicUrl = Settings::get('cdn_file_public_base_url');
     $fileDomain = str_replace('sites/default/files', '', $filePublicUrl);
     $decode['articulateFile'] = $fileDomain . ltrim($decode['articulateFile'], '/')
      . '?tincan=true&endpoint=' . $lumen_url . '/lm/api/v1/slrsa&auth='

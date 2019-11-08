@@ -17,6 +17,7 @@
         $('.node-privacy-policy-form .term-reference-tree-level .form-type-checkbox input:checkbox').prop("checked", true);
       }
       $(".form-item-send-notifications .translation-entity-all-languages").hide();
+      $('#menu-overview tr:has(a#edit-links-menu-plugin-idstandardfront-page-title-1)').hide()
       // Js for select all markets on select of region.
       var $region = $('.path-node .term-reference-tree-button').next('div').find('input[type="checkbox"]');
       $region.on('click', function() {
