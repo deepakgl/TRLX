@@ -67,7 +67,7 @@ class TrlxPrimaryNavigationMenu extends ResourceBase {
     }
     $view_results = $this->getNavigationMenuResponse($version, $langcode);
     if (empty($view_results)) {
-      return $this->commonUtility->successResponse(Json::encode([]), 204);
+      return $this->commonUtility->successResponse((Object) [], Response::HTTP_OK);
     }
     $key = explode(":", $key);
     $redis_client->set($view_results, $key[0], $key[1], $key[2]);
