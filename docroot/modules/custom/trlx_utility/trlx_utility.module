@@ -64,6 +64,7 @@ function trlx_utility_form_alter(&$form, FormStateInterface $form_state, $form_i
     case 'node_faq_edit_form':
     case 'node_privacy_policy_form':
     case 'node_privacy_policy_edit_form':
+    case 'menu_edit_form':
       $form['#attached']['library'][] = 'trlx_market_hierarchy/trlx_market';
       break;
 
@@ -729,13 +730,13 @@ function _trlx_file_name($fid) {
  */
 function trlx_utility_file_url_alter(&$uri) {
   $requestUri = $_SERVER['REQUEST_URI'];
-  if((preg_match('/\/api\//', $requestUri) == 1)) {
+  if ((preg_match('/\/api\//', $requestUri) == 1)) {
     $file_name = drupal_basename($uri);
     // Update the file name to raw url format.
     $uri = str_replace($file_name, rawurlencode($file_name), $uri);
     $settings_cdn_url_array = explode("/", settings::get('cdn_file_public_base_url'), 4);
     if (!empty($settings_cdn_url_array)) {
-      $uri = settings::get('cdn_file_public_base_url') . '/' . explode('//',$uri)[1];
+      $uri = settings::get('cdn_file_public_base_url') . '/' . explode('//', $uri)[1];
     }
   }
-} 
+}
