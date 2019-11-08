@@ -54,7 +54,7 @@ class FlagController extends Controller {
       'flag' => 'required|likebookmarkflag',
       'status' => 'required|boolean',
       '_format' => 'required|format',
-      'brandId' => 'sometimes|required|positiveinteger|brandid',
+      'brandId' => 'sometimes|required|regex:/^[0-9]+$/|brandid',
     ]);
     $this->uid = $_userData->userId;
     $pageType = $request->get('type');
