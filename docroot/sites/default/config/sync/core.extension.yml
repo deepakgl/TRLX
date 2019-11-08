@@ -139,6 +139,7 @@ module:
   trlx_trends: 0
   trlx_user: 0
   trlx_utility: 0
+  trlx_banner: 0
   trlx_video: 0
   user: 0
   video_embed_field: 0

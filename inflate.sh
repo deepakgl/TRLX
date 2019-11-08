@@ -3,7 +3,6 @@
 #This script downloads the latest code based on the input branch information
 #Then it installs all the relavent packages required for the code (composer install)
 #does this happens in docker container ? 
-
 apt-get update
 apt install php-pear
 pecl install mongodb
@@ -11,7 +10,6 @@ apt install php-dev
 echo "extension=mongodb.so" >> /etc/php/7.2/cli/php.ini
 echo "extension=mongodb.so" >> /etc/php/7.2/fpm/php.ini
 /etc/init.d/php7.2-fpm restart
-
 
 echo "Check if the path is available for dependencies installation"
 
