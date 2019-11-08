@@ -129,6 +129,7 @@ class StoryDetails extends ResourceBase {
         'nid' => 'int',
         'pointValue' => 'int',
         'body' => 'string_replace',
+        'commentTitle' => 'decode',
       ]
     );
 
