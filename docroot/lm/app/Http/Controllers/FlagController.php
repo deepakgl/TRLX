@@ -54,7 +54,7 @@ class FlagController extends Controller {
       'flag' => 'required|likebookmarkflag',
       'status' => 'required|boolean',
       '_format' => 'required|format',
-      'brandId' => 'sometimes|required|positiveinteger|brandid',
+      'brandId' => 'sometimes|required|regex:/^[0-9]+$/|brandid',
     ]);
     $this->uid = $_userData->userId;
     $pageType = $request->get('type');
@@ -313,7 +313,7 @@ class FlagController extends Controller {
             if ($node_data->field_brands_target_id != NULL) {
               foreach ($brandinfo as $brand) {
                 if ($brand['entity_id'] == $node_data->field_brands_target_id) {
-                  $brand_key = (int) $brand['field_brand_key_value'];
+                  $brand_key = $brand['field_brand_key_value'];
                 }
               }
               $bookmark_data[$i]['brandKey'] = $brand_key;
@@ -360,7 +360,7 @@ class FlagController extends Controller {
             if (!empty($brand_data)) {
               $bookmark_data[$i]['id'] = 0;
               $bookmark_data[$i]['title'] = mb_strtoupper($brand_data['name']) . ' CUSTOMER QUESTIONS';
-              $bookmark_data[$i]['brandKey'] = $brand_key;
+              $bookmark_data[$i]['brandKey'] = $brand_data['field_brand_key_value'];
               $bookmark_data[$i]['brandName'] = $brand_data['name'];
               $bookmark_data[$i]['sectionKey'] = "faq";
               $bookmark_data[$i]['sectionName'] = $sectionNames['faq'];
@@ -439,7 +439,7 @@ class FlagController extends Controller {
     $faq_config_data = ContentModel::getTrlxUtilityConfigValues();
     $validatedData = $this->validate($request, [
       'nid' => 'sometimes|required|positiveinteger|exists:node,nid',
-      'brandId' => 'sometimes|required|positiveinteger|brandid',
+      'brandId' => 'sometimes|required|regex:/^[0-9]+$/|brandid',
       '_format' => 'required|format',
     ]);
     $this->uid = $_userData->userId;
