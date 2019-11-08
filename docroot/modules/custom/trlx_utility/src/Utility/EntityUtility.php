@@ -114,7 +114,7 @@ class EntityUtility {
    *   Updated ckeditor content.
    */
   public function stringReplace($str) {
-    $filePublicUrl = Settings::get('file_public_base_url');
+    $filePublicUrl = Settings::get('cdn_file_public_base_url');
     $result = str_replace(
       '"/sites/default/files', '"' . $filePublicUrl, $str
     );
