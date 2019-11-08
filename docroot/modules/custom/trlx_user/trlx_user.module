@@ -33,4 +33,11 @@ function trlx_user_form_alter(array &$form, FormStateInterface $form_state, $for
     // Unset notify user when new account checkbox
     unset($form['account']['notify']);
   }
+
+  $currentAccount = \Drupal::currentUser();
+  $roles = $currentAccount->getRoles();
+  if (($form_id == "menu_edit_form") && (!in_array('administrator', $roles))) {
+    // Access False langcode select field
+    $form['langcode']['#access'] = FALSE;
+  }
 }
