@@ -269,4 +269,21 @@ function elx_translation_workflow_generate_img_styles($entity) {
     ]
     );
   }
+  // Video thumbnail image.
+  if ($entity->hasField('field_video_thumbnail')) {
+    $commonUtility->setMediaEntity($entity, 'field_video_thumbnail', [
+      'video_thumbnail_desktop',
+      'video_thumbnail_tablet',
+      'video_thumbnail_mobile',
+    ]
+    );
+  }
+  if ($entity->hasField('field_product_video_thumbnail')) {
+    $commonUtility->setMediaEntity($entity, 'field_product_video_thumbnail', [
+      'video_thumbnail_desktop',
+      'video_thumbnail_tablet',
+      'video_thumbnail_mobile',
+    ]
+    );
+  }
 }

@@ -1,0 +1,15 @@
+uuid: 401eb0eb-dd7c-4a97-b57d-bc4d7b130ffa
+langcode: en
+status: true
+dependencies: {  }
+name: video_thumbnail_desktop
+label: 'Video Thumbnail Desktop (810X432)'
+effects:
+  cfd08b07-7faa-4890-8c8e-ed4f7251fdbb:
+    uuid: cfd08b07-7faa-4890-8c8e-ed4f7251fdbb
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 810
+      height: 432
+      anchor: center-center

@@ -1761,11 +1761,20 @@ display:
             field_point_value:
               alias: pointValue
               raw_output: false
+            field_message:
+              alias: commentTitle
+              raw_output: false
             field_headline:
               alias: productCarouselTitle
               raw_output: false
-            field_message:
-              alias: commentTitle
+            field_media_image_3:
+              alias: videoImageLarge
+              raw_output: false
+            field_media_image_4:
+              alias: videoImageMedium
+              raw_output: false
+            field_media_image_5:
+              alias: videoImageSmall
               raw_output: false
       display_description: ''
       cache:
@@ -1774,6 +1783,7 @@ display:
       defaults:
         cache: false
         fields: false
+        relationships: false
       fields:
         nid:
           id: nid
@@ -2539,6 +2549,238 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
+        field_media_image_3:
+          id: field_media_image_3
+          table: media__field_media_image
+          field: field_media_image
+          relationship: field_video_thumbnail
+          group_type: group
+          admin_label: ''
+          label: ''
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: image_url
+          settings:
+            url_type: '0'
+            image_style: video_thumbnail_desktop
+            image_link: ''
+          group_column: ''
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_media_image_4:
+          id: field_media_image_4
+          table: media__field_media_image
+          field: field_media_image
+          relationship: field_video_thumbnail
+          group_type: group
+          admin_label: ''
+          label: ''
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: image_url
+          settings:
+            url_type: '0'
+            image_style: video_thumbnail_tablet
+            image_link: ''
+          group_column: ''
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_media_image_5:
+          id: field_media_image_5
+          table: media__field_media_image
+          field: field_media_image
+          relationship: field_video_thumbnail
+          group_type: group
+          admin_label: ''
+          label: ''
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: image_url
+          settings:
+            url_type: '0'
+            image_style: video_thumbnail_mobile
+            image_link: ''
+          group_column: ''
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+      relationships:
+        field_featured_image:
+          id: field_featured_image
+          table: node__field_featured_image
+          field: field_featured_image
+          relationship: none
+          group_type: group
+          admin_label: 'field_featured_image: Media'
+          required: false
+          plugin_id: standard
+        field_video:
+          id: field_video
+          table: node__field_video
+          field: field_video
+          relationship: none
+          group_type: group
+          admin_label: 'field_video: Media'
+          required: false
+          plugin_id: standard
+        field_content_section:
+          id: field_content_section
+          table: node__field_content_section
+          field: field_content_section
+          relationship: none
+          group_type: group
+          admin_label: 'field_content_section: Taxonomy term'
+          required: false
+          plugin_id: standard
+        field_video_thumbnail:
+          id: field_video_thumbnail
+          table: node__field_video_thumbnail
+          field: field_video_thumbnail
+          relationship: none
+          group_type: group
+          admin_label: 'field_video_thumbnail: Media'
+          required: false
+          plugin_id: standard
     cache_metadata:
       max-age: -1
       contexts:

@@ -23,7 +23,18 @@ class JwtAuth implements AuthenticationProviderInterface {
     $auth = $request->headers->get('Authorization');
     $uri = \Drupal::request()->getRequestUri();
     $matches = [];
-    if (!preg_match('/\/languageList/', $uri) == 1) {
+    if (preg_match('/\/languageList/', $uri) == 1 ) {
+      if (isset($auth)) {
+        if (preg_match('/\/api\//', $uri) == 1) {
+          if ($auth == NULL) {
+            throw new BadRequestHttpException('Authorization header is required.');
+          }
+          if (!$hasJWT = preg_match('/^Bearer (.*)/', $auth, $matches)) {
+            throw new UnprocessableEntityHttpException('Provided token is not valid.');
+          }
+        }
+      } 
+    } else {
       if (preg_match('/\/api\//', $uri) == 1) {
         if ($auth == NULL) {
           throw new BadRequestHttpException('Authorization header is required.');
@@ -32,8 +43,8 @@ class JwtAuth implements AuthenticationProviderInterface {
           throw new UnprocessableEntityHttpException('Provided token is not valid.');
         }
       }
-      return preg_match('/^Bearer .+/', $auth);
     }
+    return preg_match('/^Bearer .+/', $auth);
   }
 
   /**
