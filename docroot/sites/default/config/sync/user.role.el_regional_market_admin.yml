@@ -70,8 +70,6 @@ permissions:
   - 'create paragraph content interactive_content'
   - 'create paragraph content media_template_two'
   - 'create paragraph content multiple_answer_choice'
-  - 'create terms in badges'
-  - 'create terms in consumer_category'
   - 'create terms in learning_category'
   - 'create terms in listing_image'
   - 'create terms in static_translation'
