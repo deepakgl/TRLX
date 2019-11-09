@@ -116,7 +116,7 @@ class LearningLevelHomepageSection extends ResourceBase {
     $response = [];
     $response['results'] = $result;
     if (empty($response['results'])) {
-      return $commonUtility->successResponse([], Response::HTTP_OK);
+      return $commonUtility->successResponse((Object) [], Response::HTTP_OK);
     }
 
     return $commonUtility->successResponse($response['results'], 200);
