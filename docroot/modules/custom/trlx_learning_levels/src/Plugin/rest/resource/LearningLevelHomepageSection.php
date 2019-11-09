@@ -116,7 +116,7 @@ class LearningLevelHomepageSection extends ResourceBase {
     $response = [];
     $response['results'] = $result;
     if (empty($response['results'])) {
-      return $commonUtility->successResponse([], Response::HTTP_OK);
+      return $commonUtility->successResponse((Object) [], Response::HTTP_OK);
     }
 
     return $commonUtility->successResponse($response['results'], 200);
@@ -133,22 +133,9 @@ class LearningLevelHomepageSection extends ResourceBase {
     try {
       // Query to get the nid for in-progress learning level content.
       $database = \Drupal::database();
-
-      $nid_query = $database->select('lm_lrs_records', 'n');
-      $nid_query->fields('n', array('nid'));
-      $nid_query->condition('uid', $uid, "=");
-      $nid_query->condition('statement_status', 'passed', "=");
-      $result_nid = $nid_query->execute()->fetchAll();
-
       $query = $database->select('lm_lrs_records', 'n');
       $query->fields('n', array('id','tid'));
       $query->condition('uid', $uid, "=");
-      $query->condition('statement_status', 'passed', "!=");
-      if (!empty($result_nid)) {
-        foreach ($result_nid as $nid) {
-          $query->condition('nid', $nid->nid, "!=");
-        }
-      }
       $query->orderBy('id', 'DESC');
       $result = $query->execute()->fetchAll();
 
