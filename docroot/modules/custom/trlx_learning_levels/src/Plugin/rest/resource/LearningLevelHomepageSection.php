@@ -136,7 +136,6 @@ class LearningLevelHomepageSection extends ResourceBase {
       $query = $database->select('lm_lrs_records', 'n');
       $query->fields('n', array('id','tid'));
       $query->condition('uid', $uid, "=");
-      $query->condition('statement_status', 'passed', "!=");
       $query->orderBy('id', 'DESC');
       $result = $query->execute()->fetchAll();
 
