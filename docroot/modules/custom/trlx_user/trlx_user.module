@@ -34,10 +34,21 @@ function trlx_user_form_alter(array &$form, FormStateInterface $form_state, $for
     unset($form['account']['notify']);
   }
 
+  //Get current user details
   $currentAccount = \Drupal::currentUser();
   $roles = $currentAccount->getRoles();
   if (($form_id == "menu_edit_form") && (!in_array('administrator', $roles))) {
     // Access False langcode select field
     $form['langcode']['#access'] = FALSE;
+  }
+
+  // Disable all field of welcome config form
+  if (($form_id == 'welcome_message_admin_settings') && (in_array('el_regional_market_admin', $roles))) {
+    $langcodes = \Drupal::languageManager()->getLanguages();
+    $langcodesList = array_keys($langcodes);
+    foreach ($langcodesList as $field) {
+      $form['message_'.$field]['#attributes'] = array('readonly'=>'readonly','disabled'=>'disabled');
+    }
+    $form['actions']['submit']['#access']  = FALSE;
   }
 }
