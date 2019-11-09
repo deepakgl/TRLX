@@ -1,0 +1,15 @@
+uuid: f7ed9a18-c29a-4ee8-8263-7e6bbba2f064
+langcode: en
+status: true
+dependencies: {  }
+name: video_thumbnail_tablet
+label: 'Video Thumbnail Tablet (780X416)'
+effects:
+  d4d9a42b-0037-4fe4-bb8c-4a3b4542fa96:
+    uuid: d4d9a42b-0037-4fe4-bb8c-4a3b4542fa96
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 780
+      height: 416
+      anchor: center-center
