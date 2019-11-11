@@ -95,12 +95,10 @@ class BrandStoryDetails extends ResourceBase {
       'pointValue' => 'int',
       'body' => 'string_replace',
     ];
-    // Prepare redis key.
-    $key = ":brandStoryDetails:_{$brandId}_{$language}";
 
     // Prepare response.
     list($view_results, $status_code,) = $entityUtility->fetchApiResult(
-      $key,
+      '',
       'brand_story',
       'rest_export_brand_story_details',
       $data, ['language' => $language, 'brand' => $brandId],
