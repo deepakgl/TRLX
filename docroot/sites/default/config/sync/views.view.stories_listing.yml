@@ -2759,7 +2759,7 @@ display:
           id: field_media_image
           table: media__field_media_image
           field: field_media_image
-          relationship: field_featured_image
+          relationship: field_hero_image
           group_type: group
           admin_label: ''
           label: ''
@@ -2824,7 +2824,7 @@ display:
           id: field_media_image_1
           table: media__field_media_image
           field: field_media_image
-          relationship: field_featured_image
+          relationship: field_hero_image
           group_type: group
           admin_label: ''
           label: ''
@@ -2889,7 +2889,7 @@ display:
           id: field_media_image_2
           table: media__field_media_image
           field: field_media_image
-          relationship: field_featured_image
+          relationship: field_hero_image
           group_type: group
           admin_label: ''
           label: ''

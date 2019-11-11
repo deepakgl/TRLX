@@ -154,7 +154,7 @@ class ConsumerListing extends ResourceBase {
         'categoryId' => 'int',
       ];
 
-      $view_results = $entityUtility->buildListingResponse($view_results, $data, [], ['timestamp', 'pointValueLevel']);
+      $view_results = $entityUtility->buildListingResponse($view_results, $data, [], ['timestamp']);
 
       $view_results['pager'] = $pager;
       $status_code = Response::HTTP_OK;
