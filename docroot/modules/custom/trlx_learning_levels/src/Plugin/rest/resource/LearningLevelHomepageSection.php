@@ -108,6 +108,9 @@ class LearningLevelHomepageSection extends ResourceBase {
               $result[$count1]['pointValue'] = $pointValues;
             }
 
+            if ($count1 >= 3) {
+              break;
+            }
             $count1++;
           }
         }
@@ -201,7 +204,7 @@ class LearningLevelHomepageSection extends ResourceBase {
     foreach ($nids as $nid) {
       if (!empty($nid)) {
         $node = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
-        if ($node->hasTranslation($langcode)) {
+        if (($langcode == 'en') || ($node->hasTranslation($langcode))) {
           // Checking publish content
           if (($node->get('status')->value) == 1) {
             $points = $node->get('field_point_value')->value;
@@ -212,5 +215,29 @@ class LearningLevelHomepageSection extends ResourceBase {
     }
 
     return $points_value;
+  }
+
+ /**
+  * Method to validate tranlsation
+  *
+  * @param array $nids
+  *   node data
+  * @param $langcode
+  *   lang data
+  *
+  * @return integer
+  *   status
+  */
+  public function validateTraslation($nids, $langcode) {
+    foreach ($nids as $nid) {
+      if (!empty($nid)) {
+        $node = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
+        if ($node->hasTranslation($langcode)) {
+          return array('status' => 1);
+        }
+      }
+    }
+
+    return array('status' => 0);
   }
 }

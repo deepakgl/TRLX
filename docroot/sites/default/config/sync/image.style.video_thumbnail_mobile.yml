@@ -1,0 +1,15 @@
+uuid: b76dd56e-0ba1-4143-98a5-1aa6dd90cbae
+langcode: en
+status: true
+dependencies: {  }
+name: video_thumbnail_mobile
+label: 'Video Thumbnail Mobile (375X200)'
+effects:
+  ebb87851-e115-44fb-adb1-216bc97e9054:
+    uuid: ebb87851-e115-44fb-adb1-216bc97e9054
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 375
+      height: 200
+      anchor: center-center

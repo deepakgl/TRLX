@@ -150,12 +150,11 @@ class ConsumerListing extends ResourceBase {
         'displayTitle' => 'decode',
         'subTitle' => 'decode',
         'pointValue' => 'int',
-        'pointValueLevel' => 'point_value_level',
         'body' => 'string_replace',
         'categoryId' => 'int',
       ];
 
-      $view_results = $entityUtility->buildListingResponse($view_results, $data, [], ['timestamp', 'pointValueLevel']);
+      $view_results = $entityUtility->buildListingResponse($view_results, $data, [], ['timestamp']);
 
       $view_results['pager'] = $pager;
       $status_code = Response::HTTP_OK;
