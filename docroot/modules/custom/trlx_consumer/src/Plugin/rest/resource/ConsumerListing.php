@@ -150,7 +150,6 @@ class ConsumerListing extends ResourceBase {
         'displayTitle' => 'decode',
         'subTitle' => 'decode',
         'pointValue' => 'int',
-        'pointValueLevel' => 'point_value_level',
         'body' => 'string_replace',
         'categoryId' => 'int',
       ];

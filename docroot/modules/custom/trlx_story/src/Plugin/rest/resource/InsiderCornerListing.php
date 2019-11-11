@@ -70,7 +70,7 @@ class InsiderCornerListing extends ResourceBase {
     $data = [
       'nid' => 'int',
       'body' => 'string_replace',
-      'pointValue' => 'point_value_insiderCorner',
+      'pointValue' => 'int',
     ];
 
     list($limit, $offset, $errorResponse) = $commonUtility->getPagerParam($request);
