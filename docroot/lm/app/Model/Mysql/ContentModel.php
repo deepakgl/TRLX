@@ -130,6 +130,7 @@ class ContentModel {
       }
       return DB::table('lm_lrs_records')
         ->where('nid', $params['nid'])
+        ->where('uid', $params['uid'])
         ->update(['statement_status' => $params['statement_status'], 'tid' => $params['tid']]);
     }
 
