@@ -68,7 +68,8 @@ class ListingImage extends ResourceBase {
     }
 
     if (empty($result)) {
-      return new JsonResponse((Object) [], Response::HTTP_OK);
+      $emptyResult['imageSmall'] = $emptyResult['imageMedium'] = $emptyResult['imageLarge'] = null;
+      return new JsonResponse($emptyResult, Response::HTTP_OK);
     }
 
     return new JsonResponse($result, 200);
