@@ -266,4 +266,81 @@ class LevelUtility {
     }
   }
 
+ /**
+  * Validate Learning Categories for MA.
+  *
+  * @param array $category
+  *   Category.
+  *
+  * @return array
+  *   levels.
+  */
+  public function validateLearningCategories($category) {
+    $response = [];
+    $count = 0;
+    foreach ($category as $tid => $value) {
+      if (is_numeric($tid)) {
+        $disable_level = $this->getLevelsCategory($tid);
+        if (!empty($disable_level)) {
+         $disable_level = array_unique($disable_level);
+         $response[$count] = $disable_level[0];
+         $count++;
+        }
+      }
+    }
+    return $response;
+  }
+
+ /**
+  * Get Brand Specific tids.
+  *
+  * @param integer $tid
+  *   Category.
+  *
+  * @return array
+  *   term ids.
+  */
+  public function getLevelsCategory($tid) {
+    $brand_keys = array('brandLevel','factsheet');
+    $content_section = '';
+    $response = [];
+    if (!empty($tid)) {
+      $term = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($tid);
+      $content_section = $term->get('field_content_section')->getValue();
+    }
+
+    $count = 0;
+    if (!empty($content_section)) {
+      foreach ($content_section as $key => $value) {
+        $level_term = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($value['target_id']);
+        $content_section_key = $level_term->get('field_content_section_key')->value;
+        if (in_array($content_section_key, $brand_keys)) {
+          $response[$count] = $tid;
+          $count++;
+        }
+      }
+    }
+
+    return $response;
+  }
+
+ /**
+  * Get Brand Non Agnostic.
+  *
+  * @param integer $tid
+  *   term id.
+  *
+  * @return array
+  *   tids.
+  */
+  public  function getBrandNonAgnostic($tid) {
+    $brand_keys = array('brandLevel','factsheet');
+    if (!empty($tid)) {
+      $term = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($tid);
+      $content_section = $term->get('field_content_section_key')->getValue();
+      if ((!empty($content_section)) && (in_array($content_section[0]['value'], $brand_keys))) {
+         return $tid;
+      }
+    }
+  }
 }
