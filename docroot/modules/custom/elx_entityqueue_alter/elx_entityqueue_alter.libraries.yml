@@ -1,6 +1,0 @@
-entity_autocomplete:
-  js:
-    js/entity_autocomplete.js: {}
-  dependencies:
-    - core/jquery
-    - core/drupal

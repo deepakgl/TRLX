@@ -54,7 +54,7 @@ class FlagController extends Controller {
       'flag' => 'required|likebookmarkflag',
       'status' => 'required|boolean',
       '_format' => 'required|format',
-      'brandId' => 'sometimes|required|positiveinteger|brandid',
+      'brandId' => 'sometimes|required|regex:/^[0-9]+$/|brandid',
     ]);
     $this->uid = $_userData->userId;
     $pageType = $request->get('type');
@@ -260,7 +260,7 @@ class FlagController extends Controller {
     if ($exist) {
       $response = ElasticUserModel::fetchElasticUserData($this->uid, $this->elasticClient);
       if (empty($response['_source']['bookmark'])) {
-        return $this->successResponse([], Response::HTTP_OK);
+        return $this->successResponse((Object) [], Response::HTTP_OK);
       }
       $results = $nid_user_activity = $bookmark_data = [];
       $pages = 0;
@@ -313,7 +313,7 @@ class FlagController extends Controller {
             if ($node_data->field_brands_target_id != NULL) {
               foreach ($brandinfo as $brand) {
                 if ($brand['entity_id'] == $node_data->field_brands_target_id) {
-                  $brand_key = (int) $brand['field_brand_key_value'];
+                  $brand_key = $brand['field_brand_key_value'];
                 }
               }
               $bookmark_data[$i]['brandKey'] = $brand_key;
@@ -360,7 +360,7 @@ class FlagController extends Controller {
             if (!empty($brand_data)) {
               $bookmark_data[$i]['id'] = 0;
               $bookmark_data[$i]['title'] = mb_strtoupper($brand_data['name']) . ' CUSTOMER QUESTIONS';
-              $bookmark_data[$i]['brandKey'] = $brand_key;
+              $bookmark_data[$i]['brandKey'] = $brand_data['field_brand_key_value'];
               $bookmark_data[$i]['brandName'] = $brand_data['name'];
               $bookmark_data[$i]['sectionKey'] = "faq";
               $bookmark_data[$i]['sectionName'] = $sectionNames['faq'];
@@ -389,7 +389,7 @@ class FlagController extends Controller {
       }
     }
     else {
-      return $this->successResponse([], Response::HTTP_OK);
+      return $this->successResponse((Object) [], Response::HTTP_OK);
     }
     // Filter bookmark data by type value.
     $filterBy = 'VIDEOS';
@@ -418,7 +418,7 @@ class FlagController extends Controller {
     ];
     header('Content-language: ' . $lang);
     if (empty($results['bookmark'])) {
-      return $this->successResponse([], Response::HTTP_OK);
+      return $this->successResponse((Object) [], Response::HTTP_OK);
     }
     else {
       return $this->successResponse($results, Response::HTTP_OK, $pager);
@@ -439,7 +439,7 @@ class FlagController extends Controller {
     $faq_config_data = ContentModel::getTrlxUtilityConfigValues();
     $validatedData = $this->validate($request, [
       'nid' => 'sometimes|required|positiveinteger|exists:node,nid',
-      'brandId' => 'sometimes|required|positiveinteger|brandid',
+      'brandId' => 'sometimes|required|regex:/^[0-9]+$/|brandid',
       '_format' => 'required|format',
     ]);
     $this->uid = $_userData->userId;

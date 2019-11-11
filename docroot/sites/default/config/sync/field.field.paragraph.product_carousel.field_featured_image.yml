@@ -11,7 +11,7 @@ field_name: field_featured_image
 entity_type: paragraph
 bundle: product_carousel
 label: 'Product Image'
-description: 'Allowed file types:<b> jpg, jpeg and png.</b><br>Image Resolution:<b> 800 x 400px</b>'
+description: 'Allowed file types:<b> jpg, jpeg and png.</b><br>Image Resolution:<b> 400 x 400px</b>'
 required: false
 translatable: true
 default_value: {  }

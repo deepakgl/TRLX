@@ -89,30 +89,29 @@ class StoryDetails extends ResourceBase {
         $type = $commonUtility::INSIDER_CORNER;
         // Section specific keys for alteration.
         $data['socialMediaHandles'] = 'social_media_handles';
-        $data['video'] = 'append_host';
         $data['productCarouselTitle'] = 'decode';
         $productCarousel = TRUE;
         break;
+
       case $commonUtility::SELLING_TIPS:
         $views = 'selling_tips';
         $viewsDisplay = 'rest_export_selling_tips_details';
         $type = $commonUtility::SELLING_TIPS;
         // Section specific keys for alteration.
-        $data['video'] = 'append_host';
         $data['productCarouselTitle'] = 'decode';
         $productCarousel = TRUE;
         break;
+
       case $commonUtility::CONSUMER:
         $views = 'consumer';
-        $data['video'] = 'append_host';
         $viewsDisplay = 'rest_export_consumer_details';
         $type = $commonUtility::CONSUMER;
         break;
+
       default:
         $views = 'stories_listing';
         $viewsDisplay = 'rest_export_story_details';
         $type = 'trend_detail';
-        $data['video'] = 'append_host';
         // Section specific keys for alteration.
         $data['productCarouselTitle'] = 'decode';
         $data['tryThis'] = 'string_replace';
@@ -130,6 +129,7 @@ class StoryDetails extends ResourceBase {
         'nid' => 'int',
         'pointValue' => 'int',
         'body' => 'string_replace',
+        'commentTitle' => 'decode',
       ]
     );
 
@@ -145,7 +145,7 @@ class StoryDetails extends ResourceBase {
 
     // Check for empty / no result from views.
     if (empty($view_results)) {
-      return $commonUtility->successResponse([], Response::HTTP_OK);
+      return $commonUtility->successResponse((Object) [], Response::HTTP_OK);
     }
 
     // Load Product Carousel.

@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 name: spotlight_mobile
-label: 'Spotlight Mobile (375 X 270)'
+label: 'Spotlight Mobile (375 X 500)'
 effects:
   5871cb83-c48d-4e37-bddb-b47cd896dce7:
     uuid: 5871cb83-c48d-4e37-bddb-b47cd896dce7
@@ -11,5 +11,5 @@ effects:
     weight: 1
     data:
       width: 375
-      height: 270
+      height: 500
       anchor: center-center

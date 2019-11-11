@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 name: story_detail_desktop
-label: 'Story Detail Desktop (1440X437)'
+label: 'Story Detail Desktop (1440X800)'
 effects:
   7d333d59-9fe1-4bb4-b653-4f514c89d3a2:
     uuid: 7d333d59-9fe1-4bb4-b653-4f514c89d3a2
@@ -11,5 +11,5 @@ effects:
     weight: 1
     data:
       width: 1440
-      height: 437
+      height: 800
       anchor: center-center

@@ -13,6 +13,7 @@ dependencies:
     - field.storage.node.field_first_name
     - field.storage.node.field_headline
     - field.storage.node.field_last_name
+    - field.storage.node.field_message
     - field.storage.node.field_occupation
     - field.storage.node.field_point_value
     - field.storage.node.field_sub_title
@@ -980,9 +981,6 @@ display:
             field_sub_title:
               alias: quoteSubTitle
               raw_output: false
-            field_department:
-              alias: department
-              raw_output: false
             field_media_image:
               alias: imageSmall
               raw_output: false
@@ -994,6 +992,9 @@ display:
               raw_output: false
             field_point_value:
               alias: pointValue
+              raw_output: false
+            field_occupation:
+              alias: occupation
               raw_output: false
       display_description: ''
       fields:
@@ -1322,7 +1323,7 @@ display:
           group_type: group
           admin_label: ''
           label: ''
-          exclude: false
+          exclude: true
           alter:
             alter_text: false
             text: ''
@@ -1376,11 +1377,74 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
+        field_occupation:
+          id: field_occupation
+          table: node__field_occupation
+          field: field_occupation
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: ''
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: string
+          settings:
+            link_to_entity: false
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
         field_media_image:
           id: field_media_image
           table: media__field_media_image
           field: field_media_image
-          relationship: field_featured_image
+          relationship: field_hero_image
           group_type: group
           admin_label: ''
           label: ''
@@ -1445,7 +1509,7 @@ display:
           id: field_media_image_1
           table: media__field_media_image
           field: field_media_image
-          relationship: field_featured_image
+          relationship: field_hero_image
           group_type: group
           admin_label: ''
           label: ''
@@ -1510,7 +1574,7 @@ display:
           id: field_media_image_2
           table: media__field_media_image
           field: field_media_image
-          relationship: field_featured_image
+          relationship: field_hero_image
           group_type: group
           admin_label: ''
           label: ''
@@ -1710,6 +1774,7 @@ display:
         - 'config:field.storage.node.field_department'
         - 'config:field.storage.node.field_first_name'
         - 'config:field.storage.node.field_last_name'
+        - 'config:field.storage.node.field_occupation'
         - 'config:field.storage.node.field_point_value'
         - 'config:field.storage.node.field_sub_title'
         - entity_field_info
@@ -1755,6 +1820,9 @@ display:
             field_media_image_2:
               alias: imageLarge
               raw_output: false
+            field_media_video_file:
+              alias: video
+              raw_output: false
             field_sub_title:
               alias: subTitle
               raw_output: false
@@ -1763,9 +1831,6 @@ display:
               raw_output: false
             field_last_name:
               alias: lastName
-              raw_output: false
-            field_department:
-              alias: department
               raw_output: false
             field_occupation:
               alias: occupation
@@ -1779,11 +1844,11 @@ display:
             body:
               alias: ''
               raw_output: false
-            field_media_video_file:
-              alias: video
-              raw_output: false
             field_point_value:
               alias: pointValue
+              raw_output: false
+            field_message:
+              alias: commentTitle
               raw_output: false
             field_headline:
               alias: productCarouselTitle
@@ -2076,7 +2141,7 @@ display:
           id: field_media_image
           table: media__field_media_image
           field: field_media_image
-          relationship: field_featured_image
+          relationship: field_hero_image
           group_type: group
           admin_label: ''
           label: ''
@@ -2124,7 +2189,7 @@ display:
           type: image_url
           settings:
             url_type: '0'
-            image_style: story_detail_mobile
+            image_style: insider_corner_hompage_section_mobile
             image_link: ''
           group_column: ''
           group_columns: {  }
@@ -2141,7 +2206,7 @@ display:
           id: field_media_image_1
           table: media__field_media_image
           field: field_media_image
-          relationship: field_featured_image
+          relationship: field_hero_image
           group_type: group
           admin_label: ''
           label: ''
@@ -2189,7 +2254,7 @@ display:
           type: image_url
           settings:
             url_type: '0'
-            image_style: story_detail_tablet
+            image_style: insider_corner_hompage_section_tablet
             image_link: ''
           group_column: ''
           group_columns: {  }
@@ -2206,7 +2271,7 @@ display:
           id: field_media_image_2
           table: media__field_media_image
           field: field_media_image
-          relationship: field_featured_image
+          relationship: field_hero_image
           group_type: group
           admin_label: ''
           label: ''
@@ -2254,7 +2319,7 @@ display:
           type: image_url
           settings:
             url_type: '0'
-            image_style: story_detail_desktop
+            image_style: insider_corner_hompage_section_desktop
             image_link: ''
           group_column: ''
           group_columns: {  }
@@ -2526,7 +2591,7 @@ display:
           group_type: group
           admin_label: ''
           label: ''
-          exclude: false
+          exclude: true
           alter:
             alter_text: false
             text: ''
@@ -2897,6 +2962,68 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
+        field_message:
+          id: field_message
+          table: node__field_message
+          field: field_message
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: ''
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: basic_string
+          settings: {  }
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
         field_headline:
           id: field_headline
           table: node__field_headline
@@ -2988,6 +3115,15 @@ display:
           admin_label: 'field_featured_image: Media'
           required: false
           plugin_id: standard
+        field_hero_image:
+          id: field_hero_image
+          table: node__field_hero_image
+          field: field_hero_image
+          relationship: none
+          group_type: group
+          admin_label: 'field_hero_image: Media'
+          required: false
+          plugin_id: standard
     cache_metadata:
       max-age: -1
       contexts:
@@ -3007,6 +3143,7 @@ display:
         - 'config:field.storage.node.field_first_name'
         - 'config:field.storage.node.field_headline'
         - 'config:field.storage.node.field_last_name'
+        - 'config:field.storage.node.field_message'
         - 'config:field.storage.node.field_occupation'
         - 'config:field.storage.node.field_point_value'
         - 'config:field.storage.node.field_sub_title'

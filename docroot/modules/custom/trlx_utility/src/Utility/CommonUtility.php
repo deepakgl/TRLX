@@ -542,14 +542,35 @@ class CommonUtility {
           $path = $media_entity->getFileUri();
         }
         else {
-          $file_id = $entity->$field->getString();
-          $media_entity = ($file_id) ? Media::load($file_id) : '';
-          $path = $media_entity->field_media_image->entity->getFileUri();
+          if ($field == 'field_product_carousel' && $entity->hasField('field_product_carousel')) {
+            $field_product_carousel = $entity->field_product_carousel->referencedEntities();
+            if (!empty($field_product_carousel)) {
+              foreach ($field_product_carousel as $value) {
+                if ($value->get('field_featured_image')->first() != NULL) {
+                  $carousel_file_id = $value->get('field_featured_image')->first()->getValue()['target_id'];
+                  $carousel_media_entity = ($carousel_file_id) ? Media::load($carousel_file_id) : '';
+                  $carousel_path = $carousel_media_entity->field_media_image->entity->getFileUri();
+                }
+                foreach ($styles as $img_style) {
+                  $style = \Drupal::entityTypeManager()->getStorage('image_style')->load($img_style);
+                  $build_uri = $style->buildUri($carousel_path);
+                  $style->createDerivative($carousel_path, $build_uri);
+                }
+              }
+            }
+          }
+          else {
+            $file_id = $entity->$field->getString();
+            $media_entity = ($file_id) ? Media::load($file_id) : '';
+            $path = $media_entity->field_media_image->entity->getFileUri();
+          }
         }
-        foreach ($styles as $img_style) {
-          $style = \Drupal::entityTypeManager()->getStorage('image_style')->load($img_style);
-          $build_uri = $style->buildUri($path);
-          $style->createDerivative($path, $build_uri);
+        if ($field != 'field_product_carousel') {
+          foreach ($styles as $img_style) {
+            $style = \Drupal::entityTypeManager()->getStorage('image_style')->load($img_style);
+            $build_uri = $style->buildUri($path);
+            $style->createDerivative($path, $build_uri);
+          }
         }
       }
     }
@@ -678,13 +699,12 @@ class CommonUtility {
       foreach ($brandTerms as $delta => $term) {
         // Convert Object to Array.
         $term = $term->toArray();
-
         if ($brandTid == $term['tid'][0]['value']) {
           $brandKey = $term['field_brand_key'][0]['value'];
         }
       }
     }
-    return (int) $brandKey;
+    return $brandKey;
   }
 
   /**
@@ -799,6 +819,9 @@ class CommonUtility {
         foreach ($carouselKeys as $carouselKey) {
           if (empty($carousel[$carouselKey])) {
             $emptyCnt++;
+          }
+          if ($carouselKey == 'subTitle') {
+            $carouselData[$delta][$carouselKey] = strip_tags($carousel[$carouselKey]);
           }
         }
 

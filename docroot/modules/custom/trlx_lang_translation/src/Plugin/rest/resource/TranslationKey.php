@@ -6,7 +6,6 @@ use Drupal\rest\Plugin\ResourceBase;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Drupal\Component\Serialization\Json;
 use Drupal\Component\Utility\Html;
 use Drupal\trlx_utility\Utility\EntityUtility;
 use Drupal\trlx_utility\Utility\CommonUtility;

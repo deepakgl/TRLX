@@ -6,6 +6,7 @@ dependencies:
     - serialization
     - trlx_lang_translation
     - trlx_utility
+    - user
 id: language_list
 plugin_id: language_list
 granularity: resource
@@ -16,3 +17,4 @@ configuration:
     - json
   authentication:
     - jwt_Auth
+    - cookie

@@ -3,13 +3,13 @@ langcode: en
 status: true
 dependencies: {  }
 name: trends_homepage_desktop
-label: 'Trends Homepage Desktop (1194X357)'
+label: 'Trends Homepage Desktop (220×220)'
 effects:
   c48b723a-0a9f-41a6-ac9c-7eb9c092b747:
     uuid: c48b723a-0a9f-41a6-ac9c-7eb9c092b747
     id: image_scale_and_crop
     weight: 1
     data:
-      width: 1194
-      height: 1194
+      width: 220
+      height: 220
       anchor: center-center

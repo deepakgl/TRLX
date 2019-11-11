@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Model\Elastic;
+
 use Elasticsearch\Common\Exceptions\NoNodesAvailableException;
 use Exception;
 use Illuminate\Http\Response;
@@ -143,53 +144,62 @@ class ElasticUserModel {
     return $exists;
   }
 
-	public static function getElasticSearchParam($fieldName, $fieldVal, $size, $from)
-	{
-		if ($fieldName && $fieldVal) {
-			$query = [
-				'bool' => [
-					'filter' => [
-						$fieldName => $fieldVal,
-					]
-				]
-			];
-		} else {
-			$query = [
-				'query_string' => [
-					'query' => $fieldName . ":*"
-				]
-			];
-		}
-		return $params = [
-			'index' => getenv("ELASTIC_ENV") . '_user',
-			'type' => 'user',
-			'body' => [
-				'sort' => [
-					'_score'
-				],
-				'query' => $query,
-				'size' => $size,
-				'from' => $from
-			]
-		];
-	}
+  /**
+   *
+   */
+  public static function getElasticSearchParam($fieldName, $fieldVal, $size, $from) {
+    if ($fieldName && $fieldVal) {
+      $query = [
+        'bool' => [
+          'filter' => [
+            $fieldName => $fieldVal,
+          ],
+        ],
+      ];
+    }
+    else {
+      $query = [
+        'query_string' => [
+          'query' => $fieldName . ":*",
+        ],
+      ];
+    }
+    return $params = [
+      'index' => getenv("ELASTIC_ENV") . '_user',
+      'type' => 'user',
+      'body' => [
+        'sort' => [
+          '_score',
+        ],
+        'query' => $query,
+        'size' => $size,
+        'from' => $from,
+      ],
+    ];
+  }
 
-	public static function search($client, $params) {
-		try {
-			$items = $client->search($params);
-			return $items;
-		}
-		catch (Exception $e) {
-			return ['success' => false, 'error' => $e->getMessage(), 'code' => self::getExceptionStatusCode($e)];
-		}
-	}
+  /**
+   *
+   */
+  public static function search($client, $params) {
+    try {
+      $items = $client->search($params);
+      return $items;
+    }
+    catch (Exception $e) {
+      return ['success' => FALSE, 'error' => $e->getMessage(), 'code' => self::getExceptionStatusCode($e)];
+    }
+  }
 
-	private static function getExceptionStatusCode($exception) {
-		$code = Response::HTTP_NO_CONTENT;
-		if ($exception instanceof NoNodesAvailableException) {
-			$code = Response::HTTP_INTERNAL_SERVER_ERROR;
-		}
-		return $code;
-	}
+  /**
+   *
+   */
+  private static function getExceptionStatusCode($exception) {
+    $code = Response::HTTP_NO_CONTENT;
+    if ($exception instanceof NoNodesAvailableException) {
+      $code = Response::HTTP_INTERNAL_SERVER_ERROR;
+    }
+    return $code;
+  }
 
 }

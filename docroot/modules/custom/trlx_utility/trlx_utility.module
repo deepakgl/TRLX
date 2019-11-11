@@ -15,6 +15,8 @@ use Drupal\Core\Entity\ContentEntityForm;
 use Drupal\file\Entity\File;
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\ReplaceCommand;
+use Drupal\Core\Url;
+use Drupal\Core\Site\Settings;
 
 /**
  * Implements hook_entity_base_field_info().
@@ -62,6 +64,7 @@ function trlx_utility_form_alter(&$form, FormStateInterface $form_state, $form_i
     case 'node_faq_edit_form':
     case 'node_privacy_policy_form':
     case 'node_privacy_policy_edit_form':
+    case 'menu_edit_form':
       $form['#attached']['library'][] = 'trlx_market_hierarchy/trlx_market';
       break;
 
@@ -256,7 +259,9 @@ function trlx_utility_form_alter(&$form, FormStateInterface $form_state, $form_i
       break;
 
     case 'taxonomy_term_learning_category_form':
+      $form['#attached']['library'][] = 'trlx_market_hierarchy/trlx_market';
       $entity = $form_state->getFormObject()->getEntity();
+      $form['#validate'][] = 'learning_category_validate';
       $form['actions']['submit']['#submit'][] = 'trlx_utility_taxonomy_submit';
 
       // Create CommonUtility Object.
@@ -331,8 +336,42 @@ function trlx_utility_form_alter(&$form, FormStateInterface $form_state, $form_i
       /*** Show/Hide Brands list based on Brand List section - END ***/
       break;
 
+      case 'entity_subqueue_insider_corner_hompage_edit_form':
+      case 'entity_subqueue_spotlight_section_edit_form':
+        $form['actions']['submit']['#submit'][] = 'trlx_utility_entityqueue_submit';
+        break;
+
     default:
       break;
+  }
+}
+
+/**
+ * Handler for redirect url on Entity Queue save for GA & MA role.
+ */
+function trlx_utility_entityqueue_submit(array &$form, FormStateInterface $form_state) {
+  $current_user = \Drupal::currentUser();
+  $roles = $current_user->getRoles();
+  $redirectUrl = Url::fromUri('internal:/entityqueue/homepage-content');
+
+  $redirectRoles = [
+    'el_regional_market_admin', // MA
+    'el_nyo_global_education_system_admin', // GA
+  ];
+
+  $redirect = FALSE;
+  if (!empty($roles)) {
+    foreach ($roles as $role) {
+      if (in_array($role, $redirectRoles)) {
+        $redirect = TRUE;
+        break;
+      }
+    }
+  }
+
+  // Redirect to entityqueue/homepage-content for above roles.
+  if ($redirect && !empty($redirectUrl)) {
+    $form_state->setRedirectUrl($redirectUrl);
   }
 }
 
@@ -363,6 +402,9 @@ function trlx_utility_taxonomy_submit(array &$form, FormStateInterface $form_sta
       'stories_level_listing_mobile',
       'stories_level_listing_tablet',
       'stories_level_listing_desktop',
+      'level_home_page_mobile',
+      'level_home_page_tablet',
+      'level_home_page_desktop',
     ]
     );
   }
@@ -429,6 +471,17 @@ function set_section_based_point_value(array &$form, FormStateInterface $form_st
   }
   catch (\Exception $e) {
     return FALSE;
+  }
+}
+
+/**
+ * Custom validate handler for learning category validation(s).
+ */
+function learning_category_validate(array &$form, FormStateInterface $form_state) {
+  if (isset($form_state->getValue('field_badges')[0]['target_id']) && !empty($form_state->getValue('field_badges')[0]['target_id'])) {
+    if (empty($form_state->getValue('field_percentage')[0]['value'])) {
+      $form_state->setErrorByName("field_percentage", t('Stamp Percentage cannot be empty.'));
+    }
   }
 }
 
@@ -668,4 +721,22 @@ function _trlx_file_name($fid) {
   $file = File::load($fid);
 
   return $file->getFilename();
+}
+
+/**
+ * Implements hook_file_url_alter().
+ *
+ * Alter the image to use file system rather than the CDN path in the backend.
+ */
+function trlx_utility_file_url_alter(&$uri) {
+  $requestUri = $_SERVER['REQUEST_URI'];
+  if ((preg_match('/\/api\//', $requestUri) == 1)) {
+    $file_name = drupal_basename($uri);
+    // Update the file name to raw url format.
+    $uri = str_replace($file_name, rawurlencode($file_name), $uri);
+    $settings_cdn_url_array = explode("/", settings::get('cdn_file_public_base_url'), 4);
+    if (!empty($settings_cdn_url_array)) {
+      $uri = settings::get('cdn_file_public_base_url') . '/' . explode('//', $uri)[1];
+    }
+  }
 }

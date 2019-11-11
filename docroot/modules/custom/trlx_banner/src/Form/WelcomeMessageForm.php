@@ -15,7 +15,7 @@ class WelcomeMessageForm extends ConfigFormBase {
    *
    * @var string
    */
-  const SETTINGS = 'welcome_message.settings';
+  const SETTINGS = 'trlx_banner.welcome_message.settings';
 
   /**
    * Get editable config names of external integration.
@@ -54,7 +54,7 @@ class WelcomeMessageForm extends ConfigFormBase {
         '#type' => 'hidden',
         '#title' => $value . ' Langcode',
         '#default_value' => $value,
-        '#attribute' => array('hidden' => TRUE),
+        '#attribute' => ['hidden' => TRUE],
       ];
     }
 
@@ -70,7 +70,7 @@ class WelcomeMessageForm extends ConfigFormBase {
     $config = $this->config(static::SETTINGS);
     foreach ($form_state->getValues() as $key => $value) {
       // Set config value.
-     $config->set($key, $value);
+      $config->set($key, $value);
     }
     $config->save();
     parent::submitForm($form, $form_state);

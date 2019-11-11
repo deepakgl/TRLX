@@ -80,7 +80,6 @@ class ProductDetails extends ResourceBase {
       'nid' => 'int',
       'pointValue' => 'int',
       'body' => 'string_replace',
-      'video' => 'append_host',
       'productCarouselTitle' => 'decode',
     ];
 
@@ -98,7 +97,7 @@ class ProductDetails extends ResourceBase {
 
     // Check for empty / no result from views.
     if (empty($view_results)) {
-      return $commonUtility->successResponse([], Response::HTTP_OK);
+      return $commonUtility->successResponse((Object) [], Response::HTTP_OK);
     }
 
     // Load Product Carousel.

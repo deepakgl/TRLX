@@ -3,13 +3,13 @@ langcode: en
 status: true
 dependencies: {  }
 name: trends_homepage_tablet
-label: 'Trends Homepage Tablet (770 X 355)'
+label: 'Trends Homepage Tablet (220×220)'
 effects:
   ccbde22e-9ab7-4a87-8475-cbf31ae658f4:
     uuid: ccbde22e-9ab7-4a87-8475-cbf31ae658f4
     id: image_scale_and_crop
     weight: 1
     data:
-      width: 770
-      height: 355
+      width: 220
+      height: 220
       anchor: center-center

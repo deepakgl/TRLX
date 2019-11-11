@@ -1,14 +1,19 @@
 <?php
+
+/**
+ * @file
+ */
+
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Drupal\Core\Url;
-use Drupal\elx_user\Utility\UserUtility;
 use Drupal\views\ViewExecutable;
+use Drupal\trlx_lang_translation\Utility\LangUtility;
+use Drupal\Core\Form\FormStateInterface;
 
 /**
  * @file
  * Dashboard module file.
  */
-  
+
 /**
  * Implements hook_preprocess_html().
  */
@@ -21,12 +26,13 @@ function trlx_dashboard_preprocess_page(&$variables) {
  */
 function trlx_dashboard_user_login($account) {
   $roles = $account->getRoles();
-  //$url = Url::fromRoute('view.dashboard.dashboard_unpublished');
-  if(in_array('el_regional_market_admin', $roles)) {
+  // $url = Url::fromRoute('view.dashboard.dashboard_unpublished');
+  if (in_array('el_regional_market_admin', $roles)) {
     $response = new RedirectResponse('/dashboard/published');
     $response->send();
     return;
-  } elseif (in_array('el_nyo_global_education_system_admin', $roles)) {
+  }
+  elseif (in_array('el_nyo_global_education_system_admin', $roles)) {
     $response = new RedirectResponse('/dashboard/published');
     $response->send();
     return;
@@ -48,42 +54,102 @@ function trlx_dashboard_views_post_render(ViewExecutable $view) {
 }
 
 /**
-   * Fetch user roles.
-   *
-   * @param int $uid
-   *   User uid.
-   * @param string $key
-   *   Key name.
-   * @param array $user_role
-   *   Role of users.
-   *
-   * @return array
-   *   User roles.
-   */
+ * Fetch user roles.
+ *
+ * @param int $uid
+ *   User uid.
+ * @param string $key
+ *   Key name.
+ * @param array $user_role
+ *   Role of users.
+ *
+ * @return array
+ *   User roles.
+ */
 function getUserRoles($uid, $key = NULL, array $user_role = []) {
-    $query = db_select('user__roles', 'ur')
-      ->distinct()
-      ->fields('ur', ['roles_target_id'])
-      ->condition('ur.entity_id', $uid, '=')
-      ->execute()->fetchAll();
-    $roles = array_map(function ($e) {
-      return is_object($e) ? $e->roles_target_id : $e['roles_target_id'];
-    }, $query);
-    //print_r($roles);exit;
-    if (empty($key)) {
-      if (in_array('administrator', $roles) || in_array('el_nyo_global_education_system_admin', $roles)) {
-        return FALSE;
-      }
-    }
-    elseif (!empty($user_role) && is_array($user_role)) {
-      foreach ($user_role as $key => $value) {
-        if (in_array($value, $roles)) {
-          return TRUE;
-        }
-      }
-
+  $query = db_select('user__roles', 'ur')
+    ->distinct()
+    ->fields('ur', ['roles_target_id'])
+    ->condition('ur.entity_id', $uid, '=')
+    ->execute()->fetchAll();
+  $roles = array_map(function ($e) {
+    return is_object($e) ? $e->roles_target_id : $e['roles_target_id'];
+  }, $query);
+  // print_r($roles);exit;
+  if (empty($key)) {
+    if (in_array('administrator', $roles) || in_array('el_nyo_global_education_system_admin', $roles)) {
       return FALSE;
     }
-
-    return $roles;
   }
+  elseif (!empty($user_role) && is_array($user_role)) {
+    foreach ($user_role as $key => $value) {
+      if (in_array($value, $roles)) {
+        return TRUE;
+      }
+    }
+
+    return FALSE;
+  }
+
+  return $roles;
+}
+
+/**
+ * Implements hook_views_pre_render().
+ */
+function trlx_dashboard_views_pre_render(ViewExecutable $view) {
+  if ($view->id() == 'dashboard') {
+    foreach ($view->result as $key => $result) {
+      $entity = $result->_entity;
+      switch ($view->current_display) {
+        case 'dashboard_available_for_a_translation':
+          $lang_utility = new LangUtility();
+          // Get node availabe translation.
+          $available_translation = $lang_utility->getTranslationLanguageByNid($entity->id());
+          // Get system languages.
+          $system_lang = $lang_utility->getMarketLanguageByUserId('lang');
+          $diff = array_diff(array_keys($system_lang), $available_translation);
+          if (empty($diff)) {
+            // Delete a row.
+            unset($view->result[$key]);
+          }
+          break;
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_views_query_alter().
+ */
+function trlx_dashboard_views_query_alter(ViewExecutable $view, $query) {
+  if ($view->id() == 'dashboard') {
+    $lang_utility = new LangUtility();
+    if ($view->current_display == 'dashboard_published' ||
+      $view->current_display == 'dashboard_unpublished') {
+      $roles = getUserRoles(\Drupal::currentUser()->id());
+      if ($roles) {
+        // Get system languages.
+        $system_lang = $lang_utility->getMarketLanguageByUserId();
+        // Add langcode condition based on system lang for MA.
+        $query->addWhere(1, 'node_field_data.langcode', array_keys($system_lang), 'IN');
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function trlx_dashboard_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  switch ($form_id) {
+    case 'views_exposed_form':
+      $roles = getUserRoles(\Drupal::currentUser()->id());
+      if ($roles) {
+        if ($form['#id'] == 'views-exposed-form-dashboard-dashboard-published' ||
+        $form['#id'] == 'views-exposed-form-dashboard-dashboard-unpublished') {
+          unset($form['langcode']['#options']['en']);
+        }
+      }
+  }
+}

@@ -9,6 +9,7 @@ use Drupal\trlx_utility\RedisClientBuilder;
 // fixMe.
 use Drupal\elx_user\Utility\UserUtility;
 use Symfony\Component\HttpFoundation\Response;
+use Drupal\Core\Site\Settings;
 
 /**
  * Purpose is to build view response, fetch & set the view. Response in redis.
@@ -113,9 +114,9 @@ class EntityUtility {
    *   Updated ckeditor content.
    */
   public function stringReplace($str) {
-    global $base_url;
+    $filePublicUrl = Settings::get('cdn_file_public_base_url');
     $result = str_replace(
-      '"/sites/default/files', '"' . $base_url . '/sites/default/files', $str
+      '"/sites/default/files', '"' . $filePublicUrl, $str
     );
 
     return $result;

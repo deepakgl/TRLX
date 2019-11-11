@@ -39,10 +39,7 @@ module:
   elx_menu: 0
   elx_points_migration: 0
   elx_products: 0
-  elx_redis_purge: 0
   elx_reports: 0
-  elx_search: 0
-  elx_stories: 0
   elx_tnc: 0
   elx_tools: 0
   elx_translation_workflow: 0
@@ -67,7 +64,6 @@ module:
   help: 0
   image: 0
   image_raw_formatter: 0
-  image_style_warmer: 0
   image_url_formatter: 0
   inline_entity_form: 0
   key: 0
@@ -107,6 +103,7 @@ module:
   simple_menu_icons: 0
   simple_oauth: 0
   simple_oauth_extras: 0
+  single_user_role: 0
   superfish: 0
   svg_image: 0
   system: 0
@@ -133,12 +130,14 @@ module:
   trlx_market_hierarchy: 0
   trlx_notification: 0
   trlx_products: 0
+  trlx_redis_purge: 0
   trlx_security: 0
   trlx_spotlight: 0
   trlx_static_translation: 0
   trlx_story: 0
   trlx_tnc_privacy_policy: 0
   trlx_trends: 0
+  trlx_user: 0
   trlx_utility: 0
   trlx_banner: 0
   trlx_video: 0

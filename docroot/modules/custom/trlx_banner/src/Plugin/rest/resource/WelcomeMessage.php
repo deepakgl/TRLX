@@ -6,7 +6,6 @@ use Drupal\rest\Plugin\ResourceBase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Drupal\trlx_utility\Utility\CommonUtility;
-use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * Provides a Welcome Message resource.
@@ -21,15 +20,15 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class WelcomeMessage extends ResourceBase {
 
- /**
-  * Fetch Image listing.
-  *
-  * @param \Symfony\Component\HttpFoundation\Request $request
-  *   Rest resource query parameters.
-  *
-  * @return \Drupal\rest\ResourceResponse
-  *   Image Listing.
-  */
+  /**
+   * Fetch Image listing.
+   *
+   * @param \Symfony\Component\HttpFoundation\Request $request
+   *   Rest resource query parameters.
+   *
+   * @return \Drupal\rest\ResourceResponse
+   *   Image Listing.
+   */
   public function get(Request $request) {
     $commonUtility = new CommonUtility();
 
@@ -65,17 +64,16 @@ class WelcomeMessage extends ResourceBase {
       return $response;
     }
 
-    $config = \Drupal::config('welcome_message.settings');
+    $config = \Drupal::config('trlx_banner.welcome_message.settings');
     // Return all languages for global admin role.
     $response = [];
     $message = 'message_' . $language;
     $response['results']['message'] = $config->get($message);
     if (empty($response['results']['message'])) {
-      return $commonUtility->successResponse([], Response::HTTP_OK);
+      return $commonUtility->successResponse((Object) [], Response::HTTP_OK);
     }
 
-    return $commonUtility->successResponse($response['results'], 200);
+    return $commonUtility->successResponse($response['results'], Response::HTTP_OK);
   }
+
 }
-
-

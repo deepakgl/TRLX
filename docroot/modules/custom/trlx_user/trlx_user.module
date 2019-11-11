@@ -1,0 +1,54 @@
+<?php
+
+/**
+ * @file
+ * User module file.
+ */
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_menu_local_tasks_alter().
+ */
+function trlx_user_menu_local_tasks_alter(&$data, $route_name) {
+  // Check route for user listing page
+  if ($route_name == 'entity.user.collection') {
+    $currentAccount = \Drupal::currentUser();
+    $roles = $currentAccount->getRoles();
+    if (in_array('el_regional_market_admin', $roles) || in_array('el_nyo_global_education_system_admin', $roles)) {
+      // Permission and Roles tab unset for MA and GA
+      unset($data['tabs'][0]['user.admin_permissions']);
+      unset($data['tabs'][0]['entity.user_role.collection']);
+    }
+  }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function trlx_user_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
+  if ($form_id == 'user_form' || $form_id == 'user_register_form') {
+    // Unset the select option of administrator and authenticated role
+    unset($form['account']['roles']['#options']['administrator']);
+    unset($form['account']['roles']['#options']['authenticated']);
+    // Unset notify user when new account checkbox
+    unset($form['account']['notify']);
+  }
+
+  //Get current user details
+  $currentAccount = \Drupal::currentUser();
+  $roles = $currentAccount->getRoles();
+  if (($form_id == "menu_edit_form") && (!in_array('administrator', $roles))) {
+    // Access False langcode select field
+    $form['langcode']['#access'] = FALSE;
+  }
+
+  // Disable all field of welcome config form
+  if (($form_id == 'welcome_message_admin_settings') && (in_array('el_regional_market_admin', $roles))) {
+    $langcodes = \Drupal::languageManager()->getLanguages();
+    $langcodesList = array_keys($langcodes);
+    foreach ($langcodesList as $field) {
+      $form['message_'.$field]['#attributes'] = array('readonly'=>'readonly','disabled'=>'disabled');
+    }
+    $form['actions']['submit']['#access']  = FALSE;
+  }
+}

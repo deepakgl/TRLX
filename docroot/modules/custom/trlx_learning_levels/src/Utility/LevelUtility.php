@@ -63,7 +63,7 @@ class LevelUtility {
       $query->condition('n.status', '1');
       $query->condition('n.langcode', $language);
       $query->condition('n.type', 'level_interactive_content');
-      $query->condition('nflc.langcode', $language);
+      // $query->condition('nflc.langcode', $language);
       $query->join('node__field_markets', 'nfm', 'n.nid = nfm.entity_id');
       $query->condition('nfm.field_markets_target_id', $markets, 'IN');
       $result = $query->execute()->fetchAll();
@@ -164,9 +164,9 @@ class LevelUtility {
       foreach ($results as $key => $result) {
         $data[$result->nid] = $result;
       }
-      $incomplete_status = ['progress', NULL];
+      $complete_status = ['passed', 'completed'];
       foreach ($nid as $key => $value) {
-        $status = (isset($data[$value]) && !in_array($data[$value]->statement_status, $incomplete_status)) ? (int) 1 : (int) 0;
+        $status = (isset($data[$value]) && in_array($data[$value]->statement_status, $complete_status)) ? (int) 1 : (int) 0;
         $response[$value] = [
           "nid" => (int) $value,
           "status" => $status,

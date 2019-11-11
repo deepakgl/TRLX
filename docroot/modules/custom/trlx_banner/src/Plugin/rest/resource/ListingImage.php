@@ -21,15 +21,15 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class ListingImage extends ResourceBase {
 
- /**
-  * Fetch Image listing.
-  *
-  * @param \Symfony\Component\HttpFoundation\Request $request
-  *   Rest resource query parameters.
-  *
-  * @return \Drupal\rest\ResourceResponse
-  *   Image Listing.
-  */
+  /**
+   * Fetch Image listing.
+   *
+   * @param \Symfony\Component\HttpFoundation\Request $request
+   *   Rest resource query parameters.
+   *
+   * @return \Drupal\rest\ResourceResponse
+   *   Image Listing.
+   */
   public function get(Request $request) {
     $commonUtility = new CommonUtility();
 
@@ -68,11 +68,10 @@ class ListingImage extends ResourceBase {
     }
 
     if (empty($result)) {
-      return new JsonResponse(t('Something went wrong, please check the section: @reqParam', ['@reqParam' => 'section']), 422);
+      return new JsonResponse((Object) [], Response::HTTP_OK);
     }
 
     return new JsonResponse($result, 200);
   }
+
 }
-
-

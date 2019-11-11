@@ -17,6 +17,7 @@
         $('.node-privacy-policy-form .term-reference-tree-level .form-type-checkbox input:checkbox').prop("checked", true);
       }
       $(".form-item-send-notifications .translation-entity-all-languages").hide();
+      $('#menu-overview tr:has(a#edit-links-menu-plugin-idstandardfront-page-title-1)').hide()
       // Js for select all markets on select of region.
       var $region = $('.path-node .term-reference-tree-button').next('div').find('input[type="checkbox"]');
       $region.on('click', function() {
@@ -54,6 +55,14 @@
             $(this).removeAttr('disabled');
           })
         }
+    });
+    $('.form-item-field-badges select').on('change', function() {
+      if ($('.form-item-field-badges select').val() != '_none') {
+        $('.form-item-field-percentage-0-value input').val(100);
+      }
+      if ($('.form-item-field-badges select').val() == '_none') {
+        $('.form-item-field-percentage-0-value input').val("");
+      }
     });
   }
 };

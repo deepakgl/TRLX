@@ -2,6 +2,8 @@ uuid: ae72458d-52d1-4a28-8b8c-e5f3118fc60e
 langcode: en
 status: true
 dependencies:
+  module:
+    - system
   theme:
     - seven
 _core:
@@ -17,4 +19,9 @@ settings:
   label: 'Primary admin actions'
   provider: core
   label_display: '0'
-visibility: {  }
+visibility:
+  request_path:
+    id: request_path
+    pages: /admin/structure/menu/manage/main
+    negate: true
+    context_mapping: {  }

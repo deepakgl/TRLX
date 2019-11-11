@@ -124,7 +124,7 @@ class SearchController extends Controller {
     if (empty($this->search)) {
       return Helper::jsonError('Please enter search keyword.', 400);
     }
-    if (strlen($this->search) < 3) {
+    if (strlen(trim($this->search)) < 3) {
       return Helper::jsonError('You must include at least one positive keyword with 3 characters or more.', 422);
     }
     // Fetch the search response from elastic.
@@ -185,13 +185,16 @@ class SearchController extends Controller {
       $tid = isset($value['_source']['tid'][0]) ? $value['_source']['tid'][0] : '';
       $img = !empty($nid) ? $nid : $tid;
       $image_style = Helper::buildImageResponse($result, $img);
-
+      $category_key = 'faqhelp';
+      $category_value = $category_name = 'FAQ Help';
       // Get displaytitle on based on content type.
       if (!empty($value['_source']['vid'][0])) {
         $display_title = isset($value['_source']['name'][0]) ? $value['_source']['name'][0] : '';
       }
       elseif ($value['_source']['type'][0] == 'level_interactive_content') {
         $display_title = isset($value['_source']['field_headline'][0]) ? $value['_source']['field_headline'][0] : '';
+        $category_key = 'lessons';
+        $category_value = $category_name = 'Lessons';
       }
       elseif ($value['_source']['type'][0] == 'faq') {
         $display_title = isset($value['_source']['field_question'][0]) ? $value['_source']['field_question'][0] : '';
@@ -205,7 +208,10 @@ class SearchController extends Controller {
       $brandinfo = ContentModel::getBrandTermIds();
       if (isset($value['_source']['field_brands'][0])) {
         $category_name = ContentModel::getTermName([$value['_source']['field_brands'][0]]);
-        $category[] = ['key' => 'brands', 'value' => implode(" ", $category_name)];
+        // $category[] = ['key' => 'brands', 'value' => implode(" ", $category_name)];
+        $category_key = 'brands';
+        $category_value = 'Brands';
+        $category_name = implode(" ", $category_name);
         foreach ($brandinfo as $key => $brand) {
           if ($brand['entity_id'] == $value['_source']['field_brands'][0]) {
             $brand_key = (int) $brand['field_brand_key_value'];
@@ -215,11 +221,16 @@ class SearchController extends Controller {
       elseif (isset($value['_source']['field_content_section'][0])) {
         $category_name = ContentModel::getTermName([$value['_source']['field_content_section'][0]]);
         $key = ContentModel::getContentSectionKeyByTid($value['_source']['field_content_section'][0]);
-        $category[] = ['key' => $key, 'value' => implode(" ", $category_name)];
+        $category_key = $key;
+        $category_value = $category_name = implode(" ", $category_name);
+        // $category[] = ['key' => $key, 'value' => implode(" ", $category_name)];
       }
       elseif (isset($value['_source']['field_brands_1'][0])) {
         $category_name = ContentModel::getTermName([$value['_source']['field_brands_1'][0]]);
-        $category[] = ['key' => 'brands', 'value' => implode(" ", $category_name)];
+        // $category[] = ['key' => 'brands', 'value' => implode(" ", $category_name)];
+        $category_key = 'brands';
+        $category_value = 'Brands';
+        $category_name = implode(" ", $category_name);
         foreach ($brandinfo as $key => $brand) {
           if ($brand['entity_id'] == $value['_source']['field_brands_1'][0]) {
             $brand_key = (int) $brand['field_brand_key_value'];
@@ -229,7 +240,9 @@ class SearchController extends Controller {
       elseif (isset($value['_source']['field_content_section_1'][0])) {
         $category_name = ContentModel::getTermName([$value['_source']['field_content_section_1'][0]]);
         $key = ContentModel::getContentSectionKeyByTid($value['_source']['field_content_section_1'][0]);
-        $category[] = ['key' => $key, 'value' => implode(" ", $category_name)];
+        $category_key = $key;
+        $category_value = $category_name = implode(" ", $category_name);
+        // $category[] = ['key' => $key, 'value' => implode(" ", $category_name)];
       }
 
       // Get subtitle on based on content type.
@@ -247,7 +260,7 @@ class SearchController extends Controller {
       }
       if (isset($value['_source']['type'][0]) && $value['_source']['type'][0] == 'brand_story') {
         if ($value['_source']['created'][0] == max($created)) {
-          $response['results'][] = [
+          $response[] = [
             'nid' => isset($nid) ? $nid : '',
             'tid' => $tid,
             'imageLarge' => $image_style['imageLarge'],
@@ -258,12 +271,14 @@ class SearchController extends Controller {
             'brandKey' => $brand_key,
             'type' => $type,
             'pointValue' => isset($value['_source']['field_point_value'][0]) ? (int) $value['_source']['field_point_value'][0] : '',
-            'category' => $category,
+            'categoryKey' => $category_key,
+            'categoryValue' => $category_name,
+            'categoryName' => $category_value,
           ];
         }
       }
       else {
-        $response['results'][] = [
+        $response[] = [
           'nid' => isset($nid) ? $nid : '',
           'tid' => $tid,
           'imageLarge' => $image_style['imageLarge'],
@@ -274,13 +289,29 @@ class SearchController extends Controller {
           'brandKey' => $brand_key,
           'type' => $type,
           'pointValue' => isset($value['_source']['field_point_value'][0]) ? (int) $value['_source']['field_point_value'][0] : '',
-          'category' => $category,
+          'categoryKey' => $category_key,
+          'categoryValue' => $category_name,
+          'categoryName' => $category_value,
         ];
       }
     }
+    foreach ($response as $key => $element) {
+      $alter_data[$element['categoryKey']]['response'][] = $element;
+    }
+    $results = array_values($alter_data);
+    // Show response search category wise.
+    $s_response['results'] = [];
+    foreach ($results as $key => $value) {
+      $s_response['results'][$key]['categoryKey'] = $value['response'][0]['categoryKey'];
+      $s_response['results'][$key]['categoryValue'] = $value['response'][0]['categoryName'];
+      foreach ($value['response'] as $key_unset => $value_unset) {
+        unset($value['response'][$key_unset]['categoryName']);
+      }
+      $s_response['results'][$key]['response'] = $value['response'];
+    }
     $total_count = $data['hits']['total'] - $this->offset;
     // Build pagination.
-    $response['pager'] = [
+    $s_response['pager'] = [
       "count" => ($total_count > 0) ? $total_count : 0,
       "pages" => ceil($total_count / $this->limit),
       "items_per_page" => $this->limit,
@@ -288,7 +319,7 @@ class SearchController extends Controller {
       "next_page" => 1,
     ];
 
-    return new Response($response, 200);
+    return new Response($s_response, 200);
   }
 
   /**
@@ -339,6 +370,7 @@ class SearchController extends Controller {
         'match' => ['field_brands' => $value],
       ];
     }
+
     $this->userLanguage = $lang;
     $this->search = $request->input('searchTerm');
     $this->limit = !empty($request->input('limit')) ? $request->input('limit') : $this->limit;
@@ -378,7 +410,7 @@ class SearchController extends Controller {
                   'should' => [
                     0 => [
                       'bool' => [
-                        'must' => $this->market,
+                        'should' => $this->market,
                       ],
                     ],
                     1 => [
@@ -396,7 +428,7 @@ class SearchController extends Controller {
                   'should' => [
                     0 => [
                       'bool' => [
-                        'must' => $this->field_brands,
+                        'should' => $this->field_brands,
                       ],
                     ],
                     1 => [
@@ -414,7 +446,7 @@ class SearchController extends Controller {
                   'should' => [
                     0 => [
                       'bool' => [
-                        'must' => $this->field_brands_1,
+                        'should' => $this->field_brands_1,
                       ],
                     ],
                     1 => [

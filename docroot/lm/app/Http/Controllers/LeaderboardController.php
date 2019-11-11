@@ -327,17 +327,19 @@ class LeaderboardController extends Controller {
     if (!empty($all_users_data)) {
       foreach ($all_users_data as $key => $user_info) {
         if ($user_info['uid'] == $_userData->uid) {
-          $response['userLeft'] = [];
-          $user_left_key = (($key - 1) > 0) ? ($key - 1) : '';
-          if ($user_left_key != '') {
+          $response['userLeft'] = (Object) [];
+          $user_left_key = (($key - 1) >= 0) ? ($key - 1) : -1;
+          if ($user_left_key >= 0) {
+            $response['userLeft'] = [];
             $response['userLeft']['uid'] = $all_users_data[$user_left_key]['uid'];
             $response['userLeft']['rank'] = $all_users_data[$user_left_key]['rank'];
           }
           $response['userCenter']['uid'] = $all_users_data[$key]['uid'];
           $response['userCenter']['rank'] = $all_users_data[$key]['rank'];
-          $response['userRight'] = [];
-          $user_right_key = ($key < (count($all_users_data) - 1)) ? $key + 1 : '';
-          if ($user_right_key != '') {
+          $response['userRight'] = (Object) [];
+          $user_right_key = ($key < (count($all_users_data) - 1)) ? $key + 1 : -1;
+          if ($user_right_key > 0) {
+            $response['userRight'] = [];
             $response['userRight']['uid'] = $all_users_data[$user_right_key]['uid'];
             $response['userRight']['rank'] = $all_users_data[$user_right_key]['rank'];
           }
@@ -439,7 +441,7 @@ class LeaderboardController extends Controller {
       $position = 1;
       $j = 0;
       foreach ($all_users_data['hits']['hits'] as $value) {
-        $all_users_data_array[$j]['uid'] = isset($value['_source']['userExternalId']) ? $value['_source']['userExternalId'] : (int) $value['_source']['uid'];
+        $all_users_data_array[$j]['uid'] = isset($value['_source']['userExternalId']) ? $value['_source']['userExternalId'] : 0;
         $all_users_data_array[$j]['rank'] = "#" . $position;
         $all_users_data_array[$j]['pointValue'] = isset($value['_source']['total_points']) ? $value['_source']['total_points'] : 0;
         $j++;

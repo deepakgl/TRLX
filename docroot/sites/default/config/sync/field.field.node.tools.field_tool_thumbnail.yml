@@ -11,7 +11,7 @@ field_name: field_tool_thumbnail
 entity_type: node
 bundle: tools
 label: 'Video thumbnail'
-description: 'Allowed file types:<b> png, jpg, jpeg.</b><br>Image Resolution:<b> 640X227px</b>'
+description: 'Allowed file types:<b> png, jpg, jpeg.</b><br>Image Resolution:<b> 639X278px</b>'
 required: false
 translatable: true
 default_value: {  }

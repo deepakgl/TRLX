@@ -157,6 +157,10 @@ function elx_translation_workflow_generate_img_styles($entity) {
       'bookmark_image_mobile',
       'bookmark_image_tablet',
       'bookmark_image_desktop',
+      'stories_level_listing_mobile',
+      'stories_level_listing_tablet',
+      'stories_level_listing_desktop',
+      'media_entity_browser_thumbnail',
     ]
     );
   }
@@ -187,6 +191,23 @@ function elx_translation_workflow_generate_img_styles($entity) {
       'bookmark_image_mobile',
       'bookmark_image_tablet',
       'bookmark_image_desktop',
+      'trends_homepage_desktop',
+      'trends_homepage_tablet',
+      'trends_homepage_mobile',
+      'insider_corner_hompage_section_desktop',
+      'insider_corner_hompage_section_tablet',
+      'insider_corner_hompage_section_mobile',
+      'media_entity_browser_thumbnail',
+    ]
+    );
+  }
+  // Carousel image.
+  if ($entity->hasField('field_product_carousel')) {
+    $commonUtility->setMediaEntity($entity, 'field_product_carousel', [
+      'carousel_image_mobile',
+      'carousel_image_tablet',
+      'carousel_image_desktop',
+      'media_entity_browser_thumbnail',
     ]
     );
   }
@@ -217,6 +238,7 @@ function elx_translation_workflow_generate_img_styles($entity) {
       'stories_level_listing_mobile',
       'stories_level_listing_tablet',
       'stories_level_listing_desktop',
+      'media_entity_browser_thumbnail',
     ]
     );
   }
@@ -235,6 +257,15 @@ function elx_translation_workflow_generate_img_styles($entity) {
       'bookmark_image_mobile',
       'bookmark_image_tablet',
       'bookmark_image_desktop',
+      'media_entity_browser_thumbnail',
+    ]
+    );
+  }
+  // Spotlight mobile image.
+  if ($entity->hasField('field_image_home_page')) {
+    $commonUtility->setMediaEntity($entity, 'field_image_home_page', [
+      'spotlight_mobile',
+      'media_entity_browser_thumbnail',
     ]
     );
   }

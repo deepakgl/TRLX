@@ -31,6 +31,7 @@ class VideoListings extends ResourceBase {
    *   Resource response
    */
   public function get(Request $request) {
+    global $_userData;
     $commonUtility = new CommonUtility();
     $entityUtility = new EntityUtility();
 
@@ -64,7 +65,6 @@ class VideoListings extends ResourceBase {
       return $response;
     }
 
-    // Validation for valid brand key
     // Prepare view response for valid brand key.
     list($view_results, $status_code) = $entityUtility->fetchApiResult(
       '',
@@ -79,14 +79,17 @@ class VideoListings extends ResourceBase {
       return $commonUtility->errorResponse($this->t('Brand Id (@brandId) does not exist.', ['@brandId' => $brandId]), Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
+    // Validation for brand key exists in user token or not.
+    if (!in_array($brandId, $_userData->brands)) {
+      return $commonUtility->successResponse([], Response::HTTP_OK);
+    }
+
     // Prepare array of keys for alteration in response.
     $data = [
       'title' => 'decode',
       'displayTitle' => 'decode',
       'nid' => 'int',
       'pointValue' => 'int',
-      'video' => 'append_host',
-      'videoSubtitle' => 'append_host',
       'body' => 'string_replace',
     ];
 

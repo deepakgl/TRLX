@@ -1,6 +1,0 @@
-elx_learning_levels.create_learning_levels_index:
-  path: 'admin/create-learning-levels-index'
-  defaults:
-    _form: '\Drupal\elx_learning_levels\Form\CreateLearningLevelsNodeIndex'
-  requirements:
-    _permission: 'access content'

@@ -1,0 +1,5 @@
+name: TRLX Redis Purge Utility
+type: module
+description: TRLX custom module for purging redis cache.
+core: 8.x
+package: TRLX

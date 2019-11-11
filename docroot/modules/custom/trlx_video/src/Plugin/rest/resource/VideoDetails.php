@@ -76,8 +76,8 @@ class VideoDetails extends ResourceBase {
       'displayTitle' => 'decode',
       'nid' => 'int',
       'pointValue' => 'int',
-      'video' => 'append_host',
-      'videoSubtitle' => 'append_host',
+     // 'video' => 'append_host',
+     // 'videoSubtitle' => 'append_host',
     ];
 
     // Prepare redis key.
@@ -94,7 +94,7 @@ class VideoDetails extends ResourceBase {
 
     // Check for empty / no result from views.
     if (empty($view_results)) {
-      return $commonUtility->successResponse([], Response::HTTP_OK);
+      return $commonUtility->successResponse((Object) [], Response::HTTP_OK);
     }
 
     return $commonUtility->successResponse($view_results, $status_code);
