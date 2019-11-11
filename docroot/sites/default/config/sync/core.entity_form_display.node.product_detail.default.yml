@@ -57,7 +57,7 @@ third_party_settings:
     group_perfect_partners:
       children: {  }
       parent_name: ''
-      weight: 49
+      weight: 48
       format_type: fieldset
       format_settings:
         id: ''
@@ -103,7 +103,7 @@ content:
     type: string_textfield
     region: content
   field_brands:
-    weight: 18
+    weight: 16
     settings: {  }
     third_party_settings: {  }
     type: options_buttons
@@ -170,7 +170,7 @@ content:
     type: entity_browser_entity_reference
     region: content
   field_markets:
-    weight: 19
+    weight: 17
     settings:
       start_minimized: true
       leaves_only: false
@@ -181,7 +181,7 @@ content:
     type: term_reference_tree
     region: content
   field_point_value:
-    weight: 12
+    weight: 11
     settings:
       size: 60
       placeholder: ''
@@ -238,18 +238,9 @@ content:
     third_party_settings: {  }
     type: string_textfield
     region: content
-  field_tags_keywords:
-    weight: 17
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: entity_reference_autocomplete_tags
-    region: content
   field_translation:
     type: options_buttons
-    weight: 20
+    weight: 18
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -262,14 +253,14 @@ content:
     region: content
   langcode:
     type: language_select
-    weight: 13
+    weight: 12
     region: content
     settings:
       include_locked: true
     third_party_settings: {  }
   path:
     type: path
-    weight: 15
+    weight: 14
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -277,12 +268,12 @@ content:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 14
+    weight: 13
     region: content
     third_party_settings: {  }
   status:
     type: boolean_checkbox
-    weight: 21
+    weight: 19
     region: content
     settings:
       display_label: true
@@ -296,7 +287,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
   translation:
-    weight: 16
+    weight: 15
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -323,9 +314,9 @@ hidden:
   field_related_products_stories: true
   field_related_products_tools: true
   field_related_products_videos: true
-  field_tags_keywords: true
   field_season: true
   field_story: true
+  field_tags_keywords: true
   field_why_there_s_only_one: true
   sticky: true
   uid: true
