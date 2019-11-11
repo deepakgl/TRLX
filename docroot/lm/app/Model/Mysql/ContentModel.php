@@ -1002,4 +1002,55 @@ class ContentModel {
     }
   }
 
+  /**
+   * Get Lesson brand key by tid.
+   *
+   * @param int $tid
+   *   Taxonomy id.
+   *
+   * @return string
+   *   Key name.
+   */
+  public static function getLessonBrandKeyByTid($tid) {
+    $query = DB::table('taxonomy_term__field_brands as ttfd');
+    $query->select('ttfd.field_brands_target_id');
+    $query->where('ttfd.entity_id', '=', $tid);
+
+    $results = $query->get();
+    if (empty($query)) {
+      return FALSE;
+    }
+    $data = 0;
+    foreach ($results as $key => $result) {
+      $data = $result->field_brands_target_id;
+    }
+    return $data;
+  }
+
+  /**
+   * Get Lesson section key and value by tid.
+   *
+   * @param int $tid
+   *   Taxonomy id.
+   *
+   * @return string
+   *   Key and value name.
+   */
+  public static function getLessonSectionKeyByTid($tid) {
+    $query = DB::table('taxonomy_term__field_content_section as ttfd');
+    $query->leftJoin('taxonomy_term__field_content_section_key as tk', 'tk.entity_id', '=', 'ttfd.field_content_section_target_id');
+    $query->select('ttfd.field_content_section_target_id', 'tk.field_content_section_key_value');
+    $query->where('ttfd.entity_id', '=', $tid);
+
+    $results = $query->get();
+    if (empty($query)) {
+      return FALSE;
+    }
+    $data = 0;
+    foreach ($results as $key => $result) {
+      $data = [self::getTermName([$result->field_content_section_target_id])[0], $result->field_content_section_key_value];
+    }
+    return $data;
+  }
+
 }
