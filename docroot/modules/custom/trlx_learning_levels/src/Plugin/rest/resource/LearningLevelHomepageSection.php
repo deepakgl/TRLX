@@ -77,7 +77,7 @@ class LearningLevelHomepageSection extends ResourceBase {
       if (!empty($nids)) {
         // Get status in-progress in percentage
         $status_array = $levelUtility->getLevelActivity($_userData, $tid, $nids, $language);
-        if (($status_array['percentageCompleted'] != 0) && ($status_array['percentageCompleted'] != 100)) {
+        if ($status_array['percentageCompleted'] != 100) {
           //Get term by tid
           $term = $this->getTaxonomyTerm($status_array['categoryId'], $language);
           $translation = $this->validateTraslation($nids, $language);
