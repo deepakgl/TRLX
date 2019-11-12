@@ -138,20 +138,16 @@ class SearchController extends Controller {
     foreach ($data['hits']['hits'] as $key => $value) {
       if (!empty($value['_source']['vid'][0])) {
         $image_id = !empty($value['_source']['field_image']) ? $value['_source']['field_image'][0] : '';
-        $content_type = 'Level';
       }
       else {
         if ($value['_source']['type'][0] == 'tools') {
           $image_id = !empty($value['_source']['field_tool_thumbnail']) ? $value['_source']['field_tool_thumbnail'][0] : '';
-          $content_type = 'Videos';
         }
         elseif ($value['_source']['type'][0] == 'product_detail') {
           $image_id = !empty($value['_source']['field_field_product_image']) ? $value['_source']['field_field_product_image'][0] : '';
-          $content_type = 'Fact sheets';
         }
         elseif ($value['_source']['type'][0] == 'brand_story') {
           $image_id = !empty($value['_source']['field_featured_image']) ? $value['_source']['field_featured_image'][0] : '';
-          $content_type = 'Brand story';
         }
         else {
           $image_id = !empty($value['_source']['field_hero_image']) ? $value['_source']['field_hero_image'][0] : '';
@@ -190,11 +186,15 @@ class SearchController extends Controller {
       $tid = isset($value['_source']['tid'][0]) ? $value['_source']['tid'][0] : '';
       $img = !empty($nid) ? $nid : $tid;
       $image_style = Helper::buildImageResponse($result, $img);
+      $type = isset($value['_source']['type'][0]) ? $value['_source']['type'][0] : '';
       $category_key = 'faqhelp';
       $category_value = $category_name = 'Help FAQ';
       // Get displaytitle on based on content type.
       if (!empty($value['_source']['vid'][0])) {
         $display_title = isset($value['_source']['name'][0]) ? $value['_source']['name'][0] : '';
+        $content_type = 'Level';
+        $sub_title = isset($value['_source']['field_sub_title_1'][0]) ? $value['_source']['field_sub_title_1'][0] : '';
+        $type = $value['_source']['vid'][0];
       }
       elseif ($value['_source']['type'][0] == 'level_interactive_content') {
         $display_title = isset($value['_source']['field_headline'][0]) ? $value['_source']['field_headline'][0] : '';
@@ -203,27 +203,35 @@ class SearchController extends Controller {
         $category_key = !empty($lesson_brand_key) ? 'brands' : $cs_key;
         $category_value = !empty($lesson_brand_key) ? 'Brands' : $cs_value;
         $category_name = 'Lesson';
+        $sub_title = isset($value['_source']['field_subtitle'][0]) ? $value['_source']['field_subtitle'][0] : '';
       }
       elseif ($value['_source']['type'][0] == 'faq') {
         $display_title = isset($value['_source']['field_question'][0]) ? $value['_source']['field_question'][0] : '';
         $content_type = 'Brand question';
+        $sub_title = isset($value['_source']['field_subtitle'][0]) ? $value['_source']['field_subtitle'][0] : '';
+      }
+      elseif ($value['_source']['type'][0] == 'tools') {
+        $display_title = isset($value['_source']['field_display_title'][0]) ? $value['_source']['field_display_title'][0] : '';
+        $content_type = 'Videos';
+        $sub_title = isset($value['_source']['field_subtitle'][0]) ? $value['_source']['field_subtitle'][0] : '';
+      }
+      elseif ($value['_source']['type'][0] == 'product_detail') {
+        $display_title = isset($value['_source']['field_display_title'][0]) ? $value['_source']['field_display_title'][0] : '';
+        $content_type = 'Factsheets';
+        $sub_title = isset($value['_source']['field_subtitle'][0]) ? $value['_source']['field_subtitle'][0] : '';
+      }
+      elseif ($value['_source']['type'][0] == 'brand_story') {
+        $display_title = isset($value['_source']['field_display_title'][0]) ? $value['_source']['field_display_title'][0] : '';
+        $content_type = 'Brand story';
+        $sub_title = isset($value['_source']['field_subtitle'][0]) ? $value['_source']['field_subtitle'][0] : '';
+      }
+      elseif ($value['_source']['type'][0] == 'stories') {
+        $display_title = isset($value['_source']['field_display_title'][0]) ? $value['_source']['field_display_title'][0] : '';
+        $content_type = 'Story';
+        $sub_title = isset($value['_source']['field_sub_title'][0]) ? $value['_source']['field_sub_title'][0] : '';
       }
       else {
         $display_title = isset($value['_source']['field_display_title'][0]) ? $value['_source']['field_display_title'][0] : '';
-      }
-
-      // Get subtitle on based on content type.
-      $type = isset($value['_source']['type'][0]) ? $value['_source']['type'][0] : '';
-
-      if (!empty($value['_source']['vid'][0])) {
-        $sub_title = isset($value['_source']['field_sub_title_1'][0]) ? $value['_source']['field_sub_title_1'][0] : '';
-        $type = $value['_source']['vid'][0];
-      }
-      elseif ($value['_source']['type'][0] == 'stories') {
-        $sub_title = isset($value['_source']['field_sub_title'][0]) ? $value['_source']['field_sub_title'][0] : '';
-        $content_type = 'Story';
-      }
-      else {
         $sub_title = isset($value['_source']['field_subtitle'][0]) ? $value['_source']['field_subtitle'][0] : '';
       }
 
