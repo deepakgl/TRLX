@@ -90,6 +90,10 @@ class StoryDetails extends ResourceBase {
         // Section specific keys for alteration.
         $data['socialMediaHandles'] = 'social_media_handles';
         $data['productCarouselTitle'] = 'decode';
+        $data['firstName'] = 'decode';
+        $data['lastName'] = 'decode';
+        $data['occupation'] = 'decode';
+        $data['country'] = 'decode';
         $productCarousel = TRUE;
         break;
 
@@ -145,7 +149,7 @@ class StoryDetails extends ResourceBase {
 
     // Check for empty / no result from views.
     if (empty($view_results)) {
-      return $commonUtility->successResponse((Object) [], Response::HTTP_OK);
+      return $commonUtility->successResponse(null, Response::HTTP_OK);
     }
 
     // Load Product Carousel.

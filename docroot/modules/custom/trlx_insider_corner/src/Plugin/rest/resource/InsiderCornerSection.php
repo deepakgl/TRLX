@@ -73,6 +73,8 @@ class InsiderCornerSection extends ResourceBase {
       'firstName' => 'decode',
       'lastName' => 'decode',
       'pointValue' => 'int',
+      'quoteSubTitle' => 'decode',
+      'occupation' => 'decode',
     ];
 
     // Prepare view response.
