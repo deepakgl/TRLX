@@ -741,14 +741,3 @@ function trlx_utility_file_url_alter(&$uri) {
     }
   }
 }
-
-/**
- * Implements hook_theme().
- */
-function trlx_utility_theme() {
-  return [
-    'trlx_utility_video' => [
-      'variables' => ['files' => [], 'attributes' => NULL],
-    ],
-  ];
-}
