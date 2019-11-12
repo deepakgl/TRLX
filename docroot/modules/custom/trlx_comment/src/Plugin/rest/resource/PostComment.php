@@ -119,6 +119,11 @@ class PostComment extends ResourceBase {
     $this->commentUtility->saveComment($data);
     $saved_data = $this->commentUtility->getLatestComment();
 
+    // Check for empty result.
+    if (empty($saved_data)) {
+      return $this->commonUtility->successResponse(null, Response::HTTP_OK);
+    }
+
     // Generate response.
     $response = [
       "parentId" => (int) $saved_data->pid,
