@@ -134,6 +134,7 @@ class SearchController extends Controller {
     }
     $result = $response = [];
     // Build array of node id with image id.
+    $content_type = '';
     foreach ($data['hits']['hits'] as $key => $value) {
       if (!empty($value['_source']['vid'][0])) {
         $image_id = !empty($value['_source']['field_image']) ? $value['_source']['field_image'][0] : '';
@@ -185,33 +186,63 @@ class SearchController extends Controller {
       $tid = isset($value['_source']['tid'][0]) ? $value['_source']['tid'][0] : '';
       $img = !empty($nid) ? $nid : $tid;
       $image_style = Helper::buildImageResponse($result, $img);
+      $type = isset($value['_source']['type'][0]) ? $value['_source']['type'][0] : '';
       $category_key = 'faqhelp';
-      $category_value = $category_name = 'FAQ Help';
+      $category_value = $category_name = 'Help FAQ';
       // Get displaytitle on based on content type.
       if (!empty($value['_source']['vid'][0])) {
         $display_title = isset($value['_source']['name'][0]) ? $value['_source']['name'][0] : '';
+        $content_type = 'Level';
+        $sub_title = isset($value['_source']['field_sub_title_1'][0]) ? $value['_source']['field_sub_title_1'][0] : '';
+        $type = $value['_source']['vid'][0];
       }
       elseif ($value['_source']['type'][0] == 'level_interactive_content') {
         $display_title = isset($value['_source']['field_headline'][0]) ? $value['_source']['field_headline'][0] : '';
-        $category_key = 'lessons';
-        $category_value = $category_name = 'Lessons';
+        $lesson_brand_key = ContentModel::getLessonBrandKeyByTid($value['_source']['field_learning_category'][0]);
+        list($cs_value, $cs_key) = ContentModel::getLessonSectionKeyByTid($value['_source']['field_learning_category'][0]);
+        $category_key = !empty($lesson_brand_key) ? 'brands' : $cs_key;
+        $category_value = !empty($lesson_brand_key) ? 'Brands' : $cs_value;
+        $category_name = 'Lesson';
+        $sub_title = isset($value['_source']['field_subtitle'][0]) ? $value['_source']['field_subtitle'][0] : '';
       }
       elseif ($value['_source']['type'][0] == 'faq') {
         $display_title = isset($value['_source']['field_question'][0]) ? $value['_source']['field_question'][0] : '';
+        $content_type = 'Brand question';
+        $sub_title = isset($value['_source']['field_subtitle'][0]) ? $value['_source']['field_subtitle'][0] : '';
+      }
+      elseif ($value['_source']['type'][0] == 'tools') {
+        $display_title = isset($value['_source']['field_display_title'][0]) ? $value['_source']['field_display_title'][0] : '';
+        $content_type = 'Videos';
+        $sub_title = isset($value['_source']['field_subtitle'][0]) ? $value['_source']['field_subtitle'][0] : '';
+      }
+      elseif ($value['_source']['type'][0] == 'product_detail') {
+        $display_title = isset($value['_source']['field_display_title'][0]) ? $value['_source']['field_display_title'][0] : '';
+        $content_type = 'Factsheets';
+        $sub_title = isset($value['_source']['field_subtitle'][0]) ? $value['_source']['field_subtitle'][0] : '';
+      }
+      elseif ($value['_source']['type'][0] == 'brand_story') {
+        $display_title = isset($value['_source']['field_display_title'][0]) ? $value['_source']['field_display_title'][0] : '';
+        $content_type = 'Brand story';
+        $sub_title = isset($value['_source']['field_subtitle'][0]) ? $value['_source']['field_subtitle'][0] : '';
+      }
+      elseif ($value['_source']['type'][0] == 'stories') {
+        $display_title = isset($value['_source']['field_display_title'][0]) ? $value['_source']['field_display_title'][0] : '';
+        $content_type = 'Story';
+        $sub_title = isset($value['_source']['field_sub_title'][0]) ? $value['_source']['field_sub_title'][0] : '';
       }
       else {
         $display_title = isset($value['_source']['field_display_title'][0]) ? $value['_source']['field_display_title'][0] : '';
+        $sub_title = isset($value['_source']['field_subtitle'][0]) ? $value['_source']['field_subtitle'][0] : '';
       }
+
       // Get category on based on brand and content section.
       $category = [];
       $brand_key = 0;
       $brandinfo = ContentModel::getBrandTermIds();
       if (isset($value['_source']['field_brands'][0])) {
-        $category_name = ContentModel::getTermName([$value['_source']['field_brands'][0]]);
-        // $category[] = ['key' => 'brands', 'value' => implode(" ", $category_name)];
         $category_key = 'brands';
         $category_value = 'Brands';
-        $category_name = implode(" ", $category_name);
+        $category_name = $content_type;
         foreach ($brandinfo as $key => $brand) {
           if ($brand['entity_id'] == $value['_source']['field_brands'][0]) {
             $brand_key = (int) $brand['field_brand_key_value'];
@@ -220,17 +251,14 @@ class SearchController extends Controller {
       }
       elseif (isset($value['_source']['field_content_section'][0])) {
         $category_name = ContentModel::getTermName([$value['_source']['field_content_section'][0]]);
-        $key = ContentModel::getContentSectionKeyByTid($value['_source']['field_content_section'][0]);
-        $category_key = $key;
-        $category_value = $category_name = implode(" ", $category_name);
-        // $category[] = ['key' => $key, 'value' => implode(" ", $category_name)];
+        $category_key = ContentModel::getContentSectionKeyByTid($value['_source']['field_content_section'][0]);
+        $category_value = implode(" ", $category_name);
+        $category_name = $content_type;
       }
       elseif (isset($value['_source']['field_brands_1'][0])) {
-        $category_name = ContentModel::getTermName([$value['_source']['field_brands_1'][0]]);
-        // $category[] = ['key' => 'brands', 'value' => implode(" ", $category_name)];
         $category_key = 'brands';
         $category_value = 'Brands';
-        $category_name = implode(" ", $category_name);
+        $category_name = $content_type;
         foreach ($brandinfo as $key => $brand) {
           if ($brand['entity_id'] == $value['_source']['field_brands_1'][0]) {
             $brand_key = (int) $brand['field_brand_key_value'];
@@ -239,25 +267,11 @@ class SearchController extends Controller {
       }
       elseif (isset($value['_source']['field_content_section_1'][0])) {
         $category_name = ContentModel::getTermName([$value['_source']['field_content_section_1'][0]]);
-        $key = ContentModel::getContentSectionKeyByTid($value['_source']['field_content_section_1'][0]);
-        $category_key = $key;
-        $category_value = $category_name = implode(" ", $category_name);
-        // $category[] = ['key' => $key, 'value' => implode(" ", $category_name)];
+        $category_key = ContentModel::getContentSectionKeyByTid($value['_source']['field_content_section_1'][0]);
+        $category_value = implode(" ", $category_name);
+        $category_name = $content_type;
       }
 
-      // Get subtitle on based on content type.
-      $type = isset($value['_source']['type'][0]) ? $value['_source']['type'][0] : '';
-      $tid = isset($value['_source']['tid'][0]) ? $value['_source']['tid'][0] : '';
-      if (!empty($value['_source']['vid'][0])) {
-        $sub_title = isset($value['_source']['field_sub_title_1'][0]) ? $value['_source']['field_sub_title_1'][0] : '';
-        $type = $value['_source']['vid'][0];
-      }
-      elseif ($value['_source']['type'][0] == 'stories') {
-        $sub_title = isset($value['_source']['field_sub_title'][0]) ? $value['_source']['field_sub_title'][0] : '';
-      }
-      else {
-        $sub_title = isset($value['_source']['field_subtitle'][0]) ? $value['_source']['field_subtitle'][0] : '';
-      }
       if (isset($value['_source']['type'][0]) && $value['_source']['type'][0] == 'brand_story') {
         if ($value['_source']['created'][0] == max($created)) {
           $response[] = [
@@ -309,7 +323,18 @@ class SearchController extends Controller {
       }
       $s_response['results'][$key]['response'] = $value['response'];
     }
-    $total_count = $data['hits']['total'] - $this->offset;
+    $brand_story_count = [];
+    foreach ($data['hits']['hits'] as $brand_key => $brand_value) {
+      $type_name = isset($brand_value['_source']['type'][0]) ? $brand_value['_source']['type'][0] : $brand_value['_source']['vid'][0];
+      if ($type_name == 'brand_story') {
+        $brand_story_count[] = 1;
+      }
+    }
+    $brand_count = 0;
+    if (!empty(count($brand_story_count))) {
+      $brand_count = count($brand_story_count) - 1;
+    }
+    $total_count = ($data['hits']['total'] - $brand_count) - $this->offset;
     // Build pagination.
     $s_response['pager'] = [
       "count" => ($total_count > 0) ? $total_count : 0,

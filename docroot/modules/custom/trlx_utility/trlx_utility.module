@@ -254,6 +254,7 @@ function trlx_utility_form_alter(&$form, FormStateInterface $form_state, $form_i
     case 'taxonomy_term_brands_form':
     case 'taxonomy_term_consumer_category_form':
     case 'taxonomy_term_badges_form':
+    case 'taxonomy_term_listing_image_form':
       $entity = $form_state->getFormObject()->getEntity();
       $form['actions']['submit']['#submit'][] = 'trlx_utility_taxonomy_submit';
       break;
@@ -739,4 +740,15 @@ function trlx_utility_file_url_alter(&$uri) {
       $uri = settings::get('cdn_file_public_base_url') . '/' . explode('//', $uri)[1];
     }
   }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function trlx_utility_theme() {
+  return [
+    'trlx_utility_video' => [
+      'variables' => ['files' => [], 'attributes' => NULL],
+    ],
+  ];
 }

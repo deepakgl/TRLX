@@ -83,7 +83,7 @@ class TermAndCondition extends ResourceBase {
 
     // Check for empty / no result from views.
     if (empty($view_results)) {
-      return $commonUtility->successResponse((Object) [], Response::HTTP_OK);
+      return $commonUtility->successResponse(null, Response::HTTP_OK);
     }
 
     return $commonUtility->successResponse($view_results, $status_code);
