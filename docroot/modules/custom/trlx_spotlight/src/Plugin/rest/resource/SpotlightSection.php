@@ -114,7 +114,7 @@ class SpotlightSection extends ResourceBase {
           $brand = array_shift($brand);
           $brand_id = $brand->get('field_brand_key')->value;
           if (in_array($brand_id, $user_brands)) {
-            $result[$i]['nid'] = $value['nid'];
+            $result[$i]['nid'] = $brand_id;
             $result[$i]['displayTitle'] = $node->hasTranslation($language) ? $node->getTranslation($language)->get('field_display_title')->value : '';
             $result[$i]['type'] = 'brandStory';
             $result[$i]['body'] = $node->hasTranslation($language) ? $node->getTranslation($language)->get('body')->value : '';
