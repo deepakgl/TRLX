@@ -100,6 +100,7 @@ class SpotlightSection extends ResourceBase {
           $result[$i]['displayTitle'] = $node->hasTranslation($language) ? $node->getTranslation($language)->get('field_display_title')->value : '';
           $content_section = $node->get('field_content_section')->referencedEntities();
           $result[$i]['type'] = (!empty($content_section)) ? (array_shift($content_section)->get('field_content_section_key')->value) : '';
+          $result[$i]['brandName'] = '';
           $result[$i]['body'] = $node->hasTranslation($language) ? $node->getTranslation($language)->get('body')->value : '';
           $result[$i]['imageSmall'] = $value['imageSmall'];
           $result[$i]['imageMedium'] = $value['imageMedium'];
@@ -113,10 +114,12 @@ class SpotlightSection extends ResourceBase {
           $brand = $node->get('field_brands')->referencedEntities();
           $brand = array_shift($brand);
           $brand_id = $brand->get('field_brand_key')->value;
+          $brandName = $brand->get('name')->value;
           if (in_array($brand_id, $user_brands)) {
             $result[$i]['nid'] = $brand_id;
             $result[$i]['displayTitle'] = $node->hasTranslation($language) ? $node->getTranslation($language)->get('field_display_title')->value : '';
             $result[$i]['type'] = 'brandStory';
+            $result[$i]['brandName'] = $brandName;
             $result[$i]['body'] = $node->hasTranslation($language) ? $node->getTranslation($language)->get('body')->value : '';
             $result[$i]['imageSmall'] = $value['imageSmall'];
             $result[$i]['imageMedium'] = $value['imageMedium'];
@@ -131,11 +134,13 @@ class SpotlightSection extends ResourceBase {
           $brand = $node->get('field_brands')->referencedEntities();
           $brand = array_shift($brand);
           $brand_id = $brand->get('field_brand_key')->value;
+          $brandName = $brand->get('name')->value;
           if (in_array($brand_id, $user_brands)) {
             $result[$i]['nid'] = $value['nid'];
             $node = $this->getNodeData($value, $language);
             $result[$i]['displayTitle'] = $node->hasTranslation($language) ? $node->getTranslation($language)->get('field_display_title')->value : '';
             $result[$i]['type'] = 'video';
+            $result[$i]['brandName'] = $brandName;
             $result[$i]['body'] = $node->hasTranslation($language) ? $node->getTranslation($language)->get('field_tool_description')->value : '';
             $result[$i]['imageSmall'] = $value['imageSmall'];
             $result[$i]['imageMedium'] = $value['imageMedium'];
@@ -150,11 +155,13 @@ class SpotlightSection extends ResourceBase {
           $brand = $node->get('field_brands')->referencedEntities();
           $brand = array_shift($brand);
           $brand_id = $brand->get('field_brand_key')->value;
+          $brandName = $brand->get('name')->value;
           if (in_array($brand_id, $user_brands)) {
             $result[$i]['nid'] = $value['nid'];
             $node = $this->getNodeData($value, $language);
             $result[$i]['displayTitle'] = $node->hasTranslation($language) ? $node->getTranslation($language)->get('field_display_title')->value : '';
             $result[$i]['type'] = 'factsheet';
+            $result[$i]['brandName'] = $brandName;
             $result[$i]['body'] = $node->hasTranslation($language) ? $node->getTranslation($language)->get('body')->value : '';
             $result[$i]['imageSmall'] = $value['imageSmall'];
             $result[$i]['imageMedium'] = $value['imageMedium'];
@@ -169,6 +176,7 @@ class SpotlightSection extends ResourceBase {
           $node = $this->getNodeData($value, $language);
           $result[$i]['displayTitle'] = $node->hasTranslation($language) ? $node->getTranslation($language)->get('field_headline')->value : '';
           $result[$i]['type'] = 'learningLessons';
+          $result[$i]['brandName'] = '';
           $intro_text = $node->get('field_interactive_content')->referencedEntities();
           if (!empty($intro_text)) {
             $interactive_content = array_shift($intro_text);
