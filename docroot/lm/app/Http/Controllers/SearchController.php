@@ -245,7 +245,7 @@ class SearchController extends Controller {
         $category_name = $content_type;
         foreach ($brandinfo as $key => $brand) {
           if ($brand['entity_id'] == $value['_source']['field_brands'][0]) {
-            $brand_key = (int) $brand['field_brand_key_value'];
+            $brand_key = $brand['field_brand_key_value'];
           }
         }
       }
@@ -261,7 +261,7 @@ class SearchController extends Controller {
         $category_name = $content_type;
         foreach ($brandinfo as $key => $brand) {
           if ($brand['entity_id'] == $value['_source']['field_brands_1'][0]) {
-            $brand_key = (int) $brand['field_brand_key_value'];
+            $brand_key = $brand['field_brand_key_value'];
           }
         }
       }
