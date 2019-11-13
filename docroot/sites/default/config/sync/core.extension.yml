@@ -37,11 +37,7 @@ module:
   elc_password_policy: 0
   elx_elastic_user: 0
   elx_menu: 0
-  elx_points_migration: 0
-  elx_products: 0
   elx_reports: 0
-  elx_tnc: 0
-  elx_tools: 0
   elx_translation_workflow: 0
   elx_user: 0
   elx_utility: 0
@@ -116,9 +112,9 @@ module:
   tour: 0
   translation_views: 0
   trlx_audit_log: 0
+  trlx_banner: 0
   trlx_brand: 0
   trlx_brand_story: 0
-  trlx_banner: 0
   trlx_comment: 0
   trlx_consumer: 0
   trlx_dashboard: 0
@@ -134,6 +130,7 @@ module:
   trlx_redis_purge: 0
   trlx_security: 0
   trlx_spotlight: 0
+  trlx_stamp: 0
   trlx_static_translation: 0
   trlx_story: 0
   trlx_tnc_privacy_policy: 0
