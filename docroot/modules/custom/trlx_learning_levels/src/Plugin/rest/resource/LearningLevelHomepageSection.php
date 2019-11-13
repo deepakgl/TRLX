@@ -204,9 +204,9 @@ class LearningLevelHomepageSection extends ResourceBase {
     foreach ($nids as $nid) {
       if (!empty($nid)) {
         $node = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
-        if (($langcode == 'en') || ($node->hasTranslation($langcode))) {
+        if ($node->hasTranslation($langcode)) {
           // Checking publish content
-          if (($node->get('status')->value) == 1) {
+          if (($node->getTranslation($langcode)->get('status')->value) == 1) {
             $points = $node->get('field_point_value')->value;
             $points_value = $points_value + $points;
           }
@@ -232,7 +232,7 @@ class LearningLevelHomepageSection extends ResourceBase {
     foreach ($nids as $nid) {
       if (!empty($nid)) {
         $node = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
-        if ($node->hasTranslation($langcode)) {
+        if (($node->hasTranslation($langcode)) && (($node->getTranslation($langcode)->get('status')->value))) {
           return array('status' => 1);
         }
       }
