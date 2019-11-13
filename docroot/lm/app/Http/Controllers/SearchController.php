@@ -130,7 +130,7 @@ class SearchController extends Controller {
     // Fetch the search response from elastic.
     $data = $client->search($this->query);
     if (!isset($data['hits']['hits'][0])) {
-      return new Response(NULL, Response::HTTP_NO_CONTENT);
+      return new Response([], Response::OK);
     }
     $result = $response = [];
     // Build array of node id with image id.
