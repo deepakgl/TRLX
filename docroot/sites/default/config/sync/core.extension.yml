@@ -51,6 +51,7 @@ module:
   entity_browser_entity_form: 0
   entity_embed: 0
   entity_reference_revisions: 0
+  entity_submit_redirect: 0
   entityqueue: 0
   fakeobjects: 0
   feeds: 0
@@ -115,9 +116,9 @@ module:
   tour: 0
   translation_views: 0
   trlx_audit_log: 0
-  trlx_banner: 0
   trlx_brand: 0
   trlx_brand_story: 0
+  trlx_banner: 0
   trlx_comment: 0
   trlx_consumer: 0
   trlx_dashboard: 0
@@ -139,7 +140,6 @@ module:
   trlx_trends: 0
   trlx_user: 0
   trlx_utility: 0
-  trlx_banner: 0
   trlx_video: 0
   user: 0
   video_embed_field: 0

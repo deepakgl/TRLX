@@ -1,0 +1,7 @@
+user:
+  user:
+    path: /admin/people
+global:
+  use_on:
+    - front
+    - backoffice
