@@ -107,6 +107,11 @@ class FlagController extends Controller {
     // Check user flag status.
     $user_activities = UserActivitiesController::userFlagStatus($response, $this->uid, NULL, 'globalActivity');
 
+    // Check empty user activities.
+    if (empty($user_activities)) {
+      return $this->successResponse(null, Response::HTTP_OK);
+    }
+
     $message = $user_activities[0] + [
       'status' => TRUE,
       'message' => 'Flag successfully updated',
