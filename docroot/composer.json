@@ -78,8 +78,8 @@
         "drupal/password_encrypt": "^1.0",
         "drupal/queue_ui": "^2.0",
         "drupal/simpleautologout": "^1.4",
-        "drupal/menu_export":"^1.2",
-        "drupal/single_user_role":"^1.0"
+        "drupal/single_user_role":"^1.0",
+        "drupal/entity_submit_redirect":"^1.0"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,

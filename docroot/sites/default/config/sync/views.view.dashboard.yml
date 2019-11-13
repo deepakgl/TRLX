@@ -3389,7 +3389,6 @@ display:
             product_detail: product_detail
             stories: stories
             t_c: t_c
-            tools-pdf: tools-pdf
             tools: tools
           group: 1
           exposed: true

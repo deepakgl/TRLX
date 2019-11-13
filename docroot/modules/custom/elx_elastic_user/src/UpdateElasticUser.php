@@ -60,7 +60,6 @@ class UpdateElasticUser {
           'market' => $markets,
           'store' => $stores,
           'account' => $accounts,
-          'node_views_best_sellers' => [],
           'node_views_level_interactive_content' => [],
           'node_views_product_detail' => [],
           'node_views_stories' => [],

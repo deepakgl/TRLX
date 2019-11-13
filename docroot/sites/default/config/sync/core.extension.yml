@@ -37,11 +37,7 @@ module:
   elc_password_policy: 0
   elx_elastic_user: 0
   elx_menu: 0
-  elx_points_migration: 0
-  elx_products: 0
   elx_reports: 0
-  elx_tnc: 0
-  elx_tools: 0
   elx_translation_workflow: 0
   elx_user: 0
   elx_utility: 0
@@ -51,6 +47,7 @@ module:
   entity_browser_entity_form: 0
   entity_embed: 0
   entity_reference_revisions: 0
+  entity_submit_redirect: 0
   entityqueue: 0
   fakeobjects: 0
   feeds: 0
@@ -133,13 +130,13 @@ module:
   trlx_redis_purge: 0
   trlx_security: 0
   trlx_spotlight: 0
+  trlx_stamp: 0
   trlx_static_translation: 0
   trlx_story: 0
   trlx_tnc_privacy_policy: 0
   trlx_trends: 0
   trlx_user: 0
   trlx_utility: 0
-  trlx_banner: 0
   trlx_video: 0
   user: 0
   video_embed_field: 0
