@@ -177,7 +177,7 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: "{% if name == \"insider_corner_hompage\" %}\r\n    {{ \"Insider Corner\" }}\r\n{% elseif name == \"spotlight_section\" %}\r\n    {{ \"Spotlight\" }}           \r\n{% endif %}"
+            text: "{% if name == \"insider_corner_hompage\" %}\r\n    {{ \"Insider's Corner\" }}\r\n{% elseif name == \"spotlight_section\" %}\r\n    {{ \"Spotlight\" }}           \r\n{% endif %}"
             make_link: false
             path: ''
             absolute: false
