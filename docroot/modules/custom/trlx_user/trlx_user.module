@@ -11,14 +11,19 @@ use Drupal\Core\Form\FormStateInterface;
  */
 function trlx_user_menu_local_tasks_alter(&$data, $route_name) {
   // Check route for user listing page
+  //var_dump($data['tabs'][0]['entity.taxonomy_term.edit_form']);
+  $currentAccount = \Drupal::currentUser();
+  $roles = $currentAccount->getRoles();
   if ($route_name == 'entity.user.collection') {
-    $currentAccount = \Drupal::currentUser();
-    $roles = $currentAccount->getRoles();
     if (in_array('el_regional_market_admin', $roles) || in_array('el_nyo_global_education_system_admin', $roles)) {
       // Permission and Roles tab unset for MA and GA
       unset($data['tabs'][0]['user.admin_permissions']);
       unset($data['tabs'][0]['entity.user_role.collection']);
     }
+  }
+
+  if (($route_name ='entity.taxonomy_term.content_translation_overview') && (in_array('el_regional_market_admin', $roles))) {
+    unset($data['tabs'][0]['entity.taxonomy_term.edit_form']);
   }
 }
 
