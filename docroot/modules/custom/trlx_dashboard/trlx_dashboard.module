@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Drupal\views\ViewExecutable;
 use Drupal\trlx_lang_translation\Utility\LangUtility;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Entity\EntityInterface;
 
 /**
  * @file
@@ -151,5 +152,96 @@ function trlx_dashboard_form_alter(&$form, FormStateInterface $form_state, $form
           unset($form['langcode']['#options']['en']);
         }
       }
+  }
+}
+
+
+/**
+ * Implements hook_entity_operation().
+ */
+function trlx_dashboard_entity_operation_alter(array &$operations, EntityInterface $entity) {
+  // make sure we are modifying only taxonomy entity
+  $entityTypeId = $entity->getEntityTypeId();
+  if ($entityTypeId !== 'taxonomy_term') {
+    return;
+  }
+
+  if (($entity->getVocabularyId() == 'badges') || ($entity->getVocabularyId() == 'learning_category') ||
+   ($entity->getVocabularyId() == 'consumer_category')) {
+    $currentAccount = \Drupal::currentUser();
+    $roles = $currentAccount->getRoles();
+    if (in_array('el_regional_market_admin', $roles)) {
+      if (!empty($entity->id())) {
+        $database = \Drupal::database();
+        $query = $database->select('term_user_relation', 't');
+        $query->fields('t', ['tid', 'vid', 'uid', 'role']);
+        $query->condition('tid', $entity->id());
+        $query->range(0, 1);
+        $response = $query->execute()->fetchAll();
+        if ($response) {
+          $response = (array)$response[0];
+          if ('el_regional_market_admin' !== $response['role']) {
+            unset($operations['edit']);
+            unset($operations['delete']);
+          }
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_entity_insert().
+ */
+function trlx_dashboard_entity_insert(Drupal\Core\Entity\EntityInterface $entity) {
+  // Get entity type id
+  $entityTypeId = $entity->getEntityTypeId();
+  $role = '';
+  if ($entityTypeId !== 'taxonomy_term') {
+    return;
+  }
+
+  if (($entity->getVocabularyId() == 'badges') || ($entity->getVocabularyId() == 'learning_category') ||
+    ($entity->getVocabularyId() == 'consumer_category')) {
+    $currentAccount = \Drupal::currentUser();
+    $roles = $currentAccount->getRoles();
+    if (in_array('el_regional_market_admin', $roles)) {
+      $role = 'el_regional_market_admin';
+    } elseif (in_array('el_nyo_global_education_system_admin', $roles)) {
+      $role = 'el_nyo_global_education_system_admin';
+    } else {
+      $role = 'administrator';
+    }
+
+    $table = 'term_user_relation';
+    // Create an object of type Select.
+    $record_keep_table = $table;
+    $table_exist = \Drupal::database()->schema()->tableExists($record_keep_table);
+
+    if ($table_exist == false) {
+      $schema = [
+        'fields' => [
+          'id' => ['type' => 'serial', 'not null' => TRUE],
+          'tid' => ['type' => 'varchar', 'length' => 255, 'not null' => TRUE],
+          'vid' => ['type' => 'varchar', 'length' => 255, 'not null' => TRUE],
+          'uid' => ['type' => 'varchar', 'length' => 255, 'not null' => TRUE],
+          'role' => ['type' => 'varchar', 'length' => 255, 'not null' => TRUE],
+        ],
+        'primary key' => ['id'],
+      ];
+      \Drupal::database()->schema()->createTable($record_keep_table, $schema);
+    }
+
+    if ($table_exist == true) {
+      $database = \Drupal::database();
+      $database->insert($table)
+        ->fields([
+          'tid' => $entity->id(),
+          'vid' => $entity->getVocabularyId(),
+          'uid' => $currentAccount->id(),
+          'role' => $role,
+        ])
+        ->execute();
+    }
   }
 }
