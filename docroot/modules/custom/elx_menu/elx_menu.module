@@ -8,15 +8,6 @@
 use Drupal\elx_user\Utility\UserUtility;
 
 /**
- * Implements hook_link_alter().
- */
-function elx_menu_link_alter(&$variables) {
-  if ($variables['text'] == 'Entityqueues') {
-    $variables['text'] = 'Homepage Content';
-  }
-}
-
-/**
  * Implements hook_preprocess_menu().
  */
 function elx_menu_preprocess_menu(&$variables) {

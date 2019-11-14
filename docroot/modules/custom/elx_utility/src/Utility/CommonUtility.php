@@ -616,31 +616,4 @@ class CommonUtility {
     return $lang_list;
   }
 
-  /**
-   * Check whether node is published or not.
-   *
-   * @param  int $nid
-   *   Node id.
-   * @param  string $lang
-   *   Language code.
-   *
-   * @return boolean
-   *   True or False.
-   */
-  public function isNodePublished($nid, $lang) {
-    $query = \Drupal::database()->select('node_field_data', 'n')
-      ->fields('n', ['nid'])
-      ->condition('n.type', 'quiz', '=')
-      ->condition('n.nid', $nid, '=')
-      ->condition('n.langcode', $lang, '=')
-      ->condition('n.status', 1, '=')
-      ->range(0, 1);
-    $result = $query->execute()->fetchAssoc();
-    if (empty($result)) {
-      return FALSE;
-    }
-
-    return TRUE;
-  }
-
 }
