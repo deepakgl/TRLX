@@ -91,7 +91,7 @@ class BadgesController extends Controller {
     // Check whether stamps master Index exists.
     $exist_badge = BadgeModel::checkBadgeMasterIndex($this->client);
     if (!$exist_badge || !$this->client) {
-      return FALSE;
+      return $this->errorResponse('There is some problem in cluster/badge.', Response::HTTP_INTERNAL_SERVER_ERROR);
     }
     $badge_data = $all_badges = [];
     // Fetch all the stamps from elastic.
