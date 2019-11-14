@@ -6,3 +6,7 @@
 .role-el_regional_market_admin.path-node ul.tabs.primary li.tabs__tab:nth-child(2) {
   display: none;
 }
+
+.role-el_regional_market_admin ul.tabs.primary li.tabs__tab:nth-child(2) {
+  display: none;
+}

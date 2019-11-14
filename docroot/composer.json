@@ -115,7 +115,8 @@
             "drupal/entityqueue": {
                 "entityqueue title": "patches/entityqueue/entityqueue_title.patch",
                 "entityqueue queue actions alter": "patches/entityqueue/entityqueue_links_action.patch",
-                "entityqueue queue routing alter": "patches/entityqueue/entityqueue_routing.patch"
+                "entityqueue queue routing alter": "patches/entityqueue/entityqueue_routing.patch",
+                "entityqueue title update": "patches/entityqueue/simple.patch"   
             },
             "drupal/simple_oauth": {
                 "simple oauth": "patches/simple_oauth/simple_oauth_auth_provider.patch",

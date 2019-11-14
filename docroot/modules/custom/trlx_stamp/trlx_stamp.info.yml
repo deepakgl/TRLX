@@ -1,0 +1,5 @@
+name: TRLX Stamp
+core: 8.x
+package: TRLX
+type: module
+description: Module for stamps.

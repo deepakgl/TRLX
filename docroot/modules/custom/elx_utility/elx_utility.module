@@ -6,18 +6,16 @@
  */
 
 use Drupal\node\Entity\NodeType;
-use Drupal\views\ViewExecutable;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\elx_utility\RedisClientBuilder;
+use Drupal\trlx_utility\RedisClientBuilder;
 use Symfony\Component\HttpFoundation\Request;
 use Drupal\user\Entity\User;
 use Elasticsearch\ClientBuilder;
-use Drupal\Core\Entity\EntityTypeInterface;
-use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Url;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Drupal\elx_user\Utility\UserUtility;
+use Drupal\trlx_stamp\Utility\StampUtility;
 
 /**
  * Set node id and terms id using rest resource.
@@ -56,13 +54,11 @@ function elx_utility_form_alter(&$form, FormStateInterface $form_state, $form_id
   // Get current user roles.
   $roles = \Drupal::currentUser()->getRoles();
   switch ($form_id) {
-    case 'node_best_sellers_form':
     case 'node_product_detail_form':
     case 'node_level_interactive_content_form':
     case 'node_stories_form':
     case 'node_tools_form':
     case 'node_tools-pdf_form':
-    case 'node_best_sellers_edit_form':
     case 'node_product_detail_edit_form':
     case 'node_level_interactive_content_edit_form':
     case 'node_stories_edit_form':
@@ -74,20 +70,6 @@ function elx_utility_form_alter(&$form, FormStateInterface $form_state, $form_id
       $form['field_point_value']['widget'][0]['value']['#type'] = 'number';
       // Set default value 0 of point value field.
       $form['field_point_value']['widget'][0]['value']['#min'] = 0;
-    // case 'user_register_form':
-    // case 'user_form':
-    //   $uid = \Drupal::currentUser()->id();
-    //   // Get current user markets.
-    //   $query = $user_utility->getMarketByUserId($uid, 'all');
-    //   // Hide markets for market admin.
-    //   if (in_array('el_regional_market_admin', $roles)) {
-    //     foreach ($query as $key => $value) {
-    //       $market = $value->field_default_market_target_id;
-    //       $form['field_markets']['#disabled'] = TRUE;
-    //       $form['field_default_market']['widget']['#after_build'][] = 'elx_utility_default_market_after_build';
-    //       $form['field_default_market']['widget']['#default_value'][$key]['target_id'] = $market;
-    //     }
-    //   }
       break;
 
     case 'taxonomy_term_learning_category_form':
@@ -178,6 +160,11 @@ function elx_utility_default_market_after_build($form_element, &$form_state) {
   return $form_element;
 }
 
+function elx_utility_clear_redis_cache($patterns) {
+  $redisObj = RedisClientBuilder::getRedisClientObject('check');
+  $result = $redisObj->deleteMultiple($pattern);
+}
+
 /**
  * Implements hook_ENTITY_insert().
  */
@@ -190,6 +177,31 @@ function elx_utility_entity_insert(EntityInterface $entity) {
       case 'level_interactive_content':
         _elx_utility_http_request($entity);
         break;
+
+      case 'stories':
+        $contentSection = $entity->get('field_content_section')->referencedEntities();
+        $contentSectionkey =  (!empty($contentSection)) ? (array_shift($contentSection)->get('field_content_section_key')->value) : '';
+        $lang_code = $entity->language()->getId();
+        if (isset($contentSectionkey)) {
+          switch ($contentSectionkey) {
+            case 'trend':
+            $patterns = [':home:tr_trends_' . $lang_code, ':listing:tr_trend_' . $lang_code];
+            elx_utility_clear_redis_cache($patterns);
+            break;
+
+            case 'insiderCorner':
+            $patterns = [':home:insider_corner_' . $lang_code, 'listing:insider_corner_' . $lang_code];
+            elx_utility_clear_redis_cache($patterns);
+            break;
+
+            case 'sellingTips':
+            $patterns = [':listing:selling_tips_' . $lang_code];
+            elx_utility_clear_redis_cache($patterns);
+            break;
+
+          }
+        }
+        break;
     }
     // Purge Redis data.
     elx_utility_purge_redis_data($entity);
@@ -198,7 +210,8 @@ function elx_utility_entity_insert(EntityInterface $entity) {
     $tid = $entity->id();
     $type = elx_utility_get_term_type($tid);
     if ($type == 'badges') {
-      migrate_badge_master();
+      $stamp_utility = new StampUtility();
+      $stamp_utility->migrateStamp();
     }
     // Purge Redis data.
     elx_utility_purge_redis_terms_data($type, $tid);
@@ -241,6 +254,31 @@ function elx_utility_entity_update(EntityInterface $entity) {
       case 'level_interactive_content':
         _elx_utility_http_request($entity);
         break;
+
+      case 'stories':
+        $contentSection = $entity->get('field_content_section')->referencedEntities();
+        $contentSectionkey =  (!empty($contentSection)) ? (array_shift($contentSection)->get('field_content_section_key')->value) : '';
+        $lang_code = $entity->language()->getId();
+        if (isset($contentSectionkey)) {
+          switch ($contentSectionkey) {
+            case 'trend':
+            $patterns = [':home:tr_trends_' . $lang_code, ':listing:tr_trend_' . $lang_code];
+            elx_utility_clear_redis_cache($patterns);
+            break;
+
+            case 'insiderCorner':
+            $patterns = [':home:insider_corner_' . $lang_code, 'listing:insider_corner_' . $lang_code];
+            elx_utility_clear_redis_cache($patterns);
+            break;
+
+            case 'sellingTips':
+            $patterns = [':listing:selling_tips_' . $lang_code];
+            elx_utility_clear_redis_cache($patterns);
+            break;
+
+          }
+        }
+        break;
     }
     // Purge Redis data.
     elx_utility_purge_redis_data($entity);
@@ -249,7 +287,8 @@ function elx_utility_entity_update(EntityInterface $entity) {
     $tid = $entity->id();
     $type = elx_utility_get_term_type($tid);
     if ($type == 'badges') {
-      migrate_badge_master();
+      $stamp_utility = new StampUtility();
+      $stamp_utility->migrateStamp();
     }
     // Purge Redis data.
     elx_utility_purge_redis_terms_data($type, $tid);
@@ -306,7 +345,8 @@ function elx_utility_entity_delete(EntityInterface $entity) {
     $tid = $entity->id();
     $type = $entity->bundle();
     if ($type == 'badges') {
-      migrate_badge_master();
+      $stamp_utility = new StampUtility();
+      $stamp_utility->migrateStamp();
     }
     // Purge Redis data.
     elx_utility_purge_redis_terms_data($type, $tid);
@@ -600,7 +640,6 @@ function set_user_object_elastic($uid) {
         'market' => $markets,
         'store' => $stores,
         'account' => $accounts,
-        'node_views_best_sellers' => [],
         'node_views_level_interactive_content' => [],
         'node_views_product_detail' => [],
         'node_views_stories' => [],
@@ -681,7 +720,7 @@ function elx_utility_mail_alter(&$message) {
 /**
  * Implements hook_entity_base_field_info().
  */
-//function elx_utility_entity_base_field_info(EntityTypeInterface $entity_type) {
+// Function elx_utility_entity_base_field_info(EntityTypeInterface $entity_type) {
 //  $fields = [];
 //  if ($entity_type->id() == 'menu_link_content') {
 //    $fields['elx_menu_content'] =
@@ -730,7 +769,7 @@ function elx_utility_mail_alter(&$message) {
 //  }
 //
 //  return $fields;
-//}
+// }.
 
 /**
  * Implements hook_preprocess_views_view_field().
