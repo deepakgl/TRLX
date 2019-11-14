@@ -79,8 +79,9 @@ class TrendListing extends ResourceBase {
     }
 
     // Prepare response.
+    $key = ":listing:tr_trend_{$language}";
     list($view_results, $status_code) = $entityUtility->fetchApiResult(
-      '',
+      $key,
       'stories_listing',
       'rest_export_stories_listing',
       $data, ['language' => $language],
