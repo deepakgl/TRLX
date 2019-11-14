@@ -21,9 +21,10 @@ function trlx_user_menu_local_tasks_alter(&$data, $route_name) {
       unset($data['tabs'][0]['entity.user_role.collection']);
     }
   }
-
+  
   if (($route_name ='entity.taxonomy_term.content_translation_overview') && (in_array('el_regional_market_admin', $roles))) {
     unset($data['tabs'][0]['entity.taxonomy_term.edit_form']);
+    unset($data['tabs'][0]['entity.taxonomy_vocabulary.edit_form']);
   }
 }
 
@@ -57,3 +58,4 @@ function trlx_user_form_alter(array &$form, FormStateInterface $form_state, $for
     $form['actions']['submit']['#access']  = FALSE;
   }
 }
+

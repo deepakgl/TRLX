@@ -20,6 +20,13 @@ use Drupal\Core\Entity\EntityInterface;
  */
 function trlx_dashboard_preprocess_page(&$variables) {
   $variables['#attached']['library'][] = 'trlx_dashboard/trlx_admin';
+  // Get current path or uri
+  $current_path = \Drupal::service('path.current')->getPath();
+  $currentAccount = \Drupal::currentUser();
+  $roles = $currentAccount->getRoles();
+  if ((in_array('el_regional_market_admin', $roles)) && ($current_path == '/admin/structure/taxonomy/manage/badges/overview')) {
+    $variables['#attached']['library'][] = 'trlx_dashboard/trlx_ma';
+  }
 }
 
 /**
