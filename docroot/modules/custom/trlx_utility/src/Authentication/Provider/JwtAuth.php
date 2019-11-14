@@ -23,7 +23,7 @@ class JwtAuth implements AuthenticationProviderInterface {
     $auth = $request->headers->get('Authorization');
     $uri = \Drupal::request()->getRequestUri();
     $matches = [];
-    if (preg_match('/\/languageList/', $uri) == 1 ) {
+    if (preg_match('/\/languageList/', $uri) == 1) {
       if (isset($auth)) {
         if (preg_match('/\/api\//', $uri) == 1) {
           if ($auth == NULL) {
@@ -33,8 +33,9 @@ class JwtAuth implements AuthenticationProviderInterface {
             throw new UnprocessableEntityHttpException('Provided token is not valid.');
           }
         }
-      } 
-    } else {
+      }
+    }
+    else {
       if (preg_match('/\/api\//', $uri) == 1) {
         if ($auth == NULL) {
           throw new BadRequestHttpException('Authorization header is required.');
@@ -65,6 +66,10 @@ class JwtAuth implements AuthenticationProviderInterface {
     try {
       $jwt = $this->transcoder->decode($raw_jwt);
       $userId = $commonUtility->getUserRealId($jwt->uid);
+      // Check user access.
+      if ($userId == 0 || $jwt->status == 0) {
+        throw new AccessDeniedHttpException('Unauthorized or inactive user.');
+      }
       $jwt->userId = $userId;
       if (isset($jwt->subRegion)) {
         $subregions = $jwt->subRegion;
