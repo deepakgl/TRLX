@@ -70,7 +70,7 @@ class WelcomeMessage extends ResourceBase {
     $message = 'message_' . $language;
     $response['results']['message'] = $config->get($message);
     if (empty($response['results']['message'])) {
-      return $commonUtility->successResponse(null, Response::HTTP_OK);
+      return $commonUtility->successResponse(NULL, Response::HTTP_OK);
     }
 
     return $commonUtility->successResponse($response['results'], Response::HTTP_OK);

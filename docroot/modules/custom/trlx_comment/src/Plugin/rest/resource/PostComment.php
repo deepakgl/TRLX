@@ -121,7 +121,7 @@ class PostComment extends ResourceBase {
 
     // Check for empty result.
     if (empty($saved_data)) {
-      return $this->commonUtility->successResponse(null, Response::HTTP_OK);
+      return $this->commonUtility->successResponse(NULL, Response::HTTP_OK);
     }
 
     // Generate response.

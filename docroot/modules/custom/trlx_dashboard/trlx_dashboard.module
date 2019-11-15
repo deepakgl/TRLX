@@ -20,7 +20,7 @@ use Drupal\Core\Entity\EntityInterface;
  */
 function trlx_dashboard_preprocess_page(&$variables) {
   $variables['#attached']['library'][] = 'trlx_dashboard/trlx_admin';
-  // Get current path or uri
+  // Get current path or uri.
   $current_path = \Drupal::service('path.current')->getPath();
   $currentAccount = \Drupal::currentUser();
   $roles = $currentAccount->getRoles();
@@ -162,12 +162,11 @@ function trlx_dashboard_form_alter(&$form, FormStateInterface $form_state, $form
   }
 }
 
-
 /**
  * Implements hook_entity_operation().
  */
 function trlx_dashboard_entity_operation_alter(array &$operations, EntityInterface $entity) {
-  // make sure we are modifying only taxonomy entity
+  // Make sure we are modifying only taxonomy entity.
   $entityTypeId = $entity->getEntityTypeId();
   if ($entityTypeId !== 'taxonomy_term') {
     return;
@@ -186,7 +185,7 @@ function trlx_dashboard_entity_operation_alter(array &$operations, EntityInterfa
         $query->range(0, 1);
         $response = $query->execute()->fetchAll();
         if ($response) {
-          $response = (array)$response[0];
+          $response = (array) $response[0];
           if ('el_regional_market_admin' !== $response['role']) {
             unset($operations['edit']);
             unset($operations['delete']);
@@ -200,8 +199,8 @@ function trlx_dashboard_entity_operation_alter(array &$operations, EntityInterfa
 /**
  * Implements hook_entity_insert().
  */
-function trlx_dashboard_entity_insert(Drupal\Core\Entity\EntityInterface $entity) {
-  // Get entity type id
+function trlx_dashboard_entity_insert(EntityInterface $entity) {
+  // Get entity type id.
   $entityTypeId = $entity->getEntityTypeId();
   $role = '';
   if ($entityTypeId !== 'taxonomy_term') {
@@ -214,9 +213,11 @@ function trlx_dashboard_entity_insert(Drupal\Core\Entity\EntityInterface $entity
     $roles = $currentAccount->getRoles();
     if (in_array('el_regional_market_admin', $roles)) {
       $role = 'el_regional_market_admin';
-    } elseif (in_array('el_nyo_global_education_system_admin', $roles)) {
+    }
+    elseif (in_array('el_nyo_global_education_system_admin', $roles)) {
       $role = 'el_nyo_global_education_system_admin';
-    } else {
+    }
+    else {
       $role = 'administrator';
     }
 
@@ -225,7 +226,7 @@ function trlx_dashboard_entity_insert(Drupal\Core\Entity\EntityInterface $entity
     $record_keep_table = $table;
     $table_exist = \Drupal::database()->schema()->tableExists($record_keep_table);
 
-    if ($table_exist == false) {
+    if ($table_exist == FALSE) {
       $schema = [
         'fields' => [
           'id' => ['type' => 'serial', 'not null' => TRUE],
@@ -239,7 +240,7 @@ function trlx_dashboard_entity_insert(Drupal\Core\Entity\EntityInterface $entity
       \Drupal::database()->schema()->createTable($record_keep_table, $schema);
     }
 
-    if ($table_exist == true) {
+    if ($table_exist == TRUE) {
       $database = \Drupal::database();
       $database->insert($table)
         ->fields([

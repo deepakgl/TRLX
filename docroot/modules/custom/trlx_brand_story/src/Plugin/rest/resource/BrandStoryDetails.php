@@ -83,7 +83,7 @@ class BrandStoryDetails extends ResourceBase {
 
     // Validation for brand key exists in user token or not.
     if (!in_array($brandId, $_userData->brands)) {
-      return $commonUtility->successResponse(null, Response::HTTP_OK);
+      return $commonUtility->successResponse(NULL, Response::HTTP_OK);
     }
 
     // Prepare array of keys for alteration in response.
@@ -107,7 +107,7 @@ class BrandStoryDetails extends ResourceBase {
 
     // Check for empty / no result from views.
     if (empty($view_results)) {
-      return $commonUtility->successResponse(null, Response::HTTP_OK);
+      return $commonUtility->successResponse(NULL, Response::HTTP_OK);
     }
 
     return $commonUtility->successResponse($view_results, $status_code);
