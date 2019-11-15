@@ -4,6 +4,7 @@
  * @file
  * User module file.
  */
+
 use Drupal\Core\Form\FormStateInterface;
 
 /**
@@ -11,18 +12,18 @@ use Drupal\Core\Form\FormStateInterface;
  */
 function trlx_user_menu_local_tasks_alter(&$data, $route_name) {
   // Check route for user listing page
-  //var_dump($data['tabs'][0]['entity.taxonomy_term.edit_form']);
+  // var_dump($data['tabs'][0]['entity.taxonomy_term.edit_form']);.
   $currentAccount = \Drupal::currentUser();
   $roles = $currentAccount->getRoles();
   if ($route_name == 'entity.user.collection') {
     if (in_array('el_regional_market_admin', $roles) || in_array('el_nyo_global_education_system_admin', $roles)) {
-      // Permission and Roles tab unset for MA and GA
+      // Permission and Roles tab unset for MA and GA.
       unset($data['tabs'][0]['user.admin_permissions']);
       unset($data['tabs'][0]['entity.user_role.collection']);
     }
   }
-  
-  if (($route_name ='entity.taxonomy_term.content_translation_overview') && (in_array('el_regional_market_admin', $roles))) {
+
+  if (($route_name = 'entity.taxonomy_term.content_translation_overview') && (in_array('el_regional_market_admin', $roles))) {
     unset($data['tabs'][0]['entity.taxonomy_term.edit_form']);
     unset($data['tabs'][0]['entity.taxonomy_vocabulary.edit_form']);
   }
@@ -33,29 +34,28 @@ function trlx_user_menu_local_tasks_alter(&$data, $route_name) {
  */
 function trlx_user_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
   if ($form_id == 'user_form' || $form_id == 'user_register_form') {
-    // Unset the select option of administrator and authenticated role
+    // Unset the select option of administrator and authenticated role.
     unset($form['account']['roles']['#options']['administrator']);
     unset($form['account']['roles']['#options']['authenticated']);
-    // Unset notify user when new account checkbox
+    // Unset notify user when new account checkbox.
     unset($form['account']['notify']);
   }
 
-  //Get current user details
+  // Get current user details.
   $currentAccount = \Drupal::currentUser();
   $roles = $currentAccount->getRoles();
   if (($form_id == "menu_edit_form") && (!in_array('administrator', $roles))) {
-    // Access False langcode select field
+    // Access False langcode select field.
     $form['langcode']['#access'] = FALSE;
   }
 
-  // Disable all field of welcome config form
+  // Disable all field of welcome config form.
   if (($form_id == 'welcome_message_admin_settings') && (in_array('el_regional_market_admin', $roles))) {
     $langcodes = \Drupal::languageManager()->getLanguages();
     $langcodesList = array_keys($langcodes);
     foreach ($langcodesList as $field) {
-      $form['message_'.$field]['#attributes'] = array('readonly'=>'readonly','disabled'=>'disabled');
+      $form['message_' . $field]['#attributes'] = ['readonly' => 'readonly', 'disabled' => 'disabled'];
     }
-    $form['actions']['submit']['#access']  = FALSE;
+    $form['actions']['submit']['#access'] = FALSE;
   }
 }
-

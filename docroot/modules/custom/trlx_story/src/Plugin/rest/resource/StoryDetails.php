@@ -149,7 +149,7 @@ class StoryDetails extends ResourceBase {
 
     // Check for empty / no result from views.
     if (empty($view_results)) {
-      return $commonUtility->successResponse(null, Response::HTTP_OK);
+      return $commonUtility->successResponse(NULL, Response::HTTP_OK);
     }
 
     // Load Product Carousel.
