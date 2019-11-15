@@ -13,6 +13,7 @@ third_party_settings:
     scheme: public
     directory: inline-files
     extensions: 'txt mp4 m4v ogg ogv webm mov'
+    max_size: ''
 _core:
   default_config_hash: 967ijj7p6i7rwrYl7r08WQFeCY_c23YAh0h8u-w_CXM
 format: full_html
@@ -46,7 +47,6 @@ settings:
           items:
             - Blockquote
             - DrupalImage
-            - Table
             - Video
             - HorizontalRule
         -
@@ -60,10 +60,10 @@ settings:
             - ShowBlocks
             - Source
   plugins:
-    stylescombo:
-      styles: ''
     language:
       language_list: un
+    stylescombo:
+      styles: ''
     wordcount:
       enable: 1
       show_paragraphs: 0
