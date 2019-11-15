@@ -48,7 +48,7 @@ class UpdateElasticUserForm extends FormBase {
       try {
         $query = $db->query("SELECT uid from users_field_data LIMIT " . $limit .
          " OFFSET " . $offset);
-         $result = $query->fetchAll();
+        $result = $query->fetchAll();
       }
       catch (\Exception $e) {
         return $e->getMessage();

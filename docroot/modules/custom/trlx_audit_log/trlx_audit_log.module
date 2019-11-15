@@ -19,7 +19,7 @@ function trlx_audit_log_entity_update(EntityInterface $entity) {
     // AuditEventLogger object to access functions.
     $logger_obj = new AuditEventLogger();
     $context['user'] = \Drupal::currentUser();
-    $context['channel'] = $logger_obj->getLoggerType(); 
+    $context['channel'] = $logger_obj->getLoggerType();
     $context['request_uri'] = $logger_obj->getRequestUri();
 
     $message = $logger_obj->getAuditLogMessage($entity, 'updated');

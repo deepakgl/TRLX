@@ -55,13 +55,12 @@ class PasswordPolicyHelpText extends ResourceBase {
     return new JsonResponse($response, 200, [], FALSE);
   }
 
-
   /**
-  * Fetch strings.
-  *
-  * @return $array
-  *   Strings.
-  */
+   * Fetch strings.
+   *
+   * @return array
+   *   Strings.
+   */
   public function getPolicyStrings() {
     $cid = 'elc_password_policy';
     if ($cache = \Drupal::cache()->get($cid)) {
@@ -83,4 +82,5 @@ class PasswordPolicyHelpText extends ResourceBase {
       return $data;
     }
   }
+
 }

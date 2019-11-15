@@ -536,7 +536,7 @@ display:
           entity_type: taxonomy_term
           entity_field: changed
           plugin_id: date
-      title: 'Static Translation'
+      title: 'Static Translations'
       header:
         area:
           id: area
