@@ -130,7 +130,7 @@ class SearchController extends Controller {
     // Fetch the search response from elastic.
     $data = $client->search($this->query);
     if (!isset($data['hits']['hits'][0])) {
-      return new Response([], Response::OK);
+      return new Response(NULL, Response::HTTP_NO_CONTENT);
     }
     $result = $response = [];
     // Build array of node id with image id.
@@ -165,21 +165,24 @@ class SearchController extends Controller {
     $result = Helper::buildImageStyles($fids, $image_uris);
 
     // Prepare the search response.
-    // Get created date.
     $res = [];
     foreach ($data['hits']['hits'] as $value) {
       if (isset($value['_source']['type'][0]) && $value['_source']['type'][0] == 'brand_story') {
-        $res[] = $value['_source']['created'];
+        $res[] = [
+          'nid' => $value['_source']['nid'][0],
+          'date' => $value['_source']['created'][0],
+          'brand' => $value['_source']['field_brands'][0],
+        ];
       }
     }
+    // Get created date for brand_story content type.
     $created = [];
-    foreach ($res as $key => $value) {
-      if (is_array($value)) {
-        $created = array_merge($created, array_flatten($value));
-      }
-      else {
-        $created[$key] = $value;
-      }
+    if (!empty($res)) {
+      $sort_nid = array_column($res, 'nid');
+      array_multisort($sort_nid, SORT_DESC, $res);
+      $created = array_unique(array_column($res, 'brand'));
+      $created = array_intersect_key($res, $created);
+      $created = array_column($created, 'date');
     }
     foreach ($data['hits']['hits'] as $key => $value) {
       $nid = isset($value['_source']['nid'][0]) ? $value['_source']['nid'][0] : '';
@@ -273,7 +276,7 @@ class SearchController extends Controller {
       }
 
       if (isset($value['_source']['type'][0]) && $value['_source']['type'][0] == 'brand_story') {
-        if ($value['_source']['created'][0] == max($created)) {
+        if (in_array($value['_source']['created'][0], $created)) {
           $response[] = [
             'nid' => isset($nid) ? $nid : '',
             'tid' => $tid,
@@ -309,40 +312,34 @@ class SearchController extends Controller {
         ];
       }
     }
-    foreach ($response as $key => $element) {
+    foreach (array_slice($response, $this->offset,
+    $this->limit) as $key => $element) {
       $alter_data[$element['categoryKey']]['response'][] = $element;
     }
-    $results = array_values($alter_data);
-    // Show response search category wise.
     $s_response['results'] = [];
-    foreach ($results as $key => $value) {
-      $s_response['results'][$key]['categoryKey'] = $value['response'][0]['categoryKey'];
-      $s_response['results'][$key]['categoryValue'] = $value['response'][0]['categoryName'];
-      foreach ($value['response'] as $key_unset => $value_unset) {
-        unset($value['response'][$key_unset]['categoryName']);
-      }
-      $s_response['results'][$key]['response'] = $value['response'];
-    }
-    $brand_story_count = [];
-    foreach ($data['hits']['hits'] as $brand_key => $brand_value) {
-      $type_name = isset($brand_value['_source']['type'][0]) ? $brand_value['_source']['type'][0] : $brand_value['_source']['vid'][0];
-      if ($type_name == 'brand_story') {
-        $brand_story_count[] = 1;
+    if (!empty($alter_data)) {
+      $results = array_values($alter_data);
+      // Show response search category wise.
+      foreach ($results as $key => $value) {
+        $s_response['results'][$key]['categoryKey'] = $value['response'][0]['categoryKey'];
+        $s_response['results'][$key]['categoryValue'] = $value['response'][0]['categoryName'];
+        foreach ($value['response'] as $key_unset => $value_unset) {
+          unset($value['response'][$key_unset]['categoryName']);
+        }
+        $s_response['results'][$key]['response'] = $value['response'];
       }
     }
-    $brand_count = 0;
-    if (!empty(count($brand_story_count))) {
-      $brand_count = count($brand_story_count) - 1;
-    }
-    $total_count = ($data['hits']['total'] - $brand_count) - $this->offset;
+    $total_count = count($response) - $this->offset;
     // Build pagination.
-    $s_response['pager'] = [
-      "count" => ($total_count > 0) ? $total_count : 0,
-      "pages" => ceil($total_count / $this->limit),
-      "items_per_page" => $this->limit,
-      "current_page" => 0,
-      "next_page" => 1,
-    ];
+    if (!empty($s_response['results'])) {
+      $s_response['pager'] = [
+        "count" => ($total_count > 0) ? $total_count : 0,
+        "pages" => ceil($total_count / $this->limit),
+        "items_per_page" => $this->limit,
+        "current_page" => 0,
+        "next_page" => 1,
+      ];
+    }
 
     return new Response($s_response, 200);
   }
@@ -410,9 +407,9 @@ class SearchController extends Controller {
       'index' => $this->elasticSearchIndex,
       'type' => $this->elasticSearchType,
       // Results starting from.
-      'from' => $this->offset,
+      'from' => 0,
       // Limit of results.
-      'size' => $this->limit,
+      'size' => 10000,
       'body' => [
         'query' => [
           'bool' => [

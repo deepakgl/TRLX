@@ -102,7 +102,8 @@ class FactsheetsListing extends ResourceBase {
       return $errorResponse;
     }
 
-    // Prepare view response.
+    // Prepare response.
+    $key = ":brand:factsheets_{$brandId}_{$language}";
     list($view_results, $status_code) = $entityUtility->fetchApiResult(
       '',
       'fact_sheets_list',

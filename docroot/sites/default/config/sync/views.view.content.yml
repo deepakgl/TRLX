@@ -3,7 +3,6 @@ langcode: en
 status: true
 dependencies:
   config:
-    - node.type.best_sellers
     - node.type.level_interactive_content
     - node.type.privacy_policy
     - node.type.product_detail
@@ -502,7 +501,6 @@ display:
           admin_label: ''
           operator: in
           value:
-            best_sellers: best_sellers
             level_interactive_content: level_interactive_content
             privacy_policy: privacy_policy
             product_detail: product_detail
