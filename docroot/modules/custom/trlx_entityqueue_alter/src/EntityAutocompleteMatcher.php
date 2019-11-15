@@ -8,6 +8,7 @@ use Drupal\Component\Utility\Tags;
 /**
  * Entity auto complete matcher.
  */
+
 class EntityAutocompleteMatcher extends \Drupal\Core\Entity\EntityAutocompleteMatcher {
 
   /**

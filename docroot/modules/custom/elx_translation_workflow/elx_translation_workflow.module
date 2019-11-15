@@ -131,10 +131,7 @@ FormStateInterface &$form_state) {
   \Drupal::request()->query->remove('destination');
   // Redirect to the dashboard page, after entity creation/updation.
   $url = Url::fromRoute('view.dashboard.dashboard_unpublished');
-  if ($bundle == 'quiz') {
-    $url = Url::fromRoute('view.dashboard.dashboard_quiz');
-  }
-  elseif ($entity->get('status')->getValue()[0]['value'] == 1) {
+  if ($entity->get('status')->getValue()[0]['value'] == 1) {
     $url = Url::fromRoute('view.dashboard.dashboard_published');
   }
   $form_state->setRedirectUrl($url);

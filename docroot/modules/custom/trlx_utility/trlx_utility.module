@@ -344,10 +344,10 @@ function trlx_utility_form_alter(&$form, FormStateInterface $form_state, $form_i
       /*** Show/Hide Brands list based on Brand List section - END ***/
       break;
 
-      case 'entity_subqueue_insider_corner_hompage_edit_form':
-      case 'entity_subqueue_spotlight_section_edit_form':
-        $form['actions']['submit']['#submit'][] = 'trlx_utility_entityqueue_submit';
-        break;
+    case 'entity_subqueue_insider_corner_hompage_edit_form':
+    case 'entity_subqueue_spotlight_section_edit_form':
+      $form['actions']['submit']['#submit'][] = 'trlx_utility_entityqueue_submit';
+      break;
 
     default:
       break;
@@ -363,8 +363,10 @@ function trlx_utility_entityqueue_submit(array &$form, FormStateInterface $form_
   $redirectUrl = Url::fromUri('internal:/entityqueue/homepage-content');
 
   $redirectRoles = [
-    'el_regional_market_admin', // MA
-    'el_nyo_global_education_system_admin', // GA
+  // MA.
+    'el_regional_market_admin',
+  // GA.
+    'el_nyo_global_education_system_admin',
   ];
 
   $redirect = FALSE;

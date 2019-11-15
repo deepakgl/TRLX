@@ -3,7 +3,6 @@
 namespace Drupal\trlx_dashboard\Plugin\rest\resource;
 
 use Drupal\rest\Plugin\ResourceBase;
-use Drupal\Component\Serialization\Json;
 use Drupal\trlx_dashboard\Utility\TrlxDashboardUtility;
 use Drupal\trlx_utility\RedisClientBuilder;
 use Symfony\Component\HttpFoundation\Request;

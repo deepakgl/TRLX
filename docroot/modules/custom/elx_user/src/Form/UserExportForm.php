@@ -5,7 +5,6 @@ namespace Drupal\elx_user\Form;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\user\Entity\User;
-use Drupal\Core\Database\Database;
 use Drupal\elx_user\Utility\UserUtility;
 
 /**
@@ -32,23 +31,23 @@ class UserExportForm extends FormBase {
       $user = User::load(\Drupal::currentUser()->id());
       $uid = $user->get('uid')->value;
       $markets = $user_info->getMarketsName($uid);
-//      $form['markets'] = [
-//        '#type' => 'select',
-//        '#title' => t('Markets'),
-//        '#options' => $markets,
-//      ];
-//      $form['export_users_list'] = [
-//        '#type' => 'submit',
-//        '#value' => $this->t('Export Users'),
-//      ];
+      // $form['markets'] = [
+      //        '#type' => 'select',
+      //        '#title' => t('Markets'),
+      //        '#options' => $markets,
+      //      ];
+      //      $form['export_users_list'] = [
+      //        '#type' => 'submit',
+      //        '#value' => $this->t('Export Users'),
+      //      ];
     }
     elseif ($current_path == '/admin/active-users') {
-//      $form['user_active'] = [
-//        '#type' => 'submit',
-//        '#value' => $this->t('csv'),
-//        '#button_type' => 'primary',
-//        '#weight' => 11,
-//      ];
+      // $form['user_active'] = [
+      //        '#type' => 'submit',
+      //        '#value' => $this->t('csv'),
+      //        '#button_type' => 'primary',
+      //        '#weight' => 11,
+      //      ];
     }
 
     return $form;
@@ -102,7 +101,7 @@ class UserExportForm extends FormBase {
     fclose($output);
     $total_count = count($result_uid);
     $limit = 1000;
-    
+
     $data_chunks = array_chunk($result_uid, $limit);
     $operations = [];
     // Check result is not empty.

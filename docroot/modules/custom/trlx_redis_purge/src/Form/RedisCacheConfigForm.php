@@ -4,7 +4,7 @@ namespace Drupal\trlx_redis_purge\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use \Drupal\elx_utility\RedisClientBuilder;
+use Drupal\elx_utility\RedisClientBuilder;
 
 /**
  * RedisCacheConfigForm class.
@@ -23,10 +23,10 @@ class RedisCacheConfigForm extends FormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
 
-    $form['redis_cache_submit'] = array(
+    $form['redis_cache_submit'] = [
       '#type' => 'submit',
       '#value' => $this->t('Purge Redis Cache'),
-    );
+    ];
 
     return $form;
   }

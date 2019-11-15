@@ -75,7 +75,6 @@ class TrendsHomepageSection extends ResourceBase {
       'pointValue' => 'int',
     ];
 
-
     // Prepare view response.
     $key = ":home:tr_trends_{$language}";
     list($view_results, $status_code) = $entityUtility->fetchApiResult(
