@@ -64,7 +64,8 @@ class VideoListings extends ResourceBase {
     if (!($response->getStatusCode() === Response::HTTP_OK)) {
       return $response;
     }
-
+    // Prepare response.
+    $key = ":brand:videos_{$brandId}_{$language}";
     // Prepare view response for valid brand key.
     list($view_results, $status_code) = $entityUtility->fetchApiResult(
       '',

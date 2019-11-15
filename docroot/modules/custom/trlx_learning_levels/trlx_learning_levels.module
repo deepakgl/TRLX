@@ -80,7 +80,6 @@ function trlx_learning_levels_form_alter(&$form, FormStateInterface $form_state,
 
       break;
     case 'taxonomy_term_learning_category_form':
-    case 'taxonomy_term_learning_category_form':
       // Fetch content section mapped sections from config.
       $config = \Drupal::config('trlx_utility.settings');
       $content_section = $config->get('learning_levels');
@@ -101,6 +100,11 @@ function trlx_learning_levels_form_alter(&$form, FormStateInterface $form_state,
           unset($form['field_content_section']['widget']['#options'][$value]);
         }
       }
+
+      if (in_array('el_regional_market_admin', $roles)) {
+        unset($form['field_brands']);
+      }
+
       break;
 
     default:
