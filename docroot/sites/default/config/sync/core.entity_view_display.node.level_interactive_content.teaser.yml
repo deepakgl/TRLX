@@ -4,7 +4,6 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.node.teaser
-    - field.field.node.level_interactive_content.field_content_object_type
     - field.field.node.level_interactive_content.field_featured
     - field.field.node.level_interactive_content.field_featured_image
     - field.field.node.level_interactive_content.field_headline
@@ -30,7 +29,6 @@ hidden:
   field_access_by_role: true
   field_archive_and_unarchive: true
   field_background_image: true
-  field_content_object_type: true
   field_featured: true
   field_featured_image: true
   field_headline: true
