@@ -34,7 +34,7 @@ function trlx_entityqueue_alter_form_alter(&$form, FormStateInterface $form_stat
       $form['#suffix'] = "</div>";
       unset($form['actions']['reverse']);
       unset($form['actions']['shuffle']);
-      //$form['actions']['clear']['#value'] = 'Clear All';
+      // $form['actions']['clear']['#value'] = 'Clear All';
       unset($form['actions']['clear']);
       break;
   }
@@ -72,19 +72,19 @@ function trlx_entityqueue_alter_form_alter(&$form, FormStateInterface $form_stat
  * @param \Drupal\Core\Form\FormStateInterface $form_state
  *   Form state object.
  */
-function trlx_entityqueue_alter_validate($form, $form_state) {
+function trlx_entityqueue_alter_validate($form, FormStateInterface $form_state) {
   $items = array_filter(array_column($form_state->getValues()['items'],
    'target_id'));
   if (!empty(array_filter($items))) {
     // Get the current path args.
     $path_args = array_filter(explode('/', \Drupal::service('path.current')
-    ->getPath()));
+      ->getPath()));
     // Load the entity queue.
     $entity_subqueue = \Drupal::entityManager()->getStorage('entity_queue')
-    ->load($path_args[4]);
+      ->load($path_args[4]);
     // Fetch the target bundles of the queue.
     $queue_type = array_keys($entity_subqueue
-    ->getEntitySettings()['handler_settings']['target_bundles']);
+      ->getEntitySettings()['handler_settings']['target_bundles']);
     $market_id = $form_state->getValues()['field_market'][0]['target_id'];
     $query = db_select('node__field_markets', 'fm')
       ->distinct('fm.field_markets_target_id')
@@ -113,7 +113,7 @@ function trlx_entityqueue_alter_views_query_alter(ViewExecutable $view, $query) 
   $view_id = [
     'browse_products',
     'stories_listing',
-    'learning_levels'
+    'learning_levels',
   ];
   // Array of market wise entityqueue.
   $display = [
@@ -137,8 +137,7 @@ function trlx_entityqueue_alter_views_query_alter(ViewExecutable $view, $query) 
       // Fetch the user market.
       $market = $user_utility->getMarketByUserId(\Drupal::currentUser()->id(),
       'all');
-      $query->where[0]['conditions'][0]['value']
-      [':entity_subqueue__field_market_field_market_target_id'] =
+      $query->where[0]['conditions'][0]['value'][':entity_subqueue__field_market_field_market_target_id'] =
       $market[0]->field_default_market_target_id;
       _prepare_query($query, $roles, $view->id());
     }
@@ -151,11 +150,11 @@ function trlx_entityqueue_alter_views_query_alter(ViewExecutable $view, $query) 
 /**
  * Prepare entityqueue view query.
  *
- * @param  mixed $query
+ * @param mixed $query
  *   View query object.
- * @param  array $roles
+ * @param mixed $roles
  *   User roles.
- * @param  int $view_id
+ * @param int $view_id
  *   View id.
  */
 function _prepare_query($query, $roles, $view_id) {
@@ -164,15 +163,24 @@ function _prepare_query($query, $roles, $view_id) {
   if ($roles && $view_id != 'learning_levels') {
     $query->queueTable('node__field_access_by_role',
      'node_field_data', NULL, 'node__field_access_by_role');
-     $query->addWhere('1',
+    $query->addWhere('1',
       'node__field_access_by_role.field_access_by_role_target_id',
        $roles, 'IN');
   }
   elseif ($roles && $view_id == 'learning_levels') {
     $query->queueTable('taxonomy_term__field_access_by_role',
      'taxonomy_term_field_data', NULL, 'taxonomy_term__field_access_by_role');
-     $query->addWhere('1',
+    $query->addWhere('1',
       'taxonomy_term__field_access_by_role.field_access_by_role_target_id',
        $roles, 'IN');
+  }
+}
+
+/**
+ * Implements hook_link_alter().
+ */
+function trlx_entityqueue_alter_link_alter(&$variables) {
+  if ($variables['text'] == 'Entityqueues') {
+    $variables['text'] = 'Homepage Content';
   }
 }

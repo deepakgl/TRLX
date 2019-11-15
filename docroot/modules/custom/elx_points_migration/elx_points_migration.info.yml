@@ -1,5 +1,0 @@
-name: ELX User Points Migration
-core: 8.x
-package: ELX
-type: module
-description: Module for user points and badge migration

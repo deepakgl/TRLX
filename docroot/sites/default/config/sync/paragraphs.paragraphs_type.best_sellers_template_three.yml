@@ -1,9 +1,0 @@
-uuid: 231a06c2-159b-49a8-8da2-a217690f5ab9
-langcode: en
-status: true
-dependencies: {  }
-id: best_sellers_template_three
-label: ' Product Family'
-icon_uuid: null
-description: ''
-behavior_plugins: {  }
