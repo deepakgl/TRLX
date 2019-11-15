@@ -40,7 +40,7 @@ class JwtMiddleware {
 
       if (!$token) {
         // Unauthorized response if token not there.
-        return $this->errorResponse('Token not provided.', Response::HTTP_UNAUTHORIZED);
+        return $this->errorResponse('Token not provided.', Response::HTTP_FORBIDDEN);
       }
       try {
         $_userData = JWT::decode($token, env('JWT_SECRET'), ['HS256']);
@@ -56,15 +56,15 @@ class JwtMiddleware {
           $_userData->userId = $result->id;
         }
         else {
-          return $this->errorResponse('Provided token is invalid.', Response::HTTP_UNAUTHORIZED);
+          return $this->errorResponse('Provided token is invalid.', Response::HTTP_FORBIDDEN);
         }
       }
       catch (Exception $e) {
-        return $this->errorResponse('An error while decoding token.', 400);
+        return $this->errorResponse('An error while decoding token.', Response::HTTP_FORBIDDEN);
       }
     }
     else {
-      return $this->errorResponse('Provided token is invalid.', Response::HTTP_UNAUTHORIZED);
+      return $this->errorResponse('Provided token is invalid.', Response::HTTP_FORBIDDEN);
     }
     return $next($request);
   }

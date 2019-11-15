@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Drupal\trlx_utility\Transcoder\JwtDecodeException;
 use Drupal\trlx_utility\Transcoder\JwtTranscoder;
 use Drupal\trlx_utility\Utility\CommonUtility;
@@ -30,7 +31,7 @@ class JwtAuth implements AuthenticationProviderInterface {
             throw new BadRequestHttpException('Authorization header is required.');
           }
           if (!$hasJWT = preg_match('/^Bearer (.*)/', $auth, $matches)) {
-            throw new UnprocessableEntityHttpException('Provided token is not valid.');
+            throw new AccessDeniedHttpException('Provided token is not valid.');
           }
         }
       }
@@ -38,10 +39,10 @@ class JwtAuth implements AuthenticationProviderInterface {
     else {
       if (preg_match('/\/api\//', $uri) == 1) {
         if ($auth == NULL) {
-          throw new BadRequestHttpException('Authorization header is required.');
+          throw new AccessDeniedHttpException('Authorization header is required.');
         }
         if (!$hasJWT = preg_match('/^Bearer (.*)/', $auth, $matches)) {
-          throw new UnprocessableEntityHttpException('Provided token is not valid.');
+          throw new AccessDeniedHttpException('Provided token is not valid.');
         }
       }
     }
@@ -58,7 +59,7 @@ class JwtAuth implements AuthenticationProviderInterface {
     $auth_header = $request->headers->get('Authorization');
     $matches = [];
     if (!$hasJWT = preg_match('/^Bearer (.*)/', $auth_header, $matches)) {
-      throw new UnprocessableEntityHttpException('Provided token is not valid.');
+      throw new AccessDeniedHttpException('Provided token is not valid.');
     }
 
     $raw_jwt = $matches[1];
