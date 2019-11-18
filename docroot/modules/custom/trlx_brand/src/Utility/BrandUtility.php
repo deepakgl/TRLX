@@ -37,4 +37,25 @@ class BrandUtility {
     }
   }
 
+  /**
+   * Get all brand keys.
+   *
+   * @return array
+   *   Brand keys.
+   */
+  public static function getAllBrandKeys() {
+    try {
+      $query = \Drupal::database()->select('taxonomy_term__field_brand_key', 'bk');
+      $query->fields('bk', ['field_brand_key_value']);
+      $results = $query->execute()->fetchAll();
+      if (empty($results)) {
+        return [];
+      }
+      return array_column($results, 'field_brand_key_value');
+    }
+    catch (\Exception $e) {
+      return FALSE;
+    }
+  }
+
 }
