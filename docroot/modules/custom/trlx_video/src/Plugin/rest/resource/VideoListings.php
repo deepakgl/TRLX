@@ -66,8 +66,6 @@ class VideoListings extends ResourceBase {
     if (!($response->getStatusCode() === Response::HTTP_OK)) {
       return $response;
     }
-    // Prepare response.
-    $key = ":brand:videos_{$brandId}_{$language}";
 
     // Validation for brand key exists in database.
     $all_brand_keys = $brandUtility->getAllBrandKeys();
@@ -94,6 +92,7 @@ class VideoListings extends ResourceBase {
       return $errorResponse;
     }
 
+    $key = ":brand:videos_{$brandId}_{$language}";
     // Prepare response.
     list($view_results, $status_code) = $entityUtility->fetchApiResult(
       $key,
