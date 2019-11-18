@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Drupal\trlx_utility\Utility\EntityUtility;
 use Drupal\trlx_utility\Utility\CommonUtility;
 use Symfony\Component\HttpFoundation\Response;
+use Drupal\trlx_brand\Utility\BrandUtility;
 
 /**
  * Provides a brand story details resource.
@@ -34,6 +35,7 @@ class BrandStoryDetails extends ResourceBase {
     global $_userData;
     $commonUtility = new CommonUtility();
     $entityUtility = new EntityUtility();
+    $brandUtility = new BrandUtility();
 
     // Required parameters.
     $requiredParams = [
@@ -67,17 +69,10 @@ class BrandStoryDetails extends ResourceBase {
     if (!($response->getStatusCode() === Response::HTTP_OK)) {
       return $response;
     }
-    // Prepare view response for valid brand key.
-    list($view_results, $status_code) = $entityUtility->fetchApiResult(
-      '',
-      'brand_key_validation',
-      'rest_export_brand_key_validation',
-      '',
-      $brandId
-    );
 
-    // Check for empty resultset.
-    if (empty($view_results)) {
+    // Validation for brand key exists in database.
+    $all_brand_keys = $brandUtility->getAllBrandKeys();
+    if (!in_array($brandId, $all_brand_keys)) {
       return $commonUtility->errorResponse($this->t('Brand Id (@brandId) does not exist.', ['@brandId' => $brandId]), Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
