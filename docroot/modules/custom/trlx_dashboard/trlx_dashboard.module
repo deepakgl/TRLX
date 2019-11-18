@@ -133,6 +133,7 @@ function trlx_dashboard_views_pre_render(ViewExecutable $view) {
 function trlx_dashboard_views_query_alter(ViewExecutable $view, $query) {
   if ($view->id() == 'dashboard') {
     $lang_utility = new LangUtility();
+    
     if ($view->current_display == 'dashboard_published' ||
       $view->current_display == 'dashboard_unpublished') {
       $roles = getUserRoles(\Drupal::currentUser()->id());
@@ -166,34 +167,39 @@ function trlx_dashboard_form_alter(&$form, FormStateInterface $form_state, $form
  * Implements hook_entity_operation().
  */
 function trlx_dashboard_entity_operation_alter(array &$operations, EntityInterface $entity) {
-  // Make sure we are modifying only taxonomy entity.
+  // Make sure we are modifying only taxonomy entity and node.
   $entityTypeId = $entity->getEntityTypeId();
-  if ($entityTypeId !== 'taxonomy_term') {
-    return;
-  }
-
-  if (($entity->getVocabularyId() == 'badges') || ($entity->getVocabularyId() == 'learning_category') ||
-   ($entity->getVocabularyId() == 'consumer_category')) {
-    $currentAccount = \Drupal::currentUser();
-    $roles = $currentAccount->getRoles();
-    if (in_array('el_regional_market_admin', $roles)) {
-      if (!empty($entity->id())) {
-        $database = \Drupal::database();
-        $query = $database->select('term_user_relation', 't');
-        $query->fields('t', ['tid', 'vid', 'uid', 'role']);
-        $query->condition('tid', $entity->id());
-        $query->range(0, 1);
-        $response = $query->execute()->fetchAll();
-        if ($response) {
-          $response = (array) $response[0];
-          if ('el_regional_market_admin' !== $response['role']) {
-            unset($operations['edit']);
-            unset($operations['delete']);
+  $currentAccount = \Drupal::currentUser();
+  $roles = $currentAccount->getRoles();
+  if ($entityTypeId === 'taxonomy_term') {
+    # code...
+    if (($entity->getVocabularyId() == 'badges') || ($entity->getVocabularyId() == 'learning_category') ||
+     ($entity->getVocabularyId() == 'consumer_category')) {
+      if (in_array('el_regional_market_admin', $roles)) {
+        if (!empty($entity->id())) {
+          $database = \Drupal::database();
+          $query = $database->select('term_user_relation', 't');
+          $query->fields('t', ['tid', 'vid', 'uid', 'role']);
+          $query->condition('tid', $entity->id());
+          $query->range(0, 1);
+          $response = $query->execute()->fetchAll();
+          if ($response) {
+            $response = (array) $response[0];
+            if ('el_regional_market_admin' !== $response['role']) {
+              unset($operations['edit']);
+              unset($operations['delete']);
+            }
           }
         }
       }
     }
-  }
+  } 
+
+  if (($entityTypeId === 'node') && (in_array('el_regional_market_admin', $roles))) {
+    if (($entity->getType() == 't_c') || ($entity->getType() == 'privacy_policy')) {
+      unset($operations['translate']);
+    }
+  }  
 }
 
 /**
