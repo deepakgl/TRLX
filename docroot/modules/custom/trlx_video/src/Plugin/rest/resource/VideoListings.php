@@ -68,7 +68,7 @@ class VideoListings extends ResourceBase {
     $key = ":brand:videos_{$brandId}_{$language}";
     // Prepare view response for valid brand key.
     list($view_results, $status_code) = $entityUtility->fetchApiResult(
-      '',
+      $key,
       'brand_key_validation',
       'rest_export_brand_key_validation',
       '',

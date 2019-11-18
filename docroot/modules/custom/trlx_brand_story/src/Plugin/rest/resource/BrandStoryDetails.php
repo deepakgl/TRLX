@@ -97,8 +97,9 @@ class BrandStoryDetails extends ResourceBase {
     ];
 
     // Prepare response.
+    $key = ":brand:story_{$brandId}_{$language}";
     list($view_results, $status_code,) = $entityUtility->fetchApiResult(
-      '',
+      $key,
       'brand_story',
       'rest_export_brand_story_details',
       $data, ['language' => $language, 'brand' => $brandId],
