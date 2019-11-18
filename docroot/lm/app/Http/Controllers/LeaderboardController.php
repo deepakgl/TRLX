@@ -364,6 +364,9 @@ class LeaderboardController extends Controller {
    */
   protected function getAllUsersRankInTheSystem($elasticClient, $section = 'region', $section_filter = 0) {
     global $_userData;
+    $this->uid = $_userData->userId;
+    // Check whether elastic connectivity is there.
+    $this->elasticClient = Helper::checkElasticClient();
     $current_user_data = ElasticUserModel::fetchElasticUserData($this->uid, $this->elasticClient);
     $search_param = [
       'index' => getenv("ELASTIC_ENV") . '_user',
