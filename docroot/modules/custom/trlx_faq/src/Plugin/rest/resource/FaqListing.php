@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Drupal\trlx_utility\Utility\CommonUtility;
 use Drupal\trlx_utility\Utility\EntityUtility;
+use Drupal\trlx_brand\Utility\BrandUtility;
 
 /**
  * Provides a FAQ listing resource.
@@ -34,6 +35,7 @@ class FaqListing extends ResourceBase {
     global $_userData;
     $commonUtility = new CommonUtility();
     $entityUtility = new EntityUtility();
+    $brandUtility = new BrandUtility();
 
     $_format = $request->get('_format');
     $language = $request->get('language');
@@ -73,20 +75,13 @@ class FaqListing extends ResourceBase {
       if (!($response->getStatusCode() === Response::HTTP_OK)) {
         return $response;
       }
-      // Validation for valid brand key
-      // Prepare view response for valid brand key.
-      list($view_results, $status_code) = $entityUtility->fetchApiResult(
-        '',
-        'brand_key_validation',
-        'rest_export_brand_key_validation',
-        '',
-        $brand_id
-      );
 
-      // Check for empty resultset.
-      if (empty($view_results)) {
+      // Validation for brand key exists in database.
+      $all_brand_keys = $brandUtility->getAllBrandKeys();
+      if (!in_array($brand_id, $all_brand_keys)) {
         return $commonUtility->errorResponse($this->t('Brand Id (@brandId) does not exist.', ['@brandId' => $brand_id]), Response::HTTP_UNPROCESSABLE_ENTITY);
       }
+
       // Validation for brand key exists in user token or not.
       if (!in_array($brand_id, $_userData->brands)) {
         return $commonUtility->successResponse([], Response::HTTP_OK);

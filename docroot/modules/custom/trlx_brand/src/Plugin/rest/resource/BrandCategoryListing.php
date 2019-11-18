@@ -53,17 +53,17 @@ class BrandCategoryListing extends ResourceBase {
     }
     $brands_list = [];
     $i = 0;
-    foreach ($term_ids as $term) {
-      $data = $this->brandUtility->brandTermData($term);
-      if (!empty($data['brand_logo_target_id']) && !empty($_userData->brands)) {
-        if (in_array($data['brand_key_value'], $_userData->brands)) {
-          $brands_list[$i]['id'] = $data['tid'];
-          $brands_list[$i]['brandKey'] = $data['brand_key_value'];
-          $brands_list[$i]['title'] = $data['name'];
+    $data = $this->brandUtility->brandTermData($term_ids);
+    foreach ($data as $term) {
+      if (!empty($term->brand_logo_target_id) && !empty($_userData->brands)) {
+        if (in_array($term->brand_key_value, $_userData->brands)) {
+          $brands_list[$i]['id'] = $term->tid;
+          $brands_list[$i]['brandKey'] = $term->brand_key_value;
+          $brands_list[$i]['title'] = $term->name;
           // Create image urls for three different display screens.
-          $brands_list[$i]['imageSmall'] = $this->commonUtility->getImageStyleBasedUrl('brands_category_listing_mobile', $data['brand_logo_uri']);
-          $brands_list[$i]['imageMedium'] = $this->commonUtility->getImageStyleBasedUrl('brands_category_listing_tablet', $data['brand_logo_uri']);
-          $brands_list[$i]['imageLarge'] = $this->commonUtility->getImageStyleBasedUrl('brands_category_listing_desktop', $data['brand_logo_uri']);
+          $brands_list[$i]['imageSmall'] = $this->commonUtility->getImageStyleBasedUrl('brands_category_listing_mobile', $term->brand_logo_uri);
+          $brands_list[$i]['imageMedium'] = $this->commonUtility->getImageStyleBasedUrl('brands_category_listing_tablet', $term->brand_logo_uri);
+          $brands_list[$i]['imageLarge'] = $this->commonUtility->getImageStyleBasedUrl('brands_category_listing_desktop', $term->brand_logo_uri);
         }
       }
       $i++;

@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Drupal\trlx_utility\Utility\CommonUtility;
 use Drupal\trlx_utility\Utility\EntityUtility;
+use Drupal\trlx_brand\Utility\BrandUtility;
 
 /**
  * Provides a Fact Sheets listing resource.
@@ -34,6 +35,7 @@ class FactsheetsListing extends ResourceBase {
     global $_userData;
     $commonUtility = new CommonUtility();
     $entityUtility = new EntityUtility();
+    $brandUtility = new BrandUtility();
 
     // Required parameters.
     $requiredParams = [
@@ -68,17 +70,9 @@ class FactsheetsListing extends ResourceBase {
       return $response;
     }
 
-    // Prepare view response for valid brand key.
-    list($view_results, $status_code) = $entityUtility->fetchApiResult(
-      '',
-      'brand_key_validation',
-      'rest_export_brand_key_validation',
-      '',
-      $brandId
-    );
-
-    // Check for empty resultset.
-    if (empty($view_results)) {
+    // Validation for brand key exists in database.
+    $all_brand_keys = $brandUtility->getAllBrandKeys();
+    if (!in_array($brandId, $all_brand_keys)) {
       return $commonUtility->errorResponse($this->t('Brand Id (@brandId) does not exist.', ['@brandId' => $brandId]), Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
@@ -105,7 +99,7 @@ class FactsheetsListing extends ResourceBase {
     // Prepare response.
     $key = ":brand:factsheets_{$brandId}_{$language}";
     list($view_results, $status_code) = $entityUtility->fetchApiResult(
-      '',
+      $key,
       'fact_sheets_list',
       'rest_export_fact_sheets_list',
       $data,
