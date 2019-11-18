@@ -1,0 +1,284 @@
+<?php
+
+/**
+ * @file
+ * TRLX Translation Workflow module file.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
+use Drupal\trlx_utility\Utility\CommonUtility;
+
+/**
+ * Implements hook_form_alter().
+ */
+function trlx_translation_workflow_form_alter(&$form,
+ FormStateInterface $form_state,
+ $form_id) {
+  switch ($form_id) {
+    case 'node_product_detail_form':
+    case 'node_stories_form':
+    case 'node_tools_form':
+    case 'node_level_interactive_content_form':
+    case 'node_brand_story_form':
+    case 'node_faq_form':
+    case 'node_t_c_form':
+    case 'node_privacy_policy_form':
+      $form['status']['widget']['value']['#default_value'] = FALSE;
+      $translation_state =
+      $form['field_translation']['widget']['#default_value'];
+      _prepare_content_states($form, $translation_state);
+      break;
+
+    case 'node_product_detail_edit_form':
+    case 'node_stories_edit_form':
+    case 'node_tools_edit_form':
+    case 'node_level_interactive_content_edit_form':
+    case 'node_brand_story_edit_form':
+    case 'node_faq_edit_form':
+    case 'node_t_c_edit_form':
+    case 'node_privacy_policy_edit_form':
+      $translation_state =
+      $form['field_translation']['widget']['#default_value'];
+      _prepare_content_states($form, $translation_state);
+      break;
+  }
+}
+
+/**
+ * Prepare the workflow states.
+ *
+ * @param array $form
+ *   Form Object.
+ * @param string $translation_state
+ *   Current State of the entity.
+ *
+ * @return array
+ *   Form Object.
+ */
+function _prepare_content_states(array &$form, $translation_state) {
+  // Workflow draft access.
+  $save_access = ($translation_state == 'draft' || empty($translation_state)) ? TRUE : FALSE;
+  // Workflow ready for translation access.
+  $ready_access = ($translation_state == 'draft' || empty($translation_state)) ? TRUE : FALSE;
+  // Workflow published access.
+  $pub_access = ($translation_state == 'draft' || empty($translation_state)) ? TRUE : TRUE;
+  // Workflow unpublished access.
+  $unpub_access = ($translation_state == 'draft' || empty($translation_state)) ? FALSE : TRUE;
+  // Hide published and translation field.
+  $form['status']['#access'] = FALSE;
+  $form['field_translation']['#access'] = FALSE;
+  $worklow_btns = [
+    'submit' => [
+      'Save' => $save_access,
+    ],
+    'ready_for_translation' => [
+      'Ready For Translation' => $ready_access,
+    ],
+    'published' => [
+      'Save as published' => $pub_access,
+    ],
+    'unpublished' => [
+      'Save as unpublished' => $unpub_access,
+    ],
+  ];
+  $i = 5;
+  foreach ($worklow_btns as $key => $value) {
+    // Create the custom submit handlers to handle workflow translation.
+    $form['actions'][$key] = [
+      '#type' => 'submit',
+      '#value' => array_keys($value)[0],
+      '#submit' => ['::submitForm', '_translation_workflow_submit'],
+      '#button_type' => 'primary',
+      '#weight' => $i,
+      '#access' => array_values($value)[0],
+    ];
+    $i++;
+  }
+
+  return $form;
+}
+
+/**
+ * Custom submit handler to handle translation.
+ *
+ * @param array $form
+ *   Form Object.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   Form state object.
+ */
+function _translation_workflow_submit(array &$form,
+FormStateInterface &$form_state) {
+  $entity = $form_state->getFormObject()->getEntity();
+  $entity->set('status', 0);
+  $entity->set('field_translation', 'ready_for_translation');
+  // Handle the workflow based on the states.
+  switch ($form_state->getUserInput()['op']) {
+    case 'Save':
+    case 'Save (this translation)':
+      $entity->set('field_translation', 'draft');
+      break;
+
+    case 'Save as published':
+      $entity->set('status', 1);
+      break;
+  }
+  $entity->save();
+  trlx_translation_workflow_generate_img_styles($entity);
+  // Remove the query destination if any.
+  \Drupal::request()->query->remove('destination');
+  // Redirect to the dashboard page, after entity creation/updation.
+  $url = Url::fromRoute('view.dashboard.dashboard_unpublished');
+  if ($entity->get('status')->getValue()[0]['value'] == 1) {
+    $url = Url::fromRoute('view.dashboard.dashboard_published');
+  }
+  $form_state->setRedirectUrl($url);
+}
+
+/**
+ * Custom method to handle image styles.
+ */
+function trlx_translation_workflow_generate_img_styles($entity) {
+  $commonUtility = new CommonUtility();
+  // Product image.
+  if ($entity->hasField('field_field_product_image')) {
+    $commonUtility->setMediaEntity($entity, 'field_field_product_image', [
+      'product_listings_tablet',
+      'product_listings_mobile',
+      'product_listing_desktop',
+      'search_listings_tablet',
+      'search_listings_desktop',
+      'search_listings_mobile',
+      'bookmark_image_mobile',
+      'bookmark_image_tablet',
+      'bookmark_image_desktop',
+      'stories_level_listing_mobile',
+      'stories_level_listing_tablet',
+      'stories_level_listing_desktop',
+      'media_entity_browser_thumbnail',
+    ]
+    );
+  }
+  // Feature image.
+  if ($entity->hasField('field_featured_image')) {
+    $commonUtility->setMediaEntity($entity, 'field_featured_image', [
+      'level_home_page_tablet',
+      'level_home_page_mobile',
+      'level_home_page_desktop',
+      'product_details_tablet',
+      'product_details_mobile',
+      'product_details_desktop',
+      'brand_story_mobile',
+      'brand_story_desktop',
+      'brand_story_tablet',
+      'story_detail_mobile',
+      'story_detail_desktop',
+      'story_detail_tablet',
+      'insider_corner_detail_mobile',
+      'insider_corner_detail_desktop',
+      'insider_corner_detail_tablet',
+      'spotlight_mobile',
+      'spotlight_desktop',
+      'spotlight_tablet',
+      'search_listings_tablet',
+      'search_listings_desktop',
+      'search_listings_mobile',
+      'bookmark_image_mobile',
+      'bookmark_image_tablet',
+      'bookmark_image_desktop',
+      'trends_homepage_desktop',
+      'trends_homepage_tablet',
+      'trends_homepage_mobile',
+      'insider_corner_hompage_section_desktop',
+      'insider_corner_hompage_section_tablet',
+      'insider_corner_hompage_section_mobile',
+      'media_entity_browser_thumbnail',
+    ]
+    );
+  }
+  // Carousel image.
+  if ($entity->hasField('field_product_carousel')) {
+    $commonUtility->setMediaEntity($entity, 'field_product_carousel', [
+      'carousel_image_mobile',
+      'carousel_image_tablet',
+      'carousel_image_desktop',
+      'media_entity_browser_thumbnail',
+    ]
+    );
+  }
+  // Hero image.
+  if ($entity->hasField('field_hero_image')) {
+    $commonUtility->setMediaEntity($entity, 'field_hero_image', [
+      'listing_image_mobile',
+      'listing_image_tablet',
+      'listing_image_desktop',
+      'trends_homepage_tablet',
+      'trends_homepage_mobile',
+      'trends_homepage_desktop',
+      'insider_corner_hompage_section_mobile',
+      'insider_corner_hompage_section_tablet',
+      'insider_corner_hompage_section_desktop',
+      'stories_listing_mobile',
+      'stories_listing_desktop',
+      'stories_listing_tablet',
+      'levels_mobile_module',
+      'levels_module_desktop',
+      'levels_module_tablet',
+      'search_listings_tablet',
+      'search_listings_desktop',
+      'search_listings_mobile',
+      'bookmark_image_mobile',
+      'bookmark_image_tablet',
+      'bookmark_image_desktop',
+      'stories_level_listing_mobile',
+      'stories_level_listing_tablet',
+      'stories_level_listing_desktop',
+      'media_entity_browser_thumbnail',
+    ]
+    );
+  }
+  // Video image.
+  if ($entity->hasField('field_tool_thumbnail')) {
+    $commonUtility->setMediaEntity($entity, 'field_tool_thumbnail', [
+      'video_listing_mobile',
+      'video_listing_desktop',
+      'video_listing_tablet',
+      'video_detail_mobile',
+      'video_detail_desktop',
+      'video_detail_tablet',
+      'search_listings_tablet',
+      'search_listings_desktop',
+      'search_listings_mobile',
+      'bookmark_image_mobile',
+      'bookmark_image_tablet',
+      'bookmark_image_desktop',
+      'media_entity_browser_thumbnail',
+    ]
+    );
+  }
+  // Spotlight mobile image.
+  if ($entity->hasField('field_image_home_page')) {
+    $commonUtility->setMediaEntity($entity, 'field_image_home_page', [
+      'spotlight_mobile',
+      'media_entity_browser_thumbnail',
+    ]
+    );
+  }
+  // Video thumbnail image.
+  if ($entity->hasField('field_video_thumbnail')) {
+    $commonUtility->setMediaEntity($entity, 'field_video_thumbnail', [
+      'video_thumbnail_desktop',
+      'video_thumbnail_tablet',
+      'video_thumbnail_mobile',
+    ]
+    );
+  }
+  if ($entity->hasField('field_product_video_thumbnail')) {
+    $commonUtility->setMediaEntity($entity, 'field_product_video_thumbnail', [
+      'video_thumbnail_desktop',
+      'video_thumbnail_tablet',
+      'video_thumbnail_mobile',
+    ]
+    );
+  }
+}
