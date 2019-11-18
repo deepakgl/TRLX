@@ -87,7 +87,7 @@ class SellingTipsListing extends ResourceBase {
     // Fetch stories bundle content response.
     $key = ":listing:selling_tips_{$language}";
     list($content_view_results, $term_status_code) = $entityUtility->fetchApiResult(
-      $key,
+      '',
       'selling_tips',
       'rest_export_selling_tips_content_listing',
       '',
