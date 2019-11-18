@@ -173,6 +173,7 @@ function elx_utility_clear_redis_cache($patterns) {
  */
 function elx_utility_entity_insert(EntityInterface $entity) {
   $commonUtility = new CommonUtility();
+  $env = \Drupal::config('elx_utility.settings')->get('elx_environment');
   if ($entity->getEntityTypeId() == 'node') {
     switch ($entity->gettype()) {
       case 'level_interactive_content':
@@ -180,7 +181,6 @@ function elx_utility_entity_insert(EntityInterface $entity) {
         break;
 
       case 'stories':
-        $env = \Drupal::config('elx_utility.settings')->get('elx_environment');
         $contentSection = $entity->get('field_content_section')->referencedEntities();
         $contentSectionkey = (!empty($contentSection)) ? (array_shift($contentSection)->get('field_content_section_key')->value) : '';
         $lang_code = $entity->language()->getId();
@@ -278,6 +278,7 @@ function elx_utility_entity_insert(EntityInterface $entity) {
  */
 function elx_utility_entity_update(EntityInterface $entity) {
   $commonUtility = new CommonUtility();
+  $env = \Drupal::config('elx_utility.settings')->get('elx_environment');
   if ($entity->getEntityTypeId() == 'node') {
     switch ($entity->gettype()) {
       case 'level_interactive_content':
@@ -285,7 +286,6 @@ function elx_utility_entity_update(EntityInterface $entity) {
         break;
 
       case 'stories':
-        $env = \Drupal::config('elx_utility.settings')->get('elx_environment');
         $contentSection = $entity->get('field_content_section')->referencedEntities();
         $contentSectionkey = (!empty($contentSection)) ? (array_shift($contentSection)->get('field_content_section_key')->value) : '';
         $lang_code = $entity->language()->getId();
