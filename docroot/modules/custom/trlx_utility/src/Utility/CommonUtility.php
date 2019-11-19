@@ -31,15 +31,15 @@ class CommonUtility {
    *   Response data.
    * @param int $code
    *   Response code.
-   * @param array $pager
+   * @param mixed $pager
    *   Response if pager is there.
    * @param string $res
    *   Param if result is from view.
-   * @param array $faq_id
+   * @param mixed $faq_id
    *   Param if faq id is there.
-   * @param array $faq_point_value
+   * @param mixed $faq_point_value
    *   Param if faq point value is there.
-   * @param array $extraData
+   * @param mixed $extraData
    *   Extra data.
    *
    * @return Illuminate\Http\JsonResponse
@@ -87,11 +87,13 @@ class CommonUtility {
    *   Language code.
    * @param \Symfony\Component\HttpFoundation\Request $request
    *   Request object.
+   * @param bool $skipRequestCheck
+   *   Request check.
    *
    * @return \Symfony\Component\HttpFoundation\JsonResponse
    *   Json response.
    */
-  public function validateLanguageCode($langcode, $request, $skipRequestCheck = FALSE) {
+  public function validateLanguageCode($langcode, Request $request, $skipRequestCheck = FALSE) {
     if ((!$request->query->has('language') || empty($langcode)) && empty($skipRequestCheck)) {
       return $this->errorResponse(t('Language parameter is required.'), Response::HTTP_BAD_REQUEST);
     }
@@ -115,7 +117,7 @@ class CommonUtility {
    * @return \Symfony\Component\HttpFoundation\JsonResponse
    *   Json response.
    */
-  public function validateFormat($_format, $request) {
+  public function validateFormat($_format, Request $request) {
     if (!$request->query->has('_format') || empty($_format)) {
       return $this->errorResponse(t('"_format" parameter is required.'), Response::HTTP_BAD_REQUEST);
     }
@@ -167,6 +169,10 @@ class CommonUtility {
    *   Limit and offset.
    */
   public function getPagerParam(Request $request, $limit_default = 10, $offset_default = 0) {
+    if ($request->query->has('limit') && $request->query->get('limit') == 0) {
+      $errResponse = $this->errorResponse(t('Please provide only positive numeric value parameter.'), Response::HTTP_UNPROCESSABLE_ENTITY);
+      return [$limit, $offset, $errResponse];
+    }
     $limit = $request->query->get('limit') ? $request->query->get('limit') : $limit_default;
     $err = [];
     if (!is_numeric($limit) || $limit < 0) {
@@ -338,7 +344,7 @@ class CommonUtility {
    * @return \Symfony\Component\HttpFoundation\JsonResponse
    *   Json response.
    */
-  public function validateStorySectionCode($name, $request) {
+  public function validateStorySectionCode($name, Request $request) {
     if (!$request->query->has('section') || empty($name)) {
       return $this->errorResponse(t('Section parameter is required.'), Response::HTTP_BAD_REQUEST);
     }

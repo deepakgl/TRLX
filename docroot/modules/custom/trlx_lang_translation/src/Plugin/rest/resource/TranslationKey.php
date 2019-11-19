@@ -73,8 +73,9 @@ class TranslationKey extends ResourceBase {
       return new JsonResponse('Invalid language code', 400, [], FALSE);
     }
     // Prepare view response.
+    $key = ":translation_key_{$language}";
     list($view_results, $status_code) = $entity_utility
-      ->fetchApiResult(NULL, 'static_translation_api',
+      ->fetchApiResult($key, 'static_translation_api',
     'rest_export_static_translation_api', NULL, $language_code);
 
     // Check for empty / no result from views.

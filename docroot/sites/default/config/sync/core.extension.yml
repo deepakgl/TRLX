@@ -33,7 +33,6 @@ module:
   editor_file: 0
   elasticsearch_connector: 0
   elc_password_policy: 0
-  elx_translation_workflow: 0
   elx_user: 0
   elx_utility: 0
   embed: 0
@@ -86,8 +85,6 @@ module:
   serialization: 0
   shortcut: 0
   simple_menu_icons: 0
-  simple_oauth: 0
-  simple_oauth_extras: 0
   single_user_role: 0
   superfish: 0
   svg_image: 0
@@ -121,6 +118,7 @@ module:
   trlx_static_translation: 0
   trlx_story: 0
   trlx_tnc_privacy_policy: 0
+  trlx_translation_workflow: 0
   trlx_trends: 0
   trlx_user: 0
   trlx_utility: 0

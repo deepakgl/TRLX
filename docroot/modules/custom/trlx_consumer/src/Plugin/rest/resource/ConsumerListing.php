@@ -85,7 +85,7 @@ class ConsumerListing extends ResourceBase {
     $key = ":listing:consumers_{$language}";
     // Fetch stories bundle content response.
     list($content_view_results, $term_status_code) = $entityUtility->fetchApiResult(
-      $key,
+      '',
       'consumer',
       'rest_export_consumer_stories_listing',
       '',
