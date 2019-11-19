@@ -66,6 +66,7 @@ function trlx_learning_levels_form_alter(&$form, FormStateInterface $form_state,
   switch ($form_id) {
     case 'node_level_interactive_content_form':
     case 'node_level_interactive_content_edit_form':
+
       // Add custom validation for intractive content.
       $form['#validate'][] = 'trlx_learning_levels_validate';
       // Disable field on the basic of Brand.
@@ -95,17 +96,37 @@ function trlx_learning_levels_form_alter(&$form, FormStateInterface $form_state,
 
       // Disable brand related content section for MA.
       $category = $form['field_content_section']['widget']['#options'];
-      if ((!empty($category)) && (in_array('el_regional_market_admin', $roles))) {
-        foreach ($category as $key => $value) {
-          $value = $levelUtility->getBrandNonAgnostic($key);
-          unset($form['field_content_section']['widget']['#options'][$value]);
+      $current_url = \Drupal::service('path.current')->getPath();
+      $current_path = explode("/",$current_url);  
+      
+      $field_brand_status = 1;
+      if (($current_path[1] == 'taxonomy') && ($current_path[2] =='term') && ($current_path[4] == 'edit')) {
+        if (is_numeric($current_path[3])) {
+          $query = \Drupal::database()->select('term_user_relation', 't');
+          $query->fields('t');
+          $query->condition('t.tid', $current_path[3]);
+          $query->range(0, 1);
+          $result = $query->execute()->fetchAll();
+
+          if ((!empty($result)) && ($result[0]->role == 'el_nyo_global_education_system_admin')) {
+            $field_brand_status = 0;
+          }   
         }
       }
-
-      if (in_array('el_regional_market_admin', $roles)) {
-        unset($form['field_brands']);
+      
+      if ((!empty($category)) && (in_array('el_regional_market_admin', $roles))) {
+        $contentSectionValue = $form['field_content_section'][widget]['#default_value'];
+        foreach ($category as $key => $value) {
+          $value = $levelUtility->getBrandNonAgnostic($key);
+          if (($field_brand_status == 0) && (in_array($value, $contentSectionValue)))  {
+            $form['field_content_section']['#disabled'] = true;
+            break;
+          } else {
+            unset($form['field_content_section']['widget']['#options'][$value]);
+            unset($form['field_brands']);
+          }
+        }
       }
-
       break;
 
     default:
