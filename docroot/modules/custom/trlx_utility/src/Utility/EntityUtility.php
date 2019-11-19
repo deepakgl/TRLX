@@ -187,6 +187,19 @@ class EntityUtility {
     return [$view_results, $status_code];
   }
 
+  /**
+   * Private function to set Redis Cache if data is available.
+   *
+   * @param array $redis_key
+   *   Redis Key.
+   * @param object $redis_client
+   *   Redis Client Object.
+   * @param array $view_results
+   *   View Results.
+   *
+   * @return boolean
+   *   TRUE or FALSE.
+   */
   private function setRedisCache($redis_key, $redis_client, $view_results) {
     // Only set redis cache if there is some data.
     $decode = array_filter(JSON::decode($view_results, TRUE));
@@ -196,7 +209,9 @@ class EntityUtility {
         $response = $response->getContent();
       }
       $redis_client->set($response, $redis_key[0], $redis_key[1], $redis_key[2]);
+      return TRUE;
     }
+    return FALSE;
   }
 
   /**
