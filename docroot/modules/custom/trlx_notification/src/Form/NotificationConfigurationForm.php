@@ -36,6 +36,7 @@ class NotificationConfigurationForm extends ConfigFormBase {
   const CONSUMER_LEVEL_HEADING = 'consumer_level_heading';
   const COMMENT_TAGS_HEADING = 'comment_tags_heading';
   const STAMPS_HEADING = 'stamps_heading';
+  const PUSH_NOTIFICATION_URL = 'push_notification_url';
 
   /**
    * {@inheritdoc}
@@ -102,6 +103,12 @@ class NotificationConfigurationForm extends ConfigFormBase {
       self::HASH_TYPE => self::TEXTFIELD,
       self::HASH_TITLE => $this->t('User elasticsearch index type'),
       self::HASH_DEFAULT_VALUE => $config->get(self::USER_INDEX_TYPE),
+      self::HASH_REQUIRED => TRUE,
+    ];
+    $form[self::PUSH_NOTIFICATION_URL] = [
+      self::HASH_TYPE => self::TEXTFIELD,
+      self::HASH_TITLE => $this->t('Push notification endpoint.'),
+      self::HASH_DEFAULT_VALUE => $config->get(self::PUSH_NOTIFICATION_URL),
       self::HASH_REQUIRED => TRUE,
     ];
     $form[self::DELETE_NOTIFICATIONS] = [
