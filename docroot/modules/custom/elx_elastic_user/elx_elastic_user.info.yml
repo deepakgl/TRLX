@@ -1,5 +1,0 @@
-name: ELX Elastic User
-type: module
-description: Manipluate with Elastic Users Data.
-core: 8.x
-package: ELX
