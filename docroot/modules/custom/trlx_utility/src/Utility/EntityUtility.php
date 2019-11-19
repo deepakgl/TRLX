@@ -197,10 +197,10 @@ class EntityUtility {
    * @param array $view_results
    *   View Results.
    *
-   * @return boolean
+   * @return bool
    *   TRUE or FALSE.
    */
-  private function setRedisCache($redis_key, $redis_client, $view_results) {
+  private function setRedisCache(array $redis_key, $redis_client, array $view_results) {
     // Only set redis cache if there is some data.
     $decode = array_filter(JSON::decode($view_results, TRUE));
     if (!empty($redis_key[1])) {

@@ -5,7 +5,6 @@ dependencies:
   module:
     - elx_user
     - serialization
-    - simple_oauth
 id: user_logout
 plugin_id: user_logout
 granularity: resource
@@ -14,5 +13,3 @@ configuration:
     - POST
   formats:
     - json
-  authentication:
-    - oauth2
