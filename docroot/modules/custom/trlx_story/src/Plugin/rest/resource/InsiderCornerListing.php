@@ -83,7 +83,7 @@ class InsiderCornerListing extends ResourceBase {
     }
 
     // Prepare view response.
-    $key = ":listing:insider_corner_{$language}";
+    $key = ":listing:insider_corner_{$language}_{$limit}_{$offset}";
     list($view_results, $status_code) = $entityUtility->fetchApiResult(
       $key,
       'insider_corner',

@@ -92,7 +92,7 @@ class VideoListings extends ResourceBase {
       return $errorResponse;
     }
 
-    $key = ":brand:videos_{$brandId}_{$language}";
+    $key = ":brand:videos_{$brandId}_{$language}_{$limit}_{$offset}";
     // Prepare response.
     list($view_results, $status_code) = $entityUtility->fetchApiResult(
       $key,
