@@ -165,6 +165,10 @@ class EntityUtility {
         // Fetch result from respective view.
         list($view_results, $status_code) = $this->getViewContent($view_name, $current_display, $filter, $data, $type, $field_replace);
 
+        // Creating Redis connection object.
+        list($cached_data, $redis_client) =
+        RedisClientBuilder::getRedisClientObject($key);
+
         // Only set redis cache if there is some data.
         $this->setRedisCache($redis_key, $redis_client, $view_results);
 
