@@ -4,7 +4,6 @@ status: false
 dependencies:
   module:
     - serialization
-    - simple_oauth
     - user
 id: entity.user
 plugin_id: 'entity:user'
@@ -17,5 +16,3 @@ configuration:
     - PATCH
   formats:
     - json
-  authentication:
-    - oauth2
