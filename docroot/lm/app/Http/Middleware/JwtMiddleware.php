@@ -53,9 +53,12 @@ class JwtMiddleware {
         $query->where('ur.uid', '=', $_userData->uid);
         $result = $query->get()->first();
         if ($result != NULL) {
+          if ($_userData->status == 0) {
+            return $this->errorResponse('Unauthorized or inactive user.', Response::HTTP_FORBIDDEN);
+          }
           $_userData->userId = $result->id;
         }
-        elseif ($_userData->status == 0 || $result == NULL) {
+        elseif ($result == NULL) {
           return $this->errorResponse('Unauthorized or inactive user.', Response::HTTP_FORBIDDEN);
         }
       }
