@@ -152,9 +152,14 @@ class LearningLevels extends ResourceBase {
 
     $data = array_values(array_filter($decode['results']));
     $decode['results'] = array_slice($data, $offset, $limit);
-    $decode['pager']['count'] = count($data) - $offset;
-    $decode['pager']['pages'] = ceil(count($data) / $limit);
-    $decode['pager']['items_per_page'] = $limit;
+    $pagerCount = (count($data) - $offset);
+    $pages = ceil($pagerCount / $limit);
+    $decode['pager']['count'] = $pagerCount;
+    $decode['pager']['pages'] = $pages;
+    $decode['pager']['items_per_page'] = (int) $limit;
+    if (empty($decode['results'])) {
+      unset($decode['pager']);
+    }
 
     return $decode;
   }
