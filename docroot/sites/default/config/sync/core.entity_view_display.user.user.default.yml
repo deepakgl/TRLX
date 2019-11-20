@@ -3,7 +3,6 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.user.user.feeds_item
     - field.field.user.user.field_account_field_executive
     - field.field.user.user.field_account_name
     - field.field.user.user.field_ar_search_access
@@ -222,7 +221,6 @@ content:
     third_party_settings: {  }
     label: hidden
 hidden:
-  feeds_item: true
   field_account_name: true
   field_ar_search_access: true
   field_badges: true
