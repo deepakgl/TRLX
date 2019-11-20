@@ -129,7 +129,7 @@ class NotificationUtility {
    * @return object
    *   Elastic client.
    */
-  public static function getUsersBasedOnBrandsAndMarkets($markets, $brand_key = []) {
+  public static function getUsersBasedOnBrandsAndMarkets($markets, $brand_key = [], $userExternalId = FALSE) {
     $commonUtility = new CommonUtility();
     $config = \Drupal::config('trlx_notification.settings');
     $client = NotificationUtility::getElasticClient();
@@ -145,7 +145,7 @@ class NotificationUtility {
     else {
       $uid = [];
       foreach ($data['hits']['hits'] as $key => $value) {
-        $uid[] = $value['_source']['uid'];
+        $uid[] = $userExternalId ? $value['_source']['userExternalId'] : $value['_source']['uid'];
       }
     }
     return $uid;

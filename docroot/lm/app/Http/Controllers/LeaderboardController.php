@@ -291,7 +291,7 @@ class LeaderboardController extends Controller {
       "pages" => ($pages > 0) ? (int) $pages : 0,
       "items_per_page" => (int) $limit,
       "current_page" => 0,
-      "next_page" => 0,
+      "next_page" => ($pages > 1) ? 1 : 0,
     ];
     return $response;
   }
