@@ -6,8 +6,6 @@
  */
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\views\ViewExecutable;
-use Drupal\elx_user\Utility\UserUtility;
 
 /**
  * Implements hook_form_alter().

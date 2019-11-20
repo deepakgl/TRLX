@@ -1,6 +1,6 @@
 uuid: 2320184a-d440-4163-8d8f-569070d51190
 langcode: en
-status: true
+status: false
 dependencies:
   config:
     - taxonomy.vocabulary.markets
