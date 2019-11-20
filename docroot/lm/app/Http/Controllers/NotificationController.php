@@ -303,7 +303,7 @@ class NotificationController extends Controller {
         return $this->errorResponse('No alive nodes found in cluster.', Response::HTTP_INTERNAL_SERVER_ERROR);
       }
       if (is_null($ids)) {
-        return $this->successResponse(null, Response::HTTP_OK);
+        return $this->successResponse(NULL, Response::HTTP_OK);
       }
       foreach ($ids as $value) {
         $params = [
