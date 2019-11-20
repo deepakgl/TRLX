@@ -1,14 +1,14 @@
 uuid: b17bb6f0-b823-4bd2-be6e-d572b2f3c02a
 langcode: en
-status: true
+status: false
 dependencies:
   config:
     - taxonomy.vocabulary.videos
   module:
-    - elx_utility
     - rest
     - serialization
     - taxonomy
+    - trlx_utility
     - user
 id: video_category
 label: 'Video Category'
@@ -372,6 +372,7 @@ display:
             tid:
               alias: categoryId
               raw_output: false
+      enabled: false
     cache_metadata:
       max-age: -1
       contexts:

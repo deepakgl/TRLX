@@ -6,8 +6,6 @@ use Drupal\views\Views;
 use Drupal\Component\Serialization\Json;
 use Drupal\Component\Utility\Html;
 use Drupal\trlx_utility\RedisClientBuilder;
-// fixMe.
-use Drupal\elx_user\Utility\UserUtility;
 use Symfony\Component\HttpFoundation\Response;
 use Drupal\Core\Site\Settings;
 
@@ -20,8 +18,6 @@ class EntityUtility {
    * Class constructor.
    */
   public function __construct() {
-    $this->userUtility = new UserUtility();
-    // fixMe.
     $this->config = \Drupal::config('elx_utility.settings');
     $this->configuration = \Drupal::config('trlx_utility.settings');
     $this->commonUtility = new CommonUtility();
@@ -40,7 +36,7 @@ class EntityUtility {
    *   Response key value pair.
    * @param string $type
    *   Content type.
-   * @param array $field_replace
+   * @param mixed $field_replace
    *   Fields to replace.
    *
    * @return markup
@@ -131,13 +127,13 @@ class EntityUtility {
    *   View name.
    * @param mixed $current_display
    *   View current display.
-   * @param array $data
+   * @param mixed $data
    *   Response key value pair.
    * @param mixed $filter
    *   View contextual filter.
    * @param string $type
    *   Content type.
-   * @param array $field_replace
+   * @param mixed $field_replace
    *   Fields to replace.
    *
    * @return json
@@ -223,11 +219,11 @@ class EntityUtility {
    *
    * @param mixed $output
    *   View output.
-   * @param array $data
+   * @param mixed $data
    *   Response key value pair.
-   * @param array $field_replace
+   * @param mixed $field_replace
    *   Fields to replace.
-   * @param array $field_remove
+   * @param mixed $field_remove
    *   Fields to remove.
    *
    * @return json
@@ -325,7 +321,7 @@ class EntityUtility {
    *
    * @param mixed $output
    *   View output.
-   * @param array $data
+   * @param mixed $data
    *   Response key value pair.
    * @param string $type
    *   Content type.

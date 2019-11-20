@@ -32,7 +32,6 @@ module:
   editor: 0
   editor_file: 0
   elasticsearch_connector: 0
-  elc_password_policy: 0
   elx_user: 0
   elx_utility: 0
   embed: 0
