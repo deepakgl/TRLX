@@ -3,7 +3,6 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.user.user.feeds_item
     - field.field.user.user.field_account_field_executive
     - field.field.user.user.field_account_name
     - field.field.user.user.field_ar_search_access
@@ -139,7 +138,6 @@ content:
     region: content
 hidden:
   contact: true
-  feeds_item: true
   field_account_field_executive: true
   field_account_name: true
   field_ar_search_access: true
