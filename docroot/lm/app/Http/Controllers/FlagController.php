@@ -109,7 +109,7 @@ class FlagController extends Controller {
 
     // Check empty user activities.
     if (empty($user_activities)) {
-      return $this->successResponse(null, Response::HTTP_OK);
+      return $this->successResponse(NULL, Response::HTTP_OK);
     }
 
     $message = $user_activities[0] + [
@@ -420,7 +420,7 @@ class FlagController extends Controller {
       "pages" => $pages,
       "items_per_page" => (int) $this->limit,
       "current_page" => 0,
-      "next_page" => 0,
+      "next_page" => ($pages > 1) ? 1 : 0,
     ];
     header('Content-language: ' . $lang);
     if (empty($results['bookmark'])) {

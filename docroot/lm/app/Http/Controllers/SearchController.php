@@ -116,6 +116,8 @@ class SearchController extends Controller {
     $validatedData = $this->validate($request, [
       '_format' => 'required|format',
       'language' => 'required|languagecode',
+      'limit' => 'sometimes|required|integer|min:0',
+      'offset' => 'sometimes|required|integer|min:0',
     ]);
     // Check elastic client.
     $client = Helper::checkElasticClient();
@@ -129,12 +131,6 @@ class SearchController extends Controller {
     }
     if (strlen(trim($this->search)) < 3) {
       return $this->errorResponse('You must include at least one positive keyword with 3 characters or more.', Response::HTTP_UNPROCESSABLE_ENTITY);
-    }
-    if ($request->query->has('limit') && (!is_numeric($request->input('limit')) || $request->input('limit') < 0)) {
-      return $this->errorResponse('Please provide only positive numeric value parameter for limit.', Response::HTTP_UNPROCESSABLE_ENTITY);
-    }
-    if ($request->query->has('offset') && (!is_numeric($request->input('offset')) || $request->input('offset') < 0)) {
-      return $this->errorResponse('Please provide only positive numeric value parameter for offset.', Response::HTTP_UNPROCESSABLE_ENTITY);
     }
     // Fetch the search response from elastic.
     $data = $client->search($this->query);
@@ -346,7 +342,7 @@ class SearchController extends Controller {
         "pages" => ceil($total_count / $this->limit),
         "items_per_page" => $this->limit,
         "current_page" => 0,
-        "next_page" => 1,
+        "next_page" => (ceil($total_count / $this->limit) > 1) ? 1 : 0,
       ];
     }
 
