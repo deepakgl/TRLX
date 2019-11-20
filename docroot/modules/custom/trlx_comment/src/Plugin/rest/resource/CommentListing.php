@@ -82,11 +82,13 @@ class CommentListing extends ResourceBase {
     }
     $slicedCommentArray = array_slice($commentsArray, $offset, $limit);
     $pager = [];
-    $pager['count'] = count($commentsArray) - $offset;
-    $pager['pages'] = ceil(count($commentsArray) / $limit);
+    $pagerCount = count($commentsArray) - $offset;
+    $pages = ceil($pagerCount / $limit);
+    $pager['count'] = $pagerCount;
+    $pager['pages'] = $pages;
     $pager['items_per_page'] = (int) $limit;
     $pager['current_page'] = 0;
-    $pager['next_page'] = 0;
+    $pager['next_page'] = ($pages > 1) ? 1 : 0;
     if (!empty($slicedCommentArray)) {
       return $commonUtility->successResponse($slicedCommentArray, Response::HTTP_OK, $pager);
     }

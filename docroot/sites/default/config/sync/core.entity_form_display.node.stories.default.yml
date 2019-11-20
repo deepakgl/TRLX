@@ -29,7 +29,6 @@ dependencies:
     - field.field.node.stories.field_product_categories
     - field.field.node.stories.field_product_family
     - field.field.node.stories.field_pulsed_content
-    - field.field.node.stories.field_quiz
     - field.field.node.stories.field_related_products_stories
     - field.field.node.stories.field_related_stories
     - field.field.node.stories.field_social_media_handles
@@ -374,7 +373,6 @@ hidden:
   field_product_categories: true
   field_product_family: true
   field_pulsed_content: true
-  field_quiz: true
   field_related_products_stories: true
   field_related_stories: true
   field_tags: true

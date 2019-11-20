@@ -1,7 +1,0 @@
-elx_elastic_user.update_elastic_user:
-  path: '/admin/update-elastic-user'
-  defaults:
-    _form: '\Drupal\elx_elastic_user\Form\UpdateElasticUserForm'
-    _title: 'Elastic User Updation Process'
-  requirements:
-    _permission: 'access content'

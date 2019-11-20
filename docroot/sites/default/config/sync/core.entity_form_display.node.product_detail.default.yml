@@ -36,7 +36,6 @@ dependencies:
     - field.field.node.product_detail.field_product_video_thumbnail
     - field.field.node.product_detail.field_related_products
     - field.field.node.product_detail.field_related_products_stories
-    - field.field.node.product_detail.field_related_products_tools
     - field.field.node.product_detail.field_related_products_videos
     - field.field.node.product_detail.field_season
     - field.field.node.product_detail.field_story
@@ -312,7 +311,6 @@ hidden:
   field_product_family: true
   field_related_products: true
   field_related_products_stories: true
-  field_related_products_tools: true
   field_related_products_videos: true
   field_season: true
   field_story: true
