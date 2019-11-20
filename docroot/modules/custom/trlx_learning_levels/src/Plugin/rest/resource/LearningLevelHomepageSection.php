@@ -148,7 +148,11 @@ class LearningLevelHomepageSection extends ResourceBase {
       $result_array = [];
       foreach ($result as $key => $value) {
         $value = (array) $value;
-        $result_array[$key] = $value;
+        // Check for term exist
+        $term = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($value['tid']);
+        if (!empty($term)) {
+          $result_array[$key] = $value;
+        }
       }
 
       // Early return.
