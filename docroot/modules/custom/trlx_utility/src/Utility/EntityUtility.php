@@ -150,9 +150,7 @@ class EntityUtility {
     // fixMe.
     $key = $this->config->get('elx_environment') . $key;
     $redis_key = explode(':', $key);
-    // Get current user roles.
-    // fixMe.
-    $roles = $this->userUtility->getUserRoles(\Drupal::currentUser()->id());
+
     if (!empty($redis_key[1])) {
       try {
         // Creating Redis connection object.
@@ -167,19 +165,20 @@ class EntityUtility {
         // Fetch result from respective view.
         list($view_results, $status_code) = $this->getViewContent($view_name, $current_display, $filter, $data, $type, $field_replace);
 
+        // Creating Redis connection object.
+        list($cached_data, $redis_client) =
+        RedisClientBuilder::getRedisClientObject($key);
+
+        // Only set redis cache if there is some data.
+        $this->setRedisCache($redis_key, $redis_client, $view_results);
+
         return [$view_results, $status_code];
       }
       // Fetch result from respective view.
       list($view_results, $status_code) = $this->getViewContent($view_name, $current_display, $filter, $data, $type, $field_replace);
+
       // Only set redis cache if there is some data.
-      $decode = array_filter(JSON::decode($view_results, TRUE));
-      if (!empty($redis_key[1])) {
-        $response = JSON::encode($view_results);
-        if (is_object($response)) {
-          $response = $response->getContent();
-        }
-        $redis_client->set($response, $redis_key[0], $redis_key[1], $redis_key[2]);
-      }
+      $this->setRedisCache($redis_key, $redis_client, $view_results);
 
       return [$view_results, $status_code];
     }
@@ -190,6 +189,33 @@ class EntityUtility {
       $view_results['pager']['count'] = (int) $view_results['pager']['count'];
     }
     return [$view_results, $status_code];
+  }
+
+  /**
+   * Private function to set Redis Cache if data is available.
+   *
+   * @param array $redis_key
+   *   Redis Key.
+   * @param object $redis_client
+   *   Redis Client Object.
+   * @param array $view_results
+   *   View Results.
+   *
+   * @return bool
+   *   TRUE or FALSE.
+   */
+  private function setRedisCache(array $redis_key, $redis_client, array $view_results) {
+    // Only set redis cache if there is some data.
+    $decode = array_filter(JSON::decode($view_results, TRUE));
+    if (!empty($redis_key[1])) {
+      $response = JSON::encode($view_results);
+      if (is_object($response)) {
+        $response = $response->getContent();
+      }
+      $redis_client->set($response, $redis_key[0], $redis_key[1], $redis_key[2]);
+      return TRUE;
+    }
+    return FALSE;
   }
 
   /**

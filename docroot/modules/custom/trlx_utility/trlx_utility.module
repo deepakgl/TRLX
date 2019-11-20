@@ -634,7 +634,6 @@ function trlx_utility_views_query_alter(ViewExecutable $view, $query) {
     'rest_export_level_interactive_content',
     'rest_export_tools_listing',
     'rest_export_fact_sheets_list',
-    'rest_export_learning_levels',
     'rest_export_insider_corner_listing',
     'rest_export_selling_tips_learning_level_listing',
     'rest_export_consumer_learning_level_listing',
