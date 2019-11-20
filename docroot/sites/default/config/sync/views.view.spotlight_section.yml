@@ -16,7 +16,6 @@ dependencies:
     - node.type.product_detail
     - node.type.stories
     - node.type.tools
-    - node.type.tools-pdf
     - taxonomy.vocabulary.markets
   module:
     - entityqueue
@@ -1701,7 +1700,6 @@ display:
             level_interactive_content: level_interactive_content
             product_detail: product_detail
             stories: stories
-            tools-pdf: tools-pdf
             tools: tools
           group: 1
           exposed: false
