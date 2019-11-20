@@ -15,7 +15,7 @@ class TrlxPathProcessor implements OutboundPathProcessorInterface {
    * {@inheritdoc}
    */
   public function processOutbound($path, &$options = [], Request $request = NULL, BubbleableMetadata $bubbleable_metadata = NULL) {
-    if (($path == 'dashboard/published') || ($path == 'dashboard/unpublished'))  {
+    if (($path == 'dashboard/published') || ($path == 'dashboard/unpublished')) {
       unset($options['query']['destination']);
     }
     return $path;
