@@ -100,7 +100,7 @@ function trlx_learning_levels_form_alter(&$form, FormStateInterface $form_state,
       $current_path = explode("/",$current_url);  
       
       $field_brand_status = 1;
-      if (($current_path[1] == 'taxonomy') && ($current_path[2] =='term') && ($current_path[4] == 'edit')) {
+      if (($current_path[1] == 'taxonomy') && ($current_path[2] =='term')) {
         if (is_numeric($current_path[3])) {
           $query = \Drupal::database()->select('term_user_relation', 't');
           $query->fields('t');
@@ -115,7 +115,7 @@ function trlx_learning_levels_form_alter(&$form, FormStateInterface $form_state,
       }
       
       if ((!empty($category)) && (in_array('el_regional_market_admin', $roles))) {
-        $contentSectionValue = $form['field_content_section'][widget]['#default_value'];
+        $contentSectionValue = $form['field_content_section']['widget']['#default_value'];
         foreach ($category as $key => $value) {
           $value = $levelUtility->getBrandNonAgnostic($key);
           if (($field_brand_status == 0) && (in_array($value, $contentSectionValue)))  {

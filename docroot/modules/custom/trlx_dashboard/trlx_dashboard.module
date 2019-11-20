@@ -123,8 +123,35 @@ function trlx_dashboard_views_pre_render(ViewExecutable $view) {
           }
           break;
       }
+      
     }
   }
+}
+
+/**
+ * Implements template_preprocess_views_view_table()
+ * @param $variables
+ */
+function trlx_dashboard_preprocess_views_view_table(&$variables) {
+  $currentAccount = \Drupal::currentUser();
+  $roles = $currentAccount->getRoles();
+  if (!in_array('el_regional_market_admin', $roles)) {
+    return;
+  }
+  
+  /** @var ViewExecutable $view */
+  $view = $variables['view'];
+  // Check for view
+  if (($view->id() == 'dashboard') && ($view->current_display == 'dashboard_available_for_a_translation')) {
+    $rows = $variables['rows'];
+    foreach ($rows as $key => $row) {
+      $row_object = $row['columns']['type']['content'][0]['field_output']['#markup']->__toString();
+      $row_explode = explode("&",$row_object);
+      if (($row_explode[0] == "T" && $row_explode[1] == "amp;C") || ($row_object == 'Privacy Policy')) {
+        $variables['rows'][$key]['columns']['translation_link']['content'][0]['field_output'] = '';
+      }
+    }
+  } 
 }
 
 /**
