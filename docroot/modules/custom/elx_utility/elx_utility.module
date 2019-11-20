@@ -262,6 +262,10 @@ function elx_utility_entity_insert(EntityInterface $entity) {
   }
   elseif ($entity->getEntityTypeId() == 'entity_subqueue') {
     // Purge Redis data.
+    if ($entity->id() == 'insider_corner_hompage') {
+      $patterns = [$env . ':home:insider_corner_' . '*'];
+      elx_utility_clear_redis_cache($patterns);
+    }
     elx_utility_purge_redis_data($entity);
   }
   elseif ($entity->getEntityTypeId() == 'menu_link_content') {
@@ -360,6 +364,11 @@ function elx_utility_entity_update(EntityInterface $entity) {
   }
   elseif ($entity->getEntityTypeId() == 'entity_subqueue') {
     // Purge Redis data.
+    if ($entity->id() == 'insider_corner_hompage') {
+      $patterns = [$env . ':home:insider_corner_' . '*'];
+      elx_utility_clear_redis_cache($patterns);
+    }
+
     elx_utility_purge_redis_data($entity);
   }
   elseif ($entity->getEntityTypeId() == 'menu_link_content') {
@@ -397,6 +406,11 @@ function elx_utility_entity_delete(EntityInterface $entity) {
     elx_utility_purge_redis_terms_data($type, $tid);
   }
   elseif ($entity->getEntityTypeId() == 'entity_subqueue') {
+    // Purge Redis data.
+    if ($entity->id() == 'insider_corner_hompage') {
+        $patterns = [$env . ':home:insider_corner_' . '*'];
+        elx_utility_clear_redis_cache($patterns);
+    }
     // Purge Redis data.
     elx_utility_purge_redis_data($entity);
   }
