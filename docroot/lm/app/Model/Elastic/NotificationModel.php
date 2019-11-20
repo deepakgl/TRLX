@@ -108,6 +108,8 @@ class NotificationModel {
     // 4. Set custom headers for RapidAPI Auth and Content-Type header.
     curl_setopt($curl, CURLOPT_HTTPHEADER, [
       'Content-Type: application/json',
+      'X-TRACE-OPERATION': "PUSH-NOTIFICATION",
+      'X-TRACE-REQUESTID': time() . mt_rand(1000, 9999),
     ]);
     // Execute cURL request with all previous settings.
     $response = curl_exec($curl);
