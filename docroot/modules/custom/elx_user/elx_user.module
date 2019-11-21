@@ -126,9 +126,11 @@ function elx_user_tokens($type, $tokens, array $data, array $options, Bubbleable
 /**
  * The function check if user's password field is empty.
  *
- * @param $email
+ * @param string $email
+ *   Email id.
  *
  * @return mixed
+ *   Response
  */
 function elx_is_password_expired($email) {
   $response = '';
@@ -154,9 +156,11 @@ function elx_is_password_expired($email) {
 /**
  * This function return error message.
  *
- * @param $lang
+ * @param string $lang
+ *   Language.
  *
  * @return string
+ *   Message.
  */
 function get_login_error_message($lang) {
   // Create confirm password link.
@@ -194,9 +198,11 @@ function elx_user_login_validate($form, FormStateInterface &$form_state) {
 /**
  * The function fetch user roles.
  *
- * @param $email
+ * @param string $email
+ *   Email id.
  *
  * @return mixed
+ *   Response.
  */
 function elx_get_user_by_mail($email) {
   $response = '';

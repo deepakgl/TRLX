@@ -552,7 +552,6 @@ function trlx_notification_comment_user_tags(int $nid, $language = CommentUtilit
   //   $push_notification_array = trlx_push_notifications_array($usersExternalIds, $notification_type, $notification_heading, $notification_text, $node_id, $linkType, $brand_key, $brand_data);
   //   trlx_push_notifications($push_notification_array);
   // }
-
   return $notification_index;
 }
 
