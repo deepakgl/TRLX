@@ -59,51 +59,6 @@ class LangUtility {
   }
 
   /**
-   * Fetch primary and secondary language by market tid.
-   *
-   * @param int $market_id
-   *   Market tid.
-   * @param string $flag
-   *   Flag name.
-   *
-   * @return array
-   *   Market primary and secondary language.
-   */
-  public function getMarketPrimaryAndSecondaryLanguage($market_id, $flag = NULL) {
-    try {
-      $query = \Drupal::database();
-      $query = $query->select('taxonomy_term__field_primary_language', 'pl');
-      $query->distinct();
-      $query->leftjoin('taxonomy_term__field_secondary_language',
-        'sl', 'pl.entity_id = sl.entity_id');
-      $query->fields('pl', ['field_primary_language_target_id']);
-      $query->fields('sl', ['field_secondary_language_target_id']);
-      $query->condition('pl.entity_id', $market_id, 'IN');
-      $results = $query->execute()->fetchAll();
-      if (!empty($flag)) {
-        return $results;
-      }
-      $primary_lang = array_column(
-        $results, 'field_primary_language_target_id');
-      $secondary_lang = array_column(
-        $results, 'field_secondary_language_target_id');
-      $lang_code = array_unique(array_merge(
-        $primary_lang, $secondary_lang));
-      $response = [];
-      foreach ($lang_code as $key => $value) {
-        if (!empty($value)) {
-          $language = \Drupal::languageManager()->getLanguage($value);
-          $response[$value] = $language->getName();
-        }
-      }
-      return $response;
-    }
-    catch (\Exception $e) {
-      return FALSE;
-    }
-  }
-
-  /**
    * Fetch Market languages by user id.
    *
    * @return array
