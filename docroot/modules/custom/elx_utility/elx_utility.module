@@ -323,10 +323,15 @@ function elx_utility_entity_update(EntityInterface $entity) {
  * Implements hook_ENTITY_delete().
  */
 function elx_utility_entity_delete(EntityInterface $entity) {
+  $env = \Drupal::config('elx_utility.settings')->get('elx_environment');
   if ($entity->getEntityTypeId() == 'node') {
     switch ($entity->gettype()) {
       case 'level_interactive_content':
         _elx_utility_http_delete_request($entity);
+        break;
+      case 'stories':
+       $patterns = [$env . ':home:tr_trends_' . '*'];
+        elx_utility_clear_redis_cache($patterns);
         break;
     }
     // Purge Redis data.
