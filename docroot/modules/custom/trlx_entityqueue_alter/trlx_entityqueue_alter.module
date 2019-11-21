@@ -12,8 +12,7 @@ use Drupal\Core\Form\FormStateInterface;
  */
 function trlx_entityqueue_alter_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   switch ($form_id) {
-
-    case 'entity_subqueue_spotlight_edit_form':
+    case 'entity_subqueue_spotlight_section_edit_form':
     case 'entity_subqueue_insider_corner_hompage_edit_form':
       $form['#prefix'] = "<div class='entityqueue-help-text'>Maximum 4 items
        can be added.";
