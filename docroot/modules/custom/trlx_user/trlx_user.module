@@ -27,6 +27,12 @@ function trlx_user_menu_local_tasks_alter(&$data, $route_name) {
     unset($data['tabs'][0]['entity.taxonomy_term.edit_form']);
     unset($data['tabs'][0]['entity.taxonomy_vocabulary.edit_form']);
   }
+
+  if ($route_name == 'entity.node.canonical' && in_array('el_regional_market_admin', $roles)) {
+    unset($data['tabs'][0]['content_translation.local_tasks']);
+    unset($data['tabs'][0]['entity.node.version_history']);
+    unset($data['tabs'][0]['content_translation.local_tasks:entity.node.content_translation_overview']);
+  }
 }
 
 /**
