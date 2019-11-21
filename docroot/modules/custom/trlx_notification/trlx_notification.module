@@ -139,11 +139,11 @@ function trlx_notification_brand_story_related_content($node) {
     }
   }
   // Push notification logic.
-  $userExternalIds = NotificationUtility::getUsersBasedOnBrandsAndMarkets($market_ref_keys, $brand_key, TRUE);
-  if (!empty($userExternalIds)) {
-    $push_notification_array = trlx_push_notifications_array($userExternalIds, 'BRAND', $notification_heading, $notification_text, NULL, 'brandStory', reset($brand_key), reset($brand_data));
-    trlx_push_notifications($push_notification_array);
-  }
+  // $userExternalIds = NotificationUtility::getUsersBasedOnBrandsAndMarkets($market_ref_keys, $brand_key, TRUE);
+  // if (!empty($userExternalIds)) {
+  //   $push_notification_array = trlx_push_notifications_array($userExternalIds, 'BRAND', $notification_heading, $notification_text, NULL, 'brandStory', reset($brand_key), reset($brand_data));
+  //   trlx_push_notifications($push_notification_array);
+  // }
   return ($notification_index);
 }
 
@@ -189,11 +189,11 @@ function trlx_notification_modules_related_content($node) {
       }
     }
     // Push notification logic.
-    $brandUsersExternalIds = NotificationUtility::getUsersBasedOnBrandsAndMarkets($market_ref_keys, $brand_keys, TRUE);
-    if (!empty($brandUsersExternalIds)) {
-      $push_notification_array = trlx_push_notifications_array($brandUsersExternalIds, 'BRAND', $notification_heading, $notification_text, $level_category_id, 'brandLevel');
-      trlx_push_notifications($push_notification_array);
-    }
+    // $brandUsersExternalIds = NotificationUtility::getUsersBasedOnBrandsAndMarkets($market_ref_keys, $brand_keys, TRUE);
+    // if (!empty($brandUsersExternalIds)) {
+    //   $push_notification_array = trlx_push_notifications_array($brandUsersExternalIds, 'BRAND', $notification_heading, $notification_text, $level_category_id, 'brandLevel');
+    //   trlx_push_notifications($push_notification_array);
+    // }
   }
   if (in_array($commonUtility::SELLING_TIPS, $content_sections)) {
     $sellingTipsUserIds = NotificationUtility::getUsersBasedOnBrandsAndMarkets($market_ref_keys);
@@ -213,11 +213,11 @@ function trlx_notification_modules_related_content($node) {
       }
     }
     // Push notification logic.
-    $sellingTipsUsersExternalIds = NotificationUtility::getUsersBasedOnBrandsAndMarkets($market_ref_keys, [], TRUE);
-    if (!empty($sellingTipsUsersExternalIds)) {
-      $push_notification_array = trlx_push_notifications_array($sellingTipsUsersExternalIds, 'SELLINGTIPS', $notification_heading, $notification_text, $level_category_id, 'sellingTipsLevel');
-      trlx_push_notifications($push_notification_array);
-    }
+    // $sellingTipsUsersExternalIds = NotificationUtility::getUsersBasedOnBrandsAndMarkets($market_ref_keys, [], TRUE);
+    // if (!empty($sellingTipsUsersExternalIds)) {
+    //   $push_notification_array = trlx_push_notifications_array($sellingTipsUsersExternalIds, 'SELLINGTIPS', $notification_heading, $notification_text, $level_category_id, 'sellingTipsLevel');
+    //   trlx_push_notifications($push_notification_array);
+    // }
   }
   if (in_array($commonUtility::CONSUMER, $content_sections)) {
     $consumerUserIds = NotificationUtility::getUsersBasedOnBrandsAndMarkets($market_ref_keys);
@@ -237,11 +237,11 @@ function trlx_notification_modules_related_content($node) {
       }
     }
     // Push notification logic.
-    $consumerUsersExternalIds = NotificationUtility::getUsersBasedOnBrandsAndMarkets($market_ref_keys, [], TRUE);
-    if (!empty($consumerUsersExternalIds)) {
-      $push_notification_array = trlx_push_notifications_array($consumerUsersExternalIds, 'CONSUMER', $notification_heading, $notification_text, $level_category_id, 'consumerLevel');
-      trlx_push_notifications($push_notification_array);
-    }
+    // $consumerUsersExternalIds = NotificationUtility::getUsersBasedOnBrandsAndMarkets($market_ref_keys, [], TRUE);
+    // if (!empty($consumerUsersExternalIds)) {
+    //   $push_notification_array = trlx_push_notifications_array($consumerUsersExternalIds, 'CONSUMER', $notification_heading, $notification_text, $level_category_id, 'consumerLevel');
+    //   trlx_push_notifications($push_notification_array);
+    // }
   }
   return $notification_index;
 }
@@ -282,11 +282,11 @@ function trlx_notification_product_detail_related_content($node) {
     }
   }
   // Push notification logic.
-  $usersExternalIds = NotificationUtility::getUsersBasedOnBrandsAndMarkets($market_ref_keys, $brand_key, TRUE);
-  if (!empty($usersExternalIds)) {
-    $push_notification_array = trlx_push_notifications_array($usersExternalIds, 'BRAND', $notification_heading, $notification_text, $node->id(), 'factsheet', '', reset($brand_data));
-    trlx_push_notifications($push_notification_array);
-  }
+  // $usersExternalIds = NotificationUtility::getUsersBasedOnBrandsAndMarkets($market_ref_keys, $brand_key, TRUE);
+  // if (!empty($usersExternalIds)) {
+  //   $push_notification_array = trlx_push_notifications_array($usersExternalIds, 'BRAND', $notification_heading, $notification_text, $node->id(), 'factsheet', '', reset($brand_data));
+  //   trlx_push_notifications($push_notification_array);
+  // }
   return ($notification_index);
 }
 
@@ -327,11 +327,11 @@ function trlx_notification_stories_related_content($node) {
       }
     }
     // Push notification logic.
-    $trendExternalIds = NotificationUtility::getUsersBasedOnBrandsAndMarkets($market_ref_keys, [], TRUE);
-    if (!empty($trendExternalIds)) {
-      $push_notification_array = trlx_push_notifications_array($trendExternalIds, 'TREND', $notification_heading, $notification_text, $node->id(), 'trend');
-      trlx_push_notifications($push_notification_array);
-    }
+    // $trendExternalIds = NotificationUtility::getUsersBasedOnBrandsAndMarkets($market_ref_keys, [], TRUE);
+    // if (!empty($trendExternalIds)) {
+    //   $push_notification_array = trlx_push_notifications_array($trendExternalIds, 'TREND', $notification_heading, $notification_text, $node->id(), 'trend');
+    //   trlx_push_notifications($push_notification_array);
+    // }
   }
   if ($content_section == $commonUtility::INSIDER_CORNER) {
     $insiderCornerUserIds = NotificationUtility::getUsersBasedOnBrandsAndMarkets($market_ref_keys);
@@ -349,11 +349,11 @@ function trlx_notification_stories_related_content($node) {
       }
     }
     // Push notification logic.
-    $insiderCornerExternalIds = NotificationUtility::getUsersBasedOnBrandsAndMarkets($market_ref_keys, [], TRUE);
-    if (!empty($insiderCornerExternalIds)) {
-      $push_notification_array = trlx_push_notifications_array($insiderCornerExternalIds, 'INSIDERCORNER', $notification_heading, $notification_text, $node->id(), 'insiderCorner');
-      trlx_push_notifications($push_notification_array);
-    }
+    // $insiderCornerExternalIds = NotificationUtility::getUsersBasedOnBrandsAndMarkets($market_ref_keys, [], TRUE);
+    // if (!empty($insiderCornerExternalIds)) {
+    //   $push_notification_array = trlx_push_notifications_array($insiderCornerExternalIds, 'INSIDERCORNER', $notification_heading, $notification_text, $node->id(), 'insiderCorner');
+    //   trlx_push_notifications($push_notification_array);
+    // }
   }
   if ($content_section == $commonUtility::SELLING_TIPS) {
     $sellingTipsUserIds = NotificationUtility::getUsersBasedOnBrandsAndMarkets($market_ref_keys);
@@ -370,11 +370,11 @@ function trlx_notification_stories_related_content($node) {
       }
     }
     // Push notification logic.
-    $sellingTipsExternalIds = NotificationUtility::getUsersBasedOnBrandsAndMarkets($market_ref_keys, [], TRUE);
-    if (!empty($sellingTipsExternalIds)) {
-      $push_notification_array = trlx_push_notifications_array($sellingTipsExternalIds, 'SELLINGTIPS', $notification_heading, $notification_text, $node->id(), 'sellingTips');
-      trlx_push_notifications($push_notification_array);
-    }
+    // $sellingTipsExternalIds = NotificationUtility::getUsersBasedOnBrandsAndMarkets($market_ref_keys, [], TRUE);
+    // if (!empty($sellingTipsExternalIds)) {
+    //   $push_notification_array = trlx_push_notifications_array($sellingTipsExternalIds, 'SELLINGTIPS', $notification_heading, $notification_text, $node->id(), 'sellingTips');
+    //   trlx_push_notifications($push_notification_array);
+    // }
   }
   if ($content_section == $commonUtility::CONSUMER) {
     $consumerUserIds = NotificationUtility::getUsersBasedOnBrandsAndMarkets($market_ref_keys);
@@ -393,11 +393,11 @@ function trlx_notification_stories_related_content($node) {
       }
     }
     // Push notification logic.
-    $consumerExternalIds = NotificationUtility::getUsersBasedOnBrandsAndMarkets($market_ref_keys, [], TRUE);
-    if (!empty($consumerExternalIds)) {
-      $push_notification_array = trlx_push_notifications_array($consumerExternalIds, 'CONSUMER', $notification_heading, $notification_text, $node->id(), 'consumer');
-      trlx_push_notifications($push_notification_array);
-    }
+    // $consumerExternalIds = NotificationUtility::getUsersBasedOnBrandsAndMarkets($market_ref_keys, [], TRUE);
+    // if (!empty($consumerExternalIds)) {
+    //   $push_notification_array = trlx_push_notifications_array($consumerExternalIds, 'CONSUMER', $notification_heading, $notification_text, $node->id(), 'consumer');
+    //   trlx_push_notifications($push_notification_array);
+    // }
   }
   return ($notification_index);
 }
@@ -438,11 +438,11 @@ function trlx_notification_video_related_content($node) {
     }
   }
   // Push notification logic.
-  $usersExternalIds = NotificationUtility::getUsersBasedOnBrandsAndMarkets($market_ref_keys, $brand_key, TRUE);
-  if (!empty($usersExternalIds)) {
-    $push_notification_array = trlx_push_notifications_array($usersExternalIds, 'BRAND', $notification_heading, $notification_text, $node->id(), 'video', '', reset($brand_data));
-    trlx_push_notifications($push_notification_array);
-  }
+  // $usersExternalIds = NotificationUtility::getUsersBasedOnBrandsAndMarkets($market_ref_keys, $brand_key, TRUE);
+  // if (!empty($usersExternalIds)) {
+  //   $push_notification_array = trlx_push_notifications_array($usersExternalIds, 'BRAND', $notification_heading, $notification_text, $node->id(), 'video', '', reset($brand_data));
+  //   trlx_push_notifications($push_notification_array);
+  // }
   return ($notification_index);
 }
 
@@ -548,10 +548,10 @@ function trlx_notification_comment_user_tags(int $nid, $language = CommentUtilit
   }
 
   // Push notification logic.
-  if (!empty($usersExternalIds)) {
-    $push_notification_array = trlx_push_notifications_array($usersExternalIds, $notification_type, $notification_heading, $notification_text, $node_id, $linkType, $brand_key, $brand_data);
-    trlx_push_notifications($push_notification_array);
-  }
+  // if (!empty($usersExternalIds)) {
+  //   $push_notification_array = trlx_push_notifications_array($usersExternalIds, $notification_type, $notification_heading, $notification_text, $node_id, $linkType, $brand_key, $brand_data);
+  //   trlx_push_notifications($push_notification_array);
+  // }
 
   return $notification_index;
 }
@@ -709,6 +709,10 @@ function trlx_push_notifications($data) {
   ]);
   // Execute cURL request with all previous settings.
   $response = curl_exec($curl);
+  $info = curl_getinfo($curl);
+  echo '<pre>';
+  print_r($info);
+  die;
   // Close cURL session.
   curl_close($curl);
 }

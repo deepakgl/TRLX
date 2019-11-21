@@ -192,7 +192,7 @@ class BadgeModel {
             NOTIFICATION_BRAND_NAME => "",
           ],
         ];
-        NotificationModel::trlxPushNotifications($push_notification_array);
+        // NotificationModel::trlxPushNotifications($push_notification_array);
       }
       foreach ($response['_source']['badge'] as $key => $value) {
         $response['_source']['badge'] = $value;
