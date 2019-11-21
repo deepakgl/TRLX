@@ -148,5 +148,6 @@ permissions:
   - 'view own field_regional_vice_president'
   - 'view own field_state'
   - 'view own og_user_node'
+  - 'view own unpublished content'
   - 'view own userpoints'
   - 'view userpoints'
