@@ -105,12 +105,12 @@ class NotificationConfigurationForm extends ConfigFormBase {
       self::HASH_DEFAULT_VALUE => $config->get(self::USER_INDEX_TYPE),
       self::HASH_REQUIRED => TRUE,
     ];
-    $form[self::PUSH_NOTIFICATION_URL] = [
-      self::HASH_TYPE => self::TEXTFIELD,
-      self::HASH_TITLE => $this->t('Push notification endpoint.'),
-      self::HASH_DEFAULT_VALUE => $config->get(self::PUSH_NOTIFICATION_URL),
-      self::HASH_REQUIRED => TRUE,
-    ];
+    // $form[self::PUSH_NOTIFICATION_URL] = [
+    //   self::HASH_TYPE => self::TEXTFIELD,
+    //   self::HASH_TITLE => $this->t('Push notification endpoint.'),
+    //   self::HASH_DEFAULT_VALUE => $config->get(self::PUSH_NOTIFICATION_URL),
+    //   self::HASH_REQUIRED => TRUE,
+    // ];
     $form[self::DELETE_NOTIFICATIONS] = [
       self::HASH_TYPE => self::TEXTFIELD,
       self::HASH_TITLE => $this->t('Days in which notifications should be purged'),
