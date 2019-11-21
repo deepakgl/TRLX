@@ -1,0 +1,5 @@
+services:
+  trlx_drush.importBatch.command:
+    class: \Drupal\trlx_drush\Commands\BatchImport
+    tags:
+      - { name: drush.command }
