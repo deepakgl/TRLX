@@ -56,8 +56,6 @@ function trlx_utility_form_alter(&$form, FormStateInterface $form_state, $form_i
       $form['field_brands']['widget']['#default_value'] = $form['field_brands']['widget']['#default_value'][0];
     case 'node_level_interactive_content_form':
     case 'node_level_interactive_content_edit_form':
-    case 'node_stories_form':
-    case 'node_stories_edit_form':
       // Changed type of point value field.
       $form['field_point_value']['widget'][0]['value']['#type'] = 'number';
       // Set default value 0 of point value field.
@@ -74,191 +72,197 @@ function trlx_utility_form_alter(&$form, FormStateInterface $form_state, $form_i
       $form['#attached']['library'][] = 'trlx_market_hierarchy/trlx_market';
       break;
 
-    // Load module config.
-    $config = \Drupal::config('trlx_utility.settings');
+    case 'node_stories_form':
+    case 'node_stories_edit_form':
+      $form['field_point_value']['widget'][0]['value']['#min'] = 0;
+      $form['field_point_value']['widget'][0]['value']['#type'] = 'number';
+      $form['#attached']['library'][] = 'trlx_market_hierarchy/trlx_market';
 
-    // Change value of point value based on selected content section.
-    $form['field_point_value']['widget']['#prefix'] = '<div id="field-point-value-no-ajax-wrapper">';
-    $form['field_point_value']['widget']['#suffix'] = '</div>';
-    $form['field_content_section']['widget']['#ajax'] = [
-      'callback' => 'set_section_based_point_value',
-        // 'wrapper' => 'field-point-value-no-ajax-wrapper',
-      'method' => 'replace',
-      'progress' => [
-        'type' => 'throbber',
-        'message' => t('Updating Point Value...'),
-      ],
-    ];
+      // Load module config.
+      $config = \Drupal::config('trlx_utility.settings');
 
-    // Prefix for Sub Title field.
-    $form['field_sub_title']['widget']['#prefix'] = '<div id="field-sub-title-no-ajax-wrapper">';
-    $form['field_sub_title']['widget']['#suffix'] = '</div>';
+      // Change value of point value based on selected content section.
+      $form['field_point_value']['widget']['#prefix'] = '<div id="field-point-value-no-ajax-wrapper">';
+      $form['field_point_value']['widget']['#suffix'] = '</div>';
+      $form['field_content_section']['widget']['#ajax'] = [
+        'callback' => 'set_section_based_point_value',
+          // 'wrapper' => 'field-point-value-no-ajax-wrapper',
+        'method' => 'replace',
+        'progress' => [
+          'type' => 'throbber',
+          'message' => t('Updating Point Value...'),
+        ],
+      ];
 
-    // Stories Content Type node edit form alteration.
-    // Alter form to show only Bundle mapped sections for selection.
-    // Show/Hide fields based on section selection.
-    /*** Alter form to show only Bundle mapped sections for selection - START ***/
-    $bundle = FALSE;
-    // Fetch bundle.
-    $formObject = $form_state->getFormObject();
-    if ($formObject instanceof ContentEntityForm) {
-      $bundle = $formObject->getEntity()->bundle();
-    }
+      // Prefix for Sub Title field.
+      $form['field_sub_title']['widget']['#prefix'] = '<div id="field-sub-title-no-ajax-wrapper">';
+      $form['field_sub_title']['widget']['#suffix'] = '</div>';
 
-    $commonUtility = new CommonUtility();
-    // Fetch sections mapped to current bundle (content type)
-    $bundleMappedSections = $commonUtility->getContentTypeSectionMapping($bundle);
-
-    // Iterate through section options.
-    foreach ($form['field_content_section']['widget']['#options'] as $id => $value) {
-      $entityIdArr[] = $id;
-    }
-
-    // Get taxonomy_term storage.
-    $entityStorage = \Drupal::entityManager()->getStorage('taxonomy_term');
-
-    // Load taxonomy terms.
-    $sectionTerms = $entityStorage->loadMultiple($entityIdArr);
-
-    // Collect in valid term ids.
-    $inValidSections = [];
-    $insiderCornerTermId = $consumerTermId = 0;
-    if ($sectionTerms) {
-      foreach ($sectionTerms as $tid => $term) {
-        // Convert $term object to array.
-        $term = $term->toArray();
-
-        // Fetch section key field value.
-        $sectionKey = isset($term['field_content_section_key'][0]['value']) ? $term['field_content_section_key'][0]['value'] : '';
-
-        // Insider Corner Term Id to hide/show Insider Corner fields.
-        if (CommonUtility::INSIDER_CORNER == $sectionKey) {
-          $insiderCornerTermId = $tid;
-        }
-
-        // Selling Tips Term Id to hide/show Selling Tips fields.
-        if (CommonUtility::SELLING_TIPS == $sectionKey) {
-          $sellingTipsTermId = $tid;
-        }
-
-        // Trend Term Id to hide/show Trend fields.
-        if (CommonUtility::TREND == $sectionKey) {
-          $trendTermId = $tid;
-        }
-
-        // Consumer Term Id to hide/show Consumer fields.
-        if (CommonUtility::CONSUMER == $sectionKey) {
-          $consumerTermId = $tid;
-        }
-
-        // Check if section key is mapped to current content type.
-        if (!in_array($sectionKey, $bundleMappedSections)) {
-          $inValidSections[$tid] = $tid;
-        }
-      }
-    }
-
-    // Unset invalid options.
-    if (!empty($inValidSections)) {
-      foreach ($inValidSections as $termId) {
-        unset($form['field_content_section']['widget']['#options'][$termId]);
-      }
-    }
-    /*** Alter form to show only Bundle mapped sections for selection - END ***/
-
-    if (!empty($insiderCornerTermId)) {
-
-      // Fetch Content Section value.
-      $contentSectionValue = $form['field_content_section'][widget]['#default_value'];
-      // Add help text for Sub Title.
-      if ($contentSectionValue == $insiderCornerTermId) {
-        $form['field_sub_title']['widget'][0]['value']['#description'] = t('<div class="quotes-help-text"><b>This field will be used for Quotes</b></div>');
+      // Stories Content Type node edit form alteration.
+      // Alter form to show only Bundle mapped sections for selection.
+      // Show/Hide fields based on section selection.
+      /*** Alter form to show only Bundle mapped sections for selection - START ***/
+      $bundle = FALSE;
+      // Fetch bundle.
+      $formObject = $form_state->getFormObject();
+      if ($formObject instanceof ContentEntityForm) {
+        $bundle = $formObject->getEntity()->bundle();
       }
 
-      /*** Show/Hide Insider Corner related fields - START ***/
-      foreach ($form['#fieldgroups']['group_insider_corner']->children as $field) {
-        $form[$field]['#states'] = [
-          'visible' => [
+      $commonUtility = new CommonUtility();
+      // Fetch sections mapped to current bundle (content type)
+      $bundleMappedSections = $commonUtility->getContentTypeSectionMapping($bundle);
+
+      // Iterate through section options.
+      foreach ($form['field_content_section']['widget']['#options'] as $id => $value) {
+        $entityIdArr[] = $id;
+      }
+
+      // Get taxonomy_term storage.
+      $entityStorage = \Drupal::entityManager()->getStorage('taxonomy_term');
+
+      // Load taxonomy terms.
+      $sectionTerms = $entityStorage->loadMultiple($entityIdArr);
+
+      // Collect in valid term ids.
+      $inValidSections = [];
+      $insiderCornerTermId = $consumerTermId = 0;
+      if ($sectionTerms) {
+        foreach ($sectionTerms as $tid => $term) {
+          // Convert $term object to array.
+          $term = $term->toArray();
+
+          // Fetch section key field value.
+          $sectionKey = isset($term['field_content_section_key'][0]['value']) ? $term['field_content_section_key'][0]['value'] : '';
+
+          // Insider Corner Term Id to hide/show Insider Corner fields.
+          if (CommonUtility::INSIDER_CORNER == $sectionKey) {
+            $insiderCornerTermId = $tid;
+          }
+
+          // Selling Tips Term Id to hide/show Selling Tips fields.
+          if (CommonUtility::SELLING_TIPS == $sectionKey) {
+            $sellingTipsTermId = $tid;
+          }
+
+          // Trend Term Id to hide/show Trend fields.
+          if (CommonUtility::TREND == $sectionKey) {
+            $trendTermId = $tid;
+          }
+
+          // Consumer Term Id to hide/show Consumer fields.
+          if (CommonUtility::CONSUMER == $sectionKey) {
+            $consumerTermId = $tid;
+          }
+
+          // Check if section key is mapped to current content type.
+          if (!in_array($sectionKey, $bundleMappedSections)) {
+            $inValidSections[$tid] = $tid;
+          }
+        }
+      }
+
+      // Unset invalid options.
+      if (!empty($inValidSections)) {
+        foreach ($inValidSections as $termId) {
+          unset($form['field_content_section']['widget']['#options'][$termId]);
+        }
+      }
+      /*** Alter form to show only Bundle mapped sections for selection - END ***/
+
+      if (!empty($insiderCornerTermId)) {
+
+        // Fetch Content Section value.
+        $contentSectionValue = $form['field_content_section'][widget]['#default_value'];
+        // Add help text for Sub Title.
+        if ($contentSectionValue == $insiderCornerTermId) {
+          $form['field_sub_title']['widget'][0]['value']['#description'] = t('<div class="quotes-help-text"><b>This field will be used for Quotes</b></div>');
+        }
+
+        /*** Show/Hide Insider Corner related fields - START ***/
+        foreach ($form['#fieldgroups']['group_insider_corner']->children as $field) {
+          $form[$field]['#states'] = [
+            'visible' => [
             ["input[name='field_content_section']" => ['value' => $insiderCornerTermId]],
-          ],
-          'enabled' => [
+            ],
+            'enabled' => [
             ["input[name='field_content_section']" => ['value' => $insiderCornerTermId]],
-          ],
-        ];
-      }
-      /*** Show/Hide Insider Corner related fields - END ***/
+            ],
+          ];
+        }
+        /*** Show/Hide Insider Corner related fields - END ***/
 
-      /*** Add Required Validation for Insider Corner - START ***/
-      // Fetch content type mapped sections from config.
-      $insiderCornerReqFields = $config->get('insider_corner_req_fields');
+        /*** Add Required Validation for Insider Corner - START ***/
+        // Fetch content type mapped sections from config.
+        $insiderCornerReqFields = $config->get('insider_corner_req_fields');
 
-      if (!empty($insiderCornerReqFields)) {
-        foreach ($insiderCornerReqFields as $field) {
-          // Check if the current field is required for Insider Corner.
-          if (isset($insiderCornerReqFields[$field])) {
-            if ('field_social_media_handles' == $field) {
-              // Custom validate handler for Social Media required validation.
-              $form['#validate'][] = 'stories_validate';
-            }
-            else {
-              if (!empty($form[$field]['widget'][0]['value']) && empty($form[$field]['widget']['#required'])) {
-                $form[$field]['widget'][0]['value']['#states']['required'] = [
+        if (!empty($insiderCornerReqFields)) {
+          foreach ($insiderCornerReqFields as $field) {
+            // Check if the current field is required for Insider Corner.
+            if (isset($insiderCornerReqFields[$field])) {
+              if ('field_social_media_handles' == $field) {
+                // Custom validate handler for Social Media required validation.
+                $form['#validate'][] = 'stories_validate';
+              }
+              else {
+                if (!empty($form[$field]['widget'][0]['value']) && empty($form[$field]['widget']['#required'])) {
+                  $form[$field]['widget'][0]['value']['#states']['required'] = [
                   ["input[name='field_content_section']" => ['value' => $insiderCornerTermId]],
-                ];
+                  ];
+                }
               }
             }
           }
         }
+        /*** Add Required Validation for Insider Corner - END ***/
       }
-      /*** Add Required Validation for Insider Corner - END ***/
-    }
 
-    /*** Show/Hide/Required Consumer Category based on section selection - START ***/
-    if (!empty($consumerTermId)) {
-      // Visible state.
-      $form['field_consumer_category']['widget']['#states']['visible'] = [
+      /*** Show/Hide/Required Consumer Category based on section selection - START ***/
+      if (!empty($consumerTermId)) {
+        // Visible state.
+        $form['field_consumer_category']['widget']['#states']['visible'] = [
         ["input[name='field_content_section']" => ['value' => $consumerTermId]],
-      ];
+        ];
 
-      // Enabled state.
-      $form['field_consumer_category']['widget']['#states']['enabled'] = [
+        // Enabled state.
+        $form['field_consumer_category']['widget']['#states']['enabled'] = [
         ["input[name='field_content_section']" => ['value' => $consumerTermId]],
-      ];
+        ];
 
-      // Required state.
-      $form['field_consumer_category']['widget']['#states']['required'] = [
+        // Required state.
+        $form['field_consumer_category']['widget']['#states']['required'] = [
         ["input[name='field_content_section']" => ['value' => $consumerTermId]],
-      ];
+        ];
 
-      // Unset option "N/A".
-      unset($form['field_consumer_category']['widget']['#options']['_none']);
-      $form['#validate'][] = 'stories_validate';
-    }
+        // Unset option "N/A".
+        unset($form['field_consumer_category']['widget']['#options']['_none']);
+        $form['#validate'][] = 'stories_validate';
+      }
 
-    /*** Show/Hide/Required Consumer Category based on section selection - END ***/
+      /*** Show/Hide/Required Consumer Category based on section selection - END ***/
 
-    /*** Change Point Value as per selected section on edit page - START ***/
-    /*if ($form_id == 'node_stories_edit_form') {
-    if ($insiderCornerTermId && ($form['field_content_section']['widget']['#default_value'] == $insiderCornerTermId)) {
-    $point_field_value = $config->get("point_value_" . $commonUtility::INSIDER_CORNER);
-    }
-    if ($sellingTipsTermId && ($form['field_content_section']['widget']['#default_value'] == $sellingTipsTermId)) {
-    $point_field_value = $config->get("point_value_" . $commonUtility::SELLING_TIPS);
-    }
-    if ($trendTermId && ($form['field_content_section']['widget']['#default_value'] == $trendTermId)) {
-    $point_field_value = $config->get("point_value_" . $commonUtility::TREND);
-    }
-    if ($consumerTermId && ($form['field_content_section']['widget']['#default_value'] == $consumerTermId)) {
-    $point_field_value = $config->get("point_value_" . $commonUtility::CONSUMER);
-    }
+      /*** Change Point Value as per selected section on edit page - START ***/
+      /*if ($form_id == 'node_stories_edit_form') {
+      if ($insiderCornerTermId && ($form['field_content_section']['widget']['#default_value'] == $insiderCornerTermId)) {
+      $point_field_value = $config->get("point_value_" . $commonUtility::INSIDER_CORNER);
+      }
+      if ($sellingTipsTermId && ($form['field_content_section']['widget']['#default_value'] == $sellingTipsTermId)) {
+      $point_field_value = $config->get("point_value_" . $commonUtility::SELLING_TIPS);
+      }
+      if ($trendTermId && ($form['field_content_section']['widget']['#default_value'] == $trendTermId)) {
+      $point_field_value = $config->get("point_value_" . $commonUtility::TREND);
+      }
+      if ($consumerTermId && ($form['field_content_section']['widget']['#default_value'] == $consumerTermId)) {
+      $point_field_value = $config->get("point_value_" . $commonUtility::CONSUMER);
+      }
 
-    if (!empty($point_field_value)) {
-    $form['field_point_value']['widget'][0]['value']['#value'] = $point_field_value;
-    $form['field_point_value']['widget'][0]['value']['#default_value'] = $point_field_value;
-    }
-    }*/
-    /*** Change Point Value as per selected section on edit page - END ***/
-    break;
+      if (!empty($point_field_value)) {
+      $form['field_point_value']['widget'][0]['value']['#value'] = $point_field_value;
+      $form['field_point_value']['widget'][0]['value']['#default_value'] = $point_field_value;
+      }
+      }*/
+      /*** Change Point Value as per selected section on edit page - END ***/
+      break;
 
     case 'taxonomy_term_brands_form':
     case 'taxonomy_term_consumer_category_form':
@@ -747,6 +751,17 @@ function trlx_utility_file_url_alter(&$uri) {
     $settings_cdn_url_array = explode("/", settings::get('cdn_file_public_base_url'), 4);
     if (!empty($settings_cdn_url_array)) {
       $uri = settings::get('cdn_file_public_base_url') . '/' . explode('//', $uri)[1];
+    }
+  }
+}
+
+/**
+ * Implements hook_editor_js_settings_alter()().
+ */
+function trlx_utility_editor_js_settings_alter(array &$settings) {
+  if (isset($settings['editor']['formats']['full_html'])) {
+    foreach ($settings['editor']['formats'] as $name => $value) {
+      $settings['editor']['formats'][$name]['editorSettings']['pasteFromWordPromptCleanup'] = FALSE;
     }
   }
 }
