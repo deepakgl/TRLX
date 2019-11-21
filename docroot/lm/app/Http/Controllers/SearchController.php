@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Model\Mysql\ContentModel;
 use App\Model\Mysql\UserModel;
+use App\Traits\ApiResponser;
 
 /**
  * Purpose of building this class is to get the data from elastic based on the.
@@ -14,6 +15,8 @@ use App\Model\Mysql\UserModel;
  * Searched keyword.
  */
 class SearchController extends Controller {
+
+  use ApiResponser;
   /**
    * Content type.
    *
@@ -113,6 +116,8 @@ class SearchController extends Controller {
     $validatedData = $this->validate($request, [
       '_format' => 'required|format',
       'language' => 'required|languagecode',
+      'limit' => 'sometimes|required|integer|min:0',
+      'offset' => 'sometimes|required|integer|min:0',
     ]);
     // Check elastic client.
     $client = Helper::checkElasticClient();
@@ -122,10 +127,10 @@ class SearchController extends Controller {
     $lang = $validatedData['language'];
     $this->buildQuery($request, $lang);
     if (empty($this->search)) {
-      return Helper::jsonError('Please enter search keyword.', 400);
+      return $this->errorResponse('Please enter search keyword.', Response::HTTP_BAD_REQUEST);
     }
     if (strlen(trim($this->search)) < 3) {
-      return Helper::jsonError('You must include at least one positive keyword with 3 characters or more.', 422);
+      return $this->errorResponse('You must include at least one positive keyword with 3 characters or more.', Response::HTTP_UNPROCESSABLE_ENTITY);
     }
     // Fetch the search response from elastic.
     $data = $client->search($this->query);
@@ -337,7 +342,7 @@ class SearchController extends Controller {
         "pages" => ceil($total_count / $this->limit),
         "items_per_page" => $this->limit,
         "current_page" => 0,
-        "next_page" => 1,
+        "next_page" => (ceil($total_count / $this->limit) > 1) ? 1 : 0,
       ];
     }
 

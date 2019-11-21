@@ -6,8 +6,6 @@ use Drupal\views\Views;
 use Drupal\Component\Serialization\Json;
 use Drupal\Component\Utility\Html;
 use Drupal\trlx_utility\RedisClientBuilder;
-// fixMe.
-use Drupal\elx_user\Utility\UserUtility;
 use Symfony\Component\HttpFoundation\Response;
 use Drupal\Core\Site\Settings;
 
@@ -20,8 +18,6 @@ class EntityUtility {
    * Class constructor.
    */
   public function __construct() {
-    $this->userUtility = new UserUtility();
-    // fixMe.
     $this->config = \Drupal::config('elx_utility.settings');
     $this->configuration = \Drupal::config('trlx_utility.settings');
     $this->commonUtility = new CommonUtility();
@@ -40,7 +36,7 @@ class EntityUtility {
    *   Response key value pair.
    * @param string $type
    *   Content type.
-   * @param array $field_replace
+   * @param mixed $field_replace
    *   Fields to replace.
    *
    * @return markup
@@ -131,13 +127,13 @@ class EntityUtility {
    *   View name.
    * @param mixed $current_display
    *   View current display.
-   * @param array $data
+   * @param mixed $data
    *   Response key value pair.
    * @param mixed $filter
    *   View contextual filter.
    * @param string $type
    *   Content type.
-   * @param array $field_replace
+   * @param mixed $field_replace
    *   Fields to replace.
    *
    * @return json
@@ -150,9 +146,7 @@ class EntityUtility {
     // fixMe.
     $key = $this->config->get('elx_environment') . $key;
     $redis_key = explode(':', $key);
-    // Get current user roles.
-    // fixMe.
-    $roles = $this->userUtility->getUserRoles(\Drupal::currentUser()->id());
+
     if (!empty($redis_key[1])) {
       try {
         // Creating Redis connection object.
@@ -167,19 +161,20 @@ class EntityUtility {
         // Fetch result from respective view.
         list($view_results, $status_code) = $this->getViewContent($view_name, $current_display, $filter, $data, $type, $field_replace);
 
+        // Creating Redis connection object.
+        list($cached_data, $redis_client) =
+        RedisClientBuilder::getRedisClientObject($key);
+
+        // Only set redis cache if there is some data.
+        $this->setRedisCache($redis_key, $redis_client, $view_results);
+
         return [$view_results, $status_code];
       }
       // Fetch result from respective view.
       list($view_results, $status_code) = $this->getViewContent($view_name, $current_display, $filter, $data, $type, $field_replace);
+
       // Only set redis cache if there is some data.
-      $decode = array_filter(JSON::decode($view_results, TRUE));
-      if (!empty($redis_key[1])) {
-        $response = JSON::encode($view_results);
-        if (is_object($response)) {
-          $response = $response->getContent();
-        }
-        $redis_client->set($response, $redis_key[0], $redis_key[1], $redis_key[2]);
-      }
+      $this->setRedisCache($redis_key, $redis_client, $view_results);
 
       return [$view_results, $status_code];
     }
@@ -193,15 +188,42 @@ class EntityUtility {
   }
 
   /**
+   * Private function to set Redis Cache if data is available.
+   *
+   * @param array $redis_key
+   *   Redis Key.
+   * @param object $redis_client
+   *   Redis Client Object.
+   * @param array $view_results
+   *   View Results.
+   *
+   * @return bool
+   *   TRUE or FALSE.
+   */
+  private function setRedisCache(array $redis_key, $redis_client, array $view_results) {
+    // Only set redis cache if there is some data.
+    $decode = array_filter(JSON::decode($view_results, TRUE));
+    if (!empty($redis_key[1])) {
+      $response = JSON::encode($view_results);
+      if (is_object($response)) {
+        $response = $response->getContent();
+      }
+      $redis_client->set($response, $redis_key[0], $redis_key[1], $redis_key[2]);
+      return TRUE;
+    }
+    return FALSE;
+  }
+
+  /**
    * Prepare listings api response.
    *
    * @param mixed $output
    *   View output.
-   * @param array $data
+   * @param mixed $data
    *   Response key value pair.
-   * @param array $field_replace
+   * @param mixed $field_replace
    *   Fields to replace.
-   * @param array $field_remove
+   * @param mixed $field_remove
    *   Fields to remove.
    *
    * @return json
@@ -299,7 +321,7 @@ class EntityUtility {
    *
    * @param mixed $output
    *   View output.
-   * @param array $data
+   * @param mixed $data
    *   Response key value pair.
    * @param string $type
    *   Content type.

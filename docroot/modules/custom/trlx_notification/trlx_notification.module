@@ -119,14 +119,17 @@ function trlx_notification_brand_story_related_content($node) {
   $market_ref_keys = array_column($user_utility->getMarketKeyByCategoryId($markets), 'field_region_subreg_country_id_value');
   $userIds = NotificationUtility::getUsersBasedOnBrandsAndMarkets($market_ref_keys, $brand_key);
   $notification_index = [];
+  $notification_heading = $commonUtility->getNotificationTranslation($config->get('brand_story_heading'), $content_language);
+  $content_language = $node->langcode->value;
+  $text = $commonUtility->getNotificationTranslation('View', $content_language);
+  $notification_text = $text . ': ' . $node->get('field_display_title')->first()->getValue()['value'];
   if (!empty($userIds)) {
     foreach ($userIds as $id) {
       $content_language = $node->langcode->value;
       $notificationArray[NOTIFICATION_TYPE] = t('BRAND');
       $notificationArray[NOTIFICATION_USER_ID] = $id;
-      $notificationArray[NOTIFICATION_HEADING] = $commonUtility->getNotificationTranslation($config->get('brand_story_heading'), $content_language);
-      $text = $commonUtility->getNotificationTranslation('View', $content_language);
-      $notificationArray[NOTIFICATION_TEXT] = $text . ': ' . $node->get('field_display_title')->first()->getValue()['value'];
+      $notificationArray[NOTIFICATION_HEADING] = $notification_heading;
+      $notificationArray[NOTIFICATION_TEXT] = $notification_text;
       $notificationArray[NOTIFICATION_LINK] = NULL;
       $notificationArray[NOTIFICATION_LINK_TYPE] = t('brandStory');
       $notificationArray[NOTIFICATION_BRAND_KEY] = reset($brand_key);
@@ -134,6 +137,12 @@ function trlx_notification_brand_story_related_content($node) {
       $notificationArray[NOTIFICATIONS_LANGUAGE] = $content_language;
       $notification_index[] = process_notification($notificationArray);
     }
+  }
+  // Push notification logic.
+  $userExternalIds = NotificationUtility::getUsersBasedOnBrandsAndMarkets($market_ref_keys, $brand_key, TRUE);
+  if (!empty($userExternalIds)) {
+    $push_notification_array = trlx_push_notifications_array($userExternalIds, 'BRAND', $notification_heading, $notification_text, NULL, 'brandStory', reset($brand_key), reset($brand_data));
+    trlx_push_notifications($push_notification_array);
   }
   return ($notification_index);
 }
@@ -160,56 +169,78 @@ function trlx_notification_modules_related_content($node) {
   $level_data = $level_utility->getLevelData($level_category_id);
   $brand_keys = array_column($level_utility->getLevelBrands($level_category_id), 'field_brand_key_value');
   $content_sections = array_column($level_utility->getLevelContentSection($level_category_id), 'field_content_section_key_value');
+  $text = $commonUtility->getNotificationTranslation('View', $content_language);
   $notification_index = [];
   if (in_array('brandLevel', $content_sections) && !empty($brand_keys)) {
     $brandUserIds = NotificationUtility::getUsersBasedOnBrandsAndMarkets($market_ref_keys, $brand_keys);
+    $content_language = $node->langcode->value;
+    $notification_heading = $commonUtility->getNotificationTranslation($config->get('brand_level_heading'), $content_language);
+    $notification_text = $text . ': ' . $level_data->name;
     if (!empty($brandUserIds)) {
       foreach ($brandUserIds as $id) {
-        $content_language = $node->langcode->value;
         $notificationArray[NOTIFICATION_TYPE] = t('BRAND');
         $notificationArray[NOTIFICATION_USER_ID] = $id;
-        $notificationArray[NOTIFICATION_HEADING] = $commonUtility->getNotificationTranslation($config->get('brand_level_heading'), $content_language);
-        $text = $commonUtility->getNotificationTranslation('View', $content_language);
-        $notificationArray[NOTIFICATION_TEXT] = $text . ': ' . $level_data->name;
+        $notificationArray[NOTIFICATION_HEADING] = $notification_heading;
+        $notificationArray[NOTIFICATION_TEXT] = $notification_text;
         $notificationArray[NOTIFICATION_LINK] = $level_category_id;
         $notificationArray[NOTIFICATION_LINK_TYPE] = t('brandLevel');
         $notificationArray[NOTIFICATIONS_LANGUAGE] = $content_language;
         $notification_index[] = process_notification($notificationArray);
       }
     }
+    // Push notification logic.
+    $brandUsersExternalIds = NotificationUtility::getUsersBasedOnBrandsAndMarkets($market_ref_keys, $brand_keys, TRUE);
+    if (!empty($brandUsersExternalIds)) {
+      $push_notification_array = trlx_push_notifications_array($brandUsersExternalIds, 'BRAND', $notification_heading, $notification_text, $level_category_id, 'brandLevel');
+      trlx_push_notifications($push_notification_array);
+    }
   }
   if (in_array($commonUtility::SELLING_TIPS, $content_sections)) {
     $sellingTipsUserIds = NotificationUtility::getUsersBasedOnBrandsAndMarkets($market_ref_keys);
+    $content_language = $node->langcode->value;
+    $notification_heading = $commonUtility->getNotificationTranslation($config->get('selling_tips_level_heading'), $content_language);
+    $notification_text = $text . ': ' . $level_data->name;
     if (!empty($sellingTipsUserIds)) {
       foreach ($sellingTipsUserIds as $id) {
-        $content_language = $node->langcode->value;
         $notificationArray[NOTIFICATION_TYPE] = t('SELLINGTIPS');
         $notificationArray[NOTIFICATION_USER_ID] = $id;
-        $notificationArray[NOTIFICATION_HEADING] = $commonUtility->getNotificationTranslation($config->get('selling_tips_level_heading'), $content_language);
-        $text = $commonUtility->getNotificationTranslation('View', $content_language);
-        $notificationArray[NOTIFICATION_TEXT] = $text . ': ' . $level_data->name;
+        $notificationArray[NOTIFICATION_HEADING] = $notification_heading;
+        $notificationArray[NOTIFICATION_TEXT] = $notification_text;
         $notificationArray[NOTIFICATION_LINK] = $level_category_id;
         $notificationArray[NOTIFICATION_LINK_TYPE] = t('sellingTipsLevel');
         $notificationArray[NOTIFICATIONS_LANGUAGE] = $content_language;
         $notification_index[] = process_notification($notificationArray);
       }
     }
+    // Push notification logic.
+    $sellingTipsUsersExternalIds = NotificationUtility::getUsersBasedOnBrandsAndMarkets($market_ref_keys, [], TRUE);
+    if (!empty($sellingTipsUsersExternalIds)) {
+      $push_notification_array = trlx_push_notifications_array($sellingTipsUsersExternalIds, 'SELLINGTIPS', $notification_heading, $notification_text, $level_category_id, 'sellingTipsLevel');
+      trlx_push_notifications($push_notification_array);
+    }
   }
   if (in_array($commonUtility::CONSUMER, $content_sections)) {
     $consumerUserIds = NotificationUtility::getUsersBasedOnBrandsAndMarkets($market_ref_keys);
+    $content_language = $node->langcode->value;
+    $notification_heading = $commonUtility->getNotificationTranslation($config->get('consumer_level_heading'), $content_language);
+    $notification_text = $text . ': ' . $level_data->name;
     if (!empty($consumerUserIds)) {
       foreach ($consumerUserIds as $id) {
-        $content_language = $node->langcode->value;
         $notificationArray[NOTIFICATION_TYPE] = t('CONSUMER');
         $notificationArray[NOTIFICATION_USER_ID] = $id;
-        $notificationArray[NOTIFICATION_HEADING] = $commonUtility->getNotificationTranslation($config->get('consumer_level_heading'), $content_language);
-        $text = $commonUtility->getNotificationTranslation('View', $content_language);
-        $notificationArray[NOTIFICATION_TEXT] = $text . ': ' . $level_data->name;
+        $notificationArray[NOTIFICATION_HEADING] = $notification_heading;
+        $notificationArray[NOTIFICATION_TEXT] = $notification_text;
         $notificationArray[NOTIFICATION_LINK] = $level_category_id;
         $notificationArray[NOTIFICATION_LINK_TYPE] = t('consumerLevel');
         $notificationArray[NOTIFICATIONS_LANGUAGE] = $content_language;
         $notification_index[] = process_notification($notificationArray);
       }
+    }
+    // Push notification logic.
+    $consumerUsersExternalIds = NotificationUtility::getUsersBasedOnBrandsAndMarkets($market_ref_keys, [], TRUE);
+    if (!empty($consumerUsersExternalIds)) {
+      $push_notification_array = trlx_push_notifications_array($consumerUsersExternalIds, 'CONSUMER', $notification_heading, $notification_text, $level_category_id, 'consumerLevel');
+      trlx_push_notifications($push_notification_array);
     }
   }
   return $notification_index;
@@ -233,20 +264,28 @@ function trlx_notification_product_detail_related_content($node) {
   $market_ref_keys = array_column($user_utility->getMarketKeyByCategoryId($markets), 'field_region_subreg_country_id_value');
   $userIds = NotificationUtility::getUsersBasedOnBrandsAndMarkets($market_ref_keys, $brand_key);
   $notification_index = [];
+  $notification_heading = $commonUtility->getNotificationTranslation($config->get('factsheet_heading'), $content_language);
+  $text = $commonUtility->getNotificationTranslation('View', $content_language);
+  $notification_text = $text . ': ' . $node->get('field_display_title')->first()->getValue()['value'];
+  $content_language = $node->langcode->value;
   if (!empty($userIds)) {
     foreach ($userIds as $id) {
-      $content_language = $node->langcode->value;
       $notificationArray[NOTIFICATION_TYPE] = t('BRAND');
       $notificationArray[NOTIFICATION_USER_ID] = $id;
-      $notificationArray[NOTIFICATION_HEADING] = $commonUtility->getNotificationTranslation($config->get('factsheet_heading'), $content_language);
-      $text = $commonUtility->getNotificationTranslation('View', $content_language);
-      $notificationArray[NOTIFICATION_TEXT] = $text . ': ' . $node->get('field_display_title')->first()->getValue()['value'];
+      $notificationArray[NOTIFICATION_HEADING] = $notification_heading;
+      $notificationArray[NOTIFICATION_TEXT] = $notification_text;
       $notificationArray[NOTIFICATION_LINK] = $node->id();
       $notificationArray[NOTIFICATION_LINK_TYPE] = t('factsheet');
       $notificationArray[NOTIFICATION_BRAND_NAME] = reset($brand_data);
       $notificationArray[NOTIFICATIONS_LANGUAGE] = $content_language;
       $notification_index[] = process_notification($notificationArray);
     }
+  }
+  // Push notification logic.
+  $usersExternalIds = NotificationUtility::getUsersBasedOnBrandsAndMarkets($market_ref_keys, $brand_key, TRUE);
+  if (!empty($usersExternalIds)) {
+    $push_notification_array = trlx_push_notifications_array($usersExternalIds, 'BRAND', $notification_heading, $notification_text, $node->id(), 'factsheet', '', reset($brand_data));
+    trlx_push_notifications($push_notification_array);
   }
   return ($notification_index);
 }
@@ -269,72 +308,95 @@ function trlx_notification_stories_related_content($node) {
   $content_section_id = $node->get('field_content_section')->first()->getValue()['target_id'];
   $content_section = $commonUtility->getSectionKeyByTermId($content_section_id);
   $notification_index = [];
+  $text = $commonUtility->getNotificationTranslation('View', $content_language);
+  $notification_text = $text . ': ' . $node->get('field_display_title')->first()->getValue()['value'];
+  $content_language = $node->langcode->value;
   if ($content_section == $commonUtility::TREND) {
     $trendUserIds = NotificationUtility::getUsersBasedOnBrandsAndMarkets($market_ref_keys);
+    $notification_heading = $commonUtility->getNotificationTranslation($config->get('trend_heading'), $content_language);
     if (!empty($trendUserIds)) {
       foreach ($trendUserIds as $id) {
-        $content_language = $node->langcode->value;
         $notificationArray[NOTIFICATION_TYPE] = t('TREND');
         $notificationArray[NOTIFICATION_USER_ID] = $id;
-        $notificationArray[NOTIFICATION_HEADING] = $commonUtility->getNotificationTranslation($config->get('trend_heading'), $content_language);
-        $text = $commonUtility->getNotificationTranslation('View', $content_language);
-        $notificationArray[NOTIFICATION_TEXT] = $text . ': ' . $node->get('field_display_title')->first()->getValue()['value'];
+        $notificationArray[NOTIFICATION_HEADING] = $notification_heading;
+        $notificationArray[NOTIFICATION_TEXT] = $notification_text;
         $notificationArray[NOTIFICATION_LINK] = $node->id();
         $notificationArray[NOTIFICATION_LINK_TYPE] = t('trend');
         $notificationArray[NOTIFICATIONS_LANGUAGE] = $content_language;
         $notification_index[] = process_notification($notificationArray);
       }
     }
+    // Push notification logic.
+    $trendExternalIds = NotificationUtility::getUsersBasedOnBrandsAndMarkets($market_ref_keys, [], TRUE);
+    if (!empty($trendExternalIds)) {
+      $push_notification_array = trlx_push_notifications_array($trendExternalIds, 'TREND', $notification_heading, $notification_text, $node->id(), 'trend');
+      trlx_push_notifications($push_notification_array);
+    }
   }
   if ($content_section == $commonUtility::INSIDER_CORNER) {
     $insiderCornerUserIds = NotificationUtility::getUsersBasedOnBrandsAndMarkets($market_ref_keys);
+    $notification_heading = $commonUtility->getNotificationTranslation($config->get('insider_corner_heading'), $content_language);
     if (!empty($insiderCornerUserIds)) {
       foreach ($insiderCornerUserIds as $id) {
-        $content_language = $node->langcode->value;
         $notificationArray[NOTIFICATION_TYPE] = t('INSIDERCORNER');
         $notificationArray[NOTIFICATION_USER_ID] = $id;
-        $notificationArray[NOTIFICATION_HEADING] = $commonUtility->getNotificationTranslation($config->get('insider_corner_heading'), $content_language);
-        $text = $commonUtility->getNotificationTranslation('View', $content_language);
-        $notificationArray[NOTIFICATION_TEXT] = $text . ': ' . $node->get('field_display_title')->first()->getValue()['value'];
+        $notificationArray[NOTIFICATION_HEADING] = $notification_heading;
+        $notificationArray[NOTIFICATION_TEXT] = $notification_text;
         $notificationArray[NOTIFICATION_LINK] = $node->id();
         $notificationArray[NOTIFICATION_LINK_TYPE] = t('insiderCorner');
         $notificationArray[NOTIFICATIONS_LANGUAGE] = $content_language;
         $notification_index[] = process_notification($notificationArray);
       }
     }
+    // Push notification logic.
+    $insiderCornerExternalIds = NotificationUtility::getUsersBasedOnBrandsAndMarkets($market_ref_keys, [], TRUE);
+    if (!empty($insiderCornerExternalIds)) {
+      $push_notification_array = trlx_push_notifications_array($insiderCornerExternalIds, 'INSIDERCORNER', $notification_heading, $notification_text, $node->id(), 'insiderCorner');
+      trlx_push_notifications($push_notification_array);
+    }
   }
   if ($content_section == $commonUtility::SELLING_TIPS) {
     $sellingTipsUserIds = NotificationUtility::getUsersBasedOnBrandsAndMarkets($market_ref_keys);
     if (!empty($sellingTipsUserIds)) {
       foreach ($sellingTipsUserIds as $id) {
-        $content_language = $node->langcode->value;
         $notificationArray[NOTIFICATION_TYPE] = t('SELLINGTIPS');
         $notificationArray[NOTIFICATION_USER_ID] = $id;
-        $notificationArray[NOTIFICATION_HEADING] = $commonUtility->getNotificationTranslation($config->get('selling_tips_heading'), $content_language);
-        $text = $commonUtility->getNotificationTranslation('View', $content_language);
-        $notificationArray[NOTIFICATION_TEXT] = $text . ': ' . $node->get('field_display_title')->first()->getValue()['value'];
+        $notificationArray[NOTIFICATION_HEADING] = $notification_heading;
+        $notificationArray[NOTIFICATION_TEXT] = $notification_text;
         $notificationArray[NOTIFICATION_LINK] = $node->id();
         $notificationArray[NOTIFICATION_LINK_TYPE] = t('sellingTips');
         $notificationArray[NOTIFICATIONS_LANGUAGE] = $content_language;
         $notification_index[] = process_notification($notificationArray);
       }
     }
+    // Push notification logic.
+    $sellingTipsExternalIds = NotificationUtility::getUsersBasedOnBrandsAndMarkets($market_ref_keys, [], TRUE);
+    if (!empty($sellingTipsExternalIds)) {
+      $push_notification_array = trlx_push_notifications_array($sellingTipsExternalIds, 'SELLINGTIPS', $notification_heading, $notification_text, $node->id(), 'sellingTips');
+      trlx_push_notifications($push_notification_array);
+    }
   }
   if ($content_section == $commonUtility::CONSUMER) {
     $consumerUserIds = NotificationUtility::getUsersBasedOnBrandsAndMarkets($market_ref_keys);
+    $notification_heading = $commonUtility->getNotificationTranslation($config->get('consumer_heading'), $content_language);
     if (!empty($consumerUserIds)) {
       foreach ($consumerUserIds as $id) {
         $content_language = $node->langcode->value;
         $notificationArray[NOTIFICATION_TYPE] = t('CONSUMER');
         $notificationArray[NOTIFICATION_USER_ID] = $id;
-        $notificationArray[NOTIFICATION_HEADING] = $commonUtility->getNotificationTranslation($config->get('consumer_heading'), $content_language);
-        $text = $commonUtility->getNotificationTranslation('View', $content_language);
-        $notificationArray[NOTIFICATION_TEXT] = $text . ': ' . $node->get('field_display_title')->first()->getValue()['value'];
+        $notificationArray[NOTIFICATION_HEADING] = $notification_heading;
+        $notificationArray[NOTIFICATION_TEXT] = $notification_text;
         $notificationArray[NOTIFICATION_LINK] = $node->id();
         $notificationArray[NOTIFICATION_LINK_TYPE] = t('consumer');
         $notificationArray[NOTIFICATIONS_LANGUAGE] = $content_language;
         $notification_index[] = process_notification($notificationArray);
       }
+    }
+    // Push notification logic.
+    $consumerExternalIds = NotificationUtility::getUsersBasedOnBrandsAndMarkets($market_ref_keys, [], TRUE);
+    if (!empty($consumerExternalIds)) {
+      $push_notification_array = trlx_push_notifications_array($consumerExternalIds, 'CONSUMER', $notification_heading, $notification_text, $node->id(), 'consumer');
+      trlx_push_notifications($push_notification_array);
     }
   }
   return ($notification_index);
@@ -357,21 +419,29 @@ function trlx_notification_video_related_content($node) {
   // Get current user markets.
   $market_ref_keys = array_column($user_utility->getMarketKeyByCategoryId($markets), 'field_region_subreg_country_id_value');
   $userIds = NotificationUtility::getUsersBasedOnBrandsAndMarkets($market_ref_keys, $brand_key);
+  $notification_heading = $commonUtility->getNotificationTranslation($config->get('video_heading'), $content_language);
+  $text = $commonUtility->getNotificationTranslation('View', $content_language);
+  $notification_text = $text . ': ' . $node->get('field_display_title')->first()->getValue()['value'];
+  $content_language = $node->langcode->value;
   $notification_index = [];
   if (!empty($userIds)) {
     foreach ($userIds as $id) {
-      $content_language = $node->langcode->value;
       $notificationArray[NOTIFICATION_TYPE] = t('BRAND');
       $notificationArray[NOTIFICATION_USER_ID] = $id;
-      $notificationArray[NOTIFICATION_HEADING] = $commonUtility->getNotificationTranslation($config->get('video_heading'), $content_language);
-      $text = $commonUtility->getNotificationTranslation('View', $content_language);
-      $notificationArray[NOTIFICATION_TEXT] = $text . ': ' . $node->get('field_display_title')->first()->getValue()['value'];
+      $notificationArray[NOTIFICATION_HEADING] = $notification_heading;
+      $notificationArray[NOTIFICATION_TEXT] = $notification_text;
       $notificationArray[NOTIFICATION_LINK] = $node->id();
       $notificationArray[NOTIFICATION_LINK_TYPE] = t('video');
       $notificationArray[NOTIFICATION_BRAND_NAME] = reset($brand_data);
       $notificationArray[NOTIFICATIONS_LANGUAGE] = $content_language;
       $notification_index[] = process_notification($notificationArray);
     }
+  }
+  // Push notification logic.
+  $usersExternalIds = NotificationUtility::getUsersBasedOnBrandsAndMarkets($market_ref_keys, $brand_key, TRUE);
+  if (!empty($usersExternalIds)) {
+    $push_notification_array = trlx_push_notifications_array($usersExternalIds, 'BRAND', $notification_heading, $notification_text, $node->id(), 'video', '', reset($brand_data));
+    trlx_push_notifications($push_notification_array);
   }
   return ($notification_index);
 }
@@ -445,26 +515,42 @@ function trlx_notification_comment_user_tags(int $nid, $language = CommentUtilit
         break;
     }
 
+    // Collect internal & external userid.
     foreach ($commenTags as $tag) {
       $userIds[$tag['id']] = $tag['id'];
+      $usersExternalIds[$tag['externalUserId']] = $tag['externalUserId'];
     }
+
+    // Set variables for notification.
+    $notification_type = 'COMMENTTAG';
+    $notification_heading = $commonUtility->getNotificationTranslation($config->get('comment_tags_heading'), $content_language);
+    $text = $commonUtility->getNotificationTranslation('View', $content_language);
+    $notification_text = $text . ': ' . $node->get('field_display_title')->first()->getValue()['value'];
+    $node_id = $node->id();
+    $brand_key = (!empty($brand_key)) ? reset($brand_key) : '';
+    $brand_data = (!empty($brand_data)) ? reset($brand_data) : '';
 
     if (!empty($userIds)) {
       foreach ($userIds as $id) {
         $content_language = $node->langcode->value;
-        $notificationArray[NOTIFICATION_TYPE] = t('COMMENTTAG');
+        $notificationArray[NOTIFICATION_TYPE] = t($notification_type);
         $notificationArray[NOTIFICATION_USER_ID] = $id;
-        $notificationArray[NOTIFICATION_HEADING] = $commonUtility->getNotificationTranslation($config->get('comment_tags_heading'), $content_language);
-        $text = $commonUtility->getNotificationTranslation('View', $content_language);
-        $notificationArray[NOTIFICATION_TEXT] = $text . ': ' . $node->get('field_display_title')->first()->getValue()['value'];
-        $notificationArray[NOTIFICATION_LINK] = $node->id();
+        $notificationArray[NOTIFICATION_HEADING] = $notification_heading;
+        $notificationArray[NOTIFICATION_TEXT] = $notification_text;
+        $notificationArray[NOTIFICATION_LINK] = $node_id;
         $notificationArray[NOTIFICATION_LINK_TYPE] = $linkType;
-        $notificationArray[NOTIFICATION_BRAND_KEY] = reset($brand_key);
-        $notificationArray[NOTIFICATION_BRAND_NAME] = reset($brand_data);
+        $notificationArray[NOTIFICATION_BRAND_KEY] = $brand_key;
+        $notificationArray[NOTIFICATION_BRAND_NAME] = $brand_data;
         $notificationArray[NOTIFICATIONS_LANGUAGE] = $content_language;
         $notification_index[] = process_notification($notificationArray);
       }
     }
+  }
+
+  // Push notification logic.
+  if (!empty($usersExternalIds)) {
+    $push_notification_array = trlx_push_notifications_array($usersExternalIds, $notification_type, $notification_heading, $notification_text, $node_id, $linkType, $brand_key, $brand_data);
+    trlx_push_notifications($push_notification_array);
   }
 
   return $notification_index;
@@ -535,7 +621,7 @@ function trlx_notification_node_builder($entity_type, NodeInterface $node, &$for
  * @param array $notificationArray
  *   Array containing all the data related to notifications.
  *
- * @return notification_index
+ * @return array
  *   Return notification array.
  */
 function process_notification(array $notificationArray) {
@@ -577,4 +663,52 @@ function trlx_notification_cron() {
   $notification_helpers = new NotificationController();
   // Call this method to purge notifications after 30 days of generation.
   $notification_helpers->purgeNotifications();
+}
+
+/**
+ * TRLX push notifications array.
+ */
+function trlx_push_notifications_array($usersExternalIds, $notification_type, $notification_heading, $notification_text, $notification_link, $notification_link_type, $notification_brand_key = '', $notification_brand_name = '') {
+  $push_notification_array = [
+    "pushNotificationType" => "TRLX",
+    "pushNotificationTargetUsers" => $usersExternalIds,
+    "pushNotificationBody" => [
+      NOTIFICATION_TYPE => $notification_type,
+      NOTIFICATION_HEADING => $notification_heading,
+      NOTIFICATION_TEXT => $notification_text,
+      "notificationDate" => (int) \Drupal::time()->getCurrentTime(),
+      NOTIFICATION_LINK => $notification_link,
+      NOTIFICATION_LINK_TYPE => $notification_link_type,
+      NOTIFICATION_BRAND_KEY => $notification_brand_key,
+      NOTIFICATION_BRAND_NAME => $notification_brand_name,
+    ],
+  ];
+  return $push_notification_array;
+}
+
+/**
+ * TRLX push notifications logic.
+ */
+function trlx_push_notifications($data) {
+  $config = \Drupal::config(NOTIFICATIONS_SETTING);
+  // Push notification middleware API url.
+  $push_notification_url = $config->get('push_notification_url');
+  // Initializes a new cURL session.
+  $curl = curl_init($push_notification_url);
+  // 1. Set the CURLOPT_RETURNTRANSFER option to true.
+  curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
+  // 2. Set the CURLOPT_POST option to true for POST request.
+  curl_setopt($curl, CURLOPT_POST, TRUE);
+  // 3. Set the request data as JSON using json_encode function.
+  curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
+  // 4. Set custom headers for RapidAPI Auth and Content-Type header.
+  curl_setopt($curl, CURLOPT_HTTPHEADER, [
+    'Content-Type: application/json',
+    'X-TRACE-OPERATION: PUSH-NOTIFICATION',
+    'X-TRACE-REQUESTID: ' . time() . mt_rand(1000, 9999),
+  ]);
+  // Execute cURL request with all previous settings.
+  $response = curl_exec($curl);
+  // Close cURL session.
+  curl_close($curl);
 }

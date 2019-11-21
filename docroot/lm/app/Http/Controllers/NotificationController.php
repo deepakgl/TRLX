@@ -150,7 +150,7 @@ class NotificationController extends Controller {
         // Get notification count.
         $notificationsCount = $this->notificationsCount($this->userId, $langcode);
         // Total count.
-        $total = count($notificationArray);
+        $total = count($notificationArray) - $this->offset;
         // How many pages will there be.
         $pages = ceil($total / $this->limit);
         $notificationArray = array_slice($notificationArray, $this->offset, $this->limit);
@@ -161,7 +161,7 @@ class NotificationController extends Controller {
         $pager['pages'] = $pages;
         $pager['items_per_page'] = $this->limit;
         $pager['current_page'] = 0;
-        $pager['next_page'] = 0;
+        $pager['next_page'] = ($pages > 1) ? 1 : 0;
         return $this->successResponse($notifications, Response::HTTP_OK, $pager);
       }
       else {
@@ -303,7 +303,7 @@ class NotificationController extends Controller {
         return $this->errorResponse('No alive nodes found in cluster.', Response::HTTP_INTERNAL_SERVER_ERROR);
       }
       if (is_null($ids)) {
-        return $this->successResponse(null, Response::HTTP_OK);
+        return $this->successResponse(NULL, Response::HTTP_OK);
       }
       foreach ($ids as $value) {
         $params = [

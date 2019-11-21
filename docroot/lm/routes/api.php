@@ -70,12 +70,6 @@ $router->group(
     // Search.
     $router->group(['prefix' => 'v1'], function () use ($router) {
       $router->get('search', 'SearchController@search');
-      $router->get('productSearch', 'ArProductSearchController@productSearch');
-    });
-
-    // Quiz.
-    $router->group(['prefix' => 'v1'], function () use ($router) {
-      $router->post('quiz', 'QuizController@quiz');
     });
 
     // JWT token API.

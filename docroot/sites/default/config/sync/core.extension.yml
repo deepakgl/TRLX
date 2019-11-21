@@ -44,7 +44,6 @@ module:
   entity_submit_redirect: 0
   entityqueue: 0
   fakeobjects: 0
-  feeds: 0
   field: 0
   field_collection: 0
   field_group: 0
