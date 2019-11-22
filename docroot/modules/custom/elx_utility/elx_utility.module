@@ -46,9 +46,6 @@ function _elx_utility_http_request($node) {
  * Implements hook_form_alter().
  */
 function elx_utility_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  $user_utility = new UserUtility();
-  // Get current user roles.
-  $roles = \Drupal::currentUser()->getRoles();
   switch ($form_id) {
     case 'taxonomy_term_static_translation_form':
       $form['name']['widget'][0]['value']['#title'] = 'Key';
