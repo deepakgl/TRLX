@@ -77,7 +77,7 @@ class SpotlightSection extends ResourceBase {
     // Prepare view response.
     list($view_results, $status_code) = $entityUtility->fetchApiResult(
       '',
-      'spotlight_section',
+      'spotlight_hompage_section',
       'rest_export_spotlight_section',
       $data,
       ['language' => $language],
@@ -116,7 +116,7 @@ class SpotlightSection extends ResourceBase {
           $brand_id = $brand->get('field_brand_key')->value;
           $brandName = $brand->get('name')->value;
           if (in_array($brand_id, $user_brands)) {
-            $result[$i]['nid'] = $brand_id;
+            $result[$i]['nid'] = (int)$brand_id;
             $result[$i]['displayTitle'] = $node->hasTranslation($language) ? $node->getTranslation($language)->get('field_display_title')->value : '';
             $result[$i]['type'] = 'brandStory';
             $result[$i]['brandName'] = $brandName;

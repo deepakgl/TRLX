@@ -754,3 +754,14 @@ function trlx_utility_file_url_alter(&$uri) {
     }
   }
 }
+
+/**
+ * Implements hook_editor_js_settings_alter()().
+ */
+function trlx_utility_editor_js_settings_alter(array &$settings) {
+  if (isset($settings['editor']['formats']['full_html'])) {
+    foreach ($settings['editor']['formats'] as $name => $value) {
+      $settings['editor']['formats'][$name]['editorSettings']['pasteFromWordPromptCleanup'] = FALSE;
+    }
+  }
+}
