@@ -330,7 +330,56 @@ function elx_utility_entity_delete(EntityInterface $entity) {
         _elx_utility_http_delete_request($entity);
         break;
       case 'stories':
-       $patterns = [$env . ':home:tr_trends_' . '*'];
+        $contentSection = $entity->get('field_content_section')->referencedEntities();
+        $contentSectionkey = (!empty($contentSection)) ? (array_shift($contentSection)->get('field_content_section_key')->value) : '';
+
+        if (isset($contentSectionkey)) {
+          switch ($contentSectionkey) {
+            case 'trend':
+              $patterns = [$env . ':home:tr_trends_' . '*', $env . ':listing:tr_trend_' . '*'];
+              elx_utility_clear_redis_cache($patterns);
+              break;
+
+            case 'insiderCorner':
+              $patterns = [$env . ':home:insider_corner_' . '*', $env . ':listing:insider_corner_' . '*'];
+              elx_utility_clear_redis_cache($patterns);
+              break;
+
+            case 'sellingTips':
+              $patterns = [$env . ':listing:selling_tips_' . '*'];
+              elx_utility_clear_redis_cache($patterns);
+              break;
+
+            case 'consumer':
+              $patterns = [$env . ':listing:consumers_' . '*'];
+              elx_utility_clear_redis_cache($patterns);
+              break;
+
+          }
+        }
+        break;
+
+      case 'product_detail':
+        $brand_id = $entity->get('field_brands')->first()->getValue()['target_id'];
+        $brand_key = $commonUtility->getBrandKeyByTermId($brand_id);
+        $lang_code = $entity->language()->getId();
+        $patterns = [$env . ':brand:factsheets_' . $brand_key . '_' . '*'];
+        elx_utility_clear_redis_cache($patterns);
+        break;
+
+      case 'tools':
+        $brand_id = $entity->get('field_brands')->first()->getValue()['target_id'];
+        $brand_key = $commonUtility->getBrandKeyByTermId($brand_id);
+        $lang_code = $entity->language()->getId();
+        $patterns = [$env . ':brand:videos_' . $brand_key . '_' . '*'];
+        elx_utility_clear_redis_cache($patterns);
+        break;
+
+      case 'brand_story':
+        $brand_id = $entity->get('field_brands')->first()->getValue()['target_id'];
+        $brand_key = $commonUtility->getBrandKeyByTermId($brand_id);
+        $lang_code = $entity->language()->getId();
+        $patterns = [$env . ':brand:story_' . $brand_key . '_' . '*'];
         elx_utility_clear_redis_cache($patterns);
         break;
     }
