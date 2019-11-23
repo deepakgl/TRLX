@@ -158,6 +158,15 @@ FormStateInterface &$form_state) {
   $form_state->setRedirectUrl($url);
 }
 
+function call_exec_api($entity) {
+  $url = 'http://localhost:81/api/v1/imagestylegenerate?_format=json';
+  $payload = json_encode(['entity' => $entity->toArray()]);
+  $cmd = "curl -X POST -H 'Content-Type: application/json'";
+  $cmd.= " -d '" . $payload . "' " . "'" . $url . "'";
+  $cmd .= " > /dev/null 2>&1 &";
+  exec($cmd, $output, $exit);
+}
+
 /**
  * Custom method to handle image styles.
  */
