@@ -1,0 +1,13 @@
+diff --git a/core/lib/Drupal/Core/Entity/EntityListBuilder.php b/core/lib/Drupal/Core/Entity/EntityListBuilder.php
+index c7843517be..89efa6d55e 100644
+--- a/core/lib/Drupal/Core/Entity/EntityListBuilder.php
++++ b/core/lib/Drupal/Core/Entity/EntityListBuilder.php
+@@ -149,7 +149,7 @@ protected function getDefaultOperations(EntityInterface $entity) {
+       $operations['edit'] = [
+         'title' => $this->t('Edit'),
+         'weight' => 10,
+-        'url' => $this->ensureDestination($entity->toUrl('edit-form')),
++        'url' => $entity->toUrl('edit-form'),
+       ];
+     }
+     if ($entity->access('delete') && $entity->hasLinkTemplate('delete-form')) {

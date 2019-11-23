@@ -78,8 +78,9 @@ class InsiderCornerSection extends ResourceBase {
     ];
 
     // Prepare view response.
+    $key = ":home:insider_corner_{$language}";
     list($view_results, $status_code) = $entityUtility->fetchApiResult(
-      '',
+      $key,
       'insider_corner',
       'rest_export_homepage_insider_corner_section',
       $data,

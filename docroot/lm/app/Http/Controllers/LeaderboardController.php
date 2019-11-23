@@ -209,14 +209,15 @@ class LeaderboardController extends Controller {
    */
   protected function calculateUserRank($search_param, $section) {
     global $_userData;
+    $current_user_data = ElasticUserModel::fetchElasticUserData($this->uid, $this->elasticClient);
     // If no comparison is there & is not equal to world.
     if ($section != 'world') {
       if ($section == 'country') {
-        if (!empty($_userData->country)) {
+        if (!empty($current_user_data['_source']['country'])) {
           // Get user information based on country.
           // Create the query filters.
           $search_param['body']['query']['bool']['filter'][]['terms'] = [
-            'country' => $_userData->country,
+            'country' => $current_user_data['_source']['country'],
           ];
         }
         else {
@@ -224,11 +225,11 @@ class LeaderboardController extends Controller {
         }
       }
       if ($section == 'subregion') {
-        if (!empty($_userData->subregion)) {
+        if (!empty($current_user_data['_source']['subRegion'])) {
           // Get user information based on subregion.
           // Create the query filters.
           $search_param['body']['query']['bool']['filter'][]['terms'] = [
-            'subRegion' => $_userData->subregion,
+            'subRegion' => $current_user_data['_source']['subRegion'],
           ];
         }
         else {
@@ -236,11 +237,11 @@ class LeaderboardController extends Controller {
         }
       }
       if ($section == 'region') {
-        if (!empty($_userData->region)) {
+        if (!empty($current_user_data['_source']['region'])) {
           // Get user information based on region.
           // Create the query filters.
           $search_param['body']['query']['bool']['filter'][]['terms'] = [
-            'region' => $_userData->region,
+            'region' => $current_user_data['_source']['region'],
           ];
         }
         else {
@@ -248,11 +249,11 @@ class LeaderboardController extends Controller {
         }
       }
       if ($section == 'location') {
-        if (!empty($_userData->location)) {
+        if (!empty($current_user_data['_source']['locations'])) {
           // Get user information based on country.
           // Create the query filters.
           $search_param['body']['query']['bool']['filter'][]['terms'] = [
-            'location' => $_userData->location,
+            'location' => $current_user_data['_source']['locations'],
           ];
         }
         else {
@@ -290,7 +291,7 @@ class LeaderboardController extends Controller {
       "pages" => ($pages > 0) ? (int) $pages : 0,
       "items_per_page" => (int) $limit,
       "current_page" => 0,
-      "next_page" => 0,
+      "next_page" => ($pages > 1) ? 1 : 0,
     ];
     return $response;
   }
@@ -363,6 +364,10 @@ class LeaderboardController extends Controller {
    */
   protected function getAllUsersRankInTheSystem($elasticClient, $section = 'region', $section_filter = 0) {
     global $_userData;
+    $this->uid = $_userData->userId;
+    // Check whether elastic connectivity is there.
+    $this->elasticClient = Helper::checkElasticClient();
+    $current_user_data = ElasticUserModel::fetchElasticUserData($this->uid, $this->elasticClient);
     $search_param = [
       'index' => getenv("ELASTIC_ENV") . '_user',
       'type' => 'user',
@@ -382,10 +387,10 @@ class LeaderboardController extends Controller {
     // If no comparison is there & is not equal to world.
     if ($section != 'world') {
       if ($section == 'country') {
-        if (!empty($_userData->country)) {
+        if (!empty($current_user_data['_source']['country'])) {
           // Get user information based on country.
           // Create the query filters.
-          $filter = ($section_filter != 0) ? [$section_filter] : $_userData->country;
+          $filter = ($section_filter != 0) ? [$section_filter] : $current_user_data['_source']['country'];
           $search_param['body']['query']['bool']['filter'][]['terms'] = [
             'country' => $filter,
           ];
@@ -395,10 +400,10 @@ class LeaderboardController extends Controller {
         }
       }
       if ($section == 'subregion') {
-        if (!empty($_userData->subregion)) {
+        if (!empty($current_user_data['_source']['subRegion'])) {
           // Get user information based on subregion.
           // Create the query filters.
-          $filter = ($section_filter != 0) ? [$section_filter] : $_userData->subregion;
+          $filter = ($section_filter != 0) ? [$section_filter] : $current_user_data['_source']['subRegion'];
           $search_param['body']['query']['bool']['filter'][]['terms'] = [
             'subRegion' => $filter,
           ];
@@ -408,10 +413,10 @@ class LeaderboardController extends Controller {
         }
       }
       if ($section == 'region') {
-        if (!empty($_userData->region)) {
+        if (!empty($current_user_data['_source']['region'])) {
           // Get user information based on region.
           // Create the query filters.
-          $filter = ($section_filter != 0) ? [$section_filter] : $_userData->region;
+          $filter = ($section_filter != 0) ? [$section_filter] : $current_user_data['_source']['region'];
           $search_param['body']['query']['bool']['filter'][]['terms'] = [
             'region' => $filter,
           ];
@@ -421,10 +426,10 @@ class LeaderboardController extends Controller {
         }
       }
       if ($section == 'location') {
-        if (!empty($_userData->location)) {
+        if (!empty($current_user_data['_source']['locations'])) {
           // Get user information based on country.
           // Create the query filters.
-          $filter = ($section_filter != 0) ? [$section_filter] : $_userData->location;
+          $filter = ($section_filter != 0) ? [$section_filter] : $current_user_data['_source']['locations'];
           $search_param['body']['query']['bool']['filter'][]['terms'] = [
             'locations' => $filter,
           ];

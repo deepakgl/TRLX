@@ -56,6 +56,10 @@ function trlx_utility_form_alter(&$form, FormStateInterface $form_state, $form_i
       $form['field_brands']['widget']['#default_value'] = $form['field_brands']['widget']['#default_value'][0];
     case 'node_level_interactive_content_form':
     case 'node_level_interactive_content_edit_form':
+      // Changed type of point value field.
+      $form['field_point_value']['widget'][0]['value']['#type'] = 'number';
+      // Set default value 0 of point value field.
+      $form['field_point_value']['widget'][0]['value']['#min'] = 0;
     case 'node_t_c_form':
     case 'node_t_c_edit_form':
     case 'node_welcome_message_form':
@@ -70,6 +74,8 @@ function trlx_utility_form_alter(&$form, FormStateInterface $form_state, $form_i
 
     case 'node_stories_form':
     case 'node_stories_edit_form':
+      $form['field_point_value']['widget'][0]['value']['#min'] = 0;
+      $form['field_point_value']['widget'][0]['value']['#type'] = 'number';
       $form['#attached']['library'][] = 'trlx_market_hierarchy/trlx_market';
 
       // Load module config.
@@ -80,7 +86,7 @@ function trlx_utility_form_alter(&$form, FormStateInterface $form_state, $form_i
       $form['field_point_value']['widget']['#suffix'] = '</div>';
       $form['field_content_section']['widget']['#ajax'] = [
         'callback' => 'set_section_based_point_value',
-        // 'wrapper' => 'field-point-value-no-ajax-wrapper',
+          // 'wrapper' => 'field-point-value-no-ajax-wrapper',
         'method' => 'replace',
         'progress' => [
           'type' => 'throbber',
@@ -166,14 +172,21 @@ function trlx_utility_form_alter(&$form, FormStateInterface $form_state, $form_i
 
       if (!empty($insiderCornerTermId)) {
 
+        // Fetch Content Section value.
+        $contentSectionValue = $form['field_content_section'][widget]['#default_value'];
+        // Add help text for Sub Title.
+        if ($contentSectionValue == $insiderCornerTermId) {
+          $form['field_sub_title']['widget'][0]['value']['#description'] = t('<div class="quotes-help-text"><b>This field will be used for Quotes</b></div>');
+        }
+
         /*** Show/Hide Insider Corner related fields - START ***/
         foreach ($form['#fieldgroups']['group_insider_corner']->children as $field) {
           $form[$field]['#states'] = [
             'visible' => [
-              ["input[name='field_content_section']" => ['value' => $insiderCornerTermId]],
+            ["input[name='field_content_section']" => ['value' => $insiderCornerTermId]],
             ],
             'enabled' => [
-              ["input[name='field_content_section']" => ['value' => $insiderCornerTermId]],
+            ["input[name='field_content_section']" => ['value' => $insiderCornerTermId]],
             ],
           ];
         }
@@ -194,7 +207,7 @@ function trlx_utility_form_alter(&$form, FormStateInterface $form_state, $form_i
               else {
                 if (!empty($form[$field]['widget'][0]['value']) && empty($form[$field]['widget']['#required'])) {
                   $form[$field]['widget'][0]['value']['#states']['required'] = [
-                    ["input[name='field_content_section']" => ['value' => $insiderCornerTermId]],
+                  ["input[name='field_content_section']" => ['value' => $insiderCornerTermId]],
                   ];
                 }
               }
@@ -208,17 +221,17 @@ function trlx_utility_form_alter(&$form, FormStateInterface $form_state, $form_i
       if (!empty($consumerTermId)) {
         // Visible state.
         $form['field_consumer_category']['widget']['#states']['visible'] = [
-          ["input[name='field_content_section']" => ['value' => $consumerTermId]],
+        ["input[name='field_content_section']" => ['value' => $consumerTermId]],
         ];
 
         // Enabled state.
         $form['field_consumer_category']['widget']['#states']['enabled'] = [
-          ["input[name='field_content_section']" => ['value' => $consumerTermId]],
+        ["input[name='field_content_section']" => ['value' => $consumerTermId]],
         ];
 
         // Required state.
         $form['field_consumer_category']['widget']['#states']['required'] = [
-          ["input[name='field_content_section']" => ['value' => $consumerTermId]],
+        ["input[name='field_content_section']" => ['value' => $consumerTermId]],
         ];
 
         // Unset option "N/A".
@@ -337,10 +350,10 @@ function trlx_utility_form_alter(&$form, FormStateInterface $form_state, $form_i
       /*** Show/Hide Brands list based on Brand List section - END ***/
       break;
 
-      case 'entity_subqueue_insider_corner_hompage_edit_form':
-      case 'entity_subqueue_spotlight_section_edit_form':
-        $form['actions']['submit']['#submit'][] = 'trlx_utility_entityqueue_submit';
-        break;
+    case 'entity_subqueue_insider_corner_hompage_edit_form':
+    case 'entity_subqueue_spotlight_section_edit_form':
+      $form['actions']['submit']['#submit'][] = 'trlx_utility_entityqueue_submit';
+      break;
 
     default:
       break;
@@ -356,8 +369,10 @@ function trlx_utility_entityqueue_submit(array &$form, FormStateInterface $form_
   $redirectUrl = Url::fromUri('internal:/entityqueue/homepage-content');
 
   $redirectRoles = [
-    'el_regional_market_admin', // MA
-    'el_nyo_global_education_system_admin', // GA
+  // MA.
+    'el_regional_market_admin',
+  // GA.
+    'el_nyo_global_education_system_admin',
   ];
 
   $redirect = FALSE;
@@ -458,6 +473,12 @@ function set_section_based_point_value(array &$form, FormStateInterface $form_st
     // Add a help text to Sub Title for Insider Corner.
     if ($sectionKey == CommonUtility::INSIDER_CORNER) {
       $form['field_sub_title']['widget'][0]['value']['#description'] = t('<div class="quotes-help-text"><b>This field will be used for Quotes</b></div>');
+    }
+    else {
+      // Remove Sub Title help text for section other than Insider's Corner.
+      if (isset($form['field_sub_title']['widget'][0]['value']['#description'])) {
+        unset($form['field_sub_title']['widget'][0]['value']['#description']);
+      }
     }
 
     // An AjaxResponse object.
@@ -589,40 +610,32 @@ function trlx_utility_views_query_alter(ViewExecutable $view, $query) {
   $view_id = [
     'product_listings',
     'product_detail',
-    'product_categories',
     'products_carousel',
     'video_listing',
-    'video_listing_mobile',
     'video_details',
     'stories_listing',
-    'stories_details',
-    'video_category',
     'level_interactive_content',
-    'tools_listing',
     'product_detail',
     'video_listing',
-    'video_listing_mobile',
     'video_details',
     'fact_sheets_list',
     'learning_levels',
     'insider_corner',
     'selling_tips_learning_level_vocabulary',
     'consumer_categories',
+    'trlx_faq_listing',
   ];
   $current_display = [
     'rest_export_product_listings',
-    'rest_export_product_categories',
-    'rest_export_products_carousel',
     'rest_export_video_listing',
     'rest_export_stories_listing',
-    'rest_export_video_category',
     'rest_export_level_interactive_content',
-    'rest_export_tools_listing',
     'rest_export_fact_sheets_list',
-    'rest_export_learning_levels',
     'rest_export_insider_corner_listing',
     'rest_export_selling_tips_learning_level_listing',
     'rest_export_consumer_learning_level_listing',
+    'rest_export_faq_listing',
+    'rest_export_global_faq_listing',
   ];
   if (in_array($view->id(), $view_id)) {
     if (in_array($view->current_display, $current_display)) {
@@ -740,15 +753,4 @@ function trlx_utility_file_url_alter(&$uri) {
       $uri = settings::get('cdn_file_public_base_url') . '/' . explode('//', $uri)[1];
     }
   }
-}
-
-/**
- * Implements hook_theme().
- */
-function trlx_utility_theme() {
-  return [
-    'trlx_utility_video' => [
-      'variables' => ['files' => [], 'attributes' => NULL],
-    ],
-  ];
 }

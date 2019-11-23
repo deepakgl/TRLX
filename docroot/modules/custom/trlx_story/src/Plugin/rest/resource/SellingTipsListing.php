@@ -85,6 +85,7 @@ class SellingTipsListing extends ResourceBase {
     );*/
 
     // Fetch stories bundle content response.
+    $key = ":listing:selling_tips_{$language}";
     list($content_view_results, $term_status_code) = $entityUtility->fetchApiResult(
       '',
       'selling_tips',
@@ -128,11 +129,11 @@ class SellingTipsListing extends ResourceBase {
     }
 
     if (!empty($results)) {
-      $pagerCount = round($count - $offset);
-      $pages = round(($pagerCount / $limit), 0);
+      $pagerCount = ($count - $offset);
+      $pages = ceil($pagerCount / $limit);
       $pager['count'] = $pagerCount;
       $pager['pages'] = $pages;
-      $pager['items_per_page'] = $limit;
+      $pager['items_per_page'] = (int) $limit;
       $pager['current_page'] = 0;
       $pager['next_page'] = ($pages > 1) ? 1 : 0;
 

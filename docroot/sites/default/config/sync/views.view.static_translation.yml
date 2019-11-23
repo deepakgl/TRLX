@@ -7,6 +7,7 @@ dependencies:
     - taxonomy.vocabulary.static_translation
     - user.role.administrator
     - user.role.el_nyo_global_education_system_admin
+    - user.role.el_regional_market_admin
   module:
     - taxonomy
     - translation_views
@@ -31,6 +32,7 @@ display:
         options:
           role:
             administrator: administrator
+            el_regional_market_admin: el_regional_market_admin
             el_nyo_global_education_system_admin: el_nyo_global_education_system_admin
       cache:
         type: tag
@@ -534,7 +536,7 @@ display:
           entity_type: taxonomy_term
           entity_field: changed
           plugin_id: date
-      title: 'Static Translation'
+      title: 'Static Translations'
       header:
         area:
           id: area

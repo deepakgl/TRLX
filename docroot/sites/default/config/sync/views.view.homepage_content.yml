@@ -177,7 +177,7 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: "{% if name == \"insider_corner_hompage\" %}\r\n    {{ \"Insider Corner\" }}\r\n{% elseif name == \"spotlight_section\" %}\r\n    {{ \"Spotlight\" }}           \r\n{% endif %}"
+            text: "{% if name == \"insider_corner_hompage\" %}\r\n    {{ \"Insider's Corner\" }}\r\n{% elseif name == \"spotlight_section\" %}\r\n    {{ \"Spotlight\" }}           \r\n{% endif %}"
             make_link: false
             path: ''
             absolute: false
@@ -521,19 +521,19 @@ display:
           entity_field: queue
           plugin_id: bundle
       sorts:
-        queue:
-          id: queue
+        name:
+          id: name
           table: entity_subqueue
-          field: queue
+          field: name
           relationship: none
           group_type: group
           admin_label: ''
-          order: ASC
+          order: DESC
           exposed: false
           expose:
             label: ''
           entity_type: entity_subqueue
-          entity_field: queue
+          entity_field: name
           plugin_id: standard
       title: 'Homepage Content'
       header: {  }

@@ -7,7 +7,6 @@ dependencies:
     - field.field.node.level_interactive_content.field_access_by_role
     - field.field.node.level_interactive_content.field_archive_and_unarchive
     - field.field.node.level_interactive_content.field_best_seller_title
-    - field.field.node.level_interactive_content.field_content_object_type
     - field.field.node.level_interactive_content.field_featured
     - field.field.node.level_interactive_content.field_featured_image
     - field.field.node.level_interactive_content.field_headline
@@ -236,7 +235,6 @@ hidden:
   created: true
   field_access_by_role: true
   field_archive_and_unarchive: true
-  field_content_object_type: true
   field_featured: true
   field_order_weight: true
   field_product_categories: true

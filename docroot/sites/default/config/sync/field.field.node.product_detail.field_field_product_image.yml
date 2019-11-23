@@ -10,7 +10,7 @@ id: node.product_detail.field_field_product_image
 field_name: field_field_product_image
 entity_type: node
 bundle: product_detail
-label: 'Product Image'
+label: 'Hero Image'
 description: 'Allowed file types:<b> png, jpg, jpeg.</b><br>Image Resolution:<b> 200X200px</b>'
 required: false
 translatable: true

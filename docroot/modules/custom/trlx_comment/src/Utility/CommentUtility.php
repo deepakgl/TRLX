@@ -215,7 +215,10 @@ class CommentUtility {
 
       foreach ($tags as $delta => $tag) {
         // Fetch user real id referenced in drupal with otm system id.
-        $userId = !is_numeric($tag['id']) ? $commonUtility->getUserRealId($tag['id']) : $tag['id'];
+        $userId = $externalUserId = $tag['id'];
+        if (!is_numeric($tag['id'])) {
+          $userId = $commonUtility->getUserRealId($tag['id']);
+        }
 
         if (empty($updateIdOnly)) {
           // Fetch user data from elastic.
@@ -231,6 +234,7 @@ class CommentUtility {
         }
         else {
           $tags[$delta]['id'] = $userId;
+          $tags[$delta]['externalUserId'] = $externalUserId;
         }
       }
 

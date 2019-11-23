@@ -73,8 +73,9 @@ class ConsumerCategoryListing extends ResourceBase {
     ];
 
     // Prepare view response.
+    $key = ":landing:consumer_categories_{$language}";
     list($view_results, $status_code) = $entityUtility->fetchApiResult(
-      '',
+      $key,
       'consumer_categories',
       'rest_export_consumer_categories',
       $data,

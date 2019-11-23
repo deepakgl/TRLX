@@ -62,12 +62,12 @@ class LearningLevelHomepageSection extends ResourceBase {
       return $response;
     }
 
-    // Get user
+    // Get user.
     global $_userData;
     $all_tids = $this->getDistingTids($_userData->userId);
     $count1 = 0;
     foreach ($all_tids as $tid) {
-      // Query to fetch all associated nids
+      // Query to fetch all associated nids.
       $query = \Drupal::entityQuery('node')
         ->condition('status', 1)
         ->condition('type', 'level_interactive_content', '=')
@@ -75,10 +75,10 @@ class LearningLevelHomepageSection extends ResourceBase {
       $nid = $query->execute();
       $nids = array_values($nid);
       if (!empty($nids)) {
-        // Get status in-progress in percentage
+        // Get status in-progress in percentage.
         $status_array = $levelUtility->getLevelActivity($_userData, $tid, $nids, $language);
         if ($status_array['percentageCompleted'] != 100) {
-          //Get term by tid
+          // Get term by tid.
           $term = $this->getTaxonomyTerm($status_array['categoryId'], $language);
           $translation = $this->validateTraslation($nids, $language);
           if ((!empty($term)) && ($translation['status'] == 1)) {
@@ -86,8 +86,8 @@ class LearningLevelHomepageSection extends ResourceBase {
             $result[$count1]['displayTitle'] = $term->hasTranslation($language) ? $term->getTranslation($language)->get('name')->value : '';
             $result[$count1]['subTitle'] = $term->hasTranslation($language) ? $term->getTranslation($language)->get('field_sub_title')->value : '';
             $result[$count1]['body'] = $term->hasTranslation($language) ? ((!empty($term->getTranslation($language)->get('description')->value) ||
-            ($term->getTranslation($language)->get('description')->value != null) ? $term->getTranslation($language)->get('description')->value : '')) : '';
-            // Get image reference field
+            ($term->getTranslation($language)->get('description')->value != NULL) ? $term->getTranslation($language)->get('description')->value : '')) : '';
+            // Get image reference field.
             $featured_image = $term->get('field_image')->referencedEntities();
             if (!empty($featured_image)) {
               $image = array_shift($featured_image)->get('field_media_image')->referencedEntities();
@@ -95,16 +95,18 @@ class LearningLevelHomepageSection extends ResourceBase {
               $result[$count1]['imageSmall'] = (!empty($uri)) ? ($commonUtility->loadImageStyle('level_home_page_mobile', $uri)) : '';
               $result[$count1]['imageMedium'] = (!empty($uri)) ? ($commonUtility->loadImageStyle('level_home_page_tablet', $uri)) : '';
               $result[$count1]['imageLarge'] = (!empty($uri)) ? ($commonUtility->loadImageStyle('level_home_page_desktop', $uri)) : '';
-            } else {
+            }
+            else {
               $result[$count1]['imageSmall'] = '';
               $result[$count1]['imageMedium'] = '';
               $result[$count1]['imageLarge'] = '';
             }
-            //Get point values count
+            // Get point values count.
             $pointValues = $this->getPointValues($nids, $language);
-            if ((empty($pointValues)) || ($pointValues == null)) {
+            if ((empty($pointValues)) || ($pointValues == NULL)) {
               $result[$count1]['pointValue'] = 0;
-            } else {
+            }
+            else {
               $result[$count1]['pointValue'] = $pointValues;
             }
 
@@ -133,12 +135,12 @@ class LearningLevelHomepageSection extends ResourceBase {
    *   tid data.
    */
   public function getDistingTids($uid) {
-    // Exception handling
+    // Exception handling.
     try {
       // Query to get the nid for in-progress learning level content.
       $database = \Drupal::database();
       $query = $database->select('lm_lrs_records', 'n');
-      $query->fields('n', array('id','tid'));
+      $query->fields('n', ['id', 'tid']);
       $query->condition('uid', $uid, "=");
       $query->orderBy('id', 'DESC');
       $result = $query->execute()->fetchAll();
@@ -146,18 +148,22 @@ class LearningLevelHomepageSection extends ResourceBase {
       $result_array = [];
       foreach ($result as $key => $value) {
         $value = (array) $value;
-        $result_array[$key] = $value;
+        // Check for term exist.
+        $term = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($value['tid']);
+        if (!empty($term)) {
+          $result_array[$key] = $value;
+        }
       }
 
-      // Early return
+      // Early return.
       if (empty($result_array)) {
         return FALSE;
       }
 
-      $tid_array = array_column($result_array , 'tid');
+      $tid_array = array_column($result_array, 'tid');
       $uniqueArray = array_unique($tid_array);
 
-      return  $uniqueArray;
+      return $uniqueArray;
     }
     catch (\Exception $e) {
       return FALSE;
@@ -187,26 +193,26 @@ class LearningLevelHomepageSection extends ResourceBase {
     }
   }
 
- /**
-  * Method to get point value
-  *
-  * @param array $nids
-  *   node data
-  * @param $langcode
-  *   lang data
-  *
-  * @return integer
-  *   point value
-  */
+  /**
+   * Method to get point value.
+   *
+   * @param array $nids
+   *   node data.
+   * @param $langcode
+   *   lang data
+   *
+   * @return int
+   *   point value
+   */
   public function getPointValues($nids, $langcode) {
-    // Fetch point values
+    // Fetch point values.
     $points_value = 0;
     foreach ($nids as $nid) {
       if (!empty($nid)) {
         $node = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
-        if (($langcode == 'en') || ($node->hasTranslation($langcode))) {
-          // Checking publish content
-          if (($node->get('status')->value) == 1) {
+        if ($node->hasTranslation($langcode)) {
+          // Checking publish content.
+          if (($node->getTranslation($langcode)->get('status')->value) == 1) {
             $points = $node->get('field_point_value')->value;
             $points_value = $points_value + $points;
           }
@@ -217,27 +223,28 @@ class LearningLevelHomepageSection extends ResourceBase {
     return $points_value;
   }
 
- /**
-  * Method to validate tranlsation
-  *
-  * @param array $nids
-  *   node data
-  * @param $langcode
-  *   lang data
-  *
-  * @return integer
-  *   status
-  */
+  /**
+   * Method to validate tranlsation.
+   *
+   * @param array $nids
+   *   node data.
+   * @param $langcode
+   *   lang data
+   *
+   * @return int
+   *   status
+   */
   public function validateTraslation($nids, $langcode) {
     foreach ($nids as $nid) {
       if (!empty($nid)) {
         $node = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
-        if ($node->hasTranslation($langcode)) {
-          return array('status' => 1);
+        if (($node->hasTranslation($langcode)) && (($node->getTranslation($langcode)->get('status')->value))) {
+          return ['status' => 1];
         }
       }
     }
 
-    return array('status' => 0);
+    return ['status' => 0];
   }
+
 }

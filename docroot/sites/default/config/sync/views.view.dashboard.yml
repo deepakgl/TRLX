@@ -13,7 +13,6 @@ dependencies:
     - node.type.stories
     - node.type.t_c
     - node.type.tools
-    - node.type.tools-pdf
     - node.type.welcome_message
     - taxonomy.vocabulary.brands
     - taxonomy.vocabulary.markets
@@ -596,7 +595,6 @@ display:
             level_interactive_content: level_interactive_content
             product_detail: product_detail
             stories: stories
-            tools-pdf: tools-pdf
             tools: tools
           group: 1
           exposed: false
@@ -688,7 +686,6 @@ display:
             level_interactive_content: level_interactive_content
             product_detail: product_detail
             stories: stories
-            tools-pdf: tools-pdf
             tools: tools
           group: 1
           exposed: true
@@ -3389,7 +3386,6 @@ display:
             product_detail: product_detail
             stories: stories
             t_c: t_c
-            tools-pdf: tools-pdf
             tools: tools
           group: 1
           exposed: true

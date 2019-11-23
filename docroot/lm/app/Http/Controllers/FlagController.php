@@ -107,6 +107,11 @@ class FlagController extends Controller {
     // Check user flag status.
     $user_activities = UserActivitiesController::userFlagStatus($response, $this->uid, NULL, 'globalActivity');
 
+    // Check empty user activities.
+    if (empty($user_activities)) {
+      return $this->successResponse(NULL, Response::HTTP_OK);
+    }
+
     $message = $user_activities[0] + [
       'status' => TRUE,
       'message' => 'Flag successfully updated',
@@ -415,7 +420,7 @@ class FlagController extends Controller {
       "pages" => $pages,
       "items_per_page" => (int) $this->limit,
       "current_page" => 0,
-      "next_page" => 0,
+      "next_page" => ($pages > 1) ? 1 : 0,
     ];
     header('Content-language: ' . $lang);
     if (empty($results['bookmark'])) {
@@ -493,7 +498,11 @@ class FlagController extends Controller {
     if (isset($response['_source']['node_views_' . $content_type])) {
       $node_ids = $response['_source']['node_views_' . $content_type];
       if (in_array($nid, $node_ids)) {
-        return $this->errorResponse('Node id already exist.', Response::HTTP_OK);
+        return $this->successResponse([
+          'nid' => $nid,
+          'status' => FALSE,
+          'message' => 'Node id already exist.',
+        ], Response::HTTP_OK);
       }
       $node_ids[] = $nid;
       $params['body'] = [

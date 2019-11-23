@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Drupal\trlx_utility\Utility\CommonUtility;
 use Drupal\trlx_utility\Utility\EntityUtility;
 use Drupal\trlx_learning_levels\Utility\LevelUtility;
+use Drupal\trlx_brand\Utility\BrandUtility;
 
 /**
  * Provides a learning levels resource.
@@ -35,6 +36,7 @@ class LearningLevels extends ResourceBase {
     global $_userData;
     $commonUtility = new CommonUtility();
     $entityUtility = new EntityUtility();
+    $brandUtility = new BrandUtility();
 
     // Required parameters.
     $requiredParams = [
@@ -66,17 +68,9 @@ class LearningLevels extends ResourceBase {
       return $response;
     }
 
-    // Prepare view response for valid brand key.
-    list($view_results, $status_code) = $entityUtility->fetchApiResult(
-      '',
-      'brand_key_validation',
-      'rest_export_brand_key_validation',
-      '',
-      $brandId
-    );
-
-    // Check for empty resultset.
-    if (empty($view_results)) {
+    // Validation for brand key exists in database.
+    $all_brand_keys = $brandUtility->getAllBrandKeys();
+    if (!in_array($brandId, $all_brand_keys)) {
       return $commonUtility->errorResponse($this->t('Brand Id (@brandId) does not exist.', ['@brandId' => $brandId]), Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
@@ -158,9 +152,14 @@ class LearningLevels extends ResourceBase {
 
     $data = array_values(array_filter($decode['results']));
     $decode['results'] = array_slice($data, $offset, $limit);
-    $decode['pager']['count'] = count($data) - $offset;
-    $decode['pager']['pages'] = ceil(count($data) / $limit);
-    $decode['pager']['items_per_page'] = $limit;
+    $pagerCount = (count($data) - $offset);
+    $pages = ceil($pagerCount / $limit);
+    $decode['pager']['count'] = $pagerCount;
+    $decode['pager']['pages'] = $pages;
+    $decode['pager']['items_per_page'] = (int) $limit;
+    if (empty($decode['results'])) {
+      unset($decode['pager']);
+    }
 
     return $decode;
   }

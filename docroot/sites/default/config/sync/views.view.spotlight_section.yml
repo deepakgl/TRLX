@@ -3,7 +3,6 @@ langcode: en
 status: true
 dependencies:
   config:
-    - entityqueue.entity_queue.spotlight_market_wise
     - entityqueue.entity_queue.spotlight_section
     - field.storage.media.field_media_image
     - field.storage.node.body
@@ -17,7 +16,6 @@ dependencies:
     - node.type.product_detail
     - node.type.stories
     - node.type.tools
-    - node.type.tools-pdf
     - taxonomy.vocabulary.markets
   module:
     - entityqueue
@@ -843,7 +841,6 @@ display:
         - 'user.node_grants:view'
         - user.permissions
       tags:
-        - 'config:entityqueue.entity_queue.spotlight_market_wise'
         - 'config:field.storage.media.field_media_image'
         - 'config:field.storage.node.body'
         - 'config:field.storage.node.field_display_title'
@@ -1075,7 +1072,6 @@ display:
         - 'user.node_grants:view'
         - user.permissions
       tags:
-        - 'config:entityqueue.entity_queue.spotlight_market_wise'
         - 'config:field.storage.media.field_media_image'
         - 'config:field.storage.node.body'
         - 'config:field.storage.node.field_display_title'
@@ -1704,7 +1700,6 @@ display:
             level_interactive_content: level_interactive_content
             product_detail: product_detail
             stories: stories
-            tools-pdf: tools-pdf
             tools: tools
           group: 1
           exposed: false

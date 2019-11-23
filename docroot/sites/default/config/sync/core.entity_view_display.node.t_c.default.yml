@@ -8,7 +8,6 @@ dependencies:
     - field.field.node.t_c.field_translation
     - node.type.t_c
   module:
-    - options
     - text
     - user
 id: node.t_c.default
@@ -19,28 +18,17 @@ content:
   body:
     label: hidden
     type: text_default
-    weight: 101
+    weight: 1
     settings: {  }
     third_party_settings: {  }
-    region: content
-  field_markets:
-    weight: 102
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
-  field_translation:
-    weight: 103
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: list_default
     region: content
   links:
-    weight: 100
+    weight: 0
     region: content
+    settings: {  }
+    third_party_settings: {  }
 hidden:
+  field_markets: true
+  field_translation: true
   langcode: true
   search_api_excerpt: true

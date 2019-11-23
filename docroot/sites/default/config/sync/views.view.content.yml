@@ -3,7 +3,8 @@ langcode: en
 status: true
 dependencies:
   config:
-    - node.type.best_sellers
+    - node.type.brand_story
+    - node.type.faq
     - node.type.level_interactive_content
     - node.type.privacy_policy
     - node.type.product_detail
@@ -11,7 +12,6 @@ dependencies:
     - node.type.stories
     - node.type.t_c
     - node.type.tools
-    - node.type.tools-pdf
     - node.type.welcome_message
   module:
     - node
@@ -502,14 +502,14 @@ display:
           admin_label: ''
           operator: in
           value:
-            best_sellers: best_sellers
+            brand_story: brand_story
+            faq: faq
             level_interactive_content: level_interactive_content
             privacy_policy: privacy_policy
             product_detail: product_detail
             products_carousel: products_carousel
             stories: stories
             t_c: t_c
-            tools-pdf: tools-pdf
             tools: tools
             welcome_message: welcome_message
           group: 1
@@ -528,13 +528,8 @@ display:
               authenticated: authenticated
               anonymous: '0'
               administrator: '0'
-              beauty_advisor: '0'
-              store_management: '0'
-              multi_brand_sales_associate: '0'
-              brand_management_and_field: '0'
               el_regional_market_admin: '0'
               el_nyo_global_education_system_admin: '0'
-              el_regional_market_translator: '0'
             reduce: true
           is_grouped: false
           group_info:

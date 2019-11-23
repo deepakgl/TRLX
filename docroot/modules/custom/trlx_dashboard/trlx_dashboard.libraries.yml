@@ -3,3 +3,8 @@ trlx_admin:
   css:
     theme:
       css/trlx_admin.css: {}
+trlx_ma:
+  version: 1.x
+  css:
+    theme:
+      css/trlx_ma.css: {}

@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Drupal\views\ViewExecutable;
 use Drupal\trlx_lang_translation\Utility\LangUtility;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Entity\EntityInterface;
 
 /**
  * @file
@@ -19,6 +20,13 @@ use Drupal\Core\Form\FormStateInterface;
  */
 function trlx_dashboard_preprocess_page(&$variables) {
   $variables['#attached']['library'][] = 'trlx_dashboard/trlx_admin';
+  // Get current path or uri.
+  $current_path = \Drupal::service('path.current')->getPath();
+  $currentAccount = \Drupal::currentUser();
+  $roles = $currentAccount->getRoles();
+  if ((in_array('el_regional_market_admin', $roles)) && ($current_path == '/admin/structure/taxonomy/manage/badges/overview')) {
+    $variables['#attached']['library'][] = 'trlx_dashboard/trlx_ma';
+  }
 }
 
 /**
@@ -115,6 +123,34 @@ function trlx_dashboard_views_pre_render(ViewExecutable $view) {
           }
           break;
       }
+
+    }
+  }
+}
+
+/**
+ * Implements template_preprocess_views_view_table()
+ *
+ * @param $variables
+ */
+function trlx_dashboard_preprocess_views_view_table(&$variables) {
+  $currentAccount = \Drupal::currentUser();
+  $roles = $currentAccount->getRoles();
+  if (!in_array('el_regional_market_admin', $roles)) {
+    return;
+  }
+
+  /** @var \Drupal\views\ViewExecutable $view */
+  $view = $variables['view'];
+  // Check for view.
+  if (($view->id() == 'dashboard') && ($view->current_display == 'dashboard_available_for_a_translation')) {
+    $rows = $variables['rows'];
+    foreach ($rows as $key => $row) {
+      $row_object = $row['columns']['type']['content'][0]['field_output']['#markup']->__toString();
+      $row_explode = explode("&", $row_object);
+      if (($row_explode[0] == "T" && $row_explode[1] == "amp;C") || ($row_object == 'Privacy Policy')) {
+        $variables['rows'][$key]['columns']['translation_link']['content'][0]['field_output'] = '';
+      }
     }
   }
 }
@@ -125,6 +161,7 @@ function trlx_dashboard_views_pre_render(ViewExecutable $view) {
 function trlx_dashboard_views_query_alter(ViewExecutable $view, $query) {
   if ($view->id() == 'dashboard') {
     $lang_utility = new LangUtility();
+
     if ($view->current_display == 'dashboard_published' ||
       $view->current_display == 'dashboard_unpublished') {
       $roles = getUserRoles(\Drupal::currentUser()->id());
@@ -151,5 +188,102 @@ function trlx_dashboard_form_alter(&$form, FormStateInterface $form_state, $form
           unset($form['langcode']['#options']['en']);
         }
       }
+  }
+}
+
+/**
+ * Implements hook_entity_operation().
+ */
+function trlx_dashboard_entity_operation_alter(array &$operations, EntityInterface $entity) {
+  // Make sure we are modifying only taxonomy entity and node.
+  $entityTypeId = $entity->getEntityTypeId();
+  $currentAccount = \Drupal::currentUser();
+  $roles = $currentAccount->getRoles();
+  if ($entityTypeId === 'taxonomy_term') {
+    // code...
+    if (($entity->getVocabularyId() == 'badges') || ($entity->getVocabularyId() == 'learning_category') ||
+     ($entity->getVocabularyId() == 'consumer_category')) {
+      if (in_array('el_regional_market_admin', $roles)) {
+        if (!empty($entity->id())) {
+          $database = \Drupal::database();
+          $query = $database->select('term_user_relation', 't');
+          $query->fields('t', ['tid', 'vid', 'uid', 'role']);
+          $query->condition('tid', $entity->id());
+          $query->range(0, 1);
+          $response = $query->execute()->fetchAll();
+          if ($response) {
+            $response = (array) $response[0];
+            if ('el_regional_market_admin' !== $response['role']) {
+              unset($operations['edit']);
+              unset($operations['delete']);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  if (($entityTypeId === 'node') && (in_array('el_regional_market_admin', $roles))) {
+    if (($entity->getType() == 't_c') || ($entity->getType() == 'privacy_policy')) {
+      unset($operations['translate']);
+    }
+  }
+}
+
+/**
+ * Implements hook_entity_insert().
+ */
+function trlx_dashboard_entity_insert(EntityInterface $entity) {
+  // Get entity type id.
+  $entityTypeId = $entity->getEntityTypeId();
+  $role = '';
+  if ($entityTypeId !== 'taxonomy_term') {
+    return;
+  }
+
+  if (($entity->getVocabularyId() == 'badges') || ($entity->getVocabularyId() == 'learning_category') ||
+    ($entity->getVocabularyId() == 'consumer_category')) {
+    $currentAccount = \Drupal::currentUser();
+    $roles = $currentAccount->getRoles();
+    if (in_array('el_regional_market_admin', $roles)) {
+      $role = 'el_regional_market_admin';
+    }
+    elseif (in_array('el_nyo_global_education_system_admin', $roles)) {
+      $role = 'el_nyo_global_education_system_admin';
+    }
+    else {
+      $role = 'administrator';
+    }
+
+    $table = 'term_user_relation';
+    // Create an object of type Select.
+    $record_keep_table = $table;
+    $table_exist = \Drupal::database()->schema()->tableExists($record_keep_table);
+
+    if ($table_exist == FALSE) {
+      $schema = [
+        'fields' => [
+          'id' => ['type' => 'serial', 'not null' => TRUE],
+          'tid' => ['type' => 'varchar', 'length' => 255, 'not null' => TRUE],
+          'vid' => ['type' => 'varchar', 'length' => 255, 'not null' => TRUE],
+          'uid' => ['type' => 'varchar', 'length' => 255, 'not null' => TRUE],
+          'role' => ['type' => 'varchar', 'length' => 255, 'not null' => TRUE],
+        ],
+        'primary key' => ['id'],
+      ];
+      \Drupal::database()->schema()->createTable($record_keep_table, $schema);
+    }
+
+    if ($table_exist == TRUE) {
+      $database = \Drupal::database();
+      $database->insert($table)
+        ->fields([
+          'tid' => $entity->id(),
+          'vid' => $entity->getVocabularyId(),
+          'uid' => $currentAccount->id(),
+          'role' => $role,
+        ])
+        ->execute();
+    }
   }
 }

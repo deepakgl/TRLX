@@ -1,0 +1,4 @@
+/* Hide entityqueue row weights. */
+.action-links {
+  display: none;
+}

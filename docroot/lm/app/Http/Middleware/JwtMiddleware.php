@@ -53,18 +53,21 @@ class JwtMiddleware {
         $query->where('ur.uid', '=', $_userData->uid);
         $result = $query->get()->first();
         if ($result != NULL) {
+          if ($_userData->status == 0) {
+            return $this->errorResponse('Unauthorized or inactive user.', Response::HTTP_FORBIDDEN);
+          }
           $_userData->userId = $result->id;
         }
-        else {
-          return $this->errorResponse('Provided token is invalid.', Response::HTTP_UNAUTHORIZED);
+        elseif ($result == NULL) {
+          return $this->errorResponse('Unauthorized or inactive user.', Response::HTTP_FORBIDDEN);
         }
       }
       catch (Exception $e) {
-        return $this->errorResponse('An error while decoding token.', 400);
+        return $this->errorResponse('An error while decoding token.', Response::HTTP_UNAUTHORIZED);
       }
     }
     else {
-      return $this->errorResponse('Provided token is invalid.', Response::HTTP_UNAUTHORIZED);
+      return $this->errorResponse('Provided token is not valid.', Response::HTTP_UNAUTHORIZED);
     }
     return $next($request);
   }

@@ -5,19 +5,13 @@
  * Utility file.
  */
 
-use Drupal\node\Entity\NodeType;
-use Drupal\views\ViewExecutable;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\elx_utility\RedisClientBuilder;
-use Symfony\Component\HttpFoundation\Request;
-use Drupal\user\Entity\User;
-use Elasticsearch\ClientBuilder;
-use Drupal\Core\Entity\EntityTypeInterface;
-use Drupal\Core\Field\BaseFieldDefinition;
-use Drupal\Core\Url;
+use Drupal\trlx_utility\RedisClientBuilder;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Drupal\elx_user\Utility\UserUtility;
+use Drupal\trlx_stamp\Utility\StampUtility;
+use Drupal\trlx_utility\Utility\CommonUtility;
 
 /**
  * Set node id and terms id using rest resource.
@@ -56,77 +50,6 @@ function elx_utility_form_alter(&$form, FormStateInterface $form_state, $form_id
   // Get current user roles.
   $roles = \Drupal::currentUser()->getRoles();
   switch ($form_id) {
-    case 'node_best_sellers_form':
-    case 'node_product_detail_form':
-    case 'node_level_interactive_content_form':
-    case 'node_stories_form':
-    case 'node_tools_form':
-    case 'node_tools-pdf_form':
-    case 'node_best_sellers_edit_form':
-    case 'node_product_detail_edit_form':
-    case 'node_level_interactive_content_edit_form':
-    case 'node_stories_edit_form':
-    case 'node_tools_edit_form':
-    case 'node_tools-pdf_edit_form':
-    case 'node_brand_story_form':
-    case 'node_brand_story_edit_form':
-      // Changed type of point value field.
-      $form['field_point_value']['widget'][0]['value']['#type'] = 'number';
-      // Set default value 0 of point value field.
-      $form['field_point_value']['widget'][0]['value']['#min'] = 0;
-    // case 'user_register_form':
-    // case 'user_form':
-    //   $uid = \Drupal::currentUser()->id();
-    //   // Get current user markets.
-    //   $query = $user_utility->getMarketByUserId($uid, 'all');
-    //   // Hide markets for market admin.
-    //   if (in_array('el_regional_market_admin', $roles)) {
-    //     foreach ($query as $key => $value) {
-    //       $market = $value->field_default_market_target_id;
-    //       $form['field_markets']['#disabled'] = TRUE;
-    //       $form['field_default_market']['widget']['#after_build'][] = 'elx_utility_default_market_after_build';
-    //       $form['field_default_market']['widget']['#default_value'][$key]['target_id'] = $market;
-    //     }
-    //   }
-      break;
-
-    case 'taxonomy_term_learning_category_form':
-      unset($form['field_access_by_role']['widget']['#options']['administrator']);
-      unset($form['field_access_by_role']['widget']['#options']['anonymous']);
-      unset($form['field_access_by_role']['widget']['#options']['authenticated']);
-      unset($form['field_access_by_role']['widget']['#options']['el_nyo_global_education_system_admin']);
-      break;
-
-    case 'views_exposed_form':
-      if ($form['#id'] == 'views-exposed-form-market-admin-dashboard-market-admin-dashboard-page' || $form['#id'] == 'views-exposed-form-market-admin-dashboard-market-admin-dashboard-page-2' || $form['#id'] == 'views-exposed-form-market-admin-dashboard-market-admin-dashboard-page-3') {
-        $form['type_1']['#type'] = 'radios';
-        $form['#attached']['library'][] = 'elx_market_hierarchy/elx_market_admin_dashboard';
-      }
-      // This is for translation content migration stats.
-      // @todo - Need to remove once migration activity complete.
-      if ($form['#id'] == 'views-exposed-form-elx-translated-content-migration-translated-content-migration') {
-        $language = \Drupal::languageManager()->getLanguages();
-        foreach ($language as $key => $value) {
-          $response[$value->getName()] = $value->getName();
-        }
-        $node_types = NodeType::loadMultiple();
-        foreach ($node_types as $node_type) {
-          $node_types_options[$node_type->id()] = $node_type->label();
-        }
-        $form['langcode'] = $form['type'] = $form['status'] = [
-          '#type' => 'select',
-          '#multiple' => FALSE,
-          '#empty_option' => 'Any',
-        ];
-        $form['langcode']['#options'] = $response;
-        $form['type']['#options'] = $node_types_options;
-        $form['status']['#options'] = [
-          'created' => 'created',
-          'translated' => 'translated',
-        ];
-      }
-      break;
-
     case 'taxonomy_term_static_translation_form':
       $form['name']['widget'][0]['value']['#title'] = 'Key';
       $form['relations']['#access'] = FALSE;
@@ -179,16 +102,76 @@ function elx_utility_default_market_after_build($form_element, &$form_state) {
 }
 
 /**
+ * Method to clear redis cache.
+ */
+function elx_utility_clear_redis_cache($patterns) {
+  $redisObj = RedisClientBuilder::getRedisClientObject('check');
+  $result = $redisObj->deleteKeyPattern($patterns);
+}
+
+/**
  * Implements hook_ENTITY_insert().
  */
 function elx_utility_entity_insert(EntityInterface $entity) {
-  if ($entity->getEntityTypeId() == 'node'
-  && $entity->gettype() != 'multiple_answer_choice'
-  && $entity->gettype() != 'multiple_choice_question'
-  && $entity->gettype() != 'quiz') {
+  $commonUtility = new CommonUtility();
+  $env = \Drupal::config('elx_utility.settings')->get('elx_environment');
+  if ($entity->getEntityTypeId() == 'node') {
     switch ($entity->gettype()) {
       case 'level_interactive_content':
         _elx_utility_http_request($entity);
+        break;
+
+      case 'stories':
+        $contentSection = $entity->get('field_content_section')->referencedEntities();
+        $contentSectionkey = (!empty($contentSection)) ? (array_shift($contentSection)->get('field_content_section_key')->value) : '';
+        $lang_code = $entity->language()->getId();
+        if (isset($contentSectionkey)) {
+          switch ($contentSectionkey) {
+            case 'trend':
+              $patterns = [$env . ':home:tr_trends_' . $lang_code, $env . ':listing:tr_trend_' . $lang_code . '*'];
+              elx_utility_clear_redis_cache($patterns);
+              break;
+
+            case 'insiderCorner':
+              $patterns = [$env . ':home:insider_corner_' . $lang_code, $env . ':listing:insider_corner_' . $lang_code . '*'];
+              elx_utility_clear_redis_cache($patterns);
+              break;
+
+            case 'sellingTips':
+              $patterns = [$env . ':listing:selling_tips_' . $lang_code . '*'];
+              elx_utility_clear_redis_cache($patterns);
+              break;
+
+            case 'consumer':
+              $patterns = [$env . ':listing:consumers_' . $lang_code . '*'];
+              elx_utility_clear_redis_cache($patterns);
+              break;
+          }
+        }
+        break;
+
+      case 'product_detail':
+        $brand_id = $entity->get('field_brands')->first()->getValue()['target_id'];
+        $brand_key = $commonUtility->getBrandKeyByTermId($brand_id);
+        $lang_code = $entity->language()->getId();
+        $patterns = [$env . ':brand:factsheets_' . $brand_key . '_' . $lang_code . '*'];
+        elx_utility_clear_redis_cache($patterns);
+        break;
+
+      case 'tools':
+        $brand_id = $entity->get('field_brands')->first()->getValue()['target_id'];
+        $brand_key = $commonUtility->getBrandKeyByTermId($brand_id);
+        $lang_code = $entity->language()->getId();
+        $patterns = [$env . ':brand:videos_' . $brand_key . '_' . $lang_code . '*'];
+        elx_utility_clear_redis_cache($patterns);
+        break;
+
+      case 'brand_story':
+        $brand_id = $entity->get('field_brands')->first()->getValue()['target_id'];
+        $brand_key = $commonUtility->getBrandKeyByTermId($brand_id);
+        $lang_code = $entity->language()->getId();
+        $patterns = [$env . ':brand:story_' . $brand_key . '_' . $lang_code];
+        elx_utility_clear_redis_cache($patterns);
         break;
     }
     // Purge Redis data.
@@ -198,7 +181,8 @@ function elx_utility_entity_insert(EntityInterface $entity) {
     $tid = $entity->id();
     $type = elx_utility_get_term_type($tid);
     if ($type == 'badges') {
-      migrate_badge_master();
+      $stamp_utility = new StampUtility();
+      $stamp_utility->migrateStamp();
     }
     // Purge Redis data.
     elx_utility_purge_redis_terms_data($type, $tid);
@@ -219,6 +203,10 @@ function elx_utility_entity_insert(EntityInterface $entity) {
   }
   elseif ($entity->getEntityTypeId() == 'entity_subqueue') {
     // Purge Redis data.
+    if ($entity->id() == 'insider_corner_hompage') {
+      $patterns = [$env . ':home:insider_corner_' . '*'];
+      elx_utility_clear_redis_cache($patterns);
+    }
     elx_utility_purge_redis_data($entity);
   }
   elseif ($entity->getEntityTypeId() == 'menu_link_content') {
@@ -234,12 +222,66 @@ function elx_utility_entity_insert(EntityInterface $entity) {
  * Implements hook_ENTITY_update().
  */
 function elx_utility_entity_update(EntityInterface $entity) {
-  if ($entity->getEntityTypeId() == 'node'
-  && $entity->gettype() != 'multiple_answer_choice'
-  && $entity->gettype() != 'multiple_choice_question') {
+  $commonUtility = new CommonUtility();
+  $env = \Drupal::config('elx_utility.settings')->get('elx_environment');
+  if ($entity->getEntityTypeId() == 'node') {
     switch ($entity->gettype()) {
       case 'level_interactive_content':
         _elx_utility_http_request($entity);
+        break;
+
+      case 'stories':
+        $contentSection = $entity->get('field_content_section')->referencedEntities();
+        $contentSectionkey = (!empty($contentSection)) ? (array_shift($contentSection)->get('field_content_section_key')->value) : '';
+        $lang_code = $entity->language()->getId();
+        if (isset($contentSectionkey)) {
+          switch ($contentSectionkey) {
+            case 'trend':
+              $patterns = [$env . ':home:tr_trends_' . $lang_code, $env . ':listing:tr_trend_' . $lang_code . '*'];
+              elx_utility_clear_redis_cache($patterns);
+              break;
+
+            case 'insiderCorner':
+              $patterns = [$env . ':home:insider_corner_' . $lang_code, $env . ':listing:insider_corner_' . $lang_code . '*'];
+              elx_utility_clear_redis_cache($patterns);
+              break;
+
+            case 'sellingTips':
+              $patterns = [$env . ':listing:selling_tips_' . $lang_code . '*'];
+              elx_utility_clear_redis_cache($patterns);
+              break;
+
+            case 'consumer':
+              $patterns = [$env . ':listing:consumers_' . $lang_code . '*'];
+              elx_utility_clear_redis_cache($patterns);
+              break;
+
+          }
+        }
+        break;
+
+      case 'product_detail':
+        $brand_id = $entity->get('field_brands')->first()->getValue()['target_id'];
+        $brand_key = $commonUtility->getBrandKeyByTermId($brand_id);
+        $lang_code = $entity->language()->getId();
+        $patterns = [$env . ':brand:factsheets_' . $brand_key . '_' . $lang_code . '*'];
+        elx_utility_clear_redis_cache($patterns);
+        break;
+
+      case 'tools':
+        $brand_id = $entity->get('field_brands')->first()->getValue()['target_id'];
+        $brand_key = $commonUtility->getBrandKeyByTermId($brand_id);
+        $lang_code = $entity->language()->getId();
+        $patterns = [$env . ':brand:videos_' . $brand_key . '_' . $lang_code . '*'];
+        elx_utility_clear_redis_cache($patterns);
+        break;
+
+      case 'brand_story':
+        $brand_id = $entity->get('field_brands')->first()->getValue()['target_id'];
+        $brand_key = $commonUtility->getBrandKeyByTermId($brand_id);
+        $lang_code = $entity->language()->getId();
+        $patterns = [$env . ':brand:story_' . $brand_key . '_' . $lang_code];
+        elx_utility_clear_redis_cache($patterns);
         break;
     }
     // Purge Redis data.
@@ -249,7 +291,8 @@ function elx_utility_entity_update(EntityInterface $entity) {
     $tid = $entity->id();
     $type = elx_utility_get_term_type($tid);
     if ($type == 'badges') {
-      migrate_badge_master();
+      $stamp_utility = new StampUtility();
+      $stamp_utility->migrateStamp();
     }
     // Purge Redis data.
     elx_utility_purge_redis_terms_data($type, $tid);
@@ -258,10 +301,14 @@ function elx_utility_entity_update(EntityInterface $entity) {
     $uid = $entity->id();
     // Insert index in elastic_host.
     elx_utility_purge_redis_data($entity);
-    set_user_object_elastic($uid);
   }
   elseif ($entity->getEntityTypeId() == 'entity_subqueue') {
     // Purge Redis data.
+    if ($entity->id() == 'insider_corner_hompage') {
+      $patterns = [$env . ':home:insider_corner_' . '*'];
+      elx_utility_clear_redis_cache($patterns);
+    }
+
     elx_utility_purge_redis_data($entity);
   }
   elseif ($entity->getEntityTypeId() == 'menu_link_content') {
@@ -277,41 +324,33 @@ function elx_utility_entity_update(EntityInterface $entity) {
  */
 function elx_utility_entity_delete(EntityInterface $entity) {
   if ($entity->getEntityTypeId() == 'node') {
-    if ($entity->gettype() == 'quiz') {
-      // Delete quiz associated with respective stories.
-      $query = \Drupal::database()->delete('node__field_quiz');
-      $query->condition('field_quiz_target_id', $entity->id());
-      $query->execute();
-      $query = \Drupal::database()->delete('node_revision__field_quiz');
-      $query->condition('field_quiz_target_id', $entity->id());
-      $query->execute();
-      \Drupal::service('entity_field.manager')->clearCachedFieldDefinitions();
+    switch ($entity->gettype()) {
+      case 'level_interactive_content':
+        _elx_utility_http_delete_request($entity);
+        break;
     }
-    elseif ($entity->gettype() != 'multiple_answer_choice'
-    && $entity->gettype() != 'multiple_choice_question'
-    && $entity->gettype() != 'quiz') {
-      switch ($entity->gettype()) {
-        case 'level_interactive_content':
-          _elx_utility_http_delete_request($entity);
-          break;
-      }
-      // Purge Redis data.
-      elx_utility_purge_redis_data($entity);
-      $response = new RedirectResponse('/dashboard/published');
-      $response->send();
-      return;
-    }
+    // Purge Redis data.
+    elx_utility_purge_redis_data($entity);
+    $response = new RedirectResponse('/dashboard/published');
+    $response->send();
+    return;
   }
   elseif ($entity->getEntityTypeId() == 'taxonomy_term') {
     $tid = $entity->id();
     $type = $entity->bundle();
     if ($type == 'badges') {
-      migrate_badge_master();
+      $stamp_utility = new StampUtility();
+      $stamp_utility->migrateStamp();
     }
     // Purge Redis data.
     elx_utility_purge_redis_terms_data($type, $tid);
   }
   elseif ($entity->getEntityTypeId() == 'entity_subqueue') {
+    // Purge Redis data.
+    if ($entity->id() == 'insider_corner_hompage') {
+      $patterns = [$env . ':home:insider_corner_' . '*'];
+      elx_utility_clear_redis_cache($patterns);
+    }
     // Purge Redis data.
     elx_utility_purge_redis_data($entity);
   }
@@ -390,12 +429,7 @@ function elx_utility_get_redis_pattern(EntityInterface $entity) {
   $env = \Drupal::config('elx_utility.settings')->get('elx_environment');
   if ($entity->getEntityTypeId() == 'node' && !empty($entity->id())) {
     $entity_type = $entity->gettype();
-    if ($entity_type == 'quiz') {
-      $pattern[] = implode(':', [$env, 'storiesDetail*']);
-
-      return $pattern;
-    }
-    elseif ($entity_type == 'products_carousel') {
+    if ($entity_type == 'products_carousel') {
       $pattern[] = implode(':', [$env, 'productsCarousel', $lang_code . '*']);
 
       return $pattern;
@@ -434,9 +468,6 @@ function elx_utility_get_redis_pattern(EntityInterface $entity) {
       $pattern[] = implode(':', [$env, 'spotlightSectionMarketWise*']);
       $pattern[] = implode(':', [$env, 'storiesTrendingSection*']);
       $pattern[] = implode(':', [$env, 'storiesTrendingSectionMarketWise*']);
-    }
-    elseif ($entity_type == 'tools-pdf') {
-      $pattern[] = implode(':', [$env, 'toolsListings*']);
     }
     elseif ($entity_type == 't_c') {
       $pattern[] = implode(':', [$env . '_t_c', 'detail*']);
@@ -540,108 +571,6 @@ function elx_utility_get_term_type($tid) {
 }
 
 /**
- * Insert user object on user insert and update market info on user update.
- *
- * @param int $uid
- *   User uid.
- */
-function set_user_object_elastic($uid) {
-  $user = User::load($uid);
-  // Get user markets, store, account.
-  $market = $user->get('field_default_market')->getValue();
-  $store = $user->get('field_door')->getValue();
-  $account = $user->get('field_account_name')->getValue();
-  $markets = array_column($market, 'target_id');
-  $stores = array_column($store, 'value');
-  $accounts = array_column($account, 'value');
-  $email = $user->get('mail')->value;
-  $access = (int) $user->get('field_has_3_0_permission')->value;
-  // Check user is blocked.
-  $status = 1;
-  if ($user->isBlocked() == TRUE) {
-    $status = 0;
-  }
-  // Ignore if user having mailinator, srijan or test keyword in email.
-  $ignore = 0;
-  if (preg_match('/(srijan|test|mailinator|mindstix)/', $email)) {
-    $ignore = 1;
-  }
-  // Create elastic connection.
-  $hosts = [
-    [
-      'host' => \Drupal::config('elx_utility.settings')->get('elastic_host'),
-      'port' => \Drupal::config('elx_utility.settings')->get('elastic_port'),
-      'scheme' => \Drupal::config('elx_utility.settings')->get('elastic_scheme'),
-      'user' => \Drupal::config('elx_utility.settings')
-        ->get('elastic_username'),
-      'pass' => \Drupal::config('elx_utility.settings')
-        ->get('elastic_password'),
-    ],
-  ];
-  $env = \Drupal::config('elx_utility.settings')->get('elx_environment');
-  $client = ClientBuilder::create()->setHosts($hosts)->build();
-  $index_params = [
-    'index' => $env . '_user',
-    'type' => 'user',
-    'id' => 'user_' . $uid,
-  ];
-  // Check for index existence previously.
-  $exist = $client->exists($index_params);
-  // If index not exist, create new index.
-  if (!$exist) {
-    $params = [
-      'index' => $env . '_user',
-      'type' => 'user',
-      'id' => 'user_' . $uid,
-      'body' => [
-        'uid' => $uid,
-        'total_points' => 0,
-        'badge' => [],
-        'market' => $markets,
-        'store' => $stores,
-        'account' => $accounts,
-        'node_views_best_sellers' => [],
-        'node_views_level_interactive_content' => [],
-        'node_views_product_detail' => [],
-        'node_views_stories' => [],
-        'node_views_tools' => [],
-        'node_views_t_c' => [],
-        'node_views_tools-pdf' => [],
-        'like' => [],
-        'bookmark' => [],
-        'access_permission' => $access,
-        'ignore' => $ignore,
-        'email' => $email,
-        'status' => $status,
-      ],
-    ];
-    $response = $client->index($params);
-  }
-  else {
-    // If exist update previous index with updated point values.
-    $params = [
-      'index' => $env . '_user',
-      'type' => 'user',
-      'id' => 'user_' . $uid,
-      'body' => [
-        'doc' => [
-          'uid' => $uid,
-          'market' => $markets,
-          'store' => $stores,
-          'account' => $accounts,
-          'access_permission' => $access,
-          'ignore' => $ignore,
-          'email' => $email,
-          'status' => $status,
-        ],
-        'doc_as_upsert' => TRUE,
-      ],
-    ];
-    $response = $client->update($params);
-  }
-}
-
-/**
  * Set node id and terms id using rest resource.
  *
  * @param object $node
@@ -679,101 +608,10 @@ function elx_utility_mail_alter(&$message) {
 }
 
 /**
- * Implements hook_entity_base_field_info().
- */
-//function elx_utility_entity_base_field_info(EntityTypeInterface $entity_type) {
-//  $fields = [];
-//  if ($entity_type->id() == 'menu_link_content') {
-//    $fields['elx_menu_content'] =
-//     BaseFieldDefinition::create('entity_reference')
-//       ->setLabel(t('Menu Content'))
-//       ->setSetting('target_type', 'taxonomy_term')
-//       ->setSetting('handler', 'default:taxonomy_term')
-//       ->setSetting('handler_settings', [
-//         'target_bundles' => [
-//           'menu_content' => 'menu_content',
-//         ],
-//       ])
-//       ->setDisplayOptions('form', ['type' => 'options_select', 'weight' => 0])
-//       ->setDisplayConfigurable('form', TRUE)
-//       ->setDisplayConfigurable('view', TRUE);
-//
-//    $fields['elx_menu_web'] = BaseFieldDefinition::create('boolean')
-//      ->setLabel(t('Web'))
-//      ->setDisplayOptions('form', [
-//        'type' => 'boolean_checkbox',
-//        'settings' => [
-//          'display_label' => TRUE,
-//        ],
-//      ])
-//      ->setDisplayConfigurable('form', TRUE);
-//
-//    $fields['elx_menu_otg'] = BaseFieldDefinition::create('boolean')
-//      ->setLabel(t('OTG'))
-//      ->setDisplayOptions('form', [
-//        'type' => 'boolean_checkbox',
-//        'settings' => [
-//          'display_label' => TRUE,
-//        ],
-//      ])
-//      ->setDisplayConfigurable('form', TRUE);
-//
-//    $fields['elx_menu_otg_sequence_id'] = BaseFieldDefinition::create('integer')
-//      ->setLabel(t('OTG Sequence Id'))
-//      ->setDisplayOptions('form', [
-//        'type' => 'integer',
-//        'settings' => [
-//          'display_label' => TRUE,
-//        ],
-//      ])
-//      ->setDisplayConfigurable('form', TRUE);
-//  }
-//
-//  return $fields;
-//}
-
-/**
  * Implements hook_preprocess_views_view_field().
  */
 function elx_utility_preprocess_views_view_field(&$variables) {
   global $base_url;
   $variables['front_end_url'] = \Drupal::config('elx_utility.settings')->get('elx_front_end_url');
   $variables['site_base_url'] = $base_url;
-}
-
-/**
- * Implements hook_entity_predelete().
- */
-function elx_user_entity_predelete(EntityInterface $entity) {
-  // If ($entity->get('bundle')->getValue()[0]['target_id'] != 'access_token')
-  // return _elx_entity_delete_confirm($entity);
-}
-
-/**
- * Implements hook_entity_translation_predelete().
- */
-function elx_user_entity_translation_delete(EntityInterface $translation) {
-  // Return _entity_delete_confirm();
-}
-
-/**
- * Alter entity delete.
- */
-function _elx_entity_delete_confirm($entity) {
-  if (\Drupal::currentUser()->id() != 1) {
-    $url = \Drupal::request()->query->get('destination');
-    if (empty($url)) {
-      $url = Url::fromRoute('<front>', [])->toString();
-    }
-    $response = new RedirectResponse($url);
-    $response->send();
-    drupal_set_message(t('You are not authorised to delete this entity.'), 'error', TRUE);
-    exit;
-  }
-  elseif ($entity->getEntityTypeId() == 'user') {
-    $uid = $entity->get('uid')->getValue()[0]['value'];
-    $query = \Drupal::database()->delete('oauth2_token');
-    $query->condition('auth_user_id', $uid);
-    $query->execute();
-  }
 }

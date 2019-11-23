@@ -81,15 +81,8 @@ class ConsumerListing extends ResourceBase {
     // Fetch respective learning_category term(s).
     $term_results = $this->fetchConsumerLevels($commonUtility::CONSUMER, $language, $categoryId);
 
-    // Fetch learning_category term response.
-    /*list($term_view_results, $term_status_code) = $entityUtility->fetchApiResult(
-    '',
-    'consumer_categories',
-    'rest_export_consumer_learning_level_listing',
-    '',
-    ['language' => $language, 'categoryId' => $categoryId]
-    );*/
-
+    // Prepare response.
+    $key = ":listing:consumers_{$language}";
     // Fetch stories bundle content response.
     list($content_view_results, $term_status_code) = $entityUtility->fetchApiResult(
       '',
@@ -134,11 +127,11 @@ class ConsumerListing extends ResourceBase {
     }
 
     if (!empty($results)) {
-      $pagerCount = round($count - $offset);
-      $pages = round(($pagerCount / $limit), 0);
+      $pagerCount = ($count - $offset);
+      $pages = ceil($pagerCount / $limit);
       $pager['count'] = $pagerCount;
       $pager['pages'] = $pages;
-      $pager['items_per_page'] = $limit;
+      $pager['items_per_page'] = (int) $limit;
       $pager['current_page'] = 0;
       $pager['next_page'] = ($pages > 1) ? 1 : 0;
 

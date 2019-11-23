@@ -78,8 +78,8 @@
         "drupal/password_encrypt": "^1.0",
         "drupal/queue_ui": "^2.0",
         "drupal/simpleautologout": "^1.4",
-        "drupal/menu_export":"^1.2",
-        "drupal/single_user_role":"^1.0"
+        "drupal/single_user_role":"^1.0",
+        "drupal/entity_submit_redirect":"^1.0"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
@@ -115,12 +115,8 @@
             "drupal/entityqueue": {
                 "entityqueue title": "patches/entityqueue/entityqueue_title.patch",
                 "entityqueue queue actions alter": "patches/entityqueue/entityqueue_links_action.patch",
-                "entityqueue queue routing alter": "patches/entityqueue/entityqueue_routing.patch"
-            },
-            "drupal/simple_oauth": {
-                "simple oauth": "patches/simple_oauth/simple_oauth_auth_provider.patch",
-                "oauth revoke": "patches/simple_oauth/simple_oauth-auth-revoke.patch",
-                "oauth login" : "patches/simple_oauth/Oauth2TokenUpdate.patch"
+                "entityqueue queue routing alter": "patches/entityqueue/entityqueue_routing.patch",
+                "entityqueue title update": "patches/entityqueue/simple.patch"
             },
             "drupal/bulk_update_fields": {
                 "show labels": "patches/bulk_update_fields/show_labels.patch",
@@ -138,10 +134,8 @@
                 "content translation": "patches/translation/content_translation_dependency.patch",
                 "content translation temp": "patches/translation/content_translation_temp.patch",
                 "Update user validation messages": "patches/user/user_login_link.patch",
-                "seventheme role added": "patches/seven/seven-theme.patch"
-            },
-            "drupal/consumers": {
-                "Consumers Column not found base_owner_id": "patches/consumers/unknown_column_base_owner_id.patch"
+                "seventheme role added": "patches/seven/seven-theme.patch",
+                "Entity edit list Operation": "patches/entity_list_builder/edit_entity_delete_translation.patch"
             },
             "drupal/inline_entity_form": {
                 "Alter paragraph fields": "patches/inline_entity_form/paragraph_fields_translation.patch"

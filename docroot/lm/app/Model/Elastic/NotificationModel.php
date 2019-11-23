@@ -91,4 +91,30 @@ class NotificationModel {
     return $response;
   }
 
+  /**
+   * TRLX push notifications logic.
+   */
+  public static function trlxPushNotifications($data) {
+    // Push notification middleware API url.
+    $push_notification_url = getenv("PUSH_NOTIFICATION_ENDPOINT");
+    // Initializes a new cURL session.
+    $curl = curl_init($push_notification_url);
+    // 1. Set the CURLOPT_RETURNTRANSFER option to true.
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
+    // 2. Set the CURLOPT_POST option to true for POST request.
+    curl_setopt($curl, CURLOPT_POST, TRUE);
+    // 3. Set the request data as JSON using json_encode function.
+    curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
+    // 4. Set custom headers for RapidAPI Auth and Content-Type header.
+    curl_setopt($curl, CURLOPT_HTTPHEADER, [
+      'Content-Type: application/json',
+      'X-TRACE-OPERATION: PUSH-NOTIFICATION',
+      'X-TRACE-REQUESTID: ' . time() . mt_rand(1000, 9999),
+    ]);
+    // Execute cURL request with all previous settings.
+    $response = curl_exec($curl);
+    // Close cURL session.
+    curl_close($curl);
+  }
+
 }

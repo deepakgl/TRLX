@@ -59,18 +59,19 @@ function trlx_learning_levels_field_widget_entity_reference_paragraphs_form_alte
  * Implements hook_form_alter().
  */
 function trlx_learning_levels_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  //Get current user details
+  // Get current user details.
   $currentAccount = \Drupal::currentUser();
   $roles = $currentAccount->getRoles();
   $levelUtility = new LevelUtility();
   switch ($form_id) {
     case 'node_level_interactive_content_form':
     case 'node_level_interactive_content_edit_form':
+
       // Add custom validation for intractive content.
       $form['#validate'][] = 'trlx_learning_levels_validate';
-      // Disable field on the basic of Brand
+      // Disable field on the basic of Brand.
       $category = $form['field_learning_category']['widget']['#options'];
-      // Disable brand related content section for MA
+      // Disable brand related content section for MA.
       $level_disable = $levelUtility->validateLearningCategories($category);
       if ((!empty($level_disable)) && (in_array('el_regional_market_admin', $roles))) {
         foreach ($level_disable as $levels) {
@@ -79,7 +80,7 @@ function trlx_learning_levels_form_alter(&$form, FormStateInterface $form_state,
       }
 
       break;
-    case 'taxonomy_term_learning_category_form':
+
     case 'taxonomy_term_learning_category_form':
       // Fetch content section mapped sections from config.
       $config = \Drupal::config('trlx_utility.settings');
@@ -93,12 +94,38 @@ function trlx_learning_levels_form_alter(&$form, FormStateInterface $form_state,
         }
       }
 
-      // Disable brand related content section for MA
+      // Disable brand related content section for MA.
       $category = $form['field_content_section']['widget']['#options'];
+      $current_url = \Drupal::service('path.current')->getPath();
+      $current_path = explode("/", $current_url);
+
+      $field_brand_status = 1;
+      if (($current_path[1] == 'taxonomy') && ($current_path[2] == 'term')) {
+        if (is_numeric($current_path[3])) {
+          $query = \Drupal::database()->select('term_user_relation', 't');
+          $query->fields('t');
+          $query->condition('t.tid', $current_path[3]);
+          $query->range(0, 1);
+          $result = $query->execute()->fetchAll();
+
+          if ((!empty($result)) && ($result[0]->role == 'el_nyo_global_education_system_admin')) {
+            $field_brand_status = 0;
+          }
+        }
+      }
+
       if ((!empty($category)) && (in_array('el_regional_market_admin', $roles))) {
+        $contentSectionValue = $form['field_content_section']['widget']['#default_value'];
         foreach ($category as $key => $value) {
           $value = $levelUtility->getBrandNonAgnostic($key);
-          unset($form['field_content_section']['widget']['#options'][$value]);
+          if (($field_brand_status == 0) && (in_array($value, $contentSectionValue))) {
+            $form['field_content_section']['#disabled'] = TRUE;
+            break;
+          }
+          else {
+            unset($form['field_content_section']['widget']['#options'][$value]);
+            unset($form['field_brands']);
+          }
         }
       }
       break;
