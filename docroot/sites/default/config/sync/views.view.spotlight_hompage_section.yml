@@ -223,7 +223,7 @@ display:
           id: field_media_image
           table: media__field_media_image
           field: field_media_image
-          relationship: field_featured_image
+          relationship: field_image_home_page
           group_type: group
           admin_label: ''
           label: ''
@@ -632,6 +632,15 @@ display:
           relationship: none
           group_type: group
           admin_label: 'field_featured_image: Media'
+          required: false
+          plugin_id: standard
+        field_image_home_page:
+          id: field_image_home_page
+          table: node__field_image_home_page
+          field: field_image_home_page
+          relationship: none
+          group_type: group
+          admin_label: 'field_image_home_page: Media'
           required: false
           plugin_id: standard
       arguments:
