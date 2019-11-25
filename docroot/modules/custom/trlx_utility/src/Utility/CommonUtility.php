@@ -902,7 +902,7 @@ class CommonUtility {
     // Query to fetch static translation taxonomy.
     $term = \Drupal::entityTypeManager()
       ->getStorage('taxonomy_term')
-      ->loadByProperties(['vid' => 'static_translation', 'field_translation_key' => $value]);
+      ->loadByProperties(['vid' => 'static_translation', 'name' => $value]);
     if (!empty($term)) {
       $term_object = array_shift($term);
       if (($langcode != 'en') && ($term_object->hasTranslation($langcode))) {
