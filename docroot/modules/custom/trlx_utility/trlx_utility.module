@@ -173,7 +173,7 @@ function trlx_utility_form_alter(&$form, FormStateInterface $form_state, $form_i
       if (!empty($insiderCornerTermId)) {
 
         // Fetch Content Section value.
-        $contentSectionValue = $form['field_content_section'][widget]['#default_value'];
+        $contentSectionValue = $form['field_content_section']['widget']['#default_value'];
         // Add help text for Sub Title.
         if ($contentSectionValue == $insiderCornerTermId) {
           $form['field_sub_title']['widget'][0]['value']['#description'] = t('<div class="quotes-help-text"><b>This field will be used for Quotes</b></div>');
