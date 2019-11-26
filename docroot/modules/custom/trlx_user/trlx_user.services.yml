@@ -1,0 +1,5 @@
+services:
+  trlx_user.path_processor:
+    class: '\Drupal\trlx_user\PathProcessor\TrlxPathProcessor'
+    tags:
+      - { name: path_processor_outbound, priority: -10} # Low priority acts last.

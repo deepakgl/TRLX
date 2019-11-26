@@ -1,17 +1,17 @@
 uuid: 0d928289-9c56-4b01-8ba5-54d7f03b1fc9
 langcode: en
-status: true
+status: false
 dependencies:
   config:
     - field.storage.taxonomy_term.field_dashboard_image
     - field.storage.taxonomy_term.field_preference_icon
     - taxonomy.vocabulary.product_category
   module:
-    - elx_utility
     - image_url_formatter
     - rest
     - serialization
     - taxonomy
+    - trlx_utility
     - user
 id: product_categories
 label: 'Product Categories'
@@ -514,6 +514,7 @@ display:
             field_preference_icon:
               alias: preferenceIconUrl
               raw_output: false
+      enabled: false
     cache_metadata:
       max-age: -1
       contexts:

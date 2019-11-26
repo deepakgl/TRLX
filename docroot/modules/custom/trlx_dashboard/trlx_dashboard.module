@@ -123,6 +123,34 @@ function trlx_dashboard_views_pre_render(ViewExecutable $view) {
           }
           break;
       }
+
+    }
+  }
+}
+
+/**
+ * Implements template_preprocess_views_view_table()
+ *
+ * @param $variables
+ */
+function trlx_dashboard_preprocess_views_view_table(&$variables) {
+  $currentAccount = \Drupal::currentUser();
+  $roles = $currentAccount->getRoles();
+  if (!in_array('el_regional_market_admin', $roles)) {
+    return;
+  }
+
+  /** @var \Drupal\views\ViewExecutable $view */
+  $view = $variables['view'];
+  // Check for view.
+  if (($view->id() == 'dashboard') && ($view->current_display == 'dashboard_available_for_a_translation')) {
+    $rows = $variables['rows'];
+    foreach ($rows as $key => $row) {
+      $row_object = $row['columns']['type']['content'][0]['field_output']['#markup']->__toString();
+      $row_explode = explode("&", $row_object);
+      if (($row_explode[0] == "T" && $row_explode[1] == "amp;C") || ($row_object == 'Privacy Policy')) {
+        $variables['rows'][$key]['columns']['translation_link']['content'][0]['field_output'] = '';
+      }
     }
   }
 }
@@ -133,7 +161,7 @@ function trlx_dashboard_views_pre_render(ViewExecutable $view) {
 function trlx_dashboard_views_query_alter(ViewExecutable $view, $query) {
   if ($view->id() == 'dashboard') {
     $lang_utility = new LangUtility();
-    
+
     if ($view->current_display == 'dashboard_published' ||
       $view->current_display == 'dashboard_unpublished') {
       $roles = getUserRoles(\Drupal::currentUser()->id());
@@ -172,7 +200,7 @@ function trlx_dashboard_entity_operation_alter(array &$operations, EntityInterfa
   $currentAccount = \Drupal::currentUser();
   $roles = $currentAccount->getRoles();
   if ($entityTypeId === 'taxonomy_term') {
-    # code...
+    // code...
     if (($entity->getVocabularyId() == 'badges') || ($entity->getVocabularyId() == 'learning_category') ||
      ($entity->getVocabularyId() == 'consumer_category')) {
       if (in_array('el_regional_market_admin', $roles)) {
@@ -193,13 +221,13 @@ function trlx_dashboard_entity_operation_alter(array &$operations, EntityInterfa
         }
       }
     }
-  } 
+  }
 
   if (($entityTypeId === 'node') && (in_array('el_regional_market_admin', $roles))) {
     if (($entity->getType() == 't_c') || ($entity->getType() == 'privacy_policy')) {
       unset($operations['translate']);
     }
-  }  
+  }
 }
 
 /**

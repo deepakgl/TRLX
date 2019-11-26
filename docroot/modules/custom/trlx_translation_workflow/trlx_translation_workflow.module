@@ -8,6 +8,7 @@
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 use Drupal\trlx_utility\Utility\CommonUtility;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * Implements hook_form_alter().
@@ -41,8 +42,30 @@ function trlx_translation_workflow_form_alter(&$form,
       $translation_state =
       $form['field_translation']['widget']['#default_value'];
       _prepare_content_states($form, $translation_state);
+      $form['actions']['submit']['#submit'][] = '_node_delete_redirect';
+      break;
+
+    case 'node_stories_delete_form':
+    case 'node_t_c_delete_form':
+    case 'node_privacy_policy_delete_form':
+    case 'node_level_interactive_content_delete_form':
+    case 'node_faq_delete_form':
+    case 'node_brand_story_delete_form':
+    case 'node_product_detail_delete_form':
+    case 'node_tools_delete_form':
+    case 'node_privacy_policy_delete_form':
+      // code...
+      $form['actions']['submit']['#submit'][] = '_node_delete_redirect';
       break;
   }
+}
+
+/**
+ * From submit callback.
+ */
+function _node_delete_redirect(&$form, FormStateInterface $form_state) {
+  $response = new RedirectResponse('/dashboard/published');
+  $response->send();
 }
 
 /**
@@ -133,6 +156,15 @@ FormStateInterface &$form_state) {
     $url = Url::fromRoute('view.dashboard.dashboard_published');
   }
   $form_state->setRedirectUrl($url);
+}
+
+function call_exec_api($entity) {
+  $url = 'http://localhost:81/api/v1/imagestylegenerate?_format=json';
+  $payload = json_encode(['entity' => $entity->toArray()]);
+  $cmd = "curl -X POST -H 'Content-Type: application/json'";
+  $cmd.= " -d '" . $payload . "' " . "'" . $url . "'";
+  $cmd .= " > /dev/null 2>&1 &";
+  exec($cmd, $output, $exit);
 }
 
 /**

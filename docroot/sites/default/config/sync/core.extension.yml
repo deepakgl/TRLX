@@ -44,7 +44,6 @@ module:
   entity_submit_redirect: 0
   entityqueue: 0
   fakeobjects: 0
-  feeds: 0
   field: 0
   field_collection: 0
   field_group: 0
@@ -102,6 +101,7 @@ module:
   trlx_comment: 0
   trlx_consumer: 0
   trlx_dashboard: 0
+  trlx_drush: 0
   trlx_entityqueue_alter: 0
   trlx_factsheets: 0
   trlx_faq: 0

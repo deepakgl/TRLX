@@ -8,7 +8,6 @@
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\elx_user\Utility\UserUtility;
 use Drupal\Core\Render\BubbleableMetadata;
-use Drupal\user\Entity\User;
 
 /**
  * Implements hook_views_query_alter().
@@ -78,195 +77,9 @@ function elx_user_form_alter(&$form, FormStateInterface $form_state, $form_id) {
         // Hide password fields at the time of user creation.
         $form['account']['pass']['#access'] = FALSE;
       }
-    case 'user_form':
-      /*
-      $user_utility = new UserUtility();
-      $lang_utility = new LangUtility();
-      $roles = $user_utility->getUserRoles(\Drupal::currentUser()->id(),
-      'all_roles');
-      $current_path = \Drupal::service('path.current')->getPath();
-      $path_args = explode('/', $current_path);
-      if (in_array('el_regional_market_admin', $roles)) {
-      $user_market =
-      $user_utility->getMarketByUserId(\Drupal::currentUser()->id(), 'all');
-      $all_market = array_column($user_market,
-      'field_default_market_target_id');
-      $primary_and_secondary_lang =
-      $lang_utility->getMarketPrimaryAndSecondaryLanguage($all_market);
-      $form['language']['#access'] = FALSE;
-      $form['site_language'] = [
-      '#title' => 'Site language',
-      '#description' => 'This account\'s preferred language for emails.
-      This is also assumed to be the primary language of this account\'s
-      profile information.',
-      '#type' => 'select',
-      '#options' => $primary_and_secondary_lang,
-      '#default_value' =>
-      $form['language']['preferred_langcode']['#default_value'],
-      '#weight' => 5,
-      ];
-      $form['#attached']['library'][] =
-      'elx_market_hierarchy/elx_market_admin';
-      $form['field_ar_search_access']['#access'] = FALSE;
-      unset($form['actions']['delete']);
-      if (\Drupal::currentUser()->id() == $path_args[2]) {
-      $form['account']['roles']['#access'] = FALSE;
-      $form['account']['status']['#access'] = FALSE;
-      $form['field_city']['#access'] = FALSE;
-      $form['field_country']['#access'] = FALSE;
-      $form['field_region_list']['#access'] = FALSE;
-      $form['field_state']['#access'] = FALSE;
-      $form['field_default_market']['#access'] = FALSE;
-      $form['field_badges']['#access'] = FALSE;
-      $form['field_inspiration_badge']['#access'] = FALSE;
-      $form['field_t_c_flag']['#access'] = FALSE;
-      $form['field_has_3_0_permission']['#access'] = FALSE;
-      }
-      else {
-      // Unset admin and global admin and market admin roles for maket
-      // admin.
-      unset($form['account']['roles']['#options']['administrator']);
-      unset($form['account']['roles']['#options']
-      ['el_nyo_global_education_system_admin']);
-      unset($form['account']['roles']['#options']
-      ['el_regional_market_admin']);
-      }
-      }
-      if (in_array('el_nyo_global_education_system_admin', $roles)) {
-      // Unset admin role for global admin.
-      unset($form['account']['roles']['#options']['administrator']);
-      }
-      $i = -1;
-      $uid = $form_state->getFormObject()->getEntity()->id();
-       */
-      /*
-      foreach ($form['field_badges']['widget']['#options'] as $key => $value) {
-      $term =
-      \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($key);
-      $badge_file = File::load($term->field_badge_image->target_id);
-      if (!empty($badge_file)) {
-      $image_render_array = [
-      '#theme' => 'image_style',
-      '#style_name' => 'thumbnail',
-      '#uri' => $badge_file->getFileUri(),
-      ];
-      }
-      $renderer = \Drupal::service('renderer');
-      $rendered_image = $renderer->render($image_render_array);
-      $badge_name = $term->field_badges_title->value;
-      list($badges, $user_badge, $all_data) =
-      $user_utility->getUserBadges($uid);
-      if (!empty($user_badge)) {
-      $form['field_badges']['widget']['#default_value'][$i] =
-      $badges[$user_badge[$i]];
-      }
-      if ($term->field_manual_badge->value == 1) {
-      $diff_key[$key] = $key;
-      $form['field_badges']['widget']['#options'][$key] = $rendered_image .
-      $badge_name;
-      $badge_diff[$key] =
-      array_intersect_key($form['field_badges']['widget']['#options'],
-      $diff_key);
-      unset($form['field_badges']['widget']['#options']);
-      $form['field_badges']['widget']['#options'] = $badge_diff[$key];
-      }
-      $i++;
-      }
-       */
-      // unset($form['field_inspiration_badge']['widget']['#default_value']);.
-      /*
-      foreach ($form['field_inspiration_badge']['widget']['#options'] as $key
-      => $value) {
-      $uid = $form_state->getFormObject()->getEntity()->id();
-      $term =
-      \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($key);
-      $badge_file = File::load($term->field_badge_image->target_id);
-      if (!empty($badge_file)) {
-      $image_render_array = [
-      '#theme' => 'image_style',
-      '#style_name' => 'thumbnail',
-      '#uri' => $badge_file->getFileUri(),
-      ];
-      }
-      $renderer = \Drupal::service('renderer');
-      $rendered_image = $renderer->render($image_render_array);
-      $badge_name = $term->field_badges_title->value;
-      list($badges, $user_badge, $all_data) =
-      $user_utility->getUserBadges($uid);
-      if ($term->field_inspiration_badge->value == 1) {
-      $insp_diff_key[$key] = $key;
-      $badge_count = 0;
-      if (array_key_exists($value, $all_data)) {
-      $badge_count = $all_data[$value];
-      }
-      $form['field_inspiration_badge']['widget']['#options'][$key] =
-      $badge_name . ' (' . $badge_count . ')';
-      $insp_badge_diff[$key] =
-      array_intersect_key($form['field_inspiration_badge']['widget']
-      ['#options'], $insp_diff_key);
-      unset($form['field_inspiration_badge']['widget']['#options']);
-      $form['field_inspiration_badge']['widget']['#options'] =
-      $insp_badge_diff[$key];
-      }
-      }
-       */
-      // $form['actions']['submit']['#submit'][] = '_elx_utility_user_form_submit';
-      break;
 
     default:
   }
-}
-
-/**
- * Custom submit handler for user form.
- *
- * @param mixed $form
- *   Form object.
- * @param \Drupal\Core\Form\FormStateInterface $form_state
- *   Form state object.
- *
- * @return bool
- *   True or false.
- */
-function _elx_utility_user_form_submit($form, FormStateInterface $form_state) {
-  $user_utility = new UserUtility();
-  $uid = $form_state->getValue('uid');
-  $roles = $user_utility->getUserRoles(\Drupal::currentUser()->id());
-  if ($roles) {
-    $language_code = $form_state->getValue('site_language');
-    $users = User::load($uid);
-    $users->set('langcode', $language_code);
-    $users->set('preferred_langcode', $language_code);
-    $users->set('preferred_admin_langcode', $language_code);
-    $users->save();
-  }
-  $result = '';
-  $badges = $form_state->getValue('field_badges');
-  $inspiration_badges = $form_state->getValue('field_inspiration_badge');
-  $badge_name = $inspiration_badge_name = [];
-  // Fetch inspiration badge.
-  $inspiration_badges = array_column($inspiration_badges, 'target_id');
-  $inspiration_badge_name = $user_utility->getBadgeName($inspiration_badges);
-  // Fetch manual badge.
-  $badges = array_column($badges, 'target_id');
-  $badge_name = $user_utility->getBadgeName($badges);
-  // Fetch all manual badge.
-  $manual_badges = array_keys($form['field_badges']['widget']['#options']);
-  $manual_badges = $user_utility->getBadgeName($manual_badges);
-  // Fetch all inspiration badge.
-  $all_inspiration_badges =
-   array_keys($form['field_inspiration_badge']['widget']['#options']);
-  $all_inspiration_badges =
-   $user_utility->getBadgeName($all_inspiration_badges);
-  if (!empty($inspiration_badges)) {
-    $result = $user_utility->setUserInspirationBadges($uid,
-     $inspiration_badge_name, $all_inspiration_badges);
-  }
-  if (!empty($badge_name)) {
-    $result = $user_utility->setUserBadges($uid, $badge_name, $manual_badges);
-  }
-
-  return $result;
 }
 
 /**
@@ -313,9 +126,11 @@ function elx_user_tokens($type, $tokens, array $data, array $options, Bubbleable
 /**
  * The function check if user's password field is empty.
  *
- * @param $email
+ * @param string $email
+ *   Email id.
  *
  * @return mixed
+ *   Response
  */
 function elx_is_password_expired($email) {
   $response = '';
@@ -341,9 +156,11 @@ function elx_is_password_expired($email) {
 /**
  * This function return error message.
  *
- * @param $lang
+ * @param string $lang
+ *   Language.
  *
  * @return string
+ *   Message.
  */
 function get_login_error_message($lang) {
   // Create confirm password link.
@@ -381,9 +198,11 @@ function elx_user_login_validate($form, FormStateInterface &$form_state) {
 /**
  * The function fetch user roles.
  *
- * @param $email
+ * @param string $email
+ *   Email id.
  *
  * @return mixed
+ *   Response.
  */
 function elx_get_user_by_mail($email) {
   $response = '';

@@ -42,29 +42,17 @@ class ExternalIntegrationConfigForm extends ConfigFormBase {
       'Redis Port' => 'redis_port',
       'Redis Password' => 'redis_password',
       'Redis Database' => 'redis_base',
-      'ELX Site Url' => 'elx_site_url',
-      'ELX Front End URL' => 'elx_front_end_url',
-      'ELX Get Started Level Id' => 'elx_get_started_level_id',
-      'Migration Limit' => 'migration_limit',
-      'Migration Offset' => 'migration_offset',
-      'Email subject' => 'elx_mail_subject',
-      'Email body' => 'elx_mail_body',
-      'Migration Mails' => 'migration_mail',
+      'TRLX Site Url' => 'elx_site_url',
+      'TRLX Front End URL' => 'elx_front_end_url',
+      'Middleware LB Name' => 'middleware_lb_name',
     ];
 
     foreach ($external_fields as $key => $value) {
-      $type = 'textfield';
-      if ($value == 'elx_mail_body' || $value == 'elx_mail_subject') {
-        $type = 'textarea';
-      }
       $form[$value] = [
-        '#type' => $type,
+        '#type' => 'textfield',
         '#title' => $key,
         '#default_value' => $config->get($value),
       ];
-      if ($value == 'elx_users_list_access_on_site_down') {
-        $form[$value]['#description'] = t('Multiple User Ids should be comma separated');
-      }
     }
 
     return parent::buildForm($form, $form_state);
