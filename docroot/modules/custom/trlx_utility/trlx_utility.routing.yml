@@ -5,3 +5,11 @@ trlx_utility.content_config:
     _title: 'Content Configuration Form'
   requirements:
     _permission: 'administer site configuration'
+
+trlx_utility.image_style_config:
+  path: '/admin/config/system/image_style_config'
+  defaults:
+    _form: '\Drupal\trlx_utility\Form\ImageStyleGenerateConfig'
+    _title: 'Image Style Generate Configuration Form'
+  requirements:
+    _permission: 'administer site configuration'

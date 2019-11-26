@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\trlx_comment\Plugin\rest\resource;
+namespace Drupal\trlx_utility\Plugin\rest\resource;
 
 use Drupal\rest\Plugin\ResourceBase;
 use Symfony\Component\HttpFoundation\Request;

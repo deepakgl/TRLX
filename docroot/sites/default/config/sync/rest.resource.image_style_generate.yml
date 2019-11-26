@@ -1,0 +1,17 @@
+uuid: d95e10e3-8c1f-4758-b336-be445b8bf949
+langcode: en
+status: true
+dependencies:
+  module:
+    - serialization
+    - trlx_utility
+id: image_style_generate
+plugin_id: image_style_generate
+granularity: resource
+configuration:
+  methods:
+    - POST
+  formats:
+    - json
+  authentication:
+    - jwt_Auth
