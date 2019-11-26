@@ -147,7 +147,17 @@ FormStateInterface &$form_state) {
       break;
   }
   $entity->save();
-  trlx_translation_workflow_generate_img_styles($entity);
+
+  $config = \Drupal::config('trlx_image_style.settings');
+  // Check for config
+  if ((!empty($config->get('scheme_url'))) || ($config->get('scheme_url') != '')) {
+    // Image style generate on entity form submit
+    call_exec_api($entity, $config->get('scheme_url'));
+  } else {
+    // Image style generate on entity form submit
+    trlx_translation_workflow_generate_img_styles($entity);
+  }
+
   // Remove the query destination if any.
   \Drupal::request()->query->remove('destination');
   // Redirect to the dashboard page, after entity creation/updation.
@@ -156,6 +166,19 @@ FormStateInterface &$form_state) {
     $url = Url::fromRoute('view.dashboard.dashboard_published');
   }
   $form_state->setRedirectUrl($url);
+}
+
+ /**
+ * Custom method to handle image styles api call.
+ */
+function call_exec_api($entity, $scheme_url) {
+  // Fetch image style configuration
+  $url = $scheme_url . '/api/v1/imagestylegenerate?_format=json';
+  $payload = json_encode(['entity' => $entity->toArray()]);
+  $cmd = "curl -X POST -H 'Content-Type: application/json'";
+  $cmd.= " -d '" . $payload . "' " . "'" . $url . "'";
+  $cmd .= " > /dev/null 2>&1 &";
+  exec($cmd, $output, $exit);
 }
 
 /**

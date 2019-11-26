@@ -5,3 +5,27 @@ trlx_utility.content_config:
     _title: 'Content Configuration Form'
   requirements:
     _permission: 'administer site configuration'
+
+trlx_utility.image_style_config:
+  path: '/admin/config/system/image_style_config'
+  defaults:
+    _form: '\Drupal\trlx_utility\Form\ImageStyleGenerateConfig'
+    _title: 'Image Style Generate Configuration Form'
+  requirements:
+    _permission: 'administer site configuration'
+
+trlx_utility.cdn_file_url_config:
+  path: '/admin/config/system/cdn_file_url_config'
+  defaults:
+    _form: '\Drupal\trlx_utility\Form\CdnFileUrlSetting'
+    _title: 'CDN Base File Url Configuration Form'
+  requirements:
+    _permission: 'administer site configuration'
+
+trlx_utility.brand_disable_ma_config:
+  path: '/admin/config/system/brand_disable_ma_config'
+  defaults:
+    _form: '\Drupal\trlx_utility\Form\DisableBrandMaForm'
+    _title: 'Brand Disable for MA Configuration Form'
+  requirements:
+    _permission: 'administer site configuration'
