@@ -148,15 +148,6 @@ FormStateInterface &$form_state) {
   }
   $entity->save();
 
-  $config = \Drupal::config('trlx_image_style.settings');
-  // Check for config
-  if ((!empty($config->get('scheme_url'))) || ($config->get('scheme_url') != '') ) {
-   // Image style generate on entity form submit
-    call_exec_api($entity, $config->get('scheme_url'));
-  } else {
-    // Image style generate on entity form submit
-    trlx_translation_workflow_generate_img_styles($entity);
-  }
   // Remove the query destination if any.
   \Drupal::request()->query->remove('destination');
   // Redirect to the dashboard page, after entity creation/updation.
@@ -168,6 +159,25 @@ FormStateInterface &$form_state) {
 }
 
 /**
+ * Implements hook_form_alter().
+ */
+function trlx_translation_workflow_entity_presave(Drupal\Core\Entity\EntityInterface $entity) {
+  // Check entity type node
+  if ($entity->getEntityTypeId() == 'node') {
+    $config = \Drupal::config('trlx_image_style.settings');
+    // Check for config
+    if ((!empty($config->get('scheme_url'))) || ($config->get('scheme_url') != '')) {
+      // Image style generate on entity form submit
+      call_exec_api($entity, $config->get('scheme_url'));
+    } else {
+      // Image style generate on entity form submit
+      trlx_translation_workflow_generate_img_styles($entity);
+    }
+  }
+}
+
+
+ /**
  * Custom method to handle image styles api call.
  */
 function call_exec_api($entity, $scheme_url) {
