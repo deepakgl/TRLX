@@ -301,7 +301,16 @@ class LevelUtility {
    *   term ids.
    */
   public function getLevelsCategory($tid) {
-    $brand_keys = ['brandLevel', 'factsheet'];
+    $config = \Drupal::config('trlx_disable_brand_ma.settings');
+    // Check for config
+    if ((!empty($config->get('brand_key'))) || ($config->get('brand_key') != '')) {
+      // Brand keys fetch
+      $brand_keys = explode(",", $config->get('brand_key'));
+    }
+    else {
+      $brand_keys = ['brandLevel', 'factsheet'];
+    }
+
     $content_section = '';
     $response = [];
     if (!empty($tid)) {
@@ -334,7 +343,16 @@ class LevelUtility {
    *   tids.
    */
   public  function getBrandNonAgnostic($tid) {
-    $brand_keys = ['brandLevel', 'factsheet'];
+    $config = \Drupal::config('trlx_disable_brand_ma.settings');
+    // Check for config
+    if ((!empty($config->get('brand_key'))) || ($config->get('brand_key') != '')) {
+      // Brand keys fetch
+      $brand_keys = explode(",", $config->get('brand_key'));
+    }
+    else {
+      $brand_keys = ['brandLevel', 'factsheet'];
+    }
+
     if (!empty($tid)) {
       $term = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($tid);
       $content_section = $term->get('field_content_section_key')->getValue();

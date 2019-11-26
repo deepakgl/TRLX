@@ -52,6 +52,7 @@ permissions:
   - 'restful get video_listings'
   - 'restful get welcome_site_message'
   - 'restful post comment_post'
+  - 'restful post image_style_generate'
   - 'restful post stories_comments_post'
   - 'use text format filtered_html'
   - 'view any unpublished content'

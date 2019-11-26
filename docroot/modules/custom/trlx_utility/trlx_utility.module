@@ -173,7 +173,7 @@ function trlx_utility_form_alter(&$form, FormStateInterface $form_state, $form_i
       if (!empty($insiderCornerTermId)) {
 
         // Fetch Content Section value.
-        $contentSectionValue = $form['field_content_section'][widget]['#default_value'];
+        $contentSectionValue = $form['field_content_section']['widget']['#default_value'];
         // Add help text for Sub Title.
         if ($contentSectionValue == $insiderCornerTermId) {
           $form['field_sub_title']['widget'][0]['value']['#description'] = t('<div class="quotes-help-text"><b>This field will be used for Quotes</b></div>');
@@ -751,6 +751,17 @@ function trlx_utility_file_url_alter(&$uri) {
     $settings_cdn_url_array = explode("/", settings::get('cdn_file_public_base_url'), 4);
     if (!empty($settings_cdn_url_array)) {
       $uri = settings::get('cdn_file_public_base_url') . '/' . explode('//', $uri)[1];
+    }
+  }
+}
+
+/**
+ * Implements hook_editor_js_settings_alter()().
+ */
+function trlx_utility_editor_js_settings_alter(array &$settings) {
+  if (isset($settings['editor']['formats']['full_html'])) {
+    foreach ($settings['editor']['formats'] as $name => $value) {
+      $settings['editor']['formats'][$name]['editorSettings']['pasteFromWordPromptCleanup'] = FALSE;
     }
   }
 }

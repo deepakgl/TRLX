@@ -82,6 +82,7 @@ permissions:
   - 'restful get welcome_site_message'
   - 'restful patch user_update'
   - 'restful post change_user_picture'
+  - 'restful post image_style_generate'
   - 'restful post password_change'
   - 'restful post stories_comments_post'
   - 'restful post update_user_language'
