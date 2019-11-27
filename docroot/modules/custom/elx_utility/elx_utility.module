@@ -589,16 +589,11 @@ function elx_utility_get_redis_terms_pattern($type, $tid) {
     $pattern[] = implode(':', [$env, 'levelInteractiveTermsContent*']);
     $pattern[] = implode(':', [$env, 'exploreLearningLevels*']);
   }
-  elseif ($type == 'videos') {
-    $pattern[] = implode(':', [$env, 'videoListings*']);
-    $pattern[] = implode(':', [$env, 'videoListingMobile*']);
-    $pattern[] = implode(':', [$env, 'videoDetails*']);
-    $pattern[] = implode(':', [$env, 'videoCategory*']);
+  elseif ($type == 'consumer_category') {
+    $pattern[] = implode(':', [$env, 'landing:consumer_categories_*']);
   }
-  elseif ($type == 'product_category') {
-    $pattern[] = implode(':', [$env, 'productCategories*']);
-    $pattern[] = implode(':', [$env, 'productListings*']);
-    $pattern[] = implode(':', [$env, 'productDetails*']);
+  elseif ($type == 'static_translation') {
+    $pattern[] = implode(':', [$env, 'translation_key_*']);
   }
 
   return $pattern;
