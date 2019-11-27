@@ -276,6 +276,7 @@ function trlx_notification_product_detail_related_content($node) {
       $notificationArray[NOTIFICATION_TEXT] = $notification_text;
       $notificationArray[NOTIFICATION_LINK] = $node->id();
       $notificationArray[NOTIFICATION_LINK_TYPE] = t('factsheet');
+      $notificationArray[NOTIFICATION_BRAND_KEY] = reset($brand_key);
       $notificationArray[NOTIFICATION_BRAND_NAME] = reset($brand_data);
       $notificationArray[NOTIFICATIONS_LANGUAGE] = $content_language;
       $notification_index[] = process_notification($notificationArray);
@@ -634,7 +635,7 @@ function process_notification(array $notificationArray) {
   $notification_index[NOTIFICATION_LINK] = (int) $notificationArray[NOTIFICATION_LINK];
   $notification_index[NOTIFICATION_LINK_TYPE] = $notificationArray[NOTIFICATION_LINK_TYPE];
   $notification_index[NOTIFICATIONS_LANGUAGE] = $notificationArray[NOTIFICATIONS_LANGUAGE];
-  $notification_index[NOTIFICATION_BRAND_KEY] = (int) $notificationArray[NOTIFICATION_BRAND_KEY];
+  $notification_index[NOTIFICATION_BRAND_KEY] = $notificationArray[NOTIFICATION_BRAND_KEY];
   $notification_index[NOTIFICATION_BRAND_NAME] = $notificationArray[NOTIFICATION_BRAND_NAME];
 
   return $notification_index;
