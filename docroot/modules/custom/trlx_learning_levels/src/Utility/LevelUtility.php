@@ -302,9 +302,9 @@ class LevelUtility {
    */
   public function getLevelsCategory($tid) {
     $config = \Drupal::config('trlx_disable_brand_ma.settings');
-    // Check for config
+    // Check for config.
     if ((!empty($config->get('brand_key'))) || ($config->get('brand_key') != '')) {
-      // Brand keys fetch
+      // Brand keys fetch.
       $brand_keys = explode(",", $config->get('brand_key'));
     }
     else {
@@ -344,9 +344,9 @@ class LevelUtility {
    */
   public  function getBrandNonAgnostic($tid) {
     $config = \Drupal::config('trlx_disable_brand_ma.settings');
-    // Check for config
+    // Check for config.
     if ((!empty($config->get('brand_key'))) || ($config->get('brand_key') != '')) {
-      // Brand keys fetch
+      // Brand keys fetch.
       $brand_keys = explode(",", $config->get('brand_key'));
     }
     else {
