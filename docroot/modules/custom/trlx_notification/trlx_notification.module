@@ -357,6 +357,7 @@ function trlx_notification_stories_related_content($node) {
   }
   if ($content_section == $commonUtility::SELLING_TIPS) {
     $sellingTipsUserIds = NotificationUtility::getUsersBasedOnBrandsAndMarkets($market_ref_keys);
+    $notification_heading = $commonUtility->getNotificationTranslation($config->get('selling_tips_level_heading'), $content_language);
     if (!empty($sellingTipsUserIds)) {
       foreach ($sellingTipsUserIds as $id) {
         $notificationArray[NOTIFICATION_TYPE] = t('SELLINGTIPS');
