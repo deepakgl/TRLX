@@ -214,10 +214,18 @@ class LearningLevelHomepageSection extends ResourceBase {
         $node = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
         // Validating regions
         if (!empty($node)) {
-          $markets = $node->get('field_markets')->getValue();
-          foreach ($markets as $market) {
-            if (in_array($market['target_id'], $market_regions)) {
-              $has_market = 1;
+          // Fetch reference entities
+          $terms = $node->get('field_markets')->referencedEntities();
+          foreach ($terms  as $term) {
+            // Get single region key
+            $region_key = $term->get('field_region_subreg_country_id')->value;
+            foreach ($market_regions as $region) {
+              if ($region_key === $region) {
+                $has_market = 1;
+              }
+            }
+
+            if ($has_market == 1) {
               break;
             }
           }
