@@ -102,11 +102,6 @@ class SpotlightSection extends ResourceBase {
           $result[$i]['type'] = (!empty($content_section)) ? (array_shift($content_section)->get('field_content_section_key')->value) : '';
           $result[$i]['brandName'] = '';
           $result[$i]['body'] = $node->hasTranslation($language) ? $node->getTranslation($language)->get('body')->value : '';
-          $result[$i]['imageSmall'] = $value['imageSmall'];
-          $result[$i]['imageMedium'] = $value['imageMedium'];
-          $result[$i]['imageLarge'] = $value['imageLarge'];
-          $result[$i]['pointValue'] = $value['pointValue'];
-          $result[$i]['textOverlay'] = $value['textOverlay'];
           break;
 
         case 'brand_story':
@@ -121,11 +116,6 @@ class SpotlightSection extends ResourceBase {
             $result[$i]['type'] = 'brandStory';
             $result[$i]['brandName'] = $brandName;
             $result[$i]['body'] = $node->hasTranslation($language) ? $node->getTranslation($language)->get('body')->value : '';
-            $result[$i]['imageSmall'] = $value['imageSmall'];
-            $result[$i]['imageMedium'] = $value['imageMedium'];
-            $result[$i]['imageLarge'] = $value['imageLarge'];
-            $result[$i]['pointValue'] = $value['pointValue'];
-            $result[$i]['textOverlay'] = $value['textOverlay'];
           }
           break;
 
@@ -142,11 +132,6 @@ class SpotlightSection extends ResourceBase {
             $result[$i]['type'] = 'video';
             $result[$i]['brandName'] = $brandName;
             $result[$i]['body'] = $node->hasTranslation($language) ? $node->getTranslation($language)->get('field_tool_description')->value : '';
-            $result[$i]['imageSmall'] = $value['imageSmall'];
-            $result[$i]['imageMedium'] = $value['imageMedium'];
-            $result[$i]['imageLarge'] = $value['imageLarge'];
-            $result[$i]['pointValue'] = $value['pointValue'];
-            $result[$i]['textOverlay'] = $value['textOverlay'];
           }
           break;
 
@@ -163,11 +148,6 @@ class SpotlightSection extends ResourceBase {
             $result[$i]['type'] = 'factsheet';
             $result[$i]['brandName'] = $brandName;
             $result[$i]['body'] = $node->hasTranslation($language) ? $node->getTranslation($language)->get('body')->value : '';
-            $result[$i]['imageSmall'] = $value['imageSmall'];
-            $result[$i]['imageMedium'] = $value['imageMedium'];
-            $result[$i]['imageLarge'] = $value['imageLarge'];
-            $result[$i]['pointValue'] = $value['pointValue'];
-            $result[$i]['textOverlay'] = $value['textOverlay'];
           }
           break;
 
@@ -186,12 +166,16 @@ class SpotlightSection extends ResourceBase {
           else {
             $result[$i]['body'] = '';
           }
-          $result[$i]['imageSmall'] = $value['imageSmall'];
-          $result[$i]['imageMedium'] = $value['imageMedium'];
-          $result[$i]['imageLarge'] = $value['imageLarge'];
-          $result[$i]['pointValue'] = $value['pointValue'];
-          $result[$i]['textOverlay'] = $value['textOverlay'];
           break;
+      }
+
+      if (($value['type'] == 'stories') || ($value['type'] == 'brand_story') || ($value['type'] == 'tools') ||
+        ($value['type'] == 'product_detail') || ($value['type'] == 'level_interactive_content')) {
+        $result[$i]['imageSmall'] = $value['imageSmall'];
+        $result[$i]['imageMedium'] = $value['imageMedium'];
+        $result[$i]['imageLarge'] = $value['imageLarge'];
+        $result[$i]['pointValue'] = $value['pointValue'];
+        $result[$i]['textOverlay'] = $value['textOverlay'];
       }
       $i++;
     }
