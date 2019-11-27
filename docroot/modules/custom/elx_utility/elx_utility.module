@@ -320,6 +320,7 @@ function elx_utility_entity_update(EntityInterface $entity) {
  * Implements hook_ENTITY_delete().
  */
 function elx_utility_entity_delete(EntityInterface $entity) {
+  $commonUtility = new CommonUtility();
   $env = \Drupal::config('elx_utility.settings')->get('elx_environment');
   if ($entity->getEntityTypeId() == 'node') {
     switch ($entity->gettype()) {
