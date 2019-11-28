@@ -799,15 +799,15 @@ class ContentModel {
   public static function getTrlxSectionNames() {
     $sectionData = [];
     $sectionData = [
-      'trend' => 'TR TRENDS',
-      'consumer' => 'CONSUMERS',
-      'sellingTips' => 'SELLING TIPS',
-      'insiderCorner' => "INSIDER'S CORNER",
-      'tools' => 'VIDEOS',
-      'faq' => 'FAQ',
-      'product_detail' => 'FACT SHEETS',
-      'brand_story' => 'BRAND STORY',
-      'level_interactive_content' => 'MY LESSONS',
+      'trend' => 'trendsBookmarkTxt',
+      'consumer' => 'consumerBookmarkTxt',
+      'sellingTips' => 'sellingTipsBookmarktxt',
+      'insiderCorner' => 'insidersCornerBookmarkTxt',
+      'tools' => 'videoBookmarkTxt',
+      'faq' => 'faqBookmarkTxt',
+      'product_detail' => 'factsheetBookmarkTxt',
+      'brand_story' => 'brandStoryBookmarkTxt',
+      'level_interactive_content' => 'lessonBookmarkTxt',
     ];
     return $sectionData;
   }
