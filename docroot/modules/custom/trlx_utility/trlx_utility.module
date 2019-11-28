@@ -765,3 +765,14 @@ function trlx_utility_editor_js_settings_alter(array &$settings) {
     }
   }
 }
+
+/**
+ * Implements hook_theme().
+ */
+function trlx_utility_theme() {
+  return [
+    'trlx_utility_video' => [
+      'variables' => ['files' => [], 'attributes' => NULL],
+    ],
+  ];
+}

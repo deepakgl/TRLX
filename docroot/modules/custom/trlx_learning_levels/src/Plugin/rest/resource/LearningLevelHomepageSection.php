@@ -212,12 +212,12 @@ class LearningLevelHomepageSection extends ResourceBase {
     foreach ($nids as $nid) {
       if (!empty($nid)) {
         $node = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
-        // Validating regions
+        // Validating regions.
         if (!empty($node)) {
-          // Fetch reference entities
+          // Fetch reference entities.
           $terms = $node->get('field_markets')->referencedEntities();
-          foreach ($terms  as $term) {
-            // Get single region key
+          foreach ($terms as $term) {
+            // Get single region key.
             $region_key = $term->get('field_region_subreg_country_id')->value;
             foreach ($market_regions as $region) {
               if ($region_key === $region) {
@@ -229,7 +229,7 @@ class LearningLevelHomepageSection extends ResourceBase {
               break;
             }
           }
-          // Check for translation and market region
+          // Check for translation and market region.
           if ($node->hasTranslation($langcode) && ($has_market == 1)) {
             // Checking publish content.
             if (($node->getTranslation($langcode)->get('status')->value) == 1) {

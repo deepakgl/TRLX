@@ -16,8 +16,24 @@
         $('.node-welcome-message-form .term-reference-tree-level .form-type-checkbox input:checkbox').prop("checked", true);
         $('.node-privacy-policy-form .term-reference-tree-level .form-type-checkbox input:checkbox').prop("checked", true);
       }
+      // Hide translation help text from send notification checkbox.
       $(".form-item-send-notifications .translation-entity-all-languages").hide();
-      $('#menu-overview tr:has(a#edit-links-menu-plugin-idstandardfront-page-title-1)').hide()
+      // Hide drupal core home link from main navigation menu.
+      $('#menu-overview tr:has(a#edit-links-menu-plugin-idstandardfront-page-title-1)').hide();
+      // Hide non required image align option from image widget in editor.
+      $('.form-type-radio').each(function(){
+          var alignArray = ["left", "right"];
+          var index = $.inArray($(this).children('.form-radio').attr('value'), alignArray);
+          if(index != -1){
+              $(this).hide();
+          }
+          if($(this).children('.form-radio').attr('value') == "none"){
+              $(this).children("label").html("Center");
+          }
+          if($(this).children('.form-radio').attr('value') == "center"){
+              $(this).children("label").html("Left");
+          }
+      });
       // Js for select all markets on select of region.
       var $region = $('.path-node .term-reference-tree-button').next('div').find('input[type="checkbox"]');
       $region.on('click', function() {
