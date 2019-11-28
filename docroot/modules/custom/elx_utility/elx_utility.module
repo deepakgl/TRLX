@@ -258,25 +258,25 @@ function elx_utility_entity_update(EntityInterface $entity) {
         break;
 
       case 'product_detail':
-        $brand_id = $entity->get('field_brands')->first()->getValue()['target_id'];
-        $brand_key = $commonUtility->getBrandKeyByTermId($brand_id);
         $lang_code = $entity->language()->getId();
+        $previous_brandId = array_column($entity->original->get('field_brands')->getValue(), 'target_id');
+        $brand_key = $commonUtility->getBrandKeyByTermId($previous_brandId[0]);
         $patterns = [$env . ':brand:factsheets_' . $brand_key . '_' . $lang_code . '*'];
         elx_utility_clear_redis_cache($patterns);
         break;
 
       case 'tools':
-        $brand_id = $entity->get('field_brands')->first()->getValue()['target_id'];
-        $brand_key = $commonUtility->getBrandKeyByTermId($brand_id);
         $lang_code = $entity->language()->getId();
+        $previous_brandId = array_column($entity->original->get('field_brands')->getValue(), 'target_id');
+        $brand_key = $commonUtility->getBrandKeyByTermId($previous_brandId[0]);
         $patterns = [$env . ':brand:videos_' . $brand_key . '_' . $lang_code . '*'];
         elx_utility_clear_redis_cache($patterns);
         break;
 
       case 'brand_story':
-        $brand_id = $entity->get('field_brands')->first()->getValue()['target_id'];
-        $brand_key = $commonUtility->getBrandKeyByTermId($brand_id);
         $lang_code = $entity->language()->getId();
+        $previous_brandId = array_column($entity->original->get('field_brands')->getValue(), 'target_id');
+        $brand_key = $commonUtility->getBrandKeyByTermId($previous_brandId[0]);
         $patterns = [$env . ':brand:story_' . $brand_key . '_' . $lang_code];
         elx_utility_clear_redis_cache($patterns);
         break;
@@ -320,12 +320,14 @@ function elx_utility_entity_update(EntityInterface $entity) {
  * Implements hook_ENTITY_delete().
  */
 function elx_utility_entity_delete(EntityInterface $entity) {
+  $commonUtility = new CommonUtility();
   $env = \Drupal::config('elx_utility.settings')->get('elx_environment');
   if ($entity->getEntityTypeId() == 'node') {
     switch ($entity->gettype()) {
       case 'level_interactive_content':
         _elx_utility_http_delete_request($entity);
         break;
+
       case 'stories':
         $contentSection = $entity->get('field_content_section')->referencedEntities();
         $contentSectionkey = (!empty($contentSection)) ? (array_shift($contentSection)->get('field_content_section_key')->value) : '';
@@ -589,16 +591,11 @@ function elx_utility_get_redis_terms_pattern($type, $tid) {
     $pattern[] = implode(':', [$env, 'levelInteractiveTermsContent*']);
     $pattern[] = implode(':', [$env, 'exploreLearningLevels*']);
   }
-  elseif ($type == 'videos') {
-    $pattern[] = implode(':', [$env, 'videoListings*']);
-    $pattern[] = implode(':', [$env, 'videoListingMobile*']);
-    $pattern[] = implode(':', [$env, 'videoDetails*']);
-    $pattern[] = implode(':', [$env, 'videoCategory*']);
+  elseif ($type == 'consumer_category') {
+    $pattern[] = implode(':', [$env, 'landing:consumer_categories_*']);
   }
-  elseif ($type == 'product_category') {
-    $pattern[] = implode(':', [$env, 'productCategories*']);
-    $pattern[] = implode(':', [$env, 'productListings*']);
-    $pattern[] = implode(':', [$env, 'productDetails*']);
+  elseif ($type == 'static_translation') {
+    $pattern[] = implode(':', [$env, 'translation_key_*']);
   }
 
   return $pattern;

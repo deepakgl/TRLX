@@ -69,12 +69,30 @@ class VideoListings extends ResourceBase {
 
     // Validation for brand key exists in database.
     $all_brand_keys = $brandUtility->getAllBrandKeys();
-    if (!in_array($brandId, $all_brand_keys)) {
+    $brand_key_check = 0;
+    foreach ($all_brand_keys as $brand_key_value) {
+      if($brandId ===  $brand_key_value) {
+        // Check for brand id in cms
+        $brand_key_check = 1;
+        break;
+      }
+    }
+
+    if ($brand_key_check != 1) {
       return $commonUtility->errorResponse($this->t('Brand Id (@brandId) does not exist.', ['@brandId' => $brandId]), Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     // Validation for brand key exists in user token or not.
-    if (!in_array($brandId, $_userData->brands)) {
+    $brand_check = 0;
+    foreach ($_userData->brands as $brand_key_values) {
+      if($brandId ===  $brand_key_values) {
+        // Check for brand id on user token
+        $brand_check = 1;
+        break;
+      }
+    }
+
+    if ($brand_check != 1) {
       return $commonUtility->successResponse([], Response::HTTP_OK);
     }
 
