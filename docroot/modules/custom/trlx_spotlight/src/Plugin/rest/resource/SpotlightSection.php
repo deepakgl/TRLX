@@ -116,17 +116,17 @@ class SpotlightSection extends ResourceBase {
           $brand_id = $brand->get('field_brand_key')->value;
           $brandName = $brand->get('name')->value;
           if (in_array($brand_id, $user_brands)) {
-            $result[$i]['nid'] = (int)$brand_id;
+            $result[$i]['nid'] = $brand_id;
             $result[$i]['displayTitle'] = $node->hasTranslation($language) ? $node->getTranslation($language)->get('field_display_title')->value : '';
             $result[$i]['type'] = 'brandStory';
             $result[$i]['brandName'] = $brandName;
             $result[$i]['body'] = $node->hasTranslation($language) ? $node->getTranslation($language)->get('body')->value : '';
+            $result[$i]['imageSmall'] = $value['imageSmall'];
+            $result[$i]['imageMedium'] = $value['imageMedium'];
+            $result[$i]['imageLarge'] = $value['imageLarge'];
+            $result[$i]['pointValue'] = $value['pointValue'];
+            $result[$i]['textOverlay'] = $value['textOverlay'];
           }
-          $result[$i]['imageSmall'] = $value['imageSmall'];
-          $result[$i]['imageMedium'] = $value['imageMedium'];
-          $result[$i]['imageLarge'] = $value['imageLarge'];
-          $result[$i]['pointValue'] = $value['pointValue'];
-          $result[$i]['textOverlay'] = $value['textOverlay'];
           break;
 
         case 'tools':
@@ -142,12 +142,12 @@ class SpotlightSection extends ResourceBase {
             $result[$i]['type'] = 'video';
             $result[$i]['brandName'] = $brandName;
             $result[$i]['body'] = $node->hasTranslation($language) ? $node->getTranslation($language)->get('field_tool_description')->value : '';
+            $result[$i]['imageSmall'] = $value['imageSmall'];
+            $result[$i]['imageMedium'] = $value['imageMedium'];
+            $result[$i]['imageLarge'] = $value['imageLarge'];
+            $result[$i]['pointValue'] = $value['pointValue'];
+            $result[$i]['textOverlay'] = $value['textOverlay'];
           }
-          $result[$i]['imageSmall'] = $value['imageSmall'];
-          $result[$i]['imageMedium'] = $value['imageMedium'];
-          $result[$i]['imageLarge'] = $value['imageLarge'];
-          $result[$i]['pointValue'] = $value['pointValue'];
-          $result[$i]['textOverlay'] = $value['textOverlay'];
           break;
 
         case 'product_detail':
@@ -163,12 +163,12 @@ class SpotlightSection extends ResourceBase {
             $result[$i]['type'] = 'factsheet';
             $result[$i]['brandName'] = $brandName;
             $result[$i]['body'] = $node->hasTranslation($language) ? $node->getTranslation($language)->get('body')->value : '';
+            $result[$i]['imageSmall'] = $value['imageSmall'];
+            $result[$i]['imageMedium'] = $value['imageMedium'];
+            $result[$i]['imageLarge'] = $value['imageLarge'];
+            $result[$i]['pointValue'] = $value['pointValue'];
+            $result[$i]['textOverlay'] = $value['textOverlay'];
           }
-          $result[$i]['imageSmall'] = $value['imageSmall'];
-          $result[$i]['imageMedium'] = $value['imageMedium'];
-          $result[$i]['imageLarge'] = $value['imageLarge'];
-          $result[$i]['pointValue'] = $value['pointValue'];
-          $result[$i]['textOverlay'] = $value['textOverlay'];
           break;
 
         case 'level_interactive_content':
