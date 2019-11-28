@@ -51,10 +51,10 @@ settings:
           items:
             - Source
   plugins:
-    language:
-      language_list: un
     stylescombo:
       styles: ''
+    language:
+      language_list: un
     wordcount:
       enable: 0
       show_paragraphs: 0
