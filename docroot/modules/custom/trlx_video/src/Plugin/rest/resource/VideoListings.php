@@ -71,8 +71,8 @@ class VideoListings extends ResourceBase {
     $all_brand_keys = $brandUtility->getAllBrandKeys();
     $brand_key_check = 0;
     foreach ($all_brand_keys as $brand_key_value) {
-      if($brandId ===  $brand_key_value) {
-        // Check for brand id in cms
+      if ($brandId === $brand_key_value) {
+        // Check for brand id in cms.
         $brand_key_check = 1;
         break;
       }
@@ -85,8 +85,8 @@ class VideoListings extends ResourceBase {
     // Validation for brand key exists in user token or not.
     $brand_check = 0;
     foreach ($_userData->brands as $brand_key_values) {
-      if($brandId ===  $brand_key_values) {
-        // Check for brand id on user token
+      if ($brandId === $brand_key_values) {
+        // Check for brand id on user token.
         $brand_check = 1;
         break;
       }

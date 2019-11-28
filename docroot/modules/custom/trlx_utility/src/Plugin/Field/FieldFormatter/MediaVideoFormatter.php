@@ -94,7 +94,7 @@ class MediaVideoFormatter extends FileMediaFormatterBase {
       ->setAttribute('height', $this->getSetting('height'));
   }
 
-   /**
+  /**
    * {@inheritdoc}
    */
   public function viewElements(FieldItemListInterface $items, $langcode) {
@@ -120,9 +120,7 @@ class MediaVideoFormatter extends FileMediaFormatterBase {
       }
       $elements[$delta]['#cache']['tags'] = $cache_tags;
     }
-   // print_r($elements);exit;
-
-
+    // print_r($elements);exit;
     return $elements;
   }
 

@@ -1,6 +1,6 @@
 uuid: 65e34a2c-e3f8-491f-be63-b36efa7e8bcf
 langcode: en
-status: true
+status: false
 dependencies:
   config:
     - filter.format.quiz

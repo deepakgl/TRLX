@@ -48,26 +48,29 @@ class ContentModel {
   /**
    * Get static translation.
    *
-   * @param string $name
-   *   Static transaltion name.
    * @param string $lang
    *   Langcode.
    *
    * @return string
    *   Static transaltion name.
    */
-  public static function getStaticTransaltion($name, $lang) {
+  public static function getStaticTransaltion($lang) {
     $query = DB::table('taxonomy_term_field_data as ttfd');
     $query->leftJoin('taxonomy_term__field_translation_key as tttk', 'tttk.entity_id', '=', 'ttfd.tid');
+    $query->select('ttfd.name', 'tttk.field_translation_key_value');
     $query->where('tttk.langcode', '=', $lang);
-    $query->where('ttfd.name', '=', $name);
+    $query->distinct('ttfd.tid');
     $query->where('ttfd.vid', '=', 'static_translation');
     $results = $query->get()->all();
     if (empty($results)) {
       return FALSE;
     }
+    $result = [];
+    foreach ($results as $key => $value) {
+      $result[$value->name] = $value;
+    }
 
-    return $results[0]->field_translation_key_value;
+    return $result;
   }
 
   /**
