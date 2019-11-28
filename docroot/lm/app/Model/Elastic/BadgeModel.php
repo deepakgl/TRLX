@@ -2,7 +2,6 @@
 
 namespace App\Model\Elastic;
 
-use Illuminate\Http\Response;
 use App\Support\Helper;
 use App\Model\Mysql\ContentModel;
 
@@ -215,11 +214,7 @@ class BadgeModel {
     // Update elastic user index.
     $output = ElasticUserModel::updateElasticUserData($params, $badge_info['uid'], $client);
 
-    return new Response([
-      'nid' => $nid,
-      'status' => TRUE,
-      'message' => 'Successfully updated',
-    ], 200);
+    return TRUE;
   }
 
 }

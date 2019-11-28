@@ -156,10 +156,14 @@ class ContentModel {
       if ($query[0]->statement_status == 'passed') {
         return FALSE;
       }
-      return DB::table('lm_lrs_records')
+      DB::table('lm_lrs_records')
         ->where('nid', $params['nid'])
         ->where('uid', $params['uid'])
         ->update(['statement_status' => $params['statement_status'], 'tid' => $params['tid']]);
+
+      // Allocate badge to user on completion of level.
+      self::allocateBadgeConditions($params);
+      return TRUE;
     }
 
     DB::table('lm_lrs_records')->insert([
@@ -607,12 +611,12 @@ class ContentModel {
     $get_percentage->where('records.tid', '=', $params['tid']);
     $get_percentage->whereIn('records.nid', $nids);
     $percentage_result = $get_percentage->get();
-    $incomplete_status = ['progress', NULL];
+    $complete_status = ['passed', 'completed'];
     foreach ($percentage_result as $key => $result) {
       $data[$result->nid] = $result;
     }
     foreach ($nids as $key => $value) {
-      $percentage_status = (isset($data[$value]) && !in_array($data[$value]->statement_status, $incomplete_status)) ? (int) 1 : (int) 0;
+      $percentage_status = (isset($data[$value]) && in_array($data[$value]->statement_status, $complete_status)) ? (int) 1 : (int) 0;
       $response[$value] = [
         "nid" => (int) $value,
         "status" => $percentage_status,

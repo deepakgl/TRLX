@@ -261,7 +261,7 @@ class SearchController extends Controller {
       elseif (isset($value['_source']['field_content_section'][0])) {
         $category_name = ContentModel::getTermName([$value['_source']['field_content_section'][0]]);
         $category_key = ContentModel::getContentSectionKeyByTid($value['_source']['field_content_section'][0]);
-        $category_value = implode(" ", $category_name);
+        $category_value = !empty($static_translation[implode(" ", $category_name)]) ? $static_translation[implode(" ", $category_name)]->field_translation_key_value : implode(" ", $category_name);
         $category_name = $content_type;
       }
       elseif (isset($value['_source']['field_brands_1'][0])) {
@@ -277,7 +277,7 @@ class SearchController extends Controller {
       elseif (isset($value['_source']['field_content_section_1'][0])) {
         $category_name = ContentModel::getTermName([$value['_source']['field_content_section_1'][0]]);
         $category_key = ContentModel::getContentSectionKeyByTid($value['_source']['field_content_section_1'][0]);
-        $category_value = implode(" ", $category_name);
+        $category_value = !empty($static_translation[implode(" ", $category_name)]) ? $static_translation[implode(" ", $category_name)]->field_translation_key_value : implode(" ", $category_name);
         $category_name = $content_type;
       }
 
