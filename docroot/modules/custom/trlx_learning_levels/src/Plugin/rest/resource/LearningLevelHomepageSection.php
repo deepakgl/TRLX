@@ -102,7 +102,7 @@ class LearningLevelHomepageSection extends ResourceBase {
               $result[$count1]['imageLarge'] = '';
             }
             // Get point values count.
-            $pointValues = $this->getPointValues($nids, $language);
+            $pointValues = $this->getPointValues($nids, $language, $_userData);
             if ((empty($pointValues)) || ($pointValues == NULL)) {
               $result[$count1]['pointValue'] = 0;
             }
@@ -204,20 +204,42 @@ class LearningLevelHomepageSection extends ResourceBase {
    * @return int
    *   point value
    */
-  public function getPointValues($nids, $langcode) {
+  public function getPointValues($nids, $langcode, $_userData) {
     // Fetch point values.
     $points_value = 0;
+    $has_market = 0;
+    $market_regions = array_merge($_userData->region, $_userData->subregion);
     foreach ($nids as $nid) {
       if (!empty($nid)) {
         $node = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
-        if ($node->hasTranslation($langcode)) {
-          // Checking publish content.
-          if (($node->getTranslation($langcode)->get('status')->value) == 1) {
-            $points = $node->get('field_point_value')->value;
-            $points_value = $points_value + $points;
+        // Validating regions.
+        if (!empty($node)) {
+          // Fetch reference entities.
+          $terms = $node->get('field_markets')->referencedEntities();
+          foreach ($terms as $term) {
+            // Get single region key.
+            $region_key = $term->get('field_region_subreg_country_id')->value;
+            foreach ($market_regions as $region) {
+              if ($region_key === $region) {
+                $has_market = 1;
+              }
+            }
+
+            if ($has_market == 1) {
+              break;
+            }
+          }
+          // Check for translation and market region.
+          if ($node->hasTranslation($langcode) && ($has_market == 1)) {
+            // Checking publish content.
+            if (($node->getTranslation($langcode)->get('status')->value) == 1) {
+              $points = $node->get('field_point_value')->value;
+              $points_value = $points_value + $points;
+            }
           }
         }
       }
+      $has_market = 0;
     }
 
     return $points_value;

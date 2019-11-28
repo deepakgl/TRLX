@@ -46,6 +46,34 @@ class ContentModel {
   }
 
   /**
+   * Get static translation.
+   *
+   * @param string $lang
+   *   Langcode.
+   *
+   * @return string
+   *   Static transaltion name.
+   */
+  public static function getStaticTransaltion($lang) {
+    $query = DB::table('taxonomy_term_field_data as ttfd');
+    $query->leftJoin('taxonomy_term__field_translation_key as tttk', 'tttk.entity_id', '=', 'ttfd.tid');
+    $query->select('ttfd.name', 'tttk.field_translation_key_value');
+    $query->where('tttk.langcode', '=', $lang);
+    $query->distinct('ttfd.tid');
+    $query->where('ttfd.vid', '=', 'static_translation');
+    $results = $query->get()->all();
+    if (empty($results)) {
+      return FALSE;
+    }
+    $result = [];
+    foreach ($results as $key => $value) {
+      $result[$value->name] = $value;
+    }
+
+    return $result;
+  }
+
+  /**
    * Get market name by tid and language.
    *
    * @param int $tid
@@ -111,7 +139,7 @@ class ContentModel {
   /**
    * Set LRS data.
    *
-   * @param array $params
+   * @param mixed $params
    *   Rest resource query parameters.
    *
    * @return bool
@@ -157,7 +185,7 @@ class ContentModel {
    *   User id.
    * @param int $tid
    *   Term id.
-   * @param array $nid
+   * @param mixed $nid
    *   Node id.
    *
    * @return array
@@ -565,7 +593,7 @@ class ContentModel {
    *
    * @param mixed $params
    *   Level details.
-   * @param array $nids
+   * @param mixed $nids
    *   Level nodes.
    *
    * @return int
