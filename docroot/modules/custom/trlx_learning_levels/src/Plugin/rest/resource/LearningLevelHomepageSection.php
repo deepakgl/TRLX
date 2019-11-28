@@ -6,6 +6,7 @@ use Drupal\rest\Plugin\ResourceBase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Drupal\trlx_utility\Utility\CommonUtility;
+use Drupal\trlx_utility\Utility\UserUtility;
 use Drupal\trlx_learning_levels\Utility\LevelUtility;
 
 /**
@@ -33,6 +34,7 @@ class LearningLevelHomepageSection extends ResourceBase {
   public function get(Request $request) {
     $commonUtility = new CommonUtility();
     $levelUtility = new LevelUtility();
+    $userUtility = new UserUtility();
 
     // Required parameters.
     $requiredParams = [
@@ -65,21 +67,35 @@ class LearningLevelHomepageSection extends ResourceBase {
     // Get user.
     global $_userData;
     $all_tids = $this->getDistingTids($_userData->userId);
+    $markets = $userUtility->getMarketByUserData($_userData);
     $count1 = 0;
     foreach ($all_tids as $tid) {
       // Query to fetch all associated nids.
-      $query = \Drupal::entityQuery('node')
-        ->condition('status', 1)
-        ->condition('type', 'level_interactive_content', '=')
-        ->condition('field_learning_category', $tid, '=');
-      $nid = $query->execute();
-      $nids = array_values($nid);
+      $database = \Drupal::database();
+      $query = $database->select('node', 'n');
+      $query->condition('n.type', 'level_interactive_content', '=');
+      $query->join('node__field_learning_category', 'nflc', 'n.nid = nflc.entity_id');
+      $query->condition('nflc.field_learning_category_target_id', $tid, '=');
+      $query->join('node__field_markets', 'm', 'n.nid = m.entity_id');
+      $query->condition('m.bundle', 'level_interactive_content', '=');
+      $query->condition('m.field_markets_target_id', $markets, 'IN');
+      $query->fields('n', ['nid']);
+      $results = $query->execute()->fetchAllAssoc('nid');
+      $nids = [];
+      $count = 0;
+      foreach ($results as $key => $value) {
+        $nids[$count] = $value->nid;
+        $count++;
+      }
+
+      // Check if nids not empty
       if (!empty($nids)) {
-        // Get status in-progress in percentage.
+        //Get status in-progress in percentage.
         $status_array = $levelUtility->getLevelActivity($_userData, $tid, $nids, $language);
         if ($status_array['percentageCompleted'] != 100) {
           // Get term by tid.
           $term = $this->getTaxonomyTerm($status_array['categoryId'], $language);
+          // $term = $this->getTaxonomyTerm($tid, $language);
           $translation = $this->validateTraslation($nids, $language);
           if ((!empty($term)) && ($translation['status'] == 1)) {
             $result[$count1]['id'] = $term->id();
