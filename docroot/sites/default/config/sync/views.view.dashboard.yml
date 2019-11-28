@@ -902,6 +902,7 @@ display:
       relationships: {  }
       arguments: {  }
       display_extenders: {  }
+      group_by: true
     cache_metadata:
       max-age: 0
       contexts:

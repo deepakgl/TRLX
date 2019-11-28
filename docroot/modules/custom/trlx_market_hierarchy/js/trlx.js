@@ -22,13 +22,16 @@
       $('#menu-overview tr:has(a#edit-links-menu-plugin-idstandardfront-page-title-1)').hide();
       // Hide non required image align option from image widget in editor.
       $('.form-type-radio').each(function(){
-          var alignArray = ["center", "right"];
+          var alignArray = ["left", "right"];
           var index = $.inArray($(this).children('.form-radio').attr('value'), alignArray);
           if(index != -1){
               $(this).hide();
           }
           if($(this).children('.form-radio').attr('value') == "none"){
               $(this).children("label").html("Center");
+          }
+          if($(this).children('.form-radio').attr('value') == "center"){
+              $(this).children("label").html("Left");
           }
       });
       // Js for select all markets on select of region.
