@@ -123,8 +123,8 @@ class ModuleDetails extends ResourceBase {
     // @todo will add dynamic data once user repository work done.
     // Get all user information from user repository.
     $user_roles = ['beauty_advisor'];
-    $user_email = 'trlx@mailinator.com';
-    $user_name = 'beauty_advisor';
+    $user_email = $_userData->email;
+    $user_name = $_userData->firstName . '' . $_userData->lastName;
     // Get current user markets.
     $markets = $user_utility->getMarketByUserData($_userData);
     $market = implode(", ", $markets);
