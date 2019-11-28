@@ -196,11 +196,12 @@ class SearchController extends Controller {
       $image_style = Helper::buildImageResponse($result, $img);
       $type = isset($value['_source']['type'][0]) ? $value['_source']['type'][0] : '';
       $category_key = 'faqhelp';
-      $category_value = $category_name = !empty(ContentModel::getStaticTransaltion('helpFaqTxt', $lang)) ? ContentModel::getStaticTransaltion('helpFaqTxt', $lang) : 'Help FAQ';
+      $static_translation = ContentModel::getStaticTransaltion($lang);
+      $category_value = $category_name = !empty($static_translation['helpFaqTxt']) ? $static_translation['helpFaqTxt']->field_translation_key_value : 'Help FAQ';
       // Get displaytitle on based on content type.
       if (!empty($value['_source']['vid'][0])) {
         $display_title = isset($value['_source']['name'][0]) ? $value['_source']['name'][0] : '';
-        $content_type = !empty(ContentModel::getStaticTransaltion('levelTabTxt', $lang)) ? ContentModel::getStaticTransaltion('levelTabTxt', $lang) : 'Levels';
+        $content_type = !empty($static_translation['levelTabTxt']) ? $static_translation['levelTabTxt']->field_translation_key_value : 'Levels';
         $sub_title = isset($value['_source']['field_sub_title_1'][0]) ? $value['_source']['field_sub_title_1'][0] : '';
         $type = $value['_source']['vid'][0];
       }
@@ -209,33 +210,33 @@ class SearchController extends Controller {
         $lesson_brand_key = ContentModel::getLessonBrandKeyByTid($value['_source']['field_learning_category'][0]);
         list($cs_value, $cs_key) = ContentModel::getLessonSectionKeyByTid($value['_source']['field_learning_category'][0]);
         $category_key = !empty($lesson_brand_key) ? 'brands' : $cs_key;
-        $category_value = !empty($lesson_brand_key) ? (!empty(ContentModel::getStaticTransaltion('brandTitleTxt', $lang)) ? ContentModel::getStaticTransaltion('brandTitleTxt', $lang) : 'Brands') : $cs_value;
-        $category_name = !empty(ContentModel::getStaticTransaltion('lessonTxt', $lang)) ? ContentModel::getStaticTransaltion('lessonTxt', $lang) : 'Lesson';
+        $category_value = !empty($lesson_brand_key) ? (!empty($static_translation['brandTitleTxt']) ? $static_translation['brandTitleTxt']->field_translation_key_value : 'Brands') : $cs_value;
+        $category_name = !empty($static_translation['lessonTxt']) ? $static_translation['lessonTxt']->field_translation_key_value : 'Lesson';
         $sub_title = isset($value['_source']['field_subtitle'][0]) ? $value['_source']['field_subtitle'][0] : '';
       }
       elseif ($value['_source']['type'][0] == 'faq') {
         $display_title = isset($value['_source']['field_question'][0]) ? $value['_source']['field_question'][0] : '';
-        $content_type = !empty(ContentModel::getStaticTransaltion('brandQuestionTabTxt', $lang)) ? ContentModel::getStaticTransaltion('brandQuestionTabTxt', $lang) : 'Brand question';
+        $content_type = !empty($static_translation['brandQuestionTabTxt']) ? $static_translation['brandQuestionTabTxt']->field_translation_key_value : 'Brand question';
         $sub_title = isset($value['_source']['field_subtitle'][0]) ? $value['_source']['field_subtitle'][0] : '';
       }
       elseif ($value['_source']['type'][0] == 'tools') {
         $display_title = isset($value['_source']['field_display_title'][0]) ? $value['_source']['field_display_title'][0] : '';
-        $content_type = !empty(ContentModel::getStaticTransaltion('videoTabTxt', $lang)) ? ContentModel::getStaticTransaltion('videoTabTxt', $lang) : 'Videos';
+        $content_type = !empty($static_translation['videoTabTxt']) ? $static_translation['videoTabTxt']->field_translation_key_value : 'Videos';
         $sub_title = isset($value['_source']['field_subtitle'][0]) ? $value['_source']['field_subtitle'][0] : '';
       }
       elseif ($value['_source']['type'][0] == 'product_detail') {
         $display_title = isset($value['_source']['field_display_title'][0]) ? $value['_source']['field_display_title'][0] : '';
-        $content_type = !empty(ContentModel::getStaticTransaltion('factsheetsTxt', $lang)) ? ContentModel::getStaticTransaltion('factsheetsTxt', $lang) : 'Factsheets';
+        $content_type = !empty($static_translation['factsheetsTxt']) ? $static_translation['factsheetsTxt']->field_translation_key_value : 'Factsheets';
         $sub_title = isset($value['_source']['field_subtitle'][0]) ? $value['_source']['field_subtitle'][0] : '';
       }
       elseif ($value['_source']['type'][0] == 'brand_story') {
         $display_title = isset($value['_source']['field_display_title'][0]) ? $value['_source']['field_display_title'][0] : '';
-        $content_type = !empty(ContentModel::getStaticTransaltion('brandStoryTabTxt', $lang)) ? ContentModel::getStaticTransaltion('brandStoryTabTxt', $lang) : 'Brand story';
+        $content_type = !empty($static_translation['brandStoryTabTxt']) ? $static_translation['brandStoryTabTxt']->field_translation_key_value : 'Brand story';
         $sub_title = isset($value['_source']['field_subtitle'][0]) ? $value['_source']['field_subtitle'][0] : '';
       }
       elseif ($value['_source']['type'][0] == 'stories') {
         $display_title = isset($value['_source']['field_display_title'][0]) ? $value['_source']['field_display_title'][0] : '';
-        $content_type = !empty(ContentModel::getStaticTransaltion('storyTxt', $lang)) ? ContentModel::getStaticTransaltion('storyTxt', $lang) : 'Story';
+        $content_type = !empty($static_translation['storyTxt']) ? $static_translation['storyTxt']->field_translation_key_value : 'Story';
         $sub_title = isset($value['_source']['field_sub_title'][0]) ? $value['_source']['field_sub_title'][0] : '';
       }
       else {
@@ -249,7 +250,7 @@ class SearchController extends Controller {
       $brandinfo = ContentModel::getBrandTermIds();
       if (isset($value['_source']['field_brands'][0])) {
         $category_key = 'brands';
-        $category_value = !empty(ContentModel::getStaticTransaltion('brandTitleTxt', $lang)) ? ContentModel::getStaticTransaltion('brandTitleTxt', $lang) : 'Brands';
+        $category_value = !empty($static_translation['brandTitleTxt']) ? $static_translation['brandTitleTxt']->field_translation_key_value : 'Brands';
         $category_name = $content_type;
         foreach ($brandinfo as $key => $brand) {
           if ($brand['entity_id'] == $value['_source']['field_brands'][0]) {
@@ -265,7 +266,7 @@ class SearchController extends Controller {
       }
       elseif (isset($value['_source']['field_brands_1'][0])) {
         $category_key = 'brands';
-        $category_value = !empty(ContentModel::getStaticTransaltion('brandTitleTxt', $lang)) ? ContentModel::getStaticTransaltion('brandTitleTxt', $lang) : 'Brands';
+        $category_value = !empty($static_translation['brandTitleTxt']) ? $static_translation['brandTitleTxt']->field_translation_key_value : 'Brands';
         $category_name = $content_type;
         foreach ($brandinfo as $key => $brand) {
           if ($brand['entity_id'] == $value['_source']['field_brands_1'][0]) {
