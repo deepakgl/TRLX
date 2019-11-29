@@ -649,11 +649,11 @@ class ContentModel {
     $badge->leftJoin('taxonomy_term__field_percentage as fp', 'fp.entity_id', '=', 'fb.entity_id');
     $badge->select('fb.field_badges_target_id', 'fp.field_percentage_value');
     $badge->where('fb.entity_id', '=', $params['tid']);
-    $badge_result = $badge->get();
+    $badge_result = $badge->get()->all();
 
     return [
-      $badge_result[0]->field_badges_target_id,
-      $badge_result[0]->field_percentage_value,
+      (!empty($badge_result)) ? $badge_result[0]->field_badges_target_id : '',
+      (!empty($badge_result)) ? $badge_result[0]->field_percentage_value : '',
     ];
   }
 
