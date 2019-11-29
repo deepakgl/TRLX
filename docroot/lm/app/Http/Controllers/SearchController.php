@@ -318,6 +318,8 @@ class SearchController extends Controller {
         ];
       }
     }
+    $response_sort = array_column($response, 'categoryKey');
+    array_multisort($response_sort, SORT_ASC, $response);
     foreach (array_slice($response, $this->offset,
     $this->limit) as $key => $element) {
       $alter_data[$element['categoryKey']]['response'][] = $element;
