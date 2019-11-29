@@ -323,8 +323,12 @@ class FlagController extends Controller {
                 }
               }
               $bookmark_data[$i]['brandKey'] = $brand_key;
-              $bookmark_data[$i]['brandName'] = ContentModel::getTermName([$node_data->field_brands_target_id])[0];
+              $term_name = ContentModel::getTermName([$node_data->field_brands_target_id]);
+              if (!empty($term_name)) {
+                $bookmark_data[$i]['brandName'] = $term_name[0];
+              }
             }
+
             if ($node_data->field_content_section_target_id != NULL) {
               $bookmark_data[$i]['sectionKey'] = ContentModel::getContentSectionKeyByTid($node_data->field_content_section_target_id);
               $bookmark_data[$i]['sectionName'] = array_key_exists($bookmark_data[$i]['sectionKey'], $sectionNames) ? $sectionNames[$bookmark_data[$i]['sectionKey']] : "";
