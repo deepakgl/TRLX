@@ -210,7 +210,7 @@ class SearchController extends Controller {
         $lesson_brand_key = ContentModel::getLessonBrandKeyByTid($value['_source']['field_learning_category'][0]);
         list($cs_value, $cs_key) = ContentModel::getLessonSectionKeyByTid($value['_source']['field_learning_category'][0]);
         $category_key = !empty($lesson_brand_key) ? 'brands' : $cs_key;
-        $category_value = !empty($lesson_brand_key) ? (!empty($static_translation['brandTitleTxt']) ? $static_translation['brandTitleTxt']->field_translation_key_value : 'Brands') : $cs_value;
+        $category_value = !empty($lesson_brand_key) ? (!empty($static_translation['brandTitleTxt']) ? $static_translation['brandTitleTxt']->field_translation_key_value : 'Brands') : (!empty($static_translation[$cs_value]) ? $static_translation[$cs_value]->field_translation_key_value : $cs_value);
         $category_name = !empty($static_translation['lessonTxt']) ? $static_translation['lessonTxt']->field_translation_key_value : 'Lesson';
         $sub_title = isset($value['_source']['field_subtitle'][0]) ? $value['_source']['field_subtitle'][0] : '';
       }
@@ -261,7 +261,7 @@ class SearchController extends Controller {
       elseif (isset($value['_source']['field_content_section'][0])) {
         $category_name = ContentModel::getTermName([$value['_source']['field_content_section'][0]]);
         $category_key = ContentModel::getContentSectionKeyByTid($value['_source']['field_content_section'][0]);
-        $category_value = implode(" ", $category_name);
+        $category_value = !empty($static_translation[implode(" ", $category_name)]) ? $static_translation[implode(" ", $category_name)]->field_translation_key_value : implode(" ", $category_name);
         $category_name = $content_type;
       }
       elseif (isset($value['_source']['field_brands_1'][0])) {
@@ -277,7 +277,7 @@ class SearchController extends Controller {
       elseif (isset($value['_source']['field_content_section_1'][0])) {
         $category_name = ContentModel::getTermName([$value['_source']['field_content_section_1'][0]]);
         $category_key = ContentModel::getContentSectionKeyByTid($value['_source']['field_content_section_1'][0]);
-        $category_value = implode(" ", $category_name);
+        $category_value = !empty($static_translation[implode(" ", $category_name)]) ? $static_translation[implode(" ", $category_name)]->field_translation_key_value : implode(" ", $category_name);
         $category_name = $content_type;
       }
 
@@ -318,6 +318,8 @@ class SearchController extends Controller {
         ];
       }
     }
+    $response_sort = array_column($response, 'categoryKey');
+    array_multisort($response_sort, SORT_ASC, $response);
     foreach (array_slice($response, $this->offset,
     $this->limit) as $key => $element) {
       $alter_data[$element['categoryKey']]['response'][] = $element;

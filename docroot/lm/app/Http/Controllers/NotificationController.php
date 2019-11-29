@@ -136,6 +136,9 @@ class NotificationController extends Controller {
         $notificationArray = [];
 
         foreach ($result as $key => $value) {
+          if ($value['notificationBrandKey'] == NULL || $value['notificationBrandKey'] == 0) {
+            $value['notificationBrandKey'] = '';
+          }
           $notificationArray[$key]['notificationType'] = $value['notificationType'];
           $notificationArray[$key]['notificationHeading'] = $value['notificationHeading'];
           $notificationArray[$key]['notificationText'] = $value['notificationText'];

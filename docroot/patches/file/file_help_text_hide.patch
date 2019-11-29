@@ -1,0 +1,13 @@
+diff --git a/core/modules/file/file.field.inc b/core/modules/file/file.field.inc
+index a3b8868cd0..f886cba0dc 100644
+--- a/core/modules/file/file.field.inc
++++ b/core/modules/file/file.field.inc
+@@ -158,7 +158,7 @@ function template_preprocess_file_upload_help(&$variables) {
+     }
+   }
+   if (isset($upload_validators['file_validate_size'])) {
+-    $descriptions[] = t('@size limit.', ['@size' => format_size($upload_validators['file_validate_size'][0])]);
++    
+   }
+   if (isset($upload_validators['file_validate_extensions'])) {
+     $descriptions[] = t('Allowed types: @extensions.', ['@extensions' => $upload_validators['file_validate_extensions'][0]]);
