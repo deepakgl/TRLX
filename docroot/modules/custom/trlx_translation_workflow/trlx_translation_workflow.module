@@ -247,6 +247,9 @@ function trlx_translation_workflow_generate_img_styles($node) {
         'insider_corner_hompage_section_tablet',
         'insider_corner_hompage_section_mobile',
         'media_entity_browser_thumbnail',
+        'carousel_image_mobile',
+        'carousel_image_tablet',
+        'carousel_image_desktop',
       ]
       );
     }

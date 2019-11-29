@@ -210,7 +210,7 @@ class SearchController extends Controller {
         $lesson_brand_key = ContentModel::getLessonBrandKeyByTid($value['_source']['field_learning_category'][0]);
         list($cs_value, $cs_key) = ContentModel::getLessonSectionKeyByTid($value['_source']['field_learning_category'][0]);
         $category_key = !empty($lesson_brand_key) ? 'brands' : $cs_key;
-        $category_value = !empty($lesson_brand_key) ? (!empty($static_translation['brandTitleTxt']) ? $static_translation['brandTitleTxt']->field_translation_key_value : 'Brands') : $cs_value;
+        $category_value = !empty($lesson_brand_key) ? (!empty($static_translation['brandTitleTxt']) ? $static_translation['brandTitleTxt']->field_translation_key_value : 'Brands') : (!empty($static_translation[$cs_value]) ? $static_translation[$cs_value]->field_translation_key_value : $cs_value);
         $category_name = !empty($static_translation['lessonTxt']) ? $static_translation['lessonTxt']->field_translation_key_value : 'Lesson';
         $sub_title = isset($value['_source']['field_subtitle'][0]) ? $value['_source']['field_subtitle'][0] : '';
       }
