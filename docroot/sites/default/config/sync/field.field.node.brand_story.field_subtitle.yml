@@ -11,7 +11,7 @@ entity_type: node
 bundle: brand_story
 label: Subtitle
 description: ''
-required: true
+required: false
 translatable: true
 default_value: {  }
 default_value_callback: ''
