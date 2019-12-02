@@ -262,8 +262,8 @@ function trlx_notification_product_detail_related_content($node) {
   $market_ref_keys = array_column($user_utility->getMarketKeyByCategoryId($markets), 'field_region_subreg_country_id_value');
   $userIds = NotificationUtility::getUsersBasedOnBrandsAndMarkets($market_ref_keys, $brand_key);
   $notification_index = [];
-  $content_language = $node->langcode->value;
   $notification_heading = $commonUtility->getNotificationTranslation($config->get('factsheet_heading'), $content_language);
+  $content_language = $node->langcode->value;
   $text = $commonUtility->getNotificationTranslation('View', $content_language);
   $notification_text = $text . ': ' . $node->get('field_display_title')->first()->getValue()['value'];
   if (!empty($userIds)) {

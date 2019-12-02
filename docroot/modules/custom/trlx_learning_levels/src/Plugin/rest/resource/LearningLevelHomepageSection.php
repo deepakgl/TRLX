@@ -70,27 +70,11 @@ class LearningLevelHomepageSection extends ResourceBase {
     $markets = $userUtility->getMarketByUserData($_userData);
     $count1 = 0;
     foreach ($all_tids as $tid) {
-      // Query to fetch all associated nids.
-      $database = \Drupal::database();
-      $query = $database->select('node', 'n');
-      $query->condition('n.type', 'level_interactive_content', '=');
-      $query->join('node__field_learning_category', 'nflc', 'n.nid = nflc.entity_id');
-      $query->condition('nflc.field_learning_category_target_id', $tid, '=');
-      $query->join('node__field_markets', 'm', 'n.nid = m.entity_id');
-      $query->condition('m.bundle', 'level_interactive_content', '=');
-      $query->condition('m.field_markets_target_id', $markets, 'IN');
-      $query->fields('n', ['nid']);
-      $results = $query->execute()->fetchAllAssoc('nid');
-      $nids = [];
-      $count = 0;
-      foreach ($results as $key => $value) {
-        $nids[$count] = $value->nid;
-        $count++;
-      }
-
-      // Check if nids not empty
+      // Fetch all Nids.
+      $nids = $levelUtility->getCourcesNids($tid, $markets, $language);
+      // Check if nids not empty.
       if (!empty($nids)) {
-        //Get status in-progress in percentage.
+        // Get status in-progress in percentage.
         $status_array = $levelUtility->getLevelActivity($_userData, $tid, $nids, $language);
         if ($status_array['percentageCompleted'] != 100) {
           // Get term by tid.

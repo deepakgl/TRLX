@@ -337,10 +337,10 @@ class LevelUtility {
    * Get Brand Non Agnostic.
    *
    * @param int $tid
-   *   term id.
+   *   Term id.
    *
    * @return array
-   *   tids.
+   *   Tids.
    */
   public  function getBrandNonAgnostic($tid) {
     $config = \Drupal::config('trlx_disable_brand_ma.settings');
@@ -360,6 +360,44 @@ class LevelUtility {
         return $tid;
       }
     }
+  }
+
+  /**
+   * Fetch level nid's.
+   *
+   * @param int $tid
+   *   Term id.
+   * @param array $markets
+   *   Markets
+   * @param $language
+   *   Langcode
+   *
+   * @return array
+   *   Nids.
+   */
+  public  function getCourcesNids($tid, $markets, $language) {
+    // Query to fetch all learning level nids
+    $database = \Drupal::database();
+    $query = $database->select('node_field_data', 'n');
+    $query->condition('n.type', 'level_interactive_content', '=');
+    $query->condition('n.status', 1, '=');
+    $query->condition('n.langcode', $language, '=');
+    $query->join('node__field_learning_category', 'nflc', 'n.nid = nflc.entity_id');
+    $query->condition('nflc.field_learning_category_target_id', $tid, '=');
+    $query->join('node__field_markets', 'm', 'n.nid = m.entity_id');
+    $query->condition('m.bundle', 'level_interactive_content', '=');
+    $query->condition('m.field_markets_target_id', $markets, 'IN');
+    $query->fields('n', ['nid']);
+    $results = $query->execute()->fetchAllAssoc('nid');
+
+    $nids = [];
+    $count = 0;
+    foreach ($results as $key => $value) {
+      $nids[$count] = $value->nid;
+      $count++;
+    }
+
+    return $nids;
   }
 
 }
