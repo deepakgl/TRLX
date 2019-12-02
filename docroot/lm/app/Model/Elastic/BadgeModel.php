@@ -4,6 +4,7 @@ namespace App\Model\Elastic;
 
 use App\Support\Helper;
 use App\Model\Mysql\ContentModel;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Purpose of this class is to check, fetch and update badges.
