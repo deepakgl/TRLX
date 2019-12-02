@@ -119,8 +119,8 @@ function trlx_notification_brand_story_related_content($node) {
   $market_ref_keys = array_column($user_utility->getMarketKeyByCategoryId($markets), 'field_region_subreg_country_id_value');
   $userIds = NotificationUtility::getUsersBasedOnBrandsAndMarkets($market_ref_keys, $brand_key);
   $notification_index = [];
-  $notification_heading = $commonUtility->getNotificationTranslation($config->get('brand_story_heading'), $content_language);
   $content_language = $node->langcode->value;
+  $notification_heading = $commonUtility->getNotificationTranslation($config->get('brand_story_heading'), $content_language);
   $text = $commonUtility->getNotificationTranslation('View', $content_language);
   $notification_text = $text . ': ' . $node->get('field_display_title')->first()->getValue()['value'];
   if (!empty($userIds)) {
@@ -263,9 +263,9 @@ function trlx_notification_product_detail_related_content($node) {
   $userIds = NotificationUtility::getUsersBasedOnBrandsAndMarkets($market_ref_keys, $brand_key);
   $notification_index = [];
   $notification_heading = $commonUtility->getNotificationTranslation($config->get('factsheet_heading'), $content_language);
-  $notification_text = $text . ': ' . $node->get('field_display_title')->first()->getValue()['value'];
   $content_language = $node->langcode->value;
   $text = $commonUtility->getNotificationTranslation('View', $content_language);
+  $notification_text = $text . ': ' . $node->get('field_display_title')->first()->getValue()['value'];
   if (!empty($userIds)) {
     foreach ($userIds as $id) {
       $notificationArray[NOTIFICATION_TYPE] = t('BRAND');
@@ -307,9 +307,9 @@ function trlx_notification_stories_related_content($node) {
   $content_section_id = $node->get('field_content_section')->first()->getValue()['target_id'];
   $content_section = $commonUtility->getSectionKeyByTermId($content_section_id);
   $notification_index = [];
-  $notification_text = $text . ': ' . $node->get('field_display_title')->first()->getValue()['value'];
   $content_language = $node->langcode->value;
   $text = $commonUtility->getNotificationTranslation('View', $content_language);
+  $notification_text = $text . ': ' . $node->get('field_display_title')->first()->getValue()['value'];
   if ($content_section == $commonUtility::TREND) {
     $trendUserIds = NotificationUtility::getUsersBasedOnBrandsAndMarkets($market_ref_keys);
     $notification_heading = $commonUtility->getNotificationTranslation($config->get('trend_heading'), $content_language);
@@ -419,10 +419,10 @@ function trlx_notification_video_related_content($node) {
   // Get current user markets.
   $market_ref_keys = array_column($user_utility->getMarketKeyByCategoryId($markets), 'field_region_subreg_country_id_value');
   $userIds = NotificationUtility::getUsersBasedOnBrandsAndMarkets($market_ref_keys, $brand_key);
-  $notification_heading = $commonUtility->getNotificationTranslation($config->get('video_heading'), $content_language);
-  $notification_text = $text . ': ' . $node->get('field_display_title')->first()->getValue()['value'];
   $content_language = $node->langcode->value;
+  $notification_heading = $commonUtility->getNotificationTranslation($config->get('video_heading'), $content_language);
   $text = $commonUtility->getNotificationTranslation('View', $content_language);
+  $notification_text = $text . ': ' . $node->get('field_display_title')->first()->getValue()['value'];
   $notification_index = [];
   if (!empty($userIds)) {
     foreach ($userIds as $id) {
