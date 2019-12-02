@@ -70,11 +70,11 @@ class LearningLevelHomepageSection extends ResourceBase {
     $markets = $userUtility->getMarketByUserData($_userData);
     $count1 = 0;
     foreach ($all_tids as $tid) {
-      // Fetch all Nids
+      // Fetch all Nids.
       $nids = $levelUtility->getCourcesNids($tid, $markets, $language);
-      // Check if nids not empty
+      // Check if nids not empty.
       if (!empty($nids)) {
-        //Get status in-progress in percentage.
+        // Get status in-progress in percentage.
         $status_array = $levelUtility->getLevelActivity($_userData, $tid, $nids, $language);
         if ($status_array['percentageCompleted'] != 100) {
           // Get term by tid.
