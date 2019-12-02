@@ -124,7 +124,7 @@ class ModuleDetails extends ResourceBase {
     // Get all user information from user repository.
     $user_roles = ['beauty_advisor'];
     $user_email = $_userData->email;
-    $user_name = $_userData->firstName . '' . $_userData->lastName;
+    $user_name = $_userData->firstName . '_' . $_userData->lastName;
     // Get current user markets.
     $markets = $user_utility->getMarketByUserData($_userData);
     $market = implode(", ", $markets);
