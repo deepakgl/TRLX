@@ -370,7 +370,7 @@ class FlagController extends Controller {
             $brand_data = ContentModel::getBrandDataFromBrandKey($brand_key);
             if (!empty($brand_data)) {
               $bookmark_data[$i]['id'] = 0;
-              $bookmark_data[$i]['title'] = mb_strtoupper($brand_data['name']) . ' CUSTOMER QUESTIONS';
+              $bookmark_data[$i]['title'] = mb_strtoupper($brand_data['name']) . ' ' . $static_translation['brandFaqBookmarkTxt']->field_translation_key_value;
               $bookmark_data[$i]['brandKey'] = $brand_data['field_brand_key_value'];
               $bookmark_data[$i]['brandName'] = $brand_data['name'];
               $bookmark_data[$i]['sectionKey'] = "faq";
@@ -384,7 +384,7 @@ class FlagController extends Controller {
           }
           else {
             $bookmark_data[$i]['id'] = 0;
-            $bookmark_data[$i]['title'] = 'HELP QUESTIONS';
+            $bookmark_data[$i]['title'] = $static_translation['helpFaqBookmarkTxt']->field_translation_key_value;
             $bookmark_data[$i]['brandKey'] = 0;
             $bookmark_data[$i]['brandName'] = "";
             $bookmark_data[$i]['sectionKey'] = "helpFaq";
