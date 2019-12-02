@@ -2,8 +2,9 @@
 
 namespace Drupal\trlx_drush\Commands;
 
+use Drupal\Core\Url;
 use Drush\Commands\DrushCommands;
-use Drupal\taxonomy\Entity\Term;
+use Drupal\trlx_drush\Utility\DrushUtility;
 
 /**
  * A Drush commandfile.
@@ -30,64 +31,54 @@ class BatchImport extends DrushCommands {
    * @usage import:batch
    */
   public function importBatch($option) {
-    if (isset($option)) {
-      $lbUrl = \Drupal::config('elx_utility.settings')->get('middleware_lb_name');
-      $token = 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJsYXN0TmFtZSI6IkNoaW50YWwiLCJjb3VudHJ5IjpbXSwic3ViUmVnaW9uIjpbXSwiYnJhbmRzIjpbIjAyIiwiMDEiLCIwMyIsIjA0IiwiMTAiLCI0MCIsIjExIiwiMDciLCIzMyIsIjI2Il0sImlzRXh0ZXJuYWwiOjAsImxhbmd1YWdlIjoiIiwidWlkIjoiNWRjOWE0NTUzZDNlNzEwMDAxMzNhODI2IiwiZmlyc3ROYW1lIjoiUHJhc2hhbnQiLCJwcmltYXJ5QnJhbmQiOiIiLCJyZWdpb24iOlsiMjAwMCIsIjIzMDAiLCIyNjAwIl0sImVtYWlsIjoicHJhc2hhbnQuY2hpbnRhbEBtaW5kc3RpeC5jb20iLCJzdGF0dXMiOjF9.MtShzRiHwFOzbgBttvrIGGg40qHd-IS3CBzbbOR_Oc4';
-      $client = \Drupal::httpClient();
+    $drush_utility = new DrushUtility();
+    $lbUrl = \Drupal::config('elx_utility.settings')->get('middleware_lb_name');
+    if ((isset($option)) && (!empty($lbUrl))) {
+      // Token for authentication
+      $token = 'Y21zY2xpZW50bWFzdGVyOmNtc3Bhc3MxMjkw';
       $response = '';
+      $header = [
+        'headers' => [
+          'Accept' => 'application/json',
+          'X-AUTH-TOKEN' => $token,
+        ],
+        'http_errors' => FALSE
+      ];
       switch ($option) {
         case 'subRegion':
-          $response = $client->get($lbUrl . '/api/secure/onboarding/subregions?regionId=ALL',
-            [
-              'headers' => [
-                'Accept' => 'application/json',
-                'X-AUTH-TOKEN' => $token,
-              ],
-            ]);
-          $data = (string) $response->getBody();
-          $terms = (array) json_decode($data);
-          $terms = !empty($terms['subRegions']) ? $terms['subRegions'] : [];
-
-          // Process Terms.
-          $termsProcessed = $this->processTerms($terms, 'markets', 'field_region_subreg_country_id');
-          if ($termsProcessed) {
-            \Drupal::logger('trlx_drush')->info(t('SubRegion term(s) processed successfully...'));
-          }
-          break;
+         $endpoint = $lbUrl . '/api/secure/cms/onboarding/subregions?regionId=ALL';
+         $terms = $this->getApiResponse($endpoint, $header);
+         $terms = !empty($terms['subRegions']) ? $terms['subRegions'] : [];
+         $drush_utility->processTerms($terms, 'markets', 'subregion');
+         break;
 
         case 'country':
-          $response = $client->get($lbUrl . '/api/secure/onboarding/countries?regionId=ALL',
-            [
-              'headers' => [
-                'Accept' => 'application/json',
-                'X-AUTH-TOKEN' => $token,
-              ],
-            ]);
-          $data = (string) $response->getBody();
-          $terms = (array) json_decode($data);
-          $terms = !empty($terms['countries']) ? $terms['countries'] : [];
+          $endpoint_regions = $lbUrl . '/api/secure/cms/onboarding/subregions?regionId=ALL';
+          $sub_regions = $this->getApiResponse($endpoint_regions, $header);
+          $sub_regions = !empty($sub_regions['subRegions']) ? $sub_regions['subRegions'] : [];
+          $sub_region_string = '';
+          if (!empty($sub_regions)) {
+            foreach ($sub_regions as $sub_region) {
+              $sub_region_string .=  ($sub_region->id . ',');
+            }
+            $sub_region_query_param = substr($sub_region_string, 0, -1);
+          }
 
-          // Process Terms.
-          $termsProcessed = $this->processTerms($terms, 'markets', 'field_region_subreg_country_id');
-          if ($termsProcessed) {
-            \Drupal::logger('trlx_drush')->info(t('Country term(s) processed successfully...'));
+          if ($sub_region_query_param !== '') {
+            $endpoint = $lbUrl . '/api/secure/cms/onboarding/countries?subRegionIds=' . $sub_region_query_param;
+            $terms = $this->getApiResponse($endpoint ,$header);
+            $terms = !empty($terms['countries']) ? $terms['countries'] : [];
+            $drush_utility->processTerms($terms, 'markets', 'country');
           }
           break;
 
         case 'brand':
-          $response = $client->get($lbUrl . '/api/secure/onboarding/brands?regionId=ALL',
-            [
-              'headers' => [
-                'Accept' => 'application/json',
-                'X-AUTH-TOKEN' => $token,
-              ],
-            ]);
-          $data = (string) $response->getBody();
-          $terms = (array) json_decode($data);
+          $endpoint = $lbUrl . '/api/secure/cms/onboarding/brands?regionId=ALL';
+          $terms = $this->getApiResponse($endpoint, $header);
           $terms = !empty($terms['brands']) ? $terms['brands'] : [];
 
           // Process Terms.
-          $termsProcessed = $this->processTerms($terms, 'brands', 'field_brand_key');
+          $termsProcessed = $drush_utility->processBrandTerms($terms, 'brands', 'field_brand_key');
           if ($termsProcessed) {
             \Drupal::logger('trlx_drush')->info(t('Brand term(s) processed successfully...'));
           }
@@ -97,57 +88,33 @@ class BatchImport extends DrushCommands {
     }
   }
 
-  /**
-   * Process SubRegion, Country & Brand terms from middleware.
-   *
-   * @param array $termsArr
-   *   SubRegion/Country/Brand terms.
-   * @param string $type
-   *   Taxonomy type in cms e.g. markets/brands.
-   * @param string $termField
-   *   Taxonomy field name e.g. field_brand_key.
-   *
-   * @return bool
-   *   Boolean flag to determine whether terms are processed.
-   */
-  public function processTerms(array $termsArr = [], string $type = '', string $termField = '') {
-    $results = [];
-    $termsProcessed = FALSE;
-    if (!empty($termsArr) && $type && $termField) {
-      foreach ($termsArr as $termObj) {
-        // Load term.
-        $term = \Drupal::entityTypeManager()
-          ->getStorage('taxonomy_term')
-          ->loadByProperties([
-            'name' => $termObj->name,
-            'vid' => $type,
-          ]);
+ /**
+  * Fetch Api Response
+  *
+  * @param Url $endpoint
+  *   Endpoint url.
+  * @param array $header
+  *   Header of request
+  *
+  * @return array
+  *   Response array.
+  */
+  public function getApiResponse($endpoint ,$header) {
+    $client = \Drupal::httpClient();
+    try {
+      $response = $client->get($endpoint,
+        $header);
+      $status_code = $response->getStatusCode();
 
-        // Update term field value in existing term.
-        if (!empty($term)) {
-          $tid = key($term);
-          $term[$tid]->set($termField, $termObj->id);
-          $term[$tid]->save();
-          $results[] = $tid;
-        }
-        else {
-          // Add term.
-          $termCeated = Term::create([
-            'parent' => [],
-            'name' => $termObj->name,
-            'vid' => $type,
-            $termField => $termObj->id,
-          ])->save();
-          if ($termCeated) {
-            $results[] = $termObj->name;
-          }
-        }
+      if ($status_code === 200) {
+        $response_data = $response->getBody();
+        $data = (array) json_decode($response_data);
+
+        return $data;
       }
     }
-    if (!empty($results)) {
-      $termsProcessed = TRUE;
+    catch (Exception $e) {
+      return [];
     }
-    return $termsProcessed;
   }
-
 }
