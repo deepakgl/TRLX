@@ -253,7 +253,7 @@ class LeaderboardController extends Controller {
           // Get user information based on country.
           // Create the query filters.
           $search_param['body']['query']['bool']['filter'][]['terms'] = [
-            'location' => $current_user_data['_source']['locations'],
+            'locations' => $current_user_data['_source']['locations'],
           ];
         }
         else {

@@ -66,7 +66,7 @@ class FaqListing extends ResourceBase {
     ];
     // Get FAQ default id.
     $config = \Drupal::config('trlx_utility.settings');
-    $faqId = $config->get('faq_id') == 0 ? 9999999 : (int) $config->get('faq_id');
+    $faqId = $config->get('faq_id') == 0 ? 9999999 : (int) $config->get('faq_id') + $brand_id;
     $faqPointValue = $config->get('faq_points') == 0 ? 50 : (int) $config->get('faq_points');
 
     // To show the brand FAQs.

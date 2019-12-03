@@ -287,6 +287,7 @@ class FlagController extends Controller {
       // TRLX section names.
       $sectionNames = ContentModel::getTrlxSectionNames();
       $brandinfo = ContentModel::getBrandTermIds();
+      $static_translation = ContentModel::getStaticTransaltion($lang);
       $bookmark_data = [];
       foreach ($bookmark_ids as $bookmark_id) {
         if (!in_array($bookmark_id, $faq_ids)) {
@@ -298,7 +299,7 @@ class FlagController extends Controller {
             $bookmark_data[$i]['brandKey'] = 0;
             $bookmark_data[$i]['brandName'] = "";
             $bookmark_data[$i]['sectionKey'] = "";
-            $bookmark_data[$i]['sectionName'] = array_key_exists($node_type->type, $sectionNames) ? $sectionNames[$node_type->type] : "";
+            $bookmark_data[$i]['sectionName'] = array_key_exists($node_type->type, $sectionNames) ? $static_translation[$sectionNames[$node_type->type]]->field_translation_key_value : "";
             $bookmark_data[$i]['pointValue'] = 0;
             $bookmark_data[$i]['imageSmall'] = "";
             $bookmark_data[$i]['imageMedium'] = "";
@@ -323,11 +324,15 @@ class FlagController extends Controller {
                 }
               }
               $bookmark_data[$i]['brandKey'] = $brand_key;
-              $bookmark_data[$i]['brandName'] = ContentModel::getTermName([$node_data->field_brands_target_id])[0];
+              $term_name = ContentModel::getTermName([$node_data->field_brands_target_id]);
+              if (!empty($term_name)) {
+                $bookmark_data[$i]['brandName'] = $term_name[0];
+              }
             }
+
             if ($node_data->field_content_section_target_id != NULL) {
               $bookmark_data[$i]['sectionKey'] = ContentModel::getContentSectionKeyByTid($node_data->field_content_section_target_id);
-              $bookmark_data[$i]['sectionName'] = array_key_exists($bookmark_data[$i]['sectionKey'], $sectionNames) ? $sectionNames[$bookmark_data[$i]['sectionKey']] : "";
+              $bookmark_data[$i]['sectionName'] = array_key_exists($bookmark_data[$i]['sectionKey'], $sectionNames) ? $static_translation[$sectionNames[$bookmark_data[$i]['sectionKey']]]->field_translation_key_value : "";
             }
             if ($node_data->field_point_value_value != NULL) {
               $bookmark_data[$i]['pointValue'] = (int) $node_data->field_point_value_value;
@@ -365,11 +370,11 @@ class FlagController extends Controller {
             $brand_data = ContentModel::getBrandDataFromBrandKey($brand_key);
             if (!empty($brand_data)) {
               $bookmark_data[$i]['id'] = 0;
-              $bookmark_data[$i]['title'] = mb_strtoupper($brand_data['name']) . ' CUSTOMER QUESTIONS';
+              $bookmark_data[$i]['title'] = mb_strtoupper($brand_data['name']) . ' ' . $static_translation['brandFaqBookmarkTxt']->field_translation_key_value;
               $bookmark_data[$i]['brandKey'] = $brand_data['field_brand_key_value'];
               $bookmark_data[$i]['brandName'] = $brand_data['name'];
               $bookmark_data[$i]['sectionKey'] = "faq";
-              $bookmark_data[$i]['sectionName'] = $sectionNames['faq'];
+              $bookmark_data[$i]['sectionName'] = $static_translation[$sectionNames['faq']]->field_translation_key_value;
               $bookmark_data[$i]['pointValue'] = (int) $faq_config_data['faq_points'];
               $bookmark_data[$i]['imageSmall'] = "";
               $bookmark_data[$i]['imageMedium'] = "";
@@ -379,11 +384,11 @@ class FlagController extends Controller {
           }
           else {
             $bookmark_data[$i]['id'] = 0;
-            $bookmark_data[$i]['title'] = 'HELP QUESTIONS';
+            $bookmark_data[$i]['title'] = $static_translation['helpFaqBookmarkTxt']->field_translation_key_value;
             $bookmark_data[$i]['brandKey'] = 0;
             $bookmark_data[$i]['brandName'] = "";
             $bookmark_data[$i]['sectionKey'] = "helpFaq";
-            $bookmark_data[$i]['sectionName'] = $sectionNames['faq'];
+            $bookmark_data[$i]['sectionName'] = $static_translation[$sectionNames['faq']]->field_translation_key_value;
             $bookmark_data[$i]['pointValue'] = (int) $faq_config_data['faq_points'];
             $bookmark_data[$i]['imageSmall'] = "";
             $bookmark_data[$i]['imageMedium'] = "";

@@ -2,9 +2,9 @@
 
 namespace App\Model\Elastic;
 
-use Illuminate\Http\Response;
 use App\Support\Helper;
 use App\Model\Mysql\ContentModel;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Purpose of this class is to check, fetch and update badges.
@@ -174,24 +174,24 @@ class BadgeModel {
           'notificationLanguage' => $badge_info['lang'],
         ];
         NotificationModel::saveIndexes($indexValues);
-        $query = DB::table('user_records as ur');
-        $query->select('ur.uid');
-        $query->where('ur.id', '=', $badge_info['uid']);
-        $result = $query->get()->first();
-        $push_notification_array = [
-          "pushNotificationType" => "TRLX",
-          "pushNotificationTargetUsers" => $result->uid,
-          "pushNotificationBody" => [
-            NOTIFICATION_TYPE => "STAMPS",
-            NOTIFICATION_HEADING => $notification_title,
-            NOTIFICATION_TEXT => $badge[0],
-            "notificationDate" => (int) time(),
-            NOTIFICATION_LINK => 0,
-            NOTIFICATION_LINK_TYPE => "stamps",
-            NOTIFICATION_BRAND_KEY => 0,
-            NOTIFICATION_BRAND_NAME => "",
-          ],
-        ];
+        // $query = DB::table('user_records as ur');
+        // $query->select('ur.uid');
+        // $query->where('ur.id', '=', $badge_info['uid']);
+        // $result = $query->get()->first();
+        // $push_notification_array = [
+        //   "pushNotificationType" => "TRLX",
+        //   "pushNotificationTargetUsers" => $result->uid,
+        //   "pushNotificationBody" => [
+        //     NOTIFICATION_TYPE => "STAMPS",
+        //     NOTIFICATION_HEADING => $notification_title,
+        //     NOTIFICATION_TEXT => $badge[0],
+        //     "notificationDate" => (int) time(),
+        //     NOTIFICATION_LINK => 0,
+        //     NOTIFICATION_LINK_TYPE => "stamps",
+        //     NOTIFICATION_BRAND_KEY => 0,
+        //     NOTIFICATION_BRAND_NAME => "",
+        //   ],
+        // ];
         // NotificationModel::trlxPushNotifications($push_notification_array);
       }
       foreach ($response['_source']['badge'] as $key => $value) {
@@ -215,11 +215,7 @@ class BadgeModel {
     // Update elastic user index.
     $output = ElasticUserModel::updateElasticUserData($params, $badge_info['uid'], $client);
 
-    return new Response([
-      'nid' => $nid,
-      'status' => TRUE,
-      'message' => 'Successfully updated',
-    ], 200);
+    return TRUE;
   }
 
 }

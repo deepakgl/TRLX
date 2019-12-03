@@ -156,10 +156,14 @@ class ContentModel {
       if ($query[0]->statement_status == 'passed') {
         return FALSE;
       }
-      return DB::table('lm_lrs_records')
+      DB::table('lm_lrs_records')
         ->where('nid', $params['nid'])
         ->where('uid', $params['uid'])
         ->update(['statement_status' => $params['statement_status'], 'tid' => $params['tid']]);
+
+      // Allocate badge to user on completion of level.
+      self::allocateBadgeConditions($params);
+      return TRUE;
     }
 
     DB::table('lm_lrs_records')->insert([
@@ -607,12 +611,12 @@ class ContentModel {
     $get_percentage->where('records.tid', '=', $params['tid']);
     $get_percentage->whereIn('records.nid', $nids);
     $percentage_result = $get_percentage->get();
-    $incomplete_status = ['progress', NULL];
+    $complete_status = ['passed', 'completed'];
     foreach ($percentage_result as $key => $result) {
       $data[$result->nid] = $result;
     }
     foreach ($nids as $key => $value) {
-      $percentage_status = (isset($data[$value]) && !in_array($data[$value]->statement_status, $incomplete_status)) ? (int) 1 : (int) 0;
+      $percentage_status = (isset($data[$value]) && in_array($data[$value]->statement_status, $complete_status)) ? (int) 1 : (int) 0;
       $response[$value] = [
         "nid" => (int) $value,
         "status" => $percentage_status,
@@ -645,11 +649,11 @@ class ContentModel {
     $badge->leftJoin('taxonomy_term__field_percentage as fp', 'fp.entity_id', '=', 'fb.entity_id');
     $badge->select('fb.field_badges_target_id', 'fp.field_percentage_value');
     $badge->where('fb.entity_id', '=', $params['tid']);
-    $badge_result = $badge->get();
+    $badge_result = $badge->get()->all();
 
     return [
-      $badge_result[0]->field_badges_target_id,
-      $badge_result[0]->field_percentage_value,
+      (!empty($badge_result)) ? $badge_result[0]->field_badges_target_id : '',
+      (!empty($badge_result)) ? $badge_result[0]->field_percentage_value : '',
     ];
   }
 
@@ -795,15 +799,15 @@ class ContentModel {
   public static function getTrlxSectionNames() {
     $sectionData = [];
     $sectionData = [
-      'trend' => 'TR TRENDS',
-      'consumer' => 'CONSUMERS',
-      'sellingTips' => 'SELLING TIPS',
-      'insiderCorner' => "INSIDER'S CORNER",
-      'tools' => 'VIDEOS',
-      'faq' => 'FAQ',
-      'product_detail' => 'FACT SHEETS',
-      'brand_story' => 'BRAND STORY',
-      'level_interactive_content' => 'MY LESSONS',
+      'trend' => 'trendsBookmarkTxt',
+      'consumer' => 'consumerBookmarkTxt',
+      'sellingTips' => 'sellingTipsBookmarktxt',
+      'insiderCorner' => 'insidersCornerBookmarkTxt',
+      'tools' => 'videoBookmarkTxt',
+      'faq' => 'faqBookmarkTxt',
+      'product_detail' => 'factsheetBookmarkTxt',
+      'brand_story' => 'brandStoryBookmarkTxt',
+      'level_interactive_content' => 'lessonBookmarkTxt',
     ];
     return $sectionData;
   }

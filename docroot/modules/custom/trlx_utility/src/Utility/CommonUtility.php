@@ -552,6 +552,12 @@ class CommonUtility {
             $field_product_carousel = $entity->field_product_carousel->referencedEntities();
             if (!empty($field_product_carousel)) {
               foreach ($field_product_carousel as $value) {
+                // Fetch entity's current langcode.
+                $langcode = $entity->get('langcode')->getValue()[0]['value'];
+                if ($value->hasTranslation($langcode)) {
+                  // Fetch translated data.
+                  $value = $value->getTranslation($langcode);
+                }
                 if ($value->get('field_featured_image')->first() != NULL) {
                   $carousel_file_id = $value->get('field_featured_image')->first()->getValue()['target_id'];
                   $carousel_media_entity = ($carousel_file_id) ? Media::load($carousel_file_id) : '';
