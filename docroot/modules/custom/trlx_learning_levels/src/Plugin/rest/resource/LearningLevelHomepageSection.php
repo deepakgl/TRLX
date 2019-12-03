@@ -175,11 +175,11 @@ class LearningLevelHomepageSection extends ResourceBase {
    *
    * @param int $tid
    *   Term data.
-   * @param $langcode
-   *   lang data
+   * @param string $langcode
+   *   Lang data.
    *
    * @return array
-   *   status data.
+   *   Status data.
    */
   public function getTaxonomyTerm($tid, $langcode) {
     try {
@@ -196,13 +196,15 @@ class LearningLevelHomepageSection extends ResourceBase {
   /**
    * Method to get point value.
    *
-   * @param array $nids
-   *   node data.
-   * @param $langcode
-   *   lang data
+   * @param mixed $nids
+   *   Node data.
+   * @param string $langcode
+   *   Lang data.
+   * @param mixed $_userData
+   *   User data.
    *
    * @return int
-   *   point value
+   *   Point value
    */
   public function getPointValues($nids, $langcode, $_userData) {
     // Fetch point values.
@@ -248,13 +250,13 @@ class LearningLevelHomepageSection extends ResourceBase {
   /**
    * Method to validate tranlsation.
    *
-   * @param array $nids
-   *   node data.
-   * @param $langcode
-   *   lang data
+   * @param mixed $nids
+   *   Node data.
+   * @param string $langcode
+   *   Lang data.
    *
    * @return int
-   *   status
+   *   Status
    */
   public function validateTraslation($nids, $langcode) {
     foreach ($nids as $nid) {

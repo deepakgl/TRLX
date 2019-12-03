@@ -2,6 +2,7 @@
 
 /**
  * @file
+ * Dashboard file.
  */
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -130,8 +131,6 @@ function trlx_dashboard_views_pre_render(ViewExecutable $view) {
 
 /**
  * Implements template_preprocess_views_view_table()
- *
- * @param $variables
  */
 function trlx_dashboard_preprocess_views_view_table(&$variables) {
   $currentAccount = \Drupal::currentUser();
