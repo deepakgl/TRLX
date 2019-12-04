@@ -93,12 +93,12 @@ function elx_utility_entity_insert(EntityInterface $entity) {
         if (isset($contentSectionkey)) {
           switch ($contentSectionkey) {
             case 'trend':
-              $patterns = [$env . ':home:tr_trends_' . $lang_code, $env . ':listing:tr_trend_' . $lang_code . '*'];
+              $patterns = [$env . ':home:tr_trends_' . $lang_code . '*', $env . ':listing:tr_trend_' . $lang_code . '*'];
               elx_utility_clear_redis_cache($patterns);
               break;
 
             case 'insiderCorner':
-              $patterns = [$env . ':home:insider_corner_' . $lang_code, $env . ':listing:insider_corner_' . $lang_code . '*'];
+              $patterns = [$env . ':home:insider_corner_' . $lang_code . '*', $env . ':listing:insider_corner_' . $lang_code . '*'];
               elx_utility_clear_redis_cache($patterns);
               break;
 
