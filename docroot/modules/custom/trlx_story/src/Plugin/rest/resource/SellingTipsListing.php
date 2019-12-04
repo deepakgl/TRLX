@@ -32,6 +32,7 @@ class SellingTipsListing extends ResourceBase {
    *   Resource response.
    */
   public function get(Request $request) {
+    global $_userData;
     $commonUtility = new CommonUtility();
     $entityUtility = new EntityUtility();
 
@@ -85,7 +86,7 @@ class SellingTipsListing extends ResourceBase {
     );*/
 
     // Fetch stories bundle content response.
-    $key = ":listing:selling_tips_{$language}";
+    $key = ":listing:selling_tips_{$language}_{$_userData->uid}";
     list($content_view_results, $term_status_code) = $entityUtility->fetchApiResult(
       '',
       'selling_tips',

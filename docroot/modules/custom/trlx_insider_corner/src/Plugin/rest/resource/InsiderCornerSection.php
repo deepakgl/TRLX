@@ -31,6 +31,7 @@ class InsiderCornerSection extends ResourceBase {
    *   Resource response.
    */
   public function get(Request $request) {
+    global $_userData;
     $commonUtility = new CommonUtility();
     $entityUtility = new EntityUtility();
 
@@ -78,7 +79,7 @@ class InsiderCornerSection extends ResourceBase {
     ];
 
     // Prepare view response.
-    $key = ":home:insider_corner_{$language}";
+    $key = ":home:insider_corner_{$language}_{$_userData->uid}";
     list($view_results, $status_code) = $entityUtility->fetchApiResult(
       $key,
       'insider_corner',

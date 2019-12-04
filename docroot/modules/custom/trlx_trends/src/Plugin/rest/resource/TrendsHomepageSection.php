@@ -31,6 +31,7 @@ class TrendsHomepageSection extends ResourceBase {
    *   Resource response.
    */
   public function get(Request $request) {
+    global $_userData;
     $commonUtility = new CommonUtility();
     $entityUtility = new EntityUtility();
 
@@ -76,7 +77,7 @@ class TrendsHomepageSection extends ResourceBase {
     ];
 
     // Prepare view response.
-    $key = ":home:tr_trends_{$language}";
+    $key = ":home:tr_trends_{$language}_{$_userData->uid}";
     list($view_results, $status_code) = $entityUtility->fetchApiResult(
       $key,
       'stories_listing',
