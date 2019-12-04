@@ -136,8 +136,7 @@
                 "Update user validation messages": "patches/user/user_login_link.patch",
                 "seventheme role added": "patches/seven/seven-theme.patch",
                 "Entity edit list Operation": "patches/entity_list_builder/edit_entity_delete_translation.patch",
-                "Hide file size limit": "patches/file/file_help_text_hide.patch",
-                "State for IE" : "patches/state/states.patch"
+                "Hide file size limit": "patches/file/file_help_text_hide.patch"
             },
             "drupal/inline_entity_form": {
                 "Alter paragraph fields": "patches/inline_entity_form/paragraph_fields_translation.patch"

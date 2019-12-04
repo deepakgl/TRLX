@@ -221,17 +221,17 @@ function trlx_utility_form_alter(&$form, FormStateInterface $form_state, $form_i
       if (!empty($consumerTermId)) {
         // Visible state.
         $form['field_consumer_category']['widget']['#states']['visible'] = [
-        ["input[name='field_content_section']" => ['value' => $consumerTermId]],
+        ["input[name='field_content_section']" => ['value' => "$consumerTermId"]],
         ];
 
         // Enabled state.
         $form['field_consumer_category']['widget']['#states']['enabled'] = [
-        ["input[name='field_content_section']" => ['value' => $consumerTermId]],
+        ["input[name='field_content_section']" => ['value' => "$consumerTermId"]],
         ];
 
         // Required state.
         $form['field_consumer_category']['widget']['#states']['required'] = [
-        ["input[name='field_content_section']" => ['value' => $consumerTermId]],
+        ["input[name='field_content_section']" => ['value' => "$consumerTermId"]],
         ];
 
         // Unset option "N/A".
