@@ -4,7 +4,7 @@ namespace Drupal\trlx_redis_purge\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\elx_utility\RedisClientBuilder;
+use Drupal\trlx_utility\RedisClientBuilder;
 
 /**
  * RedisCacheConfigForm class.

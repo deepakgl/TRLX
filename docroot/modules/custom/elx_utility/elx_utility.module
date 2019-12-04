@@ -9,7 +9,6 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\trlx_utility\RedisClientBuilder;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Drupal\elx_user\Utility\UserUtility;
 use Drupal\trlx_stamp\Utility\StampUtility;
 use Drupal\trlx_utility\Utility\CommonUtility;
 
@@ -68,37 +67,6 @@ function elx_utility_form_alter(&$form, FormStateInterface $form_state, $form_id
 }
 
 /**
- * Callback function to get default market.
- */
-function elx_utility_default_market_after_build($form_element, &$form_state) {
-  $uid = \Drupal::currentUser()->id();
-  $user_utility = new UserUtility();
-  // Get current user markets.
-  $query = $user_utility->getMarketByUserId($uid, 'all');
-  $current_user_mkt = array_column($query, 'field_default_market_target_id');
-  $aa = 0;
-  foreach ($form_element[0] as $tid => $data) {
-    if (($tid[0] != '#') && is_numeric($tid)) {
-      foreach ($current_user_mkt as $key => $value) {
-        if (array_key_exists($value, $form_element[0][$tid]) && !isset($form_element[0][$tid][$tid . '-children'])) {
-          $form_element[0][$tid][$tid]['#attributes']['data-drupal-selector'] = 'disable_other_markets_ma';
-        }
-        elseif (isset($form_element[0][$tid][$tid . '-children'])) {
-          foreach ($form_element[0][$tid][$tid . '-children'] as $key => $children) {
-            if (($key[0] != '#') && is_numeric($key)) {
-              if (in_array($key, $current_user_mkt)) {
-                $form_element[0][$tid][$tid . '-children'][$key][$key]['#attributes']['data-drupal-selector'] = 'disable_other_markets_ma';
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-  return $form_element;
-}
-
-/**
  * Method to clear redis cache.
  */
 function elx_utility_clear_redis_cache($patterns) {
@@ -125,12 +93,12 @@ function elx_utility_entity_insert(EntityInterface $entity) {
         if (isset($contentSectionkey)) {
           switch ($contentSectionkey) {
             case 'trend':
-              $patterns = [$env . ':home:tr_trends_' . $lang_code, $env . ':listing:tr_trend_' . $lang_code . '*'];
+              $patterns = [$env . ':home:tr_trends_' . $lang_code . '*', $env . ':listing:tr_trend_' . $lang_code . '*'];
               elx_utility_clear_redis_cache($patterns);
               break;
 
             case 'insiderCorner':
-              $patterns = [$env . ':home:insider_corner_' . $lang_code, $env . ':listing:insider_corner_' . $lang_code . '*'];
+              $patterns = [$env . ':home:insider_corner_' . $lang_code . '*', $env . ':listing:insider_corner_' . $lang_code . '*'];
               elx_utility_clear_redis_cache($patterns);
               break;
 
@@ -230,26 +198,36 @@ function elx_utility_entity_update(EntityInterface $entity) {
       case 'stories':
         $contentSection = $entity->get('field_content_section')->referencedEntities();
         $contentSectionkey = (!empty($contentSection)) ? (array_shift($contentSection)->get('field_content_section_key')->value) : '';
+        $contentSectionOriginal = $entity->original->get('field_content_section')->referencedEntities();
+        $contentSectionkeyOriginal = (!empty($contentSectionOriginal)) ? (array_shift($contentSectionOriginal)->get('field_content_section_key')->value) : '';
         $lang_code = $entity->language()->getId();
         if (isset($contentSectionkey)) {
           switch ($contentSectionkey) {
             case 'trend':
-              $patterns = [$env . ':home:tr_trends_' . $lang_code, $env . ':listing:tr_trend_' . $lang_code . '*'];
+              $patterns = [$env . ':home:tr_trends_' . $lang_code . '*', $env . ':listing:tr_trend_' . $lang_code . '*'];
+              $patterns_original = trlx_helper_content_section($contentSectionkeyOriginal, $env, $lang_code);
+              $patterns = array_merge($patterns, $patterns_original);
               elx_utility_clear_redis_cache($patterns);
               break;
 
             case 'insiderCorner':
-              $patterns = [$env . ':home:insider_corner_' . $lang_code, $env . ':listing:insider_corner_' . $lang_code . '*'];
+              $patterns = [$env . ':home:insider_corner_' . $lang_code . '*', $env . ':listing:insider_corner_' . $lang_code . '*'];
+              $patterns_original = trlx_helper_content_section($contentSectionkeyOriginal, $env, $lang_code);
+              $patterns = array_merge($patterns, $patterns_original);
               elx_utility_clear_redis_cache($patterns);
               break;
 
             case 'sellingTips':
               $patterns = [$env . ':listing:selling_tips_' . $lang_code . '*'];
+              $patterns_original = trlx_helper_content_section($contentSectionkeyOriginal, $env, $lang_code);
+              $patterns = array_merge($patterns, $patterns_original);
               elx_utility_clear_redis_cache($patterns);
               break;
 
             case 'consumer':
               $patterns = [$env . ':listing:consumers_' . $lang_code . '*'];
+              $patterns_original = trlx_helper_content_section($contentSectionkeyOriginal, $env, $lang_code);
+              $patterns = array_merge($patterns, $patterns_original);
               elx_utility_clear_redis_cache($patterns);
               break;
 
@@ -314,6 +292,45 @@ function elx_utility_entity_update(EntityInterface $entity) {
       elx_utility_purge_redis_data($entity);
     }
   }
+}
+
+/**
+ * Helper for content section.
+ *
+ * @param string $section
+ *   Section name.
+ * @param string $env
+ *   Env.
+ * @param string $lang
+ *   Langcode.
+ *
+ * @return string
+ *   Return pattern.
+ */
+function trlx_helper_content_section($section, $env, $lang) {
+  $patterns = [];
+  if (isset($section)) {
+    switch ($section) {
+      case 'trend':
+        $patterns = [$env . ':home:tr_trends_' . $lang_code . '*', $env . ':listing:tr_trend_' . $lang_code . '*'];
+        break;
+
+      case 'insiderCorner':
+        $patterns = [$env . ':home:insider_corner_' . $lang_code . '*', $env . ':listing:insider_corner_' . $lang_code . '*'];
+        break;
+
+      case 'sellingTips':
+        $patterns = [$env . ':listing:selling_tips_' . $lang_code . '*'];
+        break;
+
+      case 'consumer':
+        $patterns = [$env . ':listing:consumers_' . $lang_code . '*'];
+        break;
+
+    }
+  }
+
+  return $patterns;
 }
 
 /**
@@ -482,68 +499,16 @@ function elx_utility_get_redis_pattern(EntityInterface $entity) {
   $env = \Drupal::config('elx_utility.settings')->get('elx_environment');
   if ($entity->getEntityTypeId() == 'node' && !empty($entity->id())) {
     $entity_type = $entity->gettype();
-    if ($entity_type == 'products_carousel') {
-      $pattern[] = implode(':', [$env, 'productsCarousel', $lang_code . '*']);
-
-      return $pattern;
-    }
     $uid = \Drupal::currentUser()->id();
     $entity_id = $entity->id();
     if ($entity_type == 'product_detail') {
       $pattern[] = implode(':', [$env, 'productDetails*']);
-      $pattern[] = implode(':', [$env, 'productCategories*']);
-      $pattern[] = implode(':', [$env, 'productListings*']);
-      $pattern[] = implode(':', [$env, 'globalBrowseProducts*']);
-      $pattern[] = implode(':', [$env, 'browseProductsMarketWise*']);
-      $pattern[] = implode(':', [$env, 'spotlightSection*']);
-      $pattern[] = implode(':', [$env, 'spotlightSectionMarketWise*']);
-    }
-    elseif ($entity_type == 'level_interactive_content') {
-      $pattern[] = implode(':', [$env, 'levelInteractiveContent*']);
-      $pattern[] = implode(':', [$env, 'levelInteractiveTermsContent*']);
-      $pattern[] = implode(':', [$env, 'learningLevels*']);
-      $pattern[] = implode(':', [$env, 'exploreLearningLevels*']);
-      $pattern[] = implode(':', [$env, 'spotlightSection*']);
-      $pattern[] = implode(':', [$env, 'spotlightSectionMarketWise*']);
     }
     elseif ($entity_type == 'tools') {
-      $pattern[] = implode(':', [$env, 'videoCategory*']);
-      $pattern[] = implode(':', [$env, 'videoListings*']);
-      $pattern[] = implode(':', [$env, 'videoListingMobile*']);
       $pattern[] = implode(':', [$env, 'videoDetails*']);
-      $pattern[] = implode(':', [$env, 'spotlightSection*']);
-      $pattern[] = implode(':', [$env, 'spotlightSectionMarketWise*']);
     }
     elseif ($entity_type == 'stories') {
-      $pattern[] = implode(':', [$env, 'trendListing*']);
       $pattern[] = implode(':', [$env, 'storyDetail*']);
-      $pattern[] = implode(':', [$env, 'spotlightSection*']);
-      $pattern[] = implode(':', [$env, 'spotlightSectionMarketWise*']);
-      $pattern[] = implode(':', [$env, 'storiesTrendingSection*']);
-      $pattern[] = implode(':', [$env, 'storiesTrendingSectionMarketWise*']);
-    }
-    elseif ($entity_type == 't_c') {
-      $pattern[] = implode(':', [$env . '_t_c', 'detail*']);
-    }
-    elseif ($entity_type == 'brand_story') {
-      $pattern[] = implode(':', [$env . 'brandStoryDetails*']);
-    }
-  }
-  elseif ($entity->getEntityTypeId() == 'entity_subqueue' && !empty($entity->getQueue())) {
-    if ($entity->getQueue()->id() == 'stories' || $entity->getQueue()->id() == 'stories_market_wise') {
-      $pattern[] = implode(':', [$env, 'storiesTrendingSection*']);
-      $pattern[] = implode(':', [$env, 'storiesTrendingSectionMarketWise*']);
-    }
-    elseif ($entity->getQueue()->id() == 'spotlight' || $entity->getQueue()->id() == 'spotlight_market_wise') {
-      $pattern[] = implode(':', [$env, 'spotlightSection*']);
-      $pattern[] = implode(':', [$env, 'spotlightSectionMarketWise*']);
-    }
-    elseif ($entity->getQueue()->id() == 'explore_learning_levels') {
-      $pattern[] = implode(':', [$env, 'exploreLearningLevels*']);
-    }
-    elseif ($entity->getQueue()->id() == 'browse_products' || $entity->getQueue()->id() == 'browse_products_market_wise') {
-      $pattern[] = implode(':', [$env, 'globalBrowseProducts*']);
-      $pattern[] = implode(':', [$env, 'browseProductsMarketWise*']);
     }
   }
   elseif ($entity->getEntityTypeId() == 'menu_link_content') {
@@ -585,13 +550,7 @@ function elx_utility_get_redis_terms_pattern($type, $tid) {
   $uid = \Drupal::currentUser()->id();
   $env = \Drupal::config('elx_utility.settings')->get('elx_environment');
   $pattern = [];
-  if ($type == 'learning_category') {
-    $pattern[] = implode(':', [$env, 'levelInteractiveContent*']);
-    $pattern[] = implode(':', [$env, 'learningLevels*']);
-    $pattern[] = implode(':', [$env, 'levelInteractiveTermsContent*']);
-    $pattern[] = implode(':', [$env, 'exploreLearningLevels*']);
-  }
-  elseif ($type == 'consumer_category') {
+  if ($type == 'consumer_category') {
     $pattern[] = implode(':', [$env, 'landing:consumer_categories_*']);
   }
   elseif ($type == 'static_translation') {
