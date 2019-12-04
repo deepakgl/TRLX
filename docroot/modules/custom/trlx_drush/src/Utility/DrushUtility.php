@@ -1,6 +1,7 @@
 <?php
 
 namespace Drupal\trlx_drush\Utility;
+
 use Drupal\taxonomy\Entity\Term;
 
 /**
@@ -9,14 +10,14 @@ use Drupal\taxonomy\Entity\Term;
 class DrushUtility {
 
   /**
-   * Process Terms markets
+   * Process Terms markets.
    *
-   * @param array $terms
-   *   Terms
+   * @param mixed $terms
+   *   Terms.
    * @param string $type
-   *   Type of term
+   *   Type of term.
    * @param string $case
-   *   Case
+   *   Case.
    *
    * @return string
    *   String Message
@@ -27,16 +28,16 @@ class DrushUtility {
       foreach ($terms as $term) {
 
         $term_data = \Drupal::entityTypeManager()
-         ->getStorage('taxonomy_term')
-         ->loadByProperties([
-           'name' => $term->name,
-           'vid' => $type,
-         ]);
+          ->getStorage('taxonomy_term')
+          ->loadByProperties([
+            'name' => $term->name,
+            'vid' => $type,
+          ]);
 
         if ($case === 'country') {
           $parent_term_id = $this->getParentTermId($term->subregionId, $type);
         }
-        elseif ($case === 'subregion'){
+        elseif ($case === 'subregion') {
           $parent_term_id = $this->getParentTermId($term->regionId, $type);
         }
 
@@ -50,7 +51,7 @@ class DrushUtility {
           if (!empty($parent_term_id)) {
             $term_data->parent = ['target_id' => $parent_term_id];
           }
-          // Term Save
+          // Term Save.
           if ($term_data->save()) {
             \Drupal::logger('trlx_drush')->info('Market term ' . $term_data->id() . ' updated successfully...');
           }
@@ -75,12 +76,12 @@ class DrushUtility {
   }
 
   /**
-   * Fetch Parent Term Id
+   * Fetch Parent Term Id.
    *
-   * @param integer $region_id
-   *   Region key
+   * @param int $region_id
+   *   Region key.
    * @param string $type
-   *   Type of term
+   *   Type of term.
    *
    * @return int
    *   Entity Id
@@ -102,16 +103,16 @@ class DrushUtility {
   }
 
   /**
-   * Process Brand Terms
+   * Process Brand Terms.
    *
    * @param array $termsArr
-   *   Terms Array
+   *   Terms Array.
    * @param string $type
-   *   Type of term
+   *   Type of term.
    * @param string $termField
-   *   Field machine name
+   *   Field machine name.
    *
-   * @return boolean
+   * @return bool
    *   Boolean true or false
    */
   public function processBrandTerms(array $termsArr = [], string $type = '', string $termField = '') {
@@ -143,7 +144,7 @@ class DrushUtility {
             $termField => $termObj->id,
           ])->save();
           if ($termCeated) {
-             $results[] = $termObj->name;
+            $results[] = $termObj->name;
           }
         }
       }

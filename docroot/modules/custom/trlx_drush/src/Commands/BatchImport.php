@@ -2,7 +2,6 @@
 
 namespace Drupal\trlx_drush\Commands;
 
-use Drupal\Core\Url;
 use Drush\Commands\DrushCommands;
 use Drupal\trlx_drush\Utility\DrushUtility;
 
@@ -34,7 +33,7 @@ class BatchImport extends DrushCommands {
     $drush_utility = new DrushUtility();
     $lbUrl = \Drupal::config('elx_utility.settings')->get('middleware_lb_name');
     if ((isset($option)) && (!empty($lbUrl))) {
-      // Token for authentication
+      // Token for authentication.
       $token = 'Y21zY2xpZW50bWFzdGVyOmNtc3Bhc3MxMjkw';
       $response = '';
       $header = [
@@ -42,15 +41,15 @@ class BatchImport extends DrushCommands {
           'Accept' => 'application/json',
           'X-AUTH-TOKEN' => $token,
         ],
-        'http_errors' => FALSE
+        'http_errors' => FALSE,
       ];
       switch ($option) {
         case 'subRegion':
-         $endpoint = $lbUrl . '/api/secure/cms/onboarding/subregions?regionId=ALL';
-         $terms = $this->getApiResponse($endpoint, $header);
-         $terms = !empty($terms['subRegions']) ? $terms['subRegions'] : [];
-         $drush_utility->processTerms($terms, 'markets', 'subregion');
-         break;
+          $endpoint = $lbUrl . '/api/secure/cms/onboarding/subregions?regionId=ALL';
+          $terms = $this->getApiResponse($endpoint, $header);
+          $terms = !empty($terms['subRegions']) ? $terms['subRegions'] : [];
+          $drush_utility->processTerms($terms, 'markets', 'subregion');
+          break;
 
         case 'country':
           $endpoint_regions = $lbUrl . '/api/secure/cms/onboarding/subregions?regionId=ALL';
@@ -59,14 +58,14 @@ class BatchImport extends DrushCommands {
           $sub_region_string = '';
           if (!empty($sub_regions)) {
             foreach ($sub_regions as $sub_region) {
-              $sub_region_string .=  ($sub_region->id . ',');
+              $sub_region_string .= ($sub_region->id . ',');
             }
             $sub_region_query_param = substr($sub_region_string, 0, -1);
           }
 
           if ($sub_region_query_param !== '') {
             $endpoint = $lbUrl . '/api/secure/cms/onboarding/countries?subRegionIds=' . $sub_region_query_param;
-            $terms = $this->getApiResponse($endpoint ,$header);
+            $terms = $this->getApiResponse($endpoint, $header);
             $terms = !empty($terms['countries']) ? $terms['countries'] : [];
             $drush_utility->processTerms($terms, 'markets', 'country');
           }
@@ -88,18 +87,18 @@ class BatchImport extends DrushCommands {
     }
   }
 
- /**
-  * Fetch Api Response
-  *
-  * @param Url $endpoint
-  *   Endpoint url.
-  * @param array $header
-  *   Header of request
-  *
-  * @return array
-  *   Response array.
-  */
-  public function getApiResponse($endpoint ,$header) {
+  /**
+   * Fetch Api Response.
+   *
+   * @param \Drupal\Core\Url $endpoint
+   *   Endpoint url.
+   * @param array $header
+   *   Header of request.
+   *
+   * @return array
+   *   Response array.
+   */
+  public function getApiResponse($endpoint, $header) {
     $client = \Drupal::httpClient();
     try {
       $response = $client->get($endpoint,
@@ -117,4 +116,5 @@ class BatchImport extends DrushCommands {
       return [];
     }
   }
+
 }

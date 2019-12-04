@@ -22,6 +22,7 @@ function trlx_market_hierarchy_views_query_alter($view, $query) {
     'product_detail',
     'spotlight_section',
     'level_interactive_content',
+    'spotlight_hompage_section',
     'insider_corner',
     'selling_tips',
     'consumer',

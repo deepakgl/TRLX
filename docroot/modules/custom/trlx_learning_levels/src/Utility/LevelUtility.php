@@ -368,7 +368,7 @@ class LevelUtility {
    * @param int $tid
    *   Term id.
    * @param array $markets
-   *   Markets
+   *   Markets.
    * @param $language
    *   Langcode
    *
@@ -376,7 +376,7 @@ class LevelUtility {
    *   Nids.
    */
   public  function getCourcesNids($tid, $markets, $language) {
-    // Query to fetch all learning level nids
+    // Query to fetch all learning level nids.
     $database = \Drupal::database();
     $query = $database->select('node_field_data', 'n');
     $query->condition('n.type', 'level_interactive_content', '=');
