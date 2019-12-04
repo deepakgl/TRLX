@@ -183,10 +183,10 @@ function trlx_utility_form_alter(&$form, FormStateInterface $form_state, $form_i
         foreach ($form['#fieldgroups']['group_insider_corner']->children as $field) {
           $form[$field]['#states'] = [
             'visible' => [
-            ["input[name='field_content_section']" => ['value' => $insiderCornerTermId]],
+            ["input[name='field_content_section']" => ['value' => "$insiderCornerTermId"]],
             ],
             'enabled' => [
-            ["input[name='field_content_section']" => ['value' => $insiderCornerTermId]],
+            ["input[name='field_content_section']" => ['value' => "$insiderCornerTermId"]],
             ],
           ];
         }
@@ -207,7 +207,7 @@ function trlx_utility_form_alter(&$form, FormStateInterface $form_state, $form_i
               else {
                 if (!empty($form[$field]['widget'][0]['value']) && empty($form[$field]['widget']['#required'])) {
                   $form[$field]['widget'][0]['value']['#states']['required'] = [
-                  ["input[name='field_content_section']" => ['value' => $insiderCornerTermId]],
+                  ["input[name='field_content_section']" => ['value' => "$insiderCornerTermId"]],
                   ];
                 }
               }
@@ -667,10 +667,10 @@ function trlx_utility_field_group_build_pre_render_alter(&$element) {
     if (isset($element['group_insider_corner']) && !empty($insiderCornerTermId)) {
       $element['group_insider_corner']['#states'] = [
         'visible' => [
-          ["input[name='field_content_section']" => ['value' => $insiderCornerTermId]],
+          ["input[name='field_content_section']" => ['value' => "$insiderCornerTermId"]],
         ],
         'enabled' => [
-          ["input[name='field_content_section']" => ['value' => $insiderCornerTermId]],
+          ["input[name='field_content_section']" => ['value' => "$insiderCornerTermId"]],
         ],
       ];
     }
@@ -679,7 +679,7 @@ function trlx_utility_field_group_build_pre_render_alter(&$element) {
     if (isset($element['group_tr_trends']) && !empty($trendTermId)) {
       $element['group_tr_trends']['#states'] = [
         'visible' => [
-          ["input[name='field_content_section']" => ['value' => $trendTermId]],
+          ["input[name='field_content_section']" => ['value' => "$trendTermId"]],
         ],
       ];
     }
@@ -688,18 +688,18 @@ function trlx_utility_field_group_build_pre_render_alter(&$element) {
     if (isset($element['group_product_carousel']) && !empty($insiderCornerTermId)) {
       $element['group_product_carousel']['#states'] = [
         'visible' => [
-          ["input[name='field_content_section']" => ['value' => $insiderCornerTermId]],
+          ["input[name='field_content_section']" => ['value' => "$insiderCornerTermId"]],
           'or',
-          ["input[name='field_content_section']" => ['value' => $sellingTipsTermId]],
+          ["input[name='field_content_section']" => ['value' => "$sellingTipsTermId"]],
           'or',
-          ["input[name='field_content_section']" => ['value' => $trendTermId]],
+          ["input[name='field_content_section']" => ['value' => "$trendTermId"]],
         ],
         'enabled' => [
-          ["input[name='field_content_section']" => ['value' => $insiderCornerTermId]],
+          ["input[name='field_content_section']" => ['value' => "$insiderCornerTermId"]],
           'or',
-          ["input[name='field_content_section']" => ['value' => $sellingTipsTermId]],
+          ["input[name='field_content_section']" => ['value' => "$sellingTipsTermId"]],
           'or',
-          ["input[name='field_content_section']" => ['value' => $trendTermId]],
+          ["input[name='field_content_section']" => ['value' => "$trendTermId"]],
         ],
       ];
     }
