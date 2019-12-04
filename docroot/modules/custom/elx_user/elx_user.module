@@ -6,49 +6,7 @@
  */
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\elx_user\Utility\UserUtility;
 use Drupal\Core\Render\BubbleableMetadata;
-
-/**
- * Implements hook_views_query_alter().
- */
-function elx_user_views_query_alter($view, $query) {
-  if ($view->id() == 'user_admin_people' && $view->current_display == 'page_1') {
-    if (in_array('el_regional_market_admin', \Drupal::currentUser()
-      ->getRoles())) {
-      $uid = \Drupal::currentUser()->id();
-      $user_utility = new UserUtility();
-      $user_market = $user_utility->getMarketByUserId($uid, 'all');
-      $markets = array_map(function ($e) {
-        return is_object($e) ? $e->field_default_market_target_id :
-        $e['field_default_market_target_id'];
-      }, $user_market);
-      $filters = [
-        1 => [
-          'user__field_default_market',
-          'users_field_data',
-          'field_default_market_target_id',
-          $markets,
-        ],
-        2 => [
-          'user__roles',
-          'users_field_data',
-          'roles_target_id',
-          [
-            'beauty_advisor',
-            'store_management',
-            'brand_management_and_field',
-            'multi_brand_sales_associate',
-          ],
-        ],
-      ];
-      foreach ($filters as $key => $filter) {
-        $query->queueTable($filter[0], $filter[1], NULL, $filter[0]);
-        $query->addWhere($key, $filter[0] . '.' . $filter[2], $filter[3], 'IN');
-      }
-    }
-  }
-}
 
 /**
  * Implements hook_form_alter().
