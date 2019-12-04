@@ -1,0 +1,20 @@
+--- misc/states.js
++++ misc/states.js
+@@ -110,9 +110,14 @@
+     },
+     compare: function compare(reference, selector, state) {
+       var value = this.values[selector][state.name];
+-      if (reference.constructor.name in states.Dependent.comparisons) {
+-        return states.Dependent.comparisons[reference.constructor.name](reference, value);
+-      }
++      var name = reference.constructor.name;
++      if (!name) {
++        name = $.type(reference);
++        name = name.charAt(0).toUpperCase() + name.slice(1);
++       }
++       if (name in states.Dependent.comparisons) {
++         return states.Dependent.comparisons[name](reference, value);
++       }
+
+       return _compare2(reference, value);
+     },
