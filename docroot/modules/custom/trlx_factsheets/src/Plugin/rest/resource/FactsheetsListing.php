@@ -97,7 +97,7 @@ class FactsheetsListing extends ResourceBase {
     }
 
     // Prepare response.
-    $key = ":brand:factsheets_{$brandId}_{$language}_{$limit}_{$offset}";
+    $key = ":brand:factsheets_{$brandId}_{$_userData->uid}_{$language}_{$limit}_{$offset}";
     list($view_results, $status_code) = $entityUtility->fetchApiResult(
       $key,
       'fact_sheets_list',
