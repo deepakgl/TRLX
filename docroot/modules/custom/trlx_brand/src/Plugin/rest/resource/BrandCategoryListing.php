@@ -68,7 +68,9 @@ class BrandCategoryListing extends ResourceBase {
       }
       $i++;
     }
-
+    // Sorting array in ascending order.
+    asort($brands_list);
+    $brands_list = array_values($brands_list);
     // Check for empty brand list.
     if (empty($brands_list)) {
       return $this->commonUtility->successResponse([], Response::HTTP_OK);
