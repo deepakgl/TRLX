@@ -207,8 +207,8 @@ class SpotlightSection extends ResourceBase {
   /**
    * Method to get node data.
    *
-   * @param array $value
-   *   node object array.
+   * @param mixed $value
+   *   Node object array.
    * @param string $language
    *   Language code.
    *
