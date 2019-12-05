@@ -11,7 +11,7 @@ use App\Traits\ApiResponser;
 /**
  * Purpose of building this class is to fetch user points.
  */
-class PointsController extends Controller {
+class GetEnvController extends Controller {
 
   use ApiResponser;
 
