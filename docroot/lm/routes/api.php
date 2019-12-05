@@ -28,6 +28,11 @@ $router->group(['prefix' => 'v1'], function () use ($router) {
   $router->post('update/user/elastic/index', 'UserActivitiesController@updateUserElasticBody');
 });
 
+// Env variables.
+    $router->group(['prefix' => 'v1'], function () use ($router) {
+      $router->get('getEnvVariables', 'GetEnvController@getEnvVariables');
+    });
+
 $router->group(
   ['middleware' => 'jwt.auth'], function () use ($router) {
 
