@@ -44,7 +44,7 @@ class PointsController extends Controller {
     ];
 
     $result = [];
-    foreach ($array as $value {
+    foreach ($array as $value) {
       $result[$value] = env($value);
     }
 
