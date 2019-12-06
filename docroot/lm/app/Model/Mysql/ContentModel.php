@@ -845,7 +845,6 @@ class ContentModel {
       })
       ->leftJoin('node__field_point_value as nfpv', function ($join) {
           $join->on('n.nid', '=', 'nfpv.entity_id');
-          $join->on('n.langcode', '=', 'nfpv.langcode');
       })
       ->leftJoin('node__field_brands as nfb', function ($join) {
           $join->on('n.nid', '=', 'nfb.entity_id');
