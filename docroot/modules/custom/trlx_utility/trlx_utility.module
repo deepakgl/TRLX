@@ -748,9 +748,12 @@ function trlx_utility_file_url_alter(&$uri) {
     $file_name = drupal_basename($uri);
     // Update the file name to raw url format.
     $uri = str_replace($file_name, rawurlencode($file_name), $uri);
-    $settings_cdn_url_array = explode("/", settings::get('cdn_file_public_base_url'), 4);
+    // Fetch CDN url from config 'elx_front_end_url'.
+    $cdn_url = \Drupal::config('elx_utility.settings')->get('elx_front_end_url');
+    $settings_cdn_url_array = explode("/", $cdn_url, 4);
     if (!empty($settings_cdn_url_array)) {
-      $uri = settings::get('cdn_file_public_base_url') . '/' . explode('//', $uri)[1];
+      // Fetch CDN url from config 'elx_front_end_url'.
+      $uri = $cdn_url . '/' . explode('//', $uri)[1];
     }
   }
 }
