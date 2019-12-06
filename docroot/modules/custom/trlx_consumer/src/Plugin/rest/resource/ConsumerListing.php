@@ -117,11 +117,6 @@ class ConsumerListing extends ResourceBase {
     }
 
     if (!empty($results)) {
-      // Sort merged array using "timestamp" key.
-      usort($results, function ($timestamp1, $timestamp2) {
-        return $timestamp2['timestamp'] <=> $timestamp1['timestamp'];
-      });
-
       // Slice array as per passed limit & offset.
       $results = array_slice($results, $offset, $limit);
     }
@@ -254,7 +249,7 @@ class ConsumerListing extends ResourceBase {
       $query->addField('fcc', 'field_consumer_category_target_id', 'categoryId');
 
       // Order by.
-      $query->orderBy('timestamp');
+      $query->orderBy('timestamp', DESC);
       $results = $query->execute()->fetchAll();
     }
     catch (\Exception $e) {
