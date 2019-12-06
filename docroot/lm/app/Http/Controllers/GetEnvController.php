@@ -47,7 +47,20 @@ class GetEnvController extends Controller {
       'ELASTIC_SEARCH_NOTIFICATION_TYPE',
       'ELASTIC_SEARCH_INDEX',
       'ELASTIC_SEARCH_TYPE',
-      'ELASTIC_ENV'
+      'ELASTIC_ENV',
+      'JWT_SECRET',
+      'JWT_TTL',
+      'DB_HOST',
+      'DB_PORT',
+      'DB_DATABASE',
+      'DB_USERNAME',
+      'DB_PASSWORD',
+      'DB_CONNECTION',
+      'APP_ENV',
+      'APP_KEY',
+      'APP_DEBUG',
+      'APP_TIMEZONE',
+      'APP_URL'
     ];
 
     $result = [];
