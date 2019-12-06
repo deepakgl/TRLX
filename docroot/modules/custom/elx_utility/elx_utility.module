@@ -239,7 +239,7 @@ function elx_utility_entity_update(EntityInterface $entity) {
         $lang_code = $entity->language()->getId();
         $previous_brandId = array_column($entity->original->get('field_brands')->getValue(), 'target_id');
         $brand_key = $commonUtility->getBrandKeyByTermId($previous_brandId[0]);
-        $patterns = [$env . ':brand:factsheets_' . $brand_key . '_' . $lang_code . '*'];
+        $patterns = [$env . ':brand:factsheets_' . $brand_key . '*'];
         elx_utility_clear_redis_cache($patterns);
         break;
 
@@ -247,7 +247,7 @@ function elx_utility_entity_update(EntityInterface $entity) {
         $lang_code = $entity->language()->getId();
         $previous_brandId = array_column($entity->original->get('field_brands')->getValue(), 'target_id');
         $brand_key = $commonUtility->getBrandKeyByTermId($previous_brandId[0]);
-        $patterns = [$env . ':brand:videos_' . $brand_key . '_' . $lang_code . '*'];
+        $patterns = [$env . ':brand:videos_' . $brand_key . '*'];
         elx_utility_clear_redis_cache($patterns);
         break;
 
@@ -255,7 +255,7 @@ function elx_utility_entity_update(EntityInterface $entity) {
         $lang_code = $entity->language()->getId();
         $previous_brandId = array_column($entity->original->get('field_brands')->getValue(), 'target_id');
         $brand_key = $commonUtility->getBrandKeyByTermId($previous_brandId[0]);
-        $patterns = [$env . ':brand:story_' . $brand_key . '_' . $lang_code];
+        $patterns = [$env . ':brand:story_' . $brand_key . '*'];
         elx_utility_clear_redis_cache($patterns);
         break;
     }
