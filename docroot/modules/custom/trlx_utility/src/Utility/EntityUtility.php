@@ -110,7 +110,8 @@ class EntityUtility {
    *   Updated ckeditor content.
    */
   public function stringReplace($str) {
-    $filePublicUrl = Settings::get('cdn_file_public_base_url');
+    // Fetch CDN url from config 'elx_front_end_url'.
+    $filePublicUrl = \Drupal::config('elx_utility.settings')->get('elx_front_end_url');
     $result = str_replace(
       '"/sites/default/files', '"' . $filePublicUrl, $str
     );

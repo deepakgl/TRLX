@@ -10,12 +10,6 @@ trlx_utility.image_style_config_menu:
   route_name: trlx_utility.image_style_config
   parent: system.admin_config_system
 
-trlx_utility.cdn_base_file_url_config_menu:
-  title: 'CDN Base File Url Configuration'
-  description: 'Set cdn base url for media files.'
-  route_name: trlx_utility.cdn_file_url_config
-  parent: system.admin_config_system
-
 trlx_utility.brand_disable_ma_menu:
   title: 'Brand Disable for MA Configuration'
   description: 'Disable brands for MA role.'

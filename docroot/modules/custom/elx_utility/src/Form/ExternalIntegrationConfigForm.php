@@ -43,7 +43,7 @@ class ExternalIntegrationConfigForm extends ConfigFormBase {
       'Redis Password' => 'redis_password',
       'Redis Database' => 'redis_base',
       'TRLX Site Url' => 'elx_site_url',
-      'TRLX Front End URL' => 'elx_front_end_url',
+      'CDN URL' => 'elx_front_end_url',
       'Middleware LB Name' => 'middleware_lb_name',
     ];
 
