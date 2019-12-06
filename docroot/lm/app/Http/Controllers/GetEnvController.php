@@ -38,9 +38,16 @@ class GetEnvController extends Controller {
       'REDIS_PORT',
       'REDIS_DATABASE',
       'REDIS_PASSWORD',
-      'ELASTIC_URL',
       'LRS_URL',
-      'SITE_IMAGE_URL'
+      'SITE_IMAGE_URL',
+      'SITE_URL',
+      'ELASTIC_URL',
+      'ELASTIC_PORT',
+      'ELASTIC_SEARCH_NOTIFICATION_INDEX',
+      'ELASTIC_SEARCH_NOTIFICATION_TYPE',
+      'ELASTIC_SEARCH_INDEX',
+      'ELASTIC_SEARCH_TYPE',
+      'ELASTIC_ENV'
     ];
 
     $result = [];
