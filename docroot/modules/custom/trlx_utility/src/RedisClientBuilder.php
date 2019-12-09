@@ -24,10 +24,10 @@ class RedisClientBuilder {
       $client = new PRedisCache($settings['redis_host'],
       $settings['redis_port'], $settings['redis_base'],
       $settings['redis_password']);
-      if (!$client->client) {
-        throw new \Exception('Redis Exception');
-      }
-      if ($client->getConnectionInfo() && $key != 'check') {
+      // if (!$client->client) {
+      //   throw new \Exception('Redis Exception');
+      // }
+      if ($client->client && $client->getConnectionInfo() && $key != 'check') {
         $cached_data = $client->getMultiple($key);
         $decode_cached_data = JSON::decode($cached_data[0]['data'], TRUE);
         if (!empty($decode_cached_data)) {
