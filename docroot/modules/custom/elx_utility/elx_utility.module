@@ -71,7 +71,9 @@ function elx_utility_form_alter(&$form, FormStateInterface $form_state, $form_id
  */
 function elx_utility_clear_redis_cache($patterns) {
   $redisObj = RedisClientBuilder::getRedisClientObject('check');
-  $result = $redisObj->deleteKeyPattern($patterns);
+  if(!empty($redisObj) && $redisObj->client) { 
+    $result = $redisObj->deleteKeyPattern($patterns);
+  }
 }
 
 /**
