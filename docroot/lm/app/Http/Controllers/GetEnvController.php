@@ -3,9 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use App\Support\Helper;
-use App\Model\Elastic\ElasticUserModel;
 use App\Traits\ApiResponser;
 
 /**
@@ -60,7 +57,7 @@ class GetEnvController extends Controller {
       'APP_KEY',
       'APP_DEBUG',
       'APP_TIMEZONE',
-      'APP_URL'
+      'APP_URL',
     ];
 
     $result = [];
