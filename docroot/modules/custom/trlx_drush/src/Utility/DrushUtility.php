@@ -143,16 +143,16 @@ class DrushUtility {
         }
         else {
           // Add term.
-          $termCeated = Term::create([
+          $termCreated = Term::create([
             'parent' => [],
             'name' => $termObj->name,
             'vid' => $type,
             $termField => $termObj->id,
           ])->save();
-          if ($termCeated) {
+          if ($termCreated) {
             $results[] = [
-              'tid' => $termCeated->id(),
-              'name' => $termCeated->label(),
+              'tid' => $termCreated->id(),
+              'name' => $termCreated->label(),
               'action' => 'created'
             ];
           }
