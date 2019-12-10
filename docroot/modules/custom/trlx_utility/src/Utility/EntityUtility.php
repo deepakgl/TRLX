@@ -7,7 +7,6 @@ use Drupal\Component\Serialization\Json;
 use Drupal\Component\Utility\Html;
 use Drupal\trlx_utility\RedisClientBuilder;
 use Symfony\Component\HttpFoundation\Response;
-use Drupal\Core\Site\Settings;
 
 /**
  * Purpose is to build view response, fetch & set the view. Response in redis.

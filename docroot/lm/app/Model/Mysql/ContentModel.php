@@ -1085,4 +1085,25 @@ class ContentModel {
     return $data;
   }
 
+  /**
+   * Get Lesson section key and value by tid.
+   *
+   * @param int $tid
+   *   Taxonomy id.
+   *
+   * @return bool
+   *   TRUE/FALSE.
+   */
+  public static function checkLevelAttachedWithLesson($tid) {
+    $query = DB::table('node__field_learning_category as ttfd');
+    $query->where('ttfd.field_learning_category_target_id', '=', $tid);
+
+    $results = $query->get()->all();
+    if (empty($results)) {
+      return FALSE;
+    }
+
+    return TRUE;
+  }
+
 }
