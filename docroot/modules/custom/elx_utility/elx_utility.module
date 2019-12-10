@@ -71,7 +71,9 @@ function elx_utility_form_alter(&$form, FormStateInterface $form_state, $form_id
  */
 function elx_utility_clear_redis_cache($patterns) {
   $redisObj = RedisClientBuilder::getRedisClientObject('check');
-  $result = $redisObj->deleteKeyPattern($patterns);
+  if (!empty($redisObj) && $redisObj->client) {
+    $result = $redisObj->deleteKeyPattern($patterns);
+  }
 }
 
 /**
@@ -395,7 +397,7 @@ function elx_utility_entity_delete(EntityInterface $entity) {
         $brand_id = $entity->get('field_brands')->first()->getValue()['target_id'];
         $brand_key = $commonUtility->getBrandKeyByTermId($brand_id);
         $lang_code = $entity->language()->getId();
-        $patterns = [$env . ':brand:story_' . $brand_key . '_' . '*'];
+        $patterns = [$env . ':brand:story_' . $brand_key . '*'];
         elx_utility_clear_redis_cache($patterns);
         break;
     }
