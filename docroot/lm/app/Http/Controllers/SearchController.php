@@ -199,11 +199,13 @@ class SearchController extends Controller {
       $static_translation = ContentModel::getStaticTransaltion($lang);
       $category_value = $category_name = !empty($static_translation['helpFaqTxt']) ? $static_translation['helpFaqTxt']->field_translation_key_value : 'Help FAQ';
       // Get displaytitle on based on content type.
+      $check_level = 'FALSE';
       if (!empty($value['_source']['vid'][0])) {
         $display_title = isset($value['_source']['name'][0]) ? $value['_source']['name'][0] : '';
         $content_type = !empty($static_translation['levelTabTxt']) ? $static_translation['levelTabTxt']->field_translation_key_value : 'Levels';
         $sub_title = isset($value['_source']['field_sub_title_1'][0]) ? $value['_source']['field_sub_title_1'][0] : '';
         $type = $value['_source']['vid'][0];
+        $check_level = ContentModel::checkLevelAttachedWithLesson($value['_source']['tid'][0]);
       }
       elseif ($value['_source']['type'][0] == 'level_interactive_content') {
         $display_title = isset($value['_source']['field_headline'][0]) ? $value['_source']['field_headline'][0] : '';
@@ -280,42 +282,31 @@ class SearchController extends Controller {
         $category_value = !empty($static_translation[implode(" ", $category_name)]) ? $static_translation[implode(" ", $category_name)]->field_translation_key_value : implode(" ", $category_name);
         $category_name = $content_type;
       }
-
+      $data_arr = [
+        'nid' => isset($nid) ? $nid : '',
+        'tid' => $tid,
+        'imageLarge' => $image_style['imageLarge'],
+        'imageMedium' => $image_style['imageMedium'],
+        'imageSmall' => $image_style['imageSmall'],
+        'displayTitle' => $display_title,
+        'subTitle' => $sub_title,
+        'brandKey' => $brand_key,
+        'type' => $type,
+        'pointValue' => isset($value['_source']['field_point_value'][0]) ? (int) $value['_source']['field_point_value'][0] : '',
+        'categoryKey' => $category_key,
+        'categoryValue' => $category_name,
+        'categoryName' => $category_value,
+      ];
       if (isset($value['_source']['type'][0]) && $value['_source']['type'][0] == 'brand_story') {
         if (in_array($value['_source']['created'][0], $created)) {
-          $response[] = [
-            'nid' => isset($nid) ? $nid : '',
-            'tid' => $tid,
-            'imageLarge' => $image_style['imageLarge'],
-            'imageMedium' => $image_style['imageMedium'],
-            'imageSmall' => $image_style['imageSmall'],
-            'displayTitle' => $display_title,
-            'subTitle' => $sub_title,
-            'brandKey' => $brand_key,
-            'type' => $type,
-            'pointValue' => isset($value['_source']['field_point_value'][0]) ? (int) $value['_source']['field_point_value'][0] : '',
-            'categoryKey' => $category_key,
-            'categoryValue' => $category_name,
-            'categoryName' => $category_value,
-          ];
+          $response[] = $data_arr;
         }
       }
-      else {
-        $response[] = [
-          'nid' => isset($nid) ? $nid : '',
-          'tid' => $tid,
-          'imageLarge' => $image_style['imageLarge'],
-          'imageMedium' => $image_style['imageMedium'],
-          'imageSmall' => $image_style['imageSmall'],
-          'displayTitle' => $display_title,
-          'subTitle' => $sub_title,
-          'brandKey' => $brand_key,
-          'type' => $type,
-          'pointValue' => isset($value['_source']['field_point_value'][0]) ? (int) $value['_source']['field_point_value'][0] : '',
-          'categoryKey' => $category_key,
-          'categoryValue' => $category_name,
-          'categoryName' => $category_value,
-        ];
+      elseif (isset($value['_source']['vid'][0]) && ($check_level == 1)) {
+        $response[] = $data_arr;
+      }
+      elseif ($check_level == 'FALSE') {
+        $response[] = $data_arr;
       }
     }
     $response_sort = array_column($response, 'categoryKey');

@@ -7,7 +7,6 @@ use Drupal\Component\Serialization\Json;
 use Drupal\Component\Utility\Html;
 use Drupal\trlx_utility\RedisClientBuilder;
 use Symfony\Component\HttpFoundation\Response;
-use Drupal\Core\Site\Settings;
 
 /**
  * Purpose is to build view response, fetch & set the view. Response in redis.
@@ -147,7 +146,6 @@ class EntityUtility {
     // fixMe.
     $key = $this->config->get('elx_environment') . $key;
     $redis_key = explode(':', $key);
-
     if (!empty($redis_key[1])) {
       try {
         // Creating Redis connection object.
@@ -204,7 +202,7 @@ class EntityUtility {
   private function setRedisCache(array $redis_key, $redis_client, array $view_results) {
     // Only set redis cache if there is some data.
     $decode = array_filter(JSON::decode($view_results, TRUE));
-    if (!empty($redis_key[1])) {
+    if (!empty($redis_key[1]) && !empty($redis_client) && $redis_client->client) {
       $response = JSON::encode($view_results);
       if (is_object($response)) {
         $response = $response->getContent();
