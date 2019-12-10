@@ -3,6 +3,8 @@
 namespace Drupal\trlx_drush\Utility;
 
 use Drupal\taxonomy\Entity\Term;
+use Drupal\Core\Logger\RfcLogLevel;
+use Drupal\trlx_audit_log\AuditEventLogger;
 
 /**
  * Purpose of this class is to build learning levels object.
@@ -133,27 +135,49 @@ class DrushUtility {
           $tid = key($term);
           $term[$tid]->set($termField, $termObj->id);
           $term[$tid]->save();
-          $results[] = $tid;
+          $results[] = [
+            'tid' => $tid,
+            'name' => $term->name,
+            'action' => 'updated'
+          ];
         }
         else {
           // Add term.
-          $termCeated = Term::create([
+          $termCreated = Term::create([
             'parent' => [],
             'name' => $termObj->name,
             'vid' => $type,
             $termField => $termObj->id,
           ])->save();
-          if ($termCeated) {
-            $results[] = $termObj->name;
+          if ($termCreated) {
+            $results[] = [
+              'tid' => $termCreated->id(),
+              'name' => $termCreated->label(),
+              'action' => 'created'
+            ];
           }
         }
       }
     }
+    $this->logImportedItems($results, $type, 'After content update/import');
     if (!empty($results)) {
       $termsProcessed = TRUE;
     }
 
     return $termsProcessed;
+  }
+
+
+  public function logImportedItems($items, $type, $message, $lbUrl = '') {
+    $logger_obj = new AuditEventLogger();
+    $context['channel'] = $logger_obj->getLoggerType();
+    $context['request_uri'] = $logger_obj->getRequestUri();
+    $context['datatype'] = $type;
+    $context['endpoint'] = $lbUrl;
+    $context['item'] = json_encode($items);
+    $request_uri = $base_url . \Drupal::request()->getRequestUri();
+
+    \Drupal::service('logger.stdout')->log(RfcLogLevel::INFO, $message, $context);
   }
 
 }

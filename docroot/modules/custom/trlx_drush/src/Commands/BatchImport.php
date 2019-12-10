@@ -48,6 +48,7 @@ class BatchImport extends DrushCommands {
           $endpoint = $lbUrl . '/api/secure/cms/onboarding/subregions?regionId=ALL';
           $terms = $this->getApiResponse($endpoint, $header);
           $terms = !empty($terms['subRegions']) ? $terms['subRegions'] : [];
+          $drush_utility->logImportedItems($terms, 'subRegion', 'Subregion data import', $lbUrl);
           $drush_utility->processTerms($terms, 'markets', 'subregion');
           break;
 
@@ -67,6 +68,7 @@ class BatchImport extends DrushCommands {
             $endpoint = $lbUrl . '/api/secure/cms/onboarding/countries?subRegionIds=' . $sub_region_query_param;
             $terms = $this->getApiResponse($endpoint, $header);
             $terms = !empty($terms['countries']) ? $terms['countries'] : [];
+            $drush_utility->logImportedItems($terms, 'country', 'Country data import', $lbUrl);
             $drush_utility->processTerms($terms, 'markets', 'country');
           }
           break;
@@ -75,6 +77,7 @@ class BatchImport extends DrushCommands {
           $endpoint = $lbUrl . '/api/secure/cms/onboarding/brands?regionId=ALL';
           $terms = $this->getApiResponse($endpoint, $header);
           $terms = !empty($terms['brands']) ? $terms['brands'] : [];
+          $drush_utility->logImportedItems($terms, 'brand', 'Brand data import', $lbUrl);
 
           // Process Terms.
           $termsProcessed = $drush_utility->processBrandTerms($terms, 'brands', 'field_brand_key');
