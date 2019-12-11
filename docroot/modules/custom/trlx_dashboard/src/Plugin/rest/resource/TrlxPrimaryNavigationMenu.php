@@ -70,7 +70,9 @@ class TrlxPrimaryNavigationMenu extends ResourceBase {
       return $this->commonUtility->successResponse($emptyResponse, Response::HTTP_OK);
     }
     $key = explode(":", $key);
-    $redis_client->set($view_results, $key[0], $key[1], $key[2]);
+    if (!empty($redis_client) && $redis_client->client) {
+      $redis_client->set($view_results, $key[0], $key[1], $key[2]);
+    }
 
     return $this->commonUtility->successResponse($view_results);
   }
