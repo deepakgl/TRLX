@@ -78,6 +78,54 @@ function elx_utility_schema() {
     'primary key' => ['id'],
   ];
 
+  $schema['lm_lrs_records_queue'] = [
+    'fields' => [
+      'id' => [
+        'type' => 'serial',
+        'not null' => TRUE,
+      ],
+      'method' => [
+        'type' => 'varchar',
+        'length' => 40,
+        'not null' => TRUE,
+      ],
+      'error' => [
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => FALSE,
+        'default' => 0,
+      ],
+      'request' => [
+        'type' => 'blob',
+        'not null' => FALSE,
+      ],
+      'arg1' => [
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => FALSE,
+        'default' => 0,
+      ],
+      'arg2' => [
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => FALSE,
+        'default' => 0,
+      ],
+      'created_on' => [
+        'type' => 'int',
+        'size' => 'big',
+        'not null' => TRUE,
+      ],
+      'is_processed' => [
+        'type' => 'int',
+        'size' => 'tiny',
+        'not null' => FALSE,
+        'default' => 0,
+      ],
+    ],
+    'primary key' => ['id'],
+  ];
+
   return $schema;
 
 }
@@ -85,7 +133,13 @@ function elx_utility_schema() {
 /**
  * Implements hook_update_N().
  */
-function elx_utility_update_8501() {
+function elx_utility_update_8507() {
+
+  $schema = elx_utility_schema();
+  if (!db_table_exists('lm_lrs_records_queue')) {
+    db_create_table('lm_lrs_records_queue', $schema['lm_lrs_records_queue']);
+  }
+
   // Create field storage for the 'Highlight' base field.
   $entity_manager = \Drupal::entityManager();
   $definition = $entity_manager->getFieldStorageDefinitions('menu_link_content')['elx_menu_content'];
