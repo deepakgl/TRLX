@@ -35,13 +35,13 @@ function trlx_user_form_alter(array &$form, FormStateInterface $form_state, $for
   $currentAccount = \Drupal::currentUser();
   $roles = $currentAccount->getRoles();
   if ($form_id == 'user_form' || $form_id == 'user_register_form') {
-   // if (!in_array('administrator', $roles)) {
+    if (!in_array('administrator', $roles)) {
       // Unset the select option of administrator and authenticated role.
-     // unset($form['account']['roles']['#options']['administrator']);
+      unset($form['account']['roles']['#options']['administrator']);
       unset($form['account']['roles']['#options']['authenticated']);
       // Unset notify user when new account checkbox.
       unset($form['account']['notify']);
-    // }
+    }
   }
 
   if (($form_id == "menu_edit_form") && (!in_array('administrator', $roles))) {
