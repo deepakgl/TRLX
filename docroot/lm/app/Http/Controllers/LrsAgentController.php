@@ -60,7 +60,7 @@ class LrsAgentController extends Controller {
   protected function buildUrl($arg1, $arg2, $param) {
     $lrs_url = getenv("LRS_URL");
     $param = http_build_query($param);
-    $url = $lrs_url . $arg1 . '/' . $arg2 . '?' . $param;
+    $url = $lrs_url . '/' . $arg1 . '/' . $arg2 . '?' . $param;
     return $url;
   }
 
