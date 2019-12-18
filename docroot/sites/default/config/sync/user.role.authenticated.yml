@@ -38,6 +38,7 @@ permissions:
   - 'get own binary files'
   - 'manipulate all entityqueues'
   - 'manipulate entityqueues'
+  - 'restful delete comment_delete'
   - 'restful get ar_key_value'
   - 'restful get browse_products'
   - 'restful get consumer_category_listing'
