@@ -138,7 +138,7 @@ class DrushUtility {
           $results[] = [
             'tid' => $tid,
             'name' => $term->name,
-            'action' => 'updated'
+            'action' => 'updated',
           ];
         }
         else {
@@ -153,7 +153,7 @@ class DrushUtility {
             $results[] = [
               'tid' => $termCreated->id(),
               'name' => $termCreated->label(),
-              'action' => 'created'
+              'action' => 'created',
             ];
           }
         }
@@ -167,7 +167,21 @@ class DrushUtility {
     return $termsProcessed;
   }
 
-
+  /**
+   * Log import items.
+   *
+   * @param mixed $items
+   *   Items.
+   * @param string $type
+   *   Type.
+   * @param string $message
+   *   Message.
+   * @param string $lbUrl
+   *   Lburl.
+   *
+   * @return string
+   *   Log.
+   */
   public function logImportedItems($items, $type, $message, $lbUrl = '') {
     $logger_obj = new AuditEventLogger();
     $context['channel'] = $logger_obj->getLoggerType();
