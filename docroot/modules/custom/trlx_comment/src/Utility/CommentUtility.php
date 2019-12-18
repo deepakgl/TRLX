@@ -296,4 +296,96 @@ class CommentUtility {
     return $response;
   }
 
+  /**
+   * To validate passed comment id.
+   *
+   * @param int $comment_id
+   *   Comment id.
+   * @param int $comment_lang_code
+   *   Comment lang code.
+   *
+   * @return mixed
+   *   Comment data.
+   */
+  public function validateCommentId($comment_id, $comment_lang_code) {
+
+    try {
+      $query = \Drupal::database();
+      $result = $query->select('trlx_comment', 'tc')
+        ->fields('tc', [
+          'id',
+          'user_id',
+          'entity_id',
+          'pid',
+          'comment_body',
+          'comment_tags',
+          'langcode',
+          'comment_timestamp',
+        ])
+        ->condition('tc.id', $comment_id, '=')
+        ->condition('tc.langcode', $comment_lang_code, '=')
+        ->execute()->fetchAll();
+    }
+    catch (\Exception $e) {
+      $result = [];
+    }
+    return $result;
+  }
+
+  /**
+   * To delete comment.
+   *
+   * @param int $comment_id
+   *   Comment id.
+   * @param int $comment_lang_code
+   *   Comment lang code.
+   *
+   * @return mixed
+   *   Comment data.
+   */
+  public function deleteComment($comment_id, $comment_lang_code) {
+    $response = $this->validateReplyCommentsExists($comment_id, $comment_lang_code);
+    $query = \Drupal::database();
+    $query->delete('trlx_comment')
+      ->condition('trlx_comment.id', $comment_id, '=')
+      ->condition('trlx_comment.langcode', $comment_lang_code, '=')
+      ->execute();
+    if (!empty($response)) {
+      $reply_ids = array_column($response, 'id');
+      $query->delete('trlx_comment')
+        ->condition('trlx_comment.id', $reply_ids, 'IN')
+        ->condition('trlx_comment.langcode', $comment_lang_code, '=')
+        ->execute();
+    }
+  }
+
+  /**
+   * To validate reply comments exists or not.
+   *
+   * @param int $comment_id
+   *   Comment id.
+   * @param int $comment_lang_code
+   *   Comment lang code.
+   *
+   * @return array
+   *   Comment replies id.
+   */
+  public function validateReplyCommentsExists($comment_id, $comment_lang_code) {
+    try {
+      $query = \Drupal::database();
+      $result = $query->select('trlx_comment', 'tc')
+        ->fields('tc', [
+          'id',
+          'pid',
+        ])
+        ->condition('tc.pid', $comment_id, '=')
+        ->condition('tc.langcode', $comment_lang_code, '=')
+        ->execute()->fetchAll();
+    }
+    catch (\Exception $e) {
+      $result = [];
+    }
+    return $result;
+  }
+
 }
