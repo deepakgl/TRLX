@@ -12,7 +12,7 @@ entity_type: taxonomy_term
 bundle: consumer_category
 label: 'Listing image'
 description: 'Allowed file types:<b> png, jpg, jpeg.</b><br>Image Resolution:<b> 1440X800px</b>'
-required: true
+required: false
 translatable: true
 default_value: {  }
 default_value_callback: ''
