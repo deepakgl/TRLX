@@ -1,0 +1,18 @@
+uuid: e243a9a7-7dc6-4447-a686-fb71b06bf190
+langcode: en
+status: true
+dependencies:
+  module:
+    - serialization
+    - trlx_comment
+    - trlx_utility
+id: comment_edit
+plugin_id: comment_edit
+granularity: resource
+configuration:
+  methods:
+    - PUT
+  formats:
+    - json
+  authentication:
+    - jwt_Auth

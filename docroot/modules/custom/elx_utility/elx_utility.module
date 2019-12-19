@@ -462,7 +462,7 @@ function elx_utility_purge_redis_data(EntityInterface $entity) {
   if (!empty($pattern)) {
     try {
       $redisObj = RedisClientBuilder::getRedisClientObject('check');
-      if(!empty($redisObj) && $redisObj->client) { 
+      if (!empty($redisObj) && $redisObj->client) {
         $result = $redisObj->deleteKeyPattern($pattern);
       }
     }
@@ -480,7 +480,7 @@ function elx_utility_purge_redis_terms_data($type, $tid) {
   if (!empty($pattern)) {
     try {
       $redisObj = RedisClientBuilder::getRedisClientObject('check');
-      if(!empty($redisObj) && $redisObj->client) {
+      if (!empty($redisObj) && $redisObj->client) {
         $result = $redisObj->deleteKeyPattern($pattern);
       }
     }

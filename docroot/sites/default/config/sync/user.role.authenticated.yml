@@ -90,6 +90,7 @@ permissions:
   - 'restful post update_user_policy_flag'
   - 'restful post user_interest'
   - 'restful post user_logout'
+  - 'restful put comment_edit'
   - 'unflag favorites'
   - 'unflag gift_genius'
   - 'unflag inspiration_flag_test_1'

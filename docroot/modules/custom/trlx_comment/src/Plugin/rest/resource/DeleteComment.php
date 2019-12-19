@@ -7,10 +7,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Drupal\trlx_utility\Utility\CommonUtility;
 use Drupal\trlx_comment\Utility\CommentUtility;
 use Symfony\Component\HttpFoundation\Response;
-use Drupal\Component\Serialization\Json;
 
 /**
- * Helps to save comment in database.
+ * Helps to delete comment from database.
  *
  * @RestResource(
  *   id = "comment_delete",
