@@ -372,7 +372,7 @@ class LeaderboardController extends Controller {
       'index' => getenv("ELASTIC_ENV") . '_user',
       'type' => 'user',
       'size' => $this->size,
-      '_source_includes' => ['uid', 'total_points', 'userExternalId'],
+      '_source_includes' => ['uid', 'total_points', 'userExternalId', 'status'],
       'body' => [
         'sort' => [
           'total_points' => [
@@ -446,11 +446,13 @@ class LeaderboardController extends Controller {
       $position = 1;
       $j = 0;
       foreach ($all_users_data['hits']['hits'] as $value) {
-        $all_users_data_array[$j]['uid'] = isset($value['_source']['userExternalId']) ? $value['_source']['userExternalId'] : 0;
-        $all_users_data_array[$j]['rank'] = "#" . $position;
-        $all_users_data_array[$j]['pointValue'] = isset($value['_source']['total_points']) ? $value['_source']['total_points'] : 0;
-        $j++;
-        $position++;
+        if ($value['_source']['status'] == 1) {
+          $all_users_data_array[$j]['uid'] = isset($value['_source']['userExternalId']) ? $value['_source']['userExternalId'] : 0;
+          $all_users_data_array[$j]['rank'] = "#" . $position;
+          $all_users_data_array[$j]['pointValue'] = isset($value['_source']['total_points']) ? $value['_source']['total_points'] : 0;
+          $j++;
+          $position++;
+        }
       }
     }
     return $all_users_data_array;
