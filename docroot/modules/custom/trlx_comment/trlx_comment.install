@@ -105,3 +105,35 @@ function trlx_comment_update_8601() {
     $schema->addField('trlx_comment', 'langcode', $spec['langcode']);
   }
 }
+
+/**
+ * Add new columns: "comment_edit_flag" & "comment_update_timestamp".
+ *
+ * Column: "comment_edit_flag" - comment edit flag.
+ * Column: "comment_update_timestamp" - comment update timestamp.
+ */
+function trlx_comment_update_8603() {
+  // Specifications for comment_edit_flag column.
+  $spec = [
+    'comment_edit_flag' => [
+      'description' => "Comment edit flag.",
+      'type' => 'int',
+      'not null' => TRUE,
+      'default' => 0,
+    ],
+    'comment_update_timestamp' => [
+      'type' => 'int',
+      'not null' => TRUE,
+      'default' => 0,
+      'description' => 'The Unix timestamp of the comment that was edited within the node.',
+    ],
+  ];
+
+  $schema = Database::getConnection()->schema();
+  if (!$schema->fieldExists('trlx_comment', 'comment_edit_flag')) {
+    $schema->addField('trlx_comment', 'comment_edit_flag', $spec['comment_edit_flag']);
+  }
+  if (!$schema->fieldExists('trlx_comment', 'comment_update_timestamp')) {
+    $schema->addField('trlx_comment', 'comment_update_timestamp', $spec['comment_update_timestamp']);
+  }
+}

@@ -63,6 +63,88 @@ class CommentUtility {
   }
 
   /**
+   * To save edited comment data in database.
+   *
+   * @param array $data
+   *   Comment data to be inserted in database.
+   *
+   * @return bool
+   *   True or false.
+   */
+  public function saveEditedComment(array $data) {
+    global $_userData;
+
+    $langcode = !empty($data['language']) ? $data['language'] : self::DEFAULT_LANGUAGE;
+
+    $query = \Drupal::database();
+    $result = $query->update('trlx_comment')
+      ->fields([
+        'comment_body' => $data['comment'],
+        'comment_tags' => !empty($data['tags']) ? Json::encode($data['tags']) : '',
+        'comment_edit_flag' => 1,
+        'comment_update_timestamp' => REQUEST_TIME,
+      ])
+      ->condition('id', $data['commentId'], '=')
+      ->condition('pid', $data['parentId'], '=')
+      ->condition('langcode', $langcode, '=')
+      ->condition('entity_id', $data['nid'], '=')
+      ->execute();
+    // Push data for notification(s).
+    if (!empty($data['tags']) && !empty($result)) {
+      // Update id with real user id.
+      $data['tags'] = $this->updateTags($data['tags'], FALSE, TRUE);
+      // Prepare notification data.
+      $notification_index = trlx_notification_comment_user_tags($data['nid'], $langcode, $data['tags']);
+      // Send data to the queue.
+      save_data_in_queue($notification_index);
+    }
+
+    return TRUE;
+  }
+
+  /**
+   * To get latest edited comment from database.
+   *
+   * @return mixed
+   *   Latest comment data.
+   */
+  public function getLatestEditedComment() {
+
+    try {
+      $query = \Drupal::database();
+      $result = $query->select('trlx_comment', 'tc')
+        ->fields('tc', [
+          'id',
+          'user_id',
+          'entity_id',
+          'pid',
+          'comment_body',
+          'comment_tags',
+          'langcode',
+          'comment_timestamp',
+          'comment_update_timestamp',
+        ])
+        ->orderBy('tc.comment_update_timestamp', 'DESC')->range(0, 1)
+        ->execute()->fetch();
+    }
+    catch (\Exception $e) {
+      $result = [];
+    }
+
+    if (!empty($result)) {
+      $commonUtility = new CommonUtility();
+      // Update tags data from elastic.
+      $result->user_id = $commonUtility->getExternalUserId($result->user_id);
+      $result->comment_tags = empty($result->comment_tags) ? [] : $result->comment_tags;
+      $result->langcode = empty($result->langcode) ? self::DEFAULT_LANGUAGE : $result->langcode;
+      // Unset variable.
+      unset($commonUtility);
+    }
+
+    return $result;
+  }
+
+  /**
    * To get latest comment from database.
    *
    * @return mixed
