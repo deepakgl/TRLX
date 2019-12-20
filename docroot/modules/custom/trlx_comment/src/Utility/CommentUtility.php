@@ -209,6 +209,7 @@ class CommentUtility {
           'comment_body',
           'comment_tags',
           'langcode',
+          'comment_edit_flag',
           'comment_timestamp',
         ])
         ->condition('tc.entity_id', $nid, '=')
