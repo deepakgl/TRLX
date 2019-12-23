@@ -207,6 +207,13 @@ class LrsAgentController extends Controller {
     $response = curl_exec($curl);
     $err = curl_error($curl);
     curl_close($curl);
+
+    if ($err) {
+      // Add failed record in queue for retry later.
+      $get_parsed_data = $this->getParsedLrsData($request);
+      ContentModel::setLrsQueueRecord($get_parsed_data, 'PUT', $err, $arg1, $arg2);
+    }
+
     $parsed = array_map(function ($x) {
       return array_map("trim", explode(":", $x, 2));
     }, array_filter(array_map("trim", explode("\n", $response))));
@@ -250,9 +257,66 @@ class LrsAgentController extends Controller {
     curl_close($curl);
 
     if ($err) {
-      echo "cURL Error #:" . $err;
+      // Add failed record in queue for retry later.
+      ContentModel::setLrsQueueRecord($build, $method, $err);
     }
     return $response;
+  }
+
+  /**
+   * Get parsed lrs data.
+   */
+  public function getParsedLrsData($request) {
+    $data = [
+      'request_all' => $request->all(),
+      'header_all' => $request->headers->all(),
+      'post_field' => $request->getcontent(),
+    ];
+
+    return $data;
+
+  }
+
+  /**
+   * Creating LRS PUT API.
+   *
+   * @param mixed $data
+   *   Data.
+   * @param mixed $arg1
+   *   Dynamic rest resource first argument.
+   * @param mixed $arg2
+   *   Dynamic rest resource second argument.
+   *
+   * @return mixed
+   *   No content.
+   */
+  public function putLrsStatement($data, $arg1, $arg2 = NULL) {
+    // Building url and headers.
+    $build = $this->build($arg1, $arg2, $data['request_all'], $data['header_all']);
+    $post_field = $data['post_field'];
+    $curl = curl_init();
+    curl_setopt_array($curl, [
+      CURLOPT_URL => $build['url'],
+      CURLOPT_RETURNTRANSFER => TRUE,
+      CURLOPT_ENCODING => "",
+      CURLOPT_MAXREDIRS => 10,
+      CURLOPT_TIMEOUT => 30,
+      CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+      CURLOPT_CUSTOMREQUEST => "PUT",
+      CURLOPT_POSTFIELDS => $post_field,
+      CURLOPT_HTTPHEADER => $build['header'],
+      CURLOPT_HEADER => TRUE,
+    ]);
+    $response = curl_exec($curl);
+    $err = curl_error($curl);
+    curl_close($curl);
+
+    if ($err) {
+      // Add failed record in queue for retry later.
+      ContentModel::setLrsQueueRecord($data, 'PUT', $err, $arg1, $arg2);
+    }
+
+    return TRUE;
   }
 
 }

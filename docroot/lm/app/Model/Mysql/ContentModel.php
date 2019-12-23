@@ -1106,4 +1106,92 @@ class ContentModel {
     return TRUE;
   }
 
+  /**
+   * Add failed lrs record in queue for retry on cron.
+   *
+   * @param mixed $request
+   *   Rest resource request.
+   * @param string $method
+   *   Rest request verb.
+   * @param mixed $error
+   *   Error.
+   * @param mixed $arg1
+   *   Dynamic rest resource first argument.
+   * @param mixed $arg2
+   *   Dynamic rest resource second argument.
+   *
+   * @return bool
+   *   True or false.
+   */
+  public static function setLrsQueueRecord($request, $method, $error, $arg1 = NULL, $arg2 = NULL) {
+    try {
+      DB::table('lm_lrs_records_queue')->insert([
+        [
+          'request' => serialize($request),
+          'method' => $method,
+          'arg1' => $arg1,
+          'arg2' => $arg2,
+          'error' => $error,
+          'created_on' => time(),
+        ],
+      ]);
+
+      return TRUE;
+    }
+    catch (\Exception $e) {
+      return FALSE;
+    }
+  }
+
+  /**
+   * Get failed record from queue and put in lrs.
+   *
+   * @return array
+   *   Data to reprocess.
+   */
+  public static function getLrsQueueRecord() {
+    try {
+      // Query for get all pending statement ids.
+      $query = DB::table('lm_lrs_records_queue as lrs');
+      $query->select();
+      $query->where('lrs.method', '=', 'PUT');
+      $query->where('lrs.is_processed', '=', '0');
+      $result = $query->get();
+      if (empty($result)) {
+        return TRUE;
+      }
+      foreach ($result as $key => $value) {
+        $response[] = [
+          'id' => $value->id,
+          'request' => $value->request,
+          'method' => $value->method,
+          'arg1' => $value->arg1,
+          'arg2' => $value->arg2,
+        ];
+      }
+
+      return $response;
+    }
+    catch (\Exception $e) {
+      return FALSE;
+    }
+  }
+
+  /**
+   * Update processed record status in queue table.
+   *
+   * @param int $id
+   *   Record id to be Updated.
+   */
+  public static function updateLrsQueueRecord($id) {
+    try {
+      DB::table('lm_lrs_records_queue')
+        ->where('id', '=', $id)
+        ->update(['is_processed' => 1]);
+    }
+    catch (\Exception $e) {
+      return FALSE;
+    }
+  }
+
 }
