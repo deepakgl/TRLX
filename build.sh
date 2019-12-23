@@ -20,8 +20,8 @@ enable_modules(){
         echo "Installing modules"
         cd $CODE_PATH
         $DRUSHCMD cr
-        $DRUSHCMD cim -y
-        $DRUSHCMD cr
+        #$DRUSHCMD cim -y
+        #$DRUSHCMD cr
         if [ $? != 0 ]
         then
         echo "Enabling standard distribution modules failed."
