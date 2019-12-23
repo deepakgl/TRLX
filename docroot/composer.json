@@ -127,13 +127,11 @@
                 "add user lang": "patches/feeds/feeds-language-target-2829283-9.patch"
             },
             "drupal/core": {
-                "login with mail": "patches/user/login_with_mail.patch",
                 "status check": "patches/user/user_status_access.patch",
                 "string translation": "patches/translation/drupal_core_translatablemarkup.patch",
                 "admin people view": "patches/user/admin_people_view.patch",
                 "content translation": "patches/translation/content_translation_dependency.patch",
                 "content translation temp": "patches/translation/content_translation_temp.patch",
-                "Update user validation messages": "patches/user/user_login_link.patch",
                 "seventheme role added": "patches/seven/seven-theme.patch",
                 "Entity edit list Operation": "patches/entity_list_builder/edit_entity_delete_translation.patch",
                 "Hide file size limit": "patches/file/file_help_text_hide.patch"
