@@ -116,6 +116,7 @@ class CommentListing extends ResourceBase {
       $comments[$i]['userId'] = $comment->user_id;
       $comments[$i]['commentTime'] = (int) $comment->comment_timestamp;
       $comments[$i]['comment'] = $comment->comment_body;
+      $comments[$i]['comment_edit_flag'] = ($comment->comment_edit_flag == 1) ? TRUE : FALSE;
       $comments[$i]['tags'] = !empty($comment->comment_tags) ? Json::decode($comment->comment_tags) : [];
       $comments[$i]['language'] = $comment->langcode;
       $i++;

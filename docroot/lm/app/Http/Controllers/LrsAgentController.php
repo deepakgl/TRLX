@@ -60,7 +60,7 @@ class LrsAgentController extends Controller {
   protected function buildUrl($arg1, $arg2, $param) {
     $lrs_url = getenv("LRS_URL");
     $param = http_build_query($param);
-    $url = $lrs_url . $arg1 . '/' . $arg2 . '?' . $param;
+    $url = $lrs_url . '/' . $arg1 . '/' . $arg2 . '?' . $param;
     return $url;
   }
 
@@ -162,8 +162,9 @@ class LrsAgentController extends Controller {
    */
   public function put(Request $request, $arg1, $arg2 = NULL) {
     $decode = json_decode($request->getcontent(), TRUE);
-    if (isset($decode['verb']['display']['und'])) {
-      $statement_status = $decode['verb']['display']['und'];
+    if (!empty($decode['verb']['display'])) {
+      $displayKey = array_keys($decode['verb']['display']);
+      $statement_status = $decode['verb']['display'][$displayKey[0]];
       $statement_id = $decode['id'];
       $uid = $request->input('uid');
       $nid = $request->input('nid');

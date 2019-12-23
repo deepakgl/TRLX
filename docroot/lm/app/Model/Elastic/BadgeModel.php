@@ -74,6 +74,10 @@ class BadgeModel {
    *   AllStamps/MyStamps.
    */
   public static function setBadgeMasterData($badge_data, $flag = NULL, $url = NULL) {
+    if (empty($badge_data['badge_master'])) {
+      return [];
+    }
+
     $all_badges = [];
     foreach ($badge_data['badge_master'] as $key => $value) {
       $fids[] = [

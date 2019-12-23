@@ -1,0 +1,18 @@
+uuid: 9fb78369-58db-4594-b792-15431fe9d4b6
+langcode: en
+status: true
+dependencies:
+  module:
+    - serialization
+    - trlx_comment
+    - trlx_utility
+id: comment_delete
+plugin_id: comment_delete
+granularity: resource
+configuration:
+  methods:
+    - DELETE
+  formats:
+    - json
+  authentication:
+    - jwt_Auth

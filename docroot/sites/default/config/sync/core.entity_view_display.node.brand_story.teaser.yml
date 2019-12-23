@@ -36,9 +36,12 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
+  field_best_seller_title: true
   field_brands: true
   field_display_title: true
+  field_downloadable: true
   field_featured_image: true
+  field_image_home_page: true
   field_markets: true
   field_point_value: true
   field_subtitle: true

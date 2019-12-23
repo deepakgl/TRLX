@@ -1,17 +1,17 @@
-uuid: 9c99ccac-45cf-47c3-9e3e-b19a99d9a496
+uuid: c9b2eab5-0ec5-4e39-9c9d-0e48914524cb
 langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.taxonomy_term.field_hero_image
+    - field.storage.node.field_hero_image
     - media.type.image
-    - taxonomy.vocabulary.listing_image
-id: taxonomy_term.listing_image.field_hero_image
+    - node.type.brand_story
+id: node.brand_story.field_hero_image
 field_name: field_hero_image
-entity_type: taxonomy_term
-bundle: listing_image
-label: 'Listing Image'
-description: 'Allowed file types:<b> png, jpg, jpeg.</b><br>Image Resolution:<b> 1440X800px</b>'
+entity_type: node
+bundle: brand_story
+label: 'Hero Image'
+description: 'Allowed file types:<b> png, jpg, jpeg.</b><br>Image Resolution:<b> 220X220px</b>'
 required: false
 translatable: true
 default_value: {  }
