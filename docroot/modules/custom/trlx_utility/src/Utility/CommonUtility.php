@@ -562,11 +562,11 @@ class CommonUtility {
                   $carousel_file_id = $value->get('field_featured_image')->first()->getValue()['target_id'];
                   $carousel_media_entity = ($carousel_file_id) ? Media::load($carousel_file_id) : '';
                   $carousel_path = $carousel_media_entity->field_media_image->entity->getFileUri();
-                }
-                foreach ($styles as $img_style) {
-                  $style = \Drupal::entityTypeManager()->getStorage('image_style')->load($img_style);
-                  $build_uri = $style->buildUri($carousel_path);
-                  $style->createDerivative($carousel_path, $build_uri);
+                  foreach ($styles as $img_style) {
+                    $style = \Drupal::entityTypeManager()->getStorage('image_style')->load($img_style);
+                    $build_uri = $style->buildUri($carousel_path);
+                    $style->createDerivative($carousel_path, $build_uri);
+                  }
                 }
               }
             }
@@ -608,9 +608,10 @@ class CommonUtility {
       $params['type'] = 'node';
       $params['body'] = ['ids' => $nids];
       $response = $client->mget($params);
+      $like_count = [];
       foreach ($response['docs'] as $key => $value) {
         // If data found in elastic.
-        if ($value['found'] == 1) {
+        if (isset($value['found']) && $value['found'] == 1) {
           if (array_key_exists('like_by_user', $value['_source'])) {
             $like_count[] = (int) count($value['_source']['like_by_user']);
           }

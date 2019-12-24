@@ -114,7 +114,7 @@ class LevelUtility {
         ->condition('n.status', '1')
         ->condition('n.type', 'level_interactive_content')
         ->condition('n.langcode', $lang)
-        ->condition('nfm.field_markets_target_id', $markets, IN)
+        ->condition('nfm.field_markets_target_id', $markets, 'IN')
         ->orderBy('ds.weight', 'ASC');
       $result = $query->execute()->fetchAll();
       foreach ($result as $key => $value) {

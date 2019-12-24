@@ -28,7 +28,7 @@ class AuditEventLogger {
    *   The label of the entity.
    */
   public function getEntityLabel($entity) {
-
+    $label = '';
     $entity_id = $entity->getEntityTypeId();
     switch ($entity_id) {
       case 'node':

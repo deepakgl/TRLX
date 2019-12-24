@@ -579,6 +579,7 @@ function trlx_utility_file_validate(FileInterface $file) {
   $inValidImage = file_validate_is_image($file);
 
   // Check whether the file is a valid image file only.
+  $errors = [];
   if (empty($inValidImage)) {
     // Fetch file type.
     $fileType = $file->getMimeType();
