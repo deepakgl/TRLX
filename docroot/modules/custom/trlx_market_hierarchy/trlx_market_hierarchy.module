@@ -51,10 +51,11 @@ function trlx_market_hierarchy_views_query_alter($view, $query) {
   ];
   if (in_array($view->id(), $view_id) && in_array($view->current_display, $current_display)) {
     global $_userData;
-    $regions = $_userData->region;
-    $subregions = $_userData->subregion;
-    $country = $_userData->country;
+    $regions = isset($_userData->region) ? $_userData->region : [];
+    $subregions = isset($_userData->subregion) ? $_userData->subregion : [];
+    $country = isset($_userData->country) ? $_userData->country : [];
     // Get region, subregion or country from token if array is not empty.
+    $ref_keys = [];
     if (!empty($country)) {
       $ref_keys = $country;
     }
@@ -64,15 +65,17 @@ function trlx_market_hierarchy_views_query_alter($view, $query) {
     elseif (!empty($regions)) {
       $ref_keys = $regions;
     }
-    $user_utility = new UserUtility();
-    // Get current user markets.
-    $markets = array_column($user_utility->getMarketByReferenceId($ref_keys), 'entity_id');
-    $operator = 'IN';
-    if (!empty($markets)) {
-      // Add markets table to the query.
-      $query->queueTable('node__field_markets', "node_field_data", NULL, 'node__field_markets');
-      // Add markets condition based on the current user.
-      $query->addWhere('1', 'node__field_markets.field_markets_target_id', $markets, $operator);
+    if (!empty($ref_keys)) {
+      $user_utility = new UserUtility();
+      // Get current user markets.
+      $markets = array_column($user_utility->getMarketByReferenceId($ref_keys), 'entity_id');
+      $operator = 'IN';
+      if (!empty($markets)) {
+        // Add markets table to the query.
+        $query->queueTable('node__field_markets', "node_field_data", NULL, 'node__field_markets');
+        // Add markets condition based on the current user.
+        $query->addWhere('1', 'node__field_markets.field_markets_target_id', $markets, $operator);
+      }
     }
   }
 }

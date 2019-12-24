@@ -249,7 +249,7 @@ class ConsumerListing extends ResourceBase {
       $query->addField('fcc', 'field_consumer_category_target_id', 'categoryId');
 
       // Order by.
-      $query->orderBy('timestamp', DESC);
+      $query->orderBy('timestamp', 'DESC');
       $results = $query->execute()->fetchAll();
     }
     catch (\Exception $e) {

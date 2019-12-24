@@ -141,7 +141,7 @@ function elx_utility_update_8507() {
   }
 
   // Create field storage for the 'Highlight' base field.
-  $entity_manager = \Drupal::entityManager();
-  $definition = $entity_manager->getFieldStorageDefinitions('menu_link_content')['elx_menu_content'];
-  $entity_manager->onFieldStorageDefinitionCreate($definition);
+  // $entity_manager = \Drupal::entityManager();
+  // $definition = $entity_manager->getFieldStorageDefinitions('menu_link_content')['elx_menu_content'];
+  // $entity_manager->onFieldStorageDefinitionCreate($definition);
 }

@@ -23,6 +23,7 @@ class SerializerWithPager extends Serializer {
    */
   public function render() {
     $rows = [];
+    $current_page = $next_page = $count = $items_per_page = $pages = 0;
     if (isset($this->view->pager)) {
       $count = $this->view->pager->getTotalItems();
       $items_per_page = $this->view->pager->options['items_per_page'];
