@@ -17,7 +17,6 @@ class RedisClientBuilder {
   public static function getRedisClientObject($key) {
     global $_userData;
     $client = [];
-    return $client;
     // Get the redis settings variable for the site.
     $settings = \Drupal::config('elx_utility.settings')->getRawData();
     try {
