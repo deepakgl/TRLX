@@ -45,12 +45,13 @@ function trlx_utility_entity_base_field_info(EntityTypeInterface $entity_type) {
  */
 function trlx_utility_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   switch ($form_id) {
-    case 'node_brand_story_form':
     case 'node_brand_story_edit_form':
-    case 'node_product_detail_form':
     case 'node_product_detail_edit_form':
-    case 'node_tools_form':
     case 'node_tools_edit_form':
+      $form['field_brands']['widget']['#default_value'] = $form['field_brands']['widget']['#default_value'][0];
+    case 'node_brand_story_form':
+    case 'node_product_detail_form':
+    case 'node_tools_form':
       $form['field_brands']['widget']['#type'] = 'radios';
     case 'node_level_interactive_content_form':
     case 'node_level_interactive_content_edit_form':
