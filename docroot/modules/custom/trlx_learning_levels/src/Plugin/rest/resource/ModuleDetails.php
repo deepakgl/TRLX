@@ -117,8 +117,8 @@ class ModuleDetails extends ResourceBase {
     $user_utility = new UserUtility();
     global $_userData;
     global $base_url;
-    $lumen_url = \Drupal::config('elx_utility.settings')
-      ->get('lumen_url');
+    $config = \Drupal::config('elx_utility.settings');
+    $lumen_url = $config->get('lumen_url');
     // @todo will add dynamic data once user repository work done.
     // Get all user information from user repository.
     $user_roles = ['beauty_advisor'];
@@ -131,16 +131,21 @@ class ModuleDetails extends ResourceBase {
       $user_name . '","objectType":"' .
       implode(',', $user_roles) . '"';
     $actor = "{" . urlencode($actor) . "}";
-    $statement_id = \Drupal::config('elx_utility.settings')
-      ->get('lrs_statement_id');
+    $statement_id = $config->get('lrs_statement_id');
     $uuid_service = \Drupal::service('uuid');
     $uuid = $uuid_service->generate();
     $learning_category = $levelUtility->getLevelCategory($nid);
     // Fetch CDN url from config 'elx_front_end_url'.
-    $filePublicUrl = \Drupal::config('elx_utility.settings')->get('elx_front_end_url');
+    $filePublicUrl = $config->get('elx_front_end_url');
+    if ($config->get('elx_environment') == 'trlx_prod') {
+      $lumen_end_point = '/v1/slrsa&auth=';
+    }
+    else {
+      $lumen_end_point = '/lm/api/v1/slrsa&auth=';
+    }
     $fileDomain = str_replace('sites/default/files', '', $filePublicUrl);
     $decode['articulateFile'] = $fileDomain . ltrim($decode['articulateFile'], '/')
-     . '?tincan=true&endpoint=' . $lumen_url . '/lm/api/v1/slrsa&auth='
+     . '?tincan=true&endpoint=' . $lumen_url . $lumen_end_point
      . $statement_id . '&actor=' . $actor . '&registration=' .
      $uuid . '&uid='
      . $_userData->userId . '&tid=' . $learning_category . '&nid=' . $nid . '&lang=' . $language . '&market=' . $market;
