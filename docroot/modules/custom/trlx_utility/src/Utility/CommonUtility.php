@@ -1011,4 +1011,32 @@ class CommonUtility {
     }
   }
 
+  /**
+   * Fetch user data from elastic.
+   *
+   * @param int $uid
+   *   User id.
+   *
+   * @return array
+   *   Elastic user data.
+   */
+  public static function fetchElasticUserData($uid) {
+    $common_utility = new CommonUtility();
+    $client = $common_utility->setElasticConnectivity();
+    $env = \Drupal::config('elx_utility.settings')->get('elx_environment');
+    $params = [
+      'index' => $env . '_user',
+      'type' => 'user',
+      'id' => 'user_' . $uid,
+    ];
+    try {
+      $response = $client->get($params);
+    }
+    catch (\Exception $e) {
+      return FALSE;
+    }
+
+    return $response;
+  }
+
 }

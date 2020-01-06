@@ -781,3 +781,36 @@ function trlx_utility_theme() {
     ],
   ];
 }
+
+/**
+ * Implements hook_views_data().
+ */
+function trlx_utility_views_data() {
+  $data['views']['table']['group'] = t('Custom Global');
+  $data['views']['table']['join'] = [
+    // #global is a special flag which allows a table to appear all the time.
+    '#global' => [],
+  ];
+  $data['views']['trlx_user'] = [
+    'title' => t('Author'),
+    'help' => t('TRU user email address.'),
+    'field' => [
+      'id' => 'trlx_user',
+    ],
+  ];
+  $data['views']['trlx_comment_content_title'] = [
+    'title' => t('Comment content title'),
+    'help' => t('Content title on which the comment is posted.'),
+    'field' => [
+      'id' => 'trlx_comment_content_title',
+    ],
+  ];
+  $data['views']['trlx_comment_content_type'] = [
+    'title' => t('Comment content type'),
+    'help' => t('Content type on which the comment is posted.'),
+    'field' => [
+      'id' => 'trlx_comment_content_type',
+    ],
+  ];
+  return $data;
+}

@@ -1,0 +1,31 @@
+<?php
+
+/**
+ * @file
+ * Module file.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_form_alter().
+ */
+function trlx_comment_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $is_desired_form = strpos($form['#id'], 'views-exposed-form-comment-dashboard-page-1') !== FALSE;
+  // If we have the desired exposed form.
+  if ($form_id == "views_exposed_form" && $is_desired_form) {
+
+    // Change the filter from type text to select.
+    $form['langcode']['#type'] = 'select';
+    // Set the size to NULL.
+    $form['langcode']['#size'] = NULL;
+    $config = \Drupal::config('trlx_utility.settings');
+    // Return all languages for global admin role.
+    $languages = $config->get('site_languages');
+    $default_array[""] = '-All-';
+    $options = array_replace($default_array, $languages);
+
+    // Set your custom options on your select filter.
+    $form['langcode']['#options'] = $options;
+  }
+}
