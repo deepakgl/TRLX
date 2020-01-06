@@ -1,0 +1,7 @@
+trlx_comment.delete_comment:
+  path: '/comment/delete/{comment_id}/{comment_lang_code}'
+  defaults:
+    _controller: '\Drupal\trlx_comment\Controller\DeleteCommentController::delete'
+    _title: 'Delete comment'
+  requirements:
+    _permission: 'administer site configuration'
