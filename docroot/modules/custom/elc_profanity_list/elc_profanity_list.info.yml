@@ -1,0 +1,5 @@
+name: ELC Profanity List
+type: module
+description: ELC custom module for Profanity List.
+core: 8.x
+package: ELC
