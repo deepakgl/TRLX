@@ -87,9 +87,81 @@ display:
           summary: ''
           description: ''
           columns:
+            trlx_comment_content_title: trlx_comment_content_title
+            trlx_comment_content_type: trlx_comment_content_type
+            comment_body: comment_body
+            user_id: user_id
+            trlx_user: trlx_user
+            comment_timestamp: comment_timestamp
+            comment_update_timestamp: comment_update_timestamp
             id: id
+            langcode: langcode
+            nothing: nothing
           info:
+            trlx_comment_content_title:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            trlx_comment_content_type:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            comment_body:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            user_id:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            trlx_user:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            comment_timestamp:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            comment_update_timestamp:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
             id:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            langcode:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            nothing:
               sortable: false
               default_sort_order: asc
               align: ''
@@ -585,7 +657,7 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: '<a href="/comment/delete/{{ id }}/{{ langcode }}" hreflang={{ langcode }}>Delete</a>'
+            text: '<a href="/comment/delete/confirm/{{ id }}/{{ langcode }}" hreflang={{ langcode }}>Delete</a>'
             make_link: false
             path: ''
             absolute: false
