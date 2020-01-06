@@ -1,0 +1,18 @@
+uuid: 93b21c70-a0c6-40a1-a3ad-194e5b896efd
+langcode: en
+status: true
+dependencies:
+  module:
+    - elc_profanity_list
+    - serialization
+    - trlx_utility
+id: profanity_list
+plugin_id: profanity_list
+granularity: resource
+configuration:
+  methods:
+    - GET
+  formats:
+    - json
+  authentication:
+    - jwt_Auth

@@ -1,0 +1,8 @@
+uuid: 11862a5f-9b47-49b6-b398-5cb9d64d5190
+langcode: en
+status: true
+dependencies: {  }
+name: 'Profanity List'
+vid: profanity_list
+description: ''
+weight: 0

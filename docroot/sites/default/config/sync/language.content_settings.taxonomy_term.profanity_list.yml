@@ -1,0 +1,11 @@
+uuid: 26c44f6d-5a19-495a-8399-ff5ca2c1b180
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.profanity_list
+id: taxonomy_term.profanity_list
+target_entity_type_id: taxonomy_term
+target_bundle: profanity_list
+default_langcode: site_default
+language_alterable: true

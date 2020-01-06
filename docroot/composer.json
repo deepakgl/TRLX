@@ -118,10 +118,6 @@
                 "entityqueue queue routing alter": "patches/entityqueue/entityqueue_routing.patch",
                 "entityqueue title update": "patches/entityqueue/simple.patch"
             },
-            "drupal/bulk_update_fields": {
-                "show labels": "patches/bulk_update_fields/show_labels.patch",
-                "bulk fields": "patches/bulk_update_fields/update_media_field.patch"
-            },
             "drupal/feeds": {
                 "add user role": "patches/feeds/feeds-config-entityreference.patch",
                 "add user lang": "patches/feeds/feeds-language-target-2829283-9.patch"

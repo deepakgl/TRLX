@@ -1,0 +1,30 @@
+uuid: c4507ef2-64b7-4bf0-84a0-68ceb4848ee7
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.profanity_list
+id: taxonomy_term.profanity_list.default
+targetEntityType: taxonomy_term
+bundle: profanity_list
+mode: default
+content:
+  langcode:
+    type: language_select
+    weight: 1
+    region: content
+    settings:
+      include_locked: true
+    third_party_settings: {  }
+  name:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  description: true
+  path: true
+  status: true
