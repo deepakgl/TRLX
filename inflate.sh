@@ -145,5 +145,5 @@ fi
 composer_install
 gulp_check
 npm_check
-#install_dep
-update_dep
+install_dep
+#update_dep
