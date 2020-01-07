@@ -1,7 +1,8 @@
-trlx_comment.delete_comment:
-  path: '/comment/delete/{comment_id}/{comment_lang_code}'
+trlx_comment.delete_confirmation_form:
+  path: '/comment/delete/confirm/{commentId}/{commentLangCode}'
   defaults:
-    _controller: '\Drupal\trlx_comment\Controller\DeleteCommentController::delete'
-    _title: 'Delete comment'
+    _form: '\Drupal\trlx_comment\Form\ConfirmDeleteForm'
+    _title: 'Confirm Deletion'
   requirements:
     _permission: 'administer site configuration'
+    commentId: ^\d+$
