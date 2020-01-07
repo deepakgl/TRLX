@@ -21,6 +21,12 @@ class StaticTranslationForm extends FormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
+    $form['type'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Select type'),
+      '#options' => ['static_translation' => 'Static Translation', 'profanity_list' => 'Profanity List'],
+      '#required' => TRUE,
+    ];
     $form['file_upload'] = [
       '#type' => 'managed_file',
       '#title' => $this->t('Import CSV File'),
@@ -32,7 +38,7 @@ class StaticTranslationForm extends FormBase {
     ];
     $form['static_translation'] = [
       '#type' => 'submit',
-      '#value' => $this->t('Import Static Translation'),
+      '#value' => $this->t('Import Sheet'),
       '#button_type' => 'primary',
     ];
 
@@ -53,21 +59,37 @@ class StaticTranslationForm extends FormBase {
    * Form submit.
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
+    $type = $form_state->getValue('type');
     $file_uri = _trlx_file_uri($form_state->getValue('file_upload')[0]);
     if (($handle = fopen($file_uri, 'r')) !== FALSE) {
       while (($data = fgetcsv($handle)) !== FALSE) {
-        $value = [
-          'name' => $data[0],
-          'string_translation' => $data[1],
-          'language' => $data[2],
-        ];
-        $operations[] = [
-          '\Drupal\trlx_static_translation\StaticTranslationsOperations::import',
-          [
-            $value,
-            t('(Operation @operation)', ['@operation' => $value]),
-          ],
-        ];
+        if ($type == 'profanity_list') {
+          $value = [
+            'name' => $data[0],
+            'language' => $data[1],
+          ];
+          $operations[] = [
+            '\Drupal\trlx_static_translation\StaticTranslationsOperations::profanityImport',
+            [
+              $value,
+              t('(Operation @operation)', ['@operation' => $value]),
+            ],
+          ];
+        }
+        else {
+          $value = [
+            'name' => $data[0],
+            'string_translation' => $data[1],
+            'language' => $data[2],
+          ];
+          $operations[] = [
+            '\Drupal\trlx_static_translation\StaticTranslationsOperations::import',
+            [
+              $value,
+              t('(Operation @operation)', ['@operation' => $value]),
+            ],
+          ];
+        }
       }
       // Set batch to unblock user.
       $batch = [
