@@ -64,7 +64,7 @@ class CommentContentTypeField extends FieldPluginBase {
     $langcode = $values->trlx_comment_langcode;
     $common_utility = new CommonUtility();
     $node_data = $common_utility->getNodeData($entity_id, $langcode);
-    return $node_data->get('type')->first()->getValue()['target_id'];
+    return $node_data->type->entity->label();
   }
 
 }

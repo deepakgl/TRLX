@@ -16,10 +16,16 @@ dependencies:
     - node.type.welcome_message
     - taxonomy.vocabulary.brands
     - taxonomy.vocabulary.markets
+    - taxonomy.vocabulary.trlx_content_sections
     - user.role.administrator
     - user.role.authenticated
     - user.role.el_nyo_global_education_system_admin
     - user.role.el_regional_market_admin
+  content:
+    - 'taxonomy_term:trlx_content_sections:038a0d73-0ce3-4cf8-addb-34e6acd08da1'
+    - 'taxonomy_term:trlx_content_sections:37b75f67-c2e7-4cdb-9d8c-7f94799543fa'
+    - 'taxonomy_term:trlx_content_sections:d28491e7-0868-45c5-91d4-9fccd51436ad'
+    - 'taxonomy_term:trlx_content_sections:dc153e06-46ec-4f05-b4b2-9c75e80d94f0'
   module:
     - content_translation
     - node
@@ -33,7 +39,6 @@ description: ''
 tag: ''
 base_table: node_field_data
 base_field: nid
-core: 8.x
 display:
   default:
     display_plugin: default
@@ -611,6 +616,8 @@ display:
             remember_roles:
               authenticated: authenticated
             reduce: false
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -659,6 +666,8 @@ display:
               el_nyo_global_education_system_admin: '0'
               el_regional_market_translator: '0'
             placeholder: ''
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -711,6 +720,8 @@ display:
               el_nyo_global_education_system_admin: '0'
               el_regional_market_translator: '0'
             reduce: true
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -759,6 +770,8 @@ display:
               el_nyo_global_education_system_admin: '0'
               el_regional_market_translator: '0'
             reduce: false
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -853,6 +866,8 @@ display:
               el_nyo_global_education_system_admin: '0'
               el_regional_market_translator: '0'
             reduce: false
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -977,6 +992,8 @@ display:
             remember_roles:
               authenticated: authenticated
             reduce: false
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -1025,6 +1042,8 @@ display:
               el_nyo_global_education_system_admin: '0'
               el_regional_market_translator: '0'
             placeholder: ''
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -1082,6 +1101,8 @@ display:
               el_nyo_global_education_system_admin: '0'
               el_regional_market_translator: '0'
             reduce: true
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -1130,6 +1151,8 @@ display:
               el_nyo_global_education_system_admin: '0'
               el_regional_market_translator: '0'
             reduce: false
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -1184,6 +1207,8 @@ display:
               el_nyo_global_education_system_admin: '0'
               el_regional_market_translator: '0'
             reduce: true
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -1224,6 +1249,8 @@ display:
             remember_roles:
               authenticated: authenticated
             reduce: false
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -1693,6 +1720,8 @@ display:
             remember_roles:
               authenticated: authenticated
             reduce: false
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -1736,6 +1765,8 @@ display:
               el_regional_market_admin: '0'
               el_nyo_global_education_system_admin: '0'
             placeholder: ''
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -1787,6 +1818,8 @@ display:
               el_regional_market_admin: '0'
               el_nyo_global_education_system_admin: '0'
             reduce: true
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -1837,6 +1870,8 @@ display:
               el_nyo_global_education_system_admin: '0'
               el_regional_market_translator: '0'
             reduce: true
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -1852,6 +1887,59 @@ display:
           entity_type: node
           entity_field: langcode
           plugin_id: language
+        field_content_section_target_id:
+          id: field_content_section_target_id
+          table: node__field_content_section
+          field: field_content_section_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: or
+          value:
+            86474: 86474
+            86472: 86472
+            86473: 86473
+            86465: 86465
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_content_section_target_id_op
+            label: 'Content Section'
+            description: ''
+            use_operator: false
+            operator: field_content_section_target_id_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_content_section_target_id
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              administrator: '0'
+              el_regional_market_admin: '0'
+              el_nyo_global_education_system_admin: '0'
+            reduce: true
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          type: select
+          limit: true
+          vid: trlx_content_sections
+          hierarchy: false
+          error_message: true
+          plugin_id: taxonomy_index_tid
         field_brands_target_id:
           id: field_brands_target_id
           table: node__field_brands
@@ -1880,6 +1968,8 @@ display:
               el_regional_market_admin: '0'
               el_nyo_global_education_system_admin: '0'
             reduce: false
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -1916,6 +2006,8 @@ display:
             description: ''
             use_operator: false
             operator: field_markets_target_id_op
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: field_markets_target_id
             required: false
             remember: false
@@ -1943,7 +2035,7 @@ display:
           type: select
           limit: true
           vid: markets
-          hierarchy: false
+          hierarchy: true
           error_message: true
           plugin_id: taxonomy_index_tid
         field_translation_value:
@@ -1971,6 +2063,8 @@ display:
             remember_roles:
               authenticated: authenticated
             reduce: false
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -2010,6 +2104,8 @@ display:
             remember_roles:
               authenticated: authenticated
             reduce: false
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -2555,6 +2651,8 @@ display:
             remember_roles:
               authenticated: authenticated
             reduce: false
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -2598,6 +2696,8 @@ display:
               el_regional_market_admin: '0'
               el_nyo_global_education_system_admin: '0'
             placeholder: ''
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -2649,6 +2749,8 @@ display:
               el_regional_market_admin: '0'
               el_nyo_global_education_system_admin: '0'
             reduce: true
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -2699,6 +2801,8 @@ display:
               el_nyo_global_education_system_admin: '0'
               el_regional_market_translator: '0'
             reduce: true
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -2714,6 +2818,59 @@ display:
           entity_type: node
           entity_field: langcode
           plugin_id: language
+        field_content_section_target_id:
+          id: field_content_section_target_id
+          table: node__field_content_section
+          field: field_content_section_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: or
+          value:
+            86474: 86474
+            86472: 86472
+            86473: 86473
+            86465: 86465
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_content_section_target_id_op
+            label: 'Content Section'
+            description: ''
+            use_operator: false
+            operator: field_content_section_target_id_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_content_section_target_id
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              administrator: '0'
+              el_regional_market_admin: '0'
+              el_nyo_global_education_system_admin: '0'
+            reduce: true
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          type: select
+          limit: true
+          vid: trlx_content_sections
+          hierarchy: false
+          error_message: true
+          plugin_id: taxonomy_index_tid
         field_brands_target_id:
           id: field_brands_target_id
           table: node__field_brands
@@ -2742,6 +2899,8 @@ display:
               el_regional_market_admin: '0'
               el_nyo_global_education_system_admin: '0'
             reduce: false
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -2778,6 +2937,8 @@ display:
             description: ''
             use_operator: false
             operator: field_markets_target_id_op
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: field_markets_target_id
             required: false
             remember: false
@@ -2805,7 +2966,7 @@ display:
           type: select
           limit: true
           vid: markets
-          hierarchy: false
+          hierarchy: true
           error_message: true
           plugin_id: taxonomy_index_tid
         status:
@@ -2831,6 +2992,8 @@ display:
             multiple: false
             remember_roles:
               authenticated: authenticated
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -3313,6 +3476,8 @@ display:
             remember_roles:
               authenticated: authenticated
             reduce: false
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -3356,6 +3521,8 @@ display:
               el_regional_market_admin: '0'
               el_nyo_global_education_system_admin: '0'
             placeholder: ''
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -3407,6 +3574,8 @@ display:
               el_regional_market_admin: '0'
               el_nyo_global_education_system_admin: '0'
             reduce: true
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -3457,6 +3626,8 @@ display:
               el_nyo_global_education_system_admin: '0'
               el_regional_market_translator: '0'
             reduce: true
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -3472,6 +3643,59 @@ display:
           entity_type: node
           entity_field: langcode
           plugin_id: language
+        field_content_section_target_id:
+          id: field_content_section_target_id
+          table: node__field_content_section
+          field: field_content_section_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: or
+          value:
+            86474: 86474
+            86472: 86472
+            86473: 86473
+            86465: 86465
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_content_section_target_id_op
+            label: 'Content Section'
+            description: ''
+            use_operator: false
+            operator: field_content_section_target_id_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_content_section_target_id
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              administrator: '0'
+              el_regional_market_admin: '0'
+              el_nyo_global_education_system_admin: '0'
+            reduce: true
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          type: select
+          limit: true
+          vid: trlx_content_sections
+          hierarchy: false
+          error_message: true
+          plugin_id: taxonomy_index_tid
         field_brands_target_id:
           id: field_brands_target_id
           table: node__field_brands
@@ -3500,6 +3724,8 @@ display:
               el_regional_market_admin: '0'
               el_nyo_global_education_system_admin: '0'
             reduce: false
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -3536,6 +3762,8 @@ display:
             description: ''
             use_operator: false
             operator: field_markets_target_id_op
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: field_markets_target_id
             required: false
             remember: false
@@ -3563,7 +3791,7 @@ display:
           type: select
           limit: true
           vid: markets
-          hierarchy: false
+          hierarchy: true
           error_message: true
           plugin_id: taxonomy_index_tid
         status:
@@ -3589,6 +3817,8 @@ display:
             multiple: false
             remember_roles:
               authenticated: authenticated
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''

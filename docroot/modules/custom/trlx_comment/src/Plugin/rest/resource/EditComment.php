@@ -63,7 +63,7 @@ class EditComment extends ResourceBase {
     if (!empty($missingParams)) {
       return $this->commonUtility->invalidData($missingParams);
     }
-    if (isset($data['parentId']) && !empty($data['parentId'])) {
+    if (isset($data['parentId'])) {
       $response = $this->commonUtility->validatePositiveValue($data['parentId']);
       if (!($response->getStatusCode() === Response::HTTP_OK)) {
         return $response;

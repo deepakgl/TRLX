@@ -37,6 +37,7 @@ class CommentUtility {
         'comment_tags',
         'langcode',
         'comment_timestamp',
+        'comment_update_timestamp',
       ])
       ->values([
         'user_id' => $_userData->userId,
@@ -46,6 +47,7 @@ class CommentUtility {
         'comment_tags' => !empty($data['tags']) ? Json::encode($data['tags']) : '',
         'langcode' => $langcode,
         'comment_timestamp' => REQUEST_TIME,
+        'comment_update_timestamp' => REQUEST_TIME,
       ])
       ->execute();
 
