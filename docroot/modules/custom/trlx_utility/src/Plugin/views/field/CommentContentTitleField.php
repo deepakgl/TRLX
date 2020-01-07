@@ -63,8 +63,14 @@ class CommentContentTitleField extends FieldPluginBase {
     $entity_id = $values->node_field_data_trlx_comment_nid;
     $langcode = $values->trlx_comment_langcode;
     $common_utility = new CommonUtility();
+    $langcode = empty($langcode) ? 'en' : $langcode;
     $node_data = $common_utility->getNodeData($entity_id, $langcode);
-    return $node_data->get('title')->first()->getValue()['value'];
+    if ($node_data != FALSE) {
+      return $node_data->get('title')->first()->getValue()['value'];
+    }
+    else {
+      return '';
+    }
   }
 
 }

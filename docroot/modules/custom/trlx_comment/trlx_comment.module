@@ -7,6 +7,7 @@
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\node\Entity\NodeType;
+use Drupal\Core\Database\Query\SelectInterface;
 
 /**
  * Implements hook_form_alter().
@@ -56,6 +57,11 @@ function trlx_comment_form_alter(&$form, FormStateInterface $form_state, $form_i
  */
 function trlx_comment_views_query_alter($view, $query) {
   if ($view->id() == 'comment_dashboard') {
+    $query->getTableQueue()['node_field_data_trlx_comment']['join']->extra[] = [
+      'field' => 'langcode',
+      'left_table' => 'trlx_comment',
+      'left_field' => 'langcode',
+    ];
     if (isset($view->query->orderby)) {
       foreach ($view->query->orderby as $orderby_key => $orderby_value) {
         if ($orderby_value['field'] == 'unknown') {

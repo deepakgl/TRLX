@@ -1,18 +1,20 @@
 ignored_config_entities:
-  0: google_analytics.settings
-  2: elx_utility.settings
-  4: mailsystem.settings
-  6: key.key.sendgrid
-  8: system.theme
-  10: 'search_api.*'
-  12: user.mail
-  14: 'elasticsearch_connector.*'
-  16: system.file
-  18: trlx_utility.settings
-  20: trlx_notification.settings
-  22: entityqueue.entity_queue.spotlight_section
-  24: entityqueue.entity_queue.insider_corner_hompage
-  26: welcome_message.settings
-  28: trlx_banner.welcome_message.settings
+  - google_analytics.settings
+  - elx_utility.settings
+  - mailsystem.settings
+  - key.key.sendgrid
+  - system.theme
+  - 'search_api.*'
+  - user.mail
+  - 'elasticsearch_connector.*'
+  - system.file
+  - trlx_utility.settings
+  - trlx_notification.settings
+  - entityqueue.entity_queue.spotlight_section
+  - entityqueue.entity_queue.insider_corner_hompage
+  - welcome_message.settings
+  - trlx_banner.welcome_message.settings
+  - views.view.comment_dashboard
+  - views.view.dashboard
 _core:
   default_config_hash: UVH1aJ4b44UM-VdPVN7hNNuuVqfReJxwfVeDQH1Hvsk
