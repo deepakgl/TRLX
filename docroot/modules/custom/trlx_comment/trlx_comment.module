@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\node\Entity\NodeType;
 
 /**
  * Implements hook_form_alter().
@@ -14,7 +15,7 @@ function trlx_comment_form_alter(&$form, FormStateInterface $form_state, $form_i
   $is_desired_form = strpos($form['#id'], 'views-exposed-form-comment-dashboard-page-1') !== FALSE;
   // If we have the desired exposed form.
   if ($form_id == "views_exposed_form" && $is_desired_form) {
-
+    // Changing lancode filter form text field to dropdown.
     // Change the filter from type text to select.
     $form['langcode']['#type'] = 'select';
     // Set the size to NULL.
@@ -24,8 +25,20 @@ function trlx_comment_form_alter(&$form, FormStateInterface $form_state, $form_i
     $languages = $config->get('site_languages');
     $default_array[""] = '-All-';
     $options = array_replace($default_array, $languages);
-
     // Set your custom options on your select filter.
     $form['langcode']['#options'] = $options;
+
+    // Changing content type filter form text field to dropdown.
+    $form['content_type_filter']['#type'] = 'select';
+    $form['content_type_filter']['#size'] = NULL;
+    $default_array[""] = '-All-';
+    $node_types = NodeType::loadMultiple();
+    $options = [];
+    foreach ($node_types as $node_type) {
+      $options[$node_type->id()] = $node_type->label();
+    }
+    $options = array_replace($default_array, $options);
+    // Set your custom options on your select filter.
+    $form['content_type_filter']['#options'] = $options;
   }
 }
