@@ -12,7 +12,8 @@ class StaticTranslationsOperations {
   /**
    * Batch operation.
    *
-   * This is the function that is called on each operation in batch.
+   * This is the function that is called on each operation in batch for static
+   * translation.
    */
   public static function import(array $val, $operation_details, &$context) {
     $entitytype_manager = \Drupal::service('entity_type.manager');
@@ -37,6 +38,31 @@ class StaticTranslationsOperations {
       $translated_entity_array = array_merge($entity_array, $translated_fields);
       $translated_entity_array['field_translation_key'][0]['value'] = $val['string_translation'];
       $term->addTranslation($val['language'], $translated_entity_array)->save();
+    }
+    $context['results']['processed'][] = $val['name'];
+    $context['message'] = t('Running Batch "@id" @details',
+    ['@id' => $val['name'], '@details' => $operation_details]);
+  }
+
+  /**
+   * Batch operation.
+   *
+   * This is the function that is called on each operation in batch for
+   * prfanity list.
+   */
+  public static function profanityImport(array $val, $operation_details, &$context) {
+    $entitytype_manager = \Drupal::service('entity_type.manager');
+    $storageTerm = $entitytype_manager->getStorage('taxonomy_term');
+    $term = $storageTerm->loadByProperties(['name' => $val['name']]);
+    $term = reset($term);
+    if (empty($term)) {
+      $term = Term::create([
+        'parent' => [],
+        'name' => $val['name'],
+        'langcode' => $val['language'],
+        'vid' => 'profanity_list',
+      ]);
+      $term->save();
     }
     $context['results']['processed'][] = $val['name'];
     $context['message'] = t('Running Batch "@id" @details',
