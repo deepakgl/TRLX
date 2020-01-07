@@ -1,0 +1,6 @@
+trlx_comment:
+  table_name: trlx_comment
+  table_database: default
+  description: ''
+  column_relations: 'a:3:{s:7:"user_id";s:4:"user";s:9:"entity_id";s:4:"node";s:17:"comment_timestamp";s:12:"trlx_comment";}'
+  created_by: '1'

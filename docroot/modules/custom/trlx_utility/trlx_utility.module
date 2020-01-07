@@ -814,3 +814,18 @@ function trlx_utility_views_data() {
   ];
   return $data;
 }
+
+/**
+ * Implements hook_views_data_alter().
+ */
+function trlx_utility_views_data_alter(array &$data) {
+  $data['node_field_data']['content_type_filter'] = [
+    'title' => t('Content type filter'),
+    'filter' => [
+      'title' => t('Content type filter'),
+      'help' => t('Provides a custom content type filter.'),
+      'field' => 'type',
+      'id' => 'string',
+    ],
+  ];
+}
