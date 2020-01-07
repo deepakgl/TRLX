@@ -42,26 +42,38 @@ class DeleteComment extends ResourceBase {
       return $response;
     }
     $comment_id = (int) $uri_array[6];
-    if (isset($comment_id)) {
+    if (isset($comment_id) && !empty($comment_id)) {
       $response = $this->commonUtility->validatePositiveValue($comment_id);
       if (!($response->getStatusCode() === Response::HTTP_OK)) {
         return $response;
       }
     }
+    else {
+      return $this->commonUtility->errorResponse($this->t('Comment id is required.'), Response::HTTP_BAD_REQUEST);
+    }
 
-    if (isset($uri_array[5])) {
+    if (isset($uri_array[5]) && !empty($uri_array[5])) {
       // Checkfor valid language code.
       $response = $this->commonUtility->validateLanguageCode($uri_array[5], $request, TRUE);
       if (!($response->getStatusCode() === Response::HTTP_OK)) {
         return $response;
       }
     }
+    else {
+      return $this->commonUtility->errorResponse($this->t('Language code is required.'), Response::HTTP_BAD_REQUEST);
+    }
     $comment_lang_code = $uri_array[5];
 
     // Check comment id valid or not.
-    $validated_comment_id = $this->commentUtility->validateCommentId($comment_id, $comment_lang_code);
-    if (empty($validated_comment_id)) {
-      return $this->commonUtility->errorResponse($this->t('Please add valid comment id.'), Response::HTTP_UNPROCESSABLE_ENTITY);
+    $validated_comment = $this->commentUtility->validateCommentId($comment_id, $comment_lang_code);
+    if (empty($validated_comment)) {
+      return $this->commonUtility->errorResponse($this->t('Please add valid comment id or language code.'), Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
+    // Check whether user is deleting own comment.
+    if (!empty($validated_comment)) {
+      if ($validated_comment[0]->user_id != $_userData->userId) {
+        return $this->commonUtility->errorResponse($this->t('You are not allowed to delete the comment.'), Response::HTTP_UNPROCESSABLE_ENTITY);
+      }
     }
     // Delete comment in db.
     $this->commentUtility->deleteComment($comment_id, $comment_lang_code);
