@@ -63,7 +63,7 @@ class EditComment extends ResourceBase {
     if (!empty($missingParams)) {
       return $this->commonUtility->invalidData($missingParams);
     }
-    if (isset($data['parentId'])) {
+    if (isset($data['parentId']) && !empty($data['parentId'])) {
       $response = $this->commonUtility->validatePositiveValue($data['parentId']);
       if (!($response->getStatusCode() === Response::HTTP_OK)) {
         return $response;
@@ -94,24 +94,33 @@ class EditComment extends ResourceBase {
       }
       // Response for invalid tagged users.
       if (!empty($invalidTaggedUsers)) {
-        return $this->commonUtility->errorResponse($this->t('Invalid user(s) in comment tags: @tagUsers.', ['@tagUsers' => implode(', ', $invalidTaggedUsers)]), Response::HTTP_BAD_REQUEST);
+        return $this->commonUtility->errorResponse($this->t('Invalid user(s) in comment tags: @tagUsers.', ['@tagUsers' => implode(', ', $invalidTaggedUsers)]), Response::HTTP_UNPROCESSABLE_ENTITY);
       }
     }
-    if (isset($data['language'])) {
+    if (isset($data['language']) && !empty($data['language'])) {
       // Check for valid language code.
       $response = $this->commonUtility->validateLanguageCode($data['language'], $request, TRUE);
       if (!($response->getStatusCode() === Response::HTTP_OK)) {
         return $response;
       }
     }
+    else {
+      return $this->commonUtility->errorResponse($this->t('Language code is required.'), Response::HTTP_BAD_REQUEST);
+    }
     // Check for valid node id.
     if (empty($this->commonUtility->isValidNid($nid))) {
       return $this->commonUtility->errorResponse($this->t('Node id does not exist.'), Response::HTTP_UNPROCESSABLE_ENTITY);
     }
     // Check comment id valid or not.
-    $validated_comment_id = $this->commentUtility->validateCommentId($data['commentId'], $data['language']);
-    if (empty($validated_comment_id)) {
-      return $this->commonUtility->errorResponse($this->t('Please add valid comment id.'), Response::HTTP_UNPROCESSABLE_ENTITY);
+    $validated_comment = $this->commentUtility->validateCommentId($data['commentId'], $data['language']);
+    if (empty($validated_comment)) {
+      return $this->commonUtility->errorResponse($this->t('Please add valid comment id or language code.'), Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
+    // Check whether user is editing own comment.
+    if (!empty($validated_comment)) {
+      if ($validated_comment[0]->user_id != $_userData->userId) {
+        return $this->commonUtility->errorResponse($this->t('You are not allowed to edit the comment.'), Response::HTTP_UNPROCESSABLE_ENTITY);
+      }
     }
     // Check parent id valid or not.
     $commentIds = array_column($this->commentUtility->getComments($nid), 'id');
