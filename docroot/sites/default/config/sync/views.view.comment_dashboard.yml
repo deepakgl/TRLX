@@ -98,7 +98,7 @@ display:
             nothing: nothing
           info:
             trlx_comment_content_title:
-              sortable: false
+              sortable: true
               default_sort_order: asc
               align: ''
               separator: ''
@@ -938,7 +938,7 @@ display:
           order: DESC
           exposed: false
           expose:
-            label: 'Comment timestamp'
+            label: ''
           plugin_id: standard
       title: 'Comment dashboard'
       header: {  }

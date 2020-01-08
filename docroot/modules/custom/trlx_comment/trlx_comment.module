@@ -20,9 +20,17 @@ function trlx_comment_form_alter(&$form, FormStateInterface $form_state, $form_i
     $form['langcode']['#type'] = 'select';
     // Set the size to NULL.
     $form['langcode']['#size'] = NULL;
-    $config = \Drupal::config('trlx_utility.settings');
     // Return all languages for global admin role.
-    $languages = $config->get('site_languages');
+    $language = \Drupal::languageManager()->getLanguages();
+    $languages = [];
+    foreach ($language as $key => $value) {
+      $config = \Drupal::config('trlx_utility.settings');
+      // Return all site languages.
+      $lang_config = $config->get('site_languages');
+      if (in_array($value->getId(), $lang_config)) {
+        $languages[$value->getId()] = $value->getName();
+      }
+    }
     $default_array[""] = '-All-';
     $options = array_replace($default_array, $languages);
     // Set your custom options on your select filter.
@@ -40,5 +48,23 @@ function trlx_comment_form_alter(&$form, FormStateInterface $form_state, $form_i
     $options = array_replace($default_array, $options);
     // Set your custom options on your select filter.
     $form['content_type_filter']['#options'] = $options;
+  }
+}
+
+/**
+ * Implements hook_views_query_alter().
+ */
+function trlx_comment_views_query_alter($view, $query) {
+  if ($view->id() == 'comment_dashboard') {
+    if (isset($view->query->orderby)) {
+      foreach ($view->query->orderby as $orderby_key => $orderby_value) {
+        if ($orderby_value['field'] == 'unknown') {
+          $view->query->orderby[$orderby_key] = [
+            'field' => 'node_field_data_trlx_comment.title',
+            'direction' => $view->query->orderby[$orderby_key]['direction'],
+          ];
+        }
+      }
+    }
   }
 }
