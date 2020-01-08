@@ -1,0 +1,23 @@
+--- a/modules/content_translation/src/Controller/ContentTranslationController.php
++++ b/modules/content_translation/src/Controller/ContentTranslationController.php
+@@ -193,6 +193,9 @@
+           $source = $metadata->getSource() ?: LanguageInterface::LANGCODE_NOT_SPECIFIED;
+           $is_original = $langcode == $original;
+           $label = $entity->getTranslation($langcode)->label();
++          if ($entity->getVocabularyId() == 'static_translation') {
++             $label = $entity->getTranslation($langcode)->get('field_translation_key')->value;
++          }
+           $link = isset($links->links[$langcode]['url']) ? $links->links[$langcode] : ['url' => $entity->toUrl()];
+           if (!empty($link['url'])) {
+             $link['url']->setOption('language', $language);
+@@ -324,9 +327,9 @@
+     else {
+       $header = [
+         $this->t('Language'),
+-        $this->t('Translation'),
++        $this->t('Translation available'),
+         $this->t('Status'),
+-        $this->t('Operations'),
++        $this->t('Translate'),
+       ];
+     }
