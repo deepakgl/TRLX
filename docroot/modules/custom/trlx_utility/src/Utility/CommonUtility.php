@@ -735,7 +735,7 @@ class CommonUtility {
     // Load node by nid and language code.
     try {
       $node = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
-      if ($node->hasTranslation($language)) {
+      if (!empty($node) && $node->hasTranslation($language)) {
         return $node->getTranslation($language);
       }
     }
