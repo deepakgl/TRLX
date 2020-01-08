@@ -2,6 +2,6 @@ trlx_static_translation.static_translation:
   path: '/admin/config/system/static_translation'
   defaults:
     _form: 'Drupal\trlx_static_translation\Form\StaticTranslationForm'
-    _title: 'CSV Import'
+    _title: 'Static Translation/ Profanity List CSV Import'
   requirements:
     _permission: 'administer content'
