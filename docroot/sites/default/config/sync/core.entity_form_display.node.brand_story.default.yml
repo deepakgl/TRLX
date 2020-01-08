@@ -35,6 +35,7 @@ content:
       rows: 9
       summary_rows: 3
       placeholder: ''
+      show_summary: false
     third_party_settings: {  }
     region: content
   created:
@@ -66,7 +67,7 @@ content:
     type: string_textfield
     region: content
   field_featured_image:
-    weight: 12
+    weight: 13
     settings:
       entity_browser: media_entity_browser
       field_widget_display: rendered_entity
@@ -81,7 +82,7 @@ content:
     type: entity_browser_entity_reference
     region: content
   field_hero_image:
-    weight: 13
+    weight: 12
     settings:
       entity_browser: media_entity_browser
       field_widget_display: rendered_entity
@@ -212,6 +213,7 @@ content:
       match_operator: CONTAINS
       size: 60
       placeholder: ''
+      match_limit: 10
     region: content
     third_party_settings: {  }
 hidden:

@@ -299,49 +299,12 @@ display:
           operator: in
           value:
             en: en
-            ar: ar
-            bg: bg
             zh-hans: zh-hans
-            zh-hant: zh-hant
-            zh-Hant-trhk: zh-Hant-trhk
-            zh-Hant-tw: zh-Hant-tw
-            hr: hr
-            cs: cs
-            da: da
-            nl: nl
-            et: et
-            fil: fil
-            fi: fi
-            fr: fr
-            frca: frca
-            de: de
-            el: el
-            he: he
-            hu: hu
-            is: is
-            id: id
-            it: it
-            ja: ja
-            ja-trjp: ja-trjp
-            ko: ko
-            lv: lv
-            lt: lt
-            nb: nb
-            pl: pl
-            pt: pt
-            ro: ro
-            ru: ru
-            es: es
-            essp: essp
-            sv: sv
-            th: th
-            tr: tr
-            vi: vi
           group: 1
           exposed: true
           expose:
             operator_id: langcode_op
-            label: 'Original language'
+            label: Language
             description: ''
             use_operator: false
             operator: langcode_op
