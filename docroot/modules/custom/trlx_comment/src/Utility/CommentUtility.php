@@ -22,7 +22,7 @@ class CommentUtility {
    * @return bool
    *   True or false.
    */
-  public function saveComment(array $data) {
+  public function saveComment(array $data , $parent_user_id = NULL) {
     global $_userData;
 
     $langcode = !empty($data['language']) ? $data['language'] : self::DEFAULT_LANGUAGE;
@@ -56,7 +56,7 @@ class CommentUtility {
       // Update id with real user id.
       $data['tags'] = $this->updateTags($data['tags'], FALSE, TRUE);
       // Prepare notification data.
-      $notification_index = trlx_notification_comment_user_tags($data['nid'], $langcode, $data['tags']);
+      $notification_index = trlx_notification_comment_user_tags($data['nid'], $langcode, $data['tags'], $parent_user_id);
       // Send data to the queue.
       save_data_in_queue($notification_index);
     }
@@ -471,6 +471,33 @@ class CommentUtility {
       $result = [];
     }
     return $result;
+  }
+
+  /**
+   * To get the user id of parent comment.
+   *
+   * @param int $comment_id
+   *   Comment id.
+   * @param int $comment_lang_code
+   *   Comment lang code.
+   *
+   * @return int
+   *   parent comment user id.
+   */
+  public function getParentCommentUserId($comment_id, $comment_lang_code) {
+    try {
+      $query = \Drupal::database();
+      $query = $query->select('trlx_comment', 'tc');
+      $query->addField('tc', 'user_id', 'uid');
+      $query->condition('tc.id', $comment_id, '=');
+      $query->condition('tc.langcode', $comment_lang_code, '=');
+      $result = $query->execute()->fetchAssoc();
+    }
+    catch (\Exception $e) {
+      $result = [];
+    }
+
+    return $result['uid'];
   }
 
 }
