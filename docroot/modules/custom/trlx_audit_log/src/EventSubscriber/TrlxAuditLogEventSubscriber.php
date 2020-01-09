@@ -41,12 +41,14 @@ class TrlxAuditLogEventSubscriber implements EventSubscriberInterface {
    */
   public function onApiResponse(FilterResponseEvent $event) {
    $request = $event->getRequest();
-   $route_path = $request->get('_route_object')->getPath();
-   if (strpos($route_path, '/api') !== false) {
-      $requestTime = $request->headers->get('api-request-time');
-      $responseTime = microtime(TRUE);
-      $diff = $responseTime - $requestTime;
-      trlx_audit_log_response_time($diff, $route_path);
-    }
+   if ($request->get('_route_object') != NULL) {
+     $route_path = $request->get('_route_object')->getPath();
+     if (strpos($route_path, '/api') !== false) {
+        $requestTime = $request->headers->get('api-request-time');
+        $responseTime = microtime(TRUE);
+        $diff = $responseTime - $requestTime;
+        trlx_audit_log_response_time($diff, $route_path);
+      }
+   }
   }
 }

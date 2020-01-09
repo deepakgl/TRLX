@@ -7,6 +7,7 @@ use Psr\Log\LoggerInterface;
 use Drupal\Core\Logger\RfcLogLevel;
 use Drupal\Core\Logger\LogMessageParserInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Drupal\Core\Session\AccountInterface;
 
 /**
  * TrlxLogger controller.
@@ -53,7 +54,7 @@ class TrlxLogger implements LoggerInterface {
     $username = '';
 
     if (isset($context['user']) && !empty($context['user'])) {
-      if ($context['user'] instanceof NodeInterface) {
+      if ($context['user'] instanceof AccountInterface) {
         $username = $context['user']->getAccountName();
       }
       else {

@@ -5,6 +5,10 @@ dependencies:
   config:
     - taxonomy.vocabulary.brands
     - taxonomy.vocabulary.trlx_content_sections
+    - user.role.administrator
+    - user.role.comment_moderator
+    - user.role.el_nyo_global_education_system_admin
+    - user.role.el_regional_market_admin
   content:
     - 'taxonomy_term:trlx_content_sections:038a0d73-0ce3-4cf8-addb-34e6acd08da1'
     - 'taxonomy_term:trlx_content_sections:37b75f67-c2e7-4cdb-9d8c-7f94799543fa'
@@ -14,6 +18,7 @@ dependencies:
     - node
     - taxonomy
     - trlx_utility
+    - user
     - view_custom_table
 id: comment_dashboard
 label: 'Comment dashboard'
@@ -30,8 +35,13 @@ display:
     position: 0
     display_options:
       access:
-        type: none
-        options: {  }
+        type: role
+        options:
+          role:
+            administrator: administrator
+            el_regional_market_admin: el_regional_market_admin
+            el_nyo_global_education_system_admin: el_nyo_global_education_system_admin
+            comment_moderator: comment_moderator
       cache:
         type: none
         options: {  }
@@ -95,6 +105,7 @@ display:
             comment_update_timestamp: comment_update_timestamp
             id: id
             langcode: langcode
+            pid: pid
             nothing: nothing
           info:
             trlx_comment_content_title:
@@ -133,14 +144,14 @@ display:
               empty_column: false
               responsive: ''
             comment_timestamp:
-              sortable: false
+              sortable: true
               default_sort_order: asc
               align: ''
               separator: ''
               empty_column: false
               responsive: ''
             comment_update_timestamp:
-              sortable: false
+              sortable: true
               default_sort_order: asc
               align: ''
               separator: ''
@@ -154,6 +165,13 @@ display:
               empty_column: false
               responsive: ''
             langcode:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            pid:
               sortable: false
               default_sort_order: asc
               align: ''
@@ -432,7 +450,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          label: 'Posted in'
+          label: 'Created on'
           exclude: false
           alter:
             alter_text: true
@@ -489,7 +507,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          label: Updated
+          label: 'Updated on'
           exclude: false
           alter:
             alter_text: true
@@ -1000,7 +1018,18 @@ display:
       title: 'Comment dashboard'
       header: {  }
       footer: {  }
-      empty: {  }
+      empty:
+        area_text_custom:
+          id: area_text_custom
+          table: views
+          field: area_text_custom
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: true
+          tokenize: false
+          content: 'No content available.'
+          plugin_id: text_custom
       relationships:
         entity_id:
           id: entity_id
@@ -1025,6 +1054,7 @@ display:
         - url
         - url.query_args
         - user
+        - user.roles
       tags: {  }
   page_1:
     display_plugin: page
@@ -1050,4 +1080,5 @@ display:
         - url
         - url.query_args
         - user
+        - user.roles
       tags: {  }
