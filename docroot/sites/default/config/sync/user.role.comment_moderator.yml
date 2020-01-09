@@ -1,0 +1,11 @@
+uuid: 01a80459-d0f7-4a2e-b9af-4d6bcee8d12c
+langcode: en
+status: true
+dependencies: {  }
+id: comment_moderator
+label: 'TRLX Comment Moderator'
+weight: 9
+is_admin: null
+permissions:
+  - 'access administration pages'
+  - 'view the administration theme'
