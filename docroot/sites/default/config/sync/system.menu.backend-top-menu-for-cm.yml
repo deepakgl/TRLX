@@ -1,0 +1,8 @@
+uuid: 15ff046f-bb38-4351-bcb9-22042216df94
+langcode: en
+status: true
+dependencies: {  }
+id: backend-top-menu-for-cm
+label: 'Backend User Top Menu for Comment Moderator'
+description: 'Menu for Comment Moderator'
+locked: false
