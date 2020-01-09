@@ -18,7 +18,6 @@ dependencies:
     - taxonomy.vocabulary.markets
     - taxonomy.vocabulary.trlx_content_sections
     - user.role.administrator
-    - user.role.authenticated
     - user.role.el_nyo_global_education_system_admin
     - user.role.el_regional_market_admin
   content:
@@ -3847,7 +3846,6 @@ display:
         type: role
         options:
           role:
-            authenticated: authenticated
             administrator: administrator
             el_regional_market_admin: el_regional_market_admin
             el_nyo_global_education_system_admin: el_nyo_global_education_system_admin

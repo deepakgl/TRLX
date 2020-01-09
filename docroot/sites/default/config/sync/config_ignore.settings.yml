@@ -14,7 +14,5 @@ ignored_config_entities:
   - entityqueue.entity_queue.insider_corner_hompage
   - welcome_message.settings
   - trlx_banner.welcome_message.settings
-  - views.view.comment_dashboard
-  - views.view.dashboard
 _core:
   default_config_hash: UVH1aJ4b44UM-VdPVN7hNNuuVqfReJxwfVeDQH1Hvsk
