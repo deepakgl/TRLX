@@ -8,6 +8,7 @@
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\node\Entity\NodeType;
 use Drupal\Core\Database\Query\SelectInterface;
+use Drupal\trlx_utility\Utility\CommonUtility;
 
 /**
  * Implements hook_form_alter().
@@ -22,18 +23,8 @@ function trlx_comment_form_alter(&$form, FormStateInterface $form_state, $form_i
     // Set the size to NULL.
     $form['langcode']['#size'] = NULL;
     // Return all languages for global admin role.
-    $language = \Drupal::languageManager()->getLanguages();
-    $languages = [];
-    foreach ($language as $key => $value) {
-      $config = \Drupal::config('trlx_utility.settings');
-      // Return all site languages.
-      $lang_config = $config->get('site_languages');
-      if (in_array($value->getId(), $lang_config)) {
-        $languages[$value->getId()] = $value->getName();
-      }
-    }
-    $default_array[""] = '-All-';
-    $options = array_replace($default_array, $languages);
+    $commonUtility = new CommonUtility();
+    $options = $commonUtility->getActiveLanguages();
     // Set your custom options on your select filter.
     $form['langcode']['#options'] = $options;
 
