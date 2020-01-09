@@ -11,6 +11,7 @@ use Drupal\trlx_utility\RedisClientBuilder;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Drupal\trlx_stamp\Utility\StampUtility;
 use Drupal\trlx_utility\Utility\CommonUtility;
+use Drupal\Core\Language\LanguageInterface;
 
 /**
  * Set node id and terms id using rest resource.
@@ -62,6 +63,11 @@ function elx_utility_form_alter(&$form, FormStateInterface $form_state, $form_id
       }
       break;
 
+    case 'taxonomy_term_profanity_list_form':
+      $commonUtility = new CommonUtility();
+      $options = $commonUtility->getActiveLanguages();
+      $form['langcode']['widget'][0]['value']['#options'] = $options;
+      break;
     default:
   }
 }

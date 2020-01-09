@@ -1039,4 +1039,26 @@ class CommonUtility {
     return $response;
   }
 
+  /**
+   * Fetch all active languages.
+   *
+   * @return array
+   *   Active Language Keys
+  */
+  public function getActiveLanguages() {
+    $languages = \Drupal::languageManager()->getLanguages();
+    $config = \Drupal::config('trlx_utility.settings');
+    // Return all site languages.
+    $lang_config = $config->get('site_languages');
+    $options = [];
+    foreach ($languages as $key => $value) {
+      if (in_array($value->getId(), $lang_config)) {
+        $options[$value->getId()] = $value->getName();
+      }
+    }
+    $default_array[""] = '-All-';
+    $options = array_replace($default_array, $options);
+    return $options;
+  }
+
 }
