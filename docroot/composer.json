@@ -172,5 +172,8 @@
             "type": "composer",
             "url": "https://packages.drupal.org/8"
         }
-    ]
+    ],
+    "require-dev": {
+        "drupal/devel_entity_updates": "^1.0"
+    }
 }
