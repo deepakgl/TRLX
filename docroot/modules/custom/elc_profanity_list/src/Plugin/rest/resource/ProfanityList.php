@@ -31,12 +31,31 @@ class ProfanityList extends ResourceBase {
    */
   public function get(Request $request) {
     $commonUtility = new CommonUtility();
-    $_format = $request->get('_format');
-    // Check for valid _format type.
+    // Required parameters.
+    $requiredParams = [
+      '_format',
+    ];
+
+    // Check for required parameters.
+    $missingParams = [];
+    foreach ($requiredParams as $param) {
+      $$param = $request->query->get($param);
+      if (empty($$param)) {
+        $missingParams[] = $param;
+      }
+    }
+
+    // Report missing required parameters.
+    if (!empty($missingParams)) {
+      return $commonUtility->invalidData($missingParams);
+    }
+
+    // Checkfor valid _format type.
     $response = $commonUtility->validateFormat($_format, $request);
     if (!($response->getStatusCode() === Response::HTTP_OK)) {
       return $response;
     }
+
     $response = [];
     try {
       // Load term to get all profanity list.
