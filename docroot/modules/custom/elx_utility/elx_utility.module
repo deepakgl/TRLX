@@ -66,6 +66,7 @@ function elx_utility_form_alter(&$form, FormStateInterface $form_state, $form_id
     case 'taxonomy_term_profanity_list_form':
       $commonUtility = new CommonUtility();
       $options = $commonUtility->getActiveLanguages();
+      array_shift($options);
       $form['langcode']['widget'][0]['value']['#options'] = $options;
       break;
     default:
