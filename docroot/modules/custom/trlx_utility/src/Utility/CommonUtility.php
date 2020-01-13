@@ -1061,4 +1061,28 @@ class CommonUtility {
     return $options;
   }
 
+  /**
+   * Fetch all Content Type.
+   *
+   * @param int $nid
+   *   Node id.
+   *
+   * @return string
+   *   Content Type.
+  */
+  public function getContentType($nid) {
+    try {
+      $query = \Drupal::database();
+      $query = $query->select('node', 'n');
+      $query->addField('n', 'type', 'type');
+      $query->condition('n.nid', $nid, '=');
+      $result = $query->execute()->fetchAssoc();
+
+      return $result['type'];
+    }
+    catch (\Exception $e) {
+      return FALSE;
+    }
+  }
+
 }

@@ -105,6 +105,12 @@ class PostComment extends ResourceBase {
     if (empty($this->commonUtility->isValidNid($nid))) {
       return $this->commonUtility->errorResponse($this->t('Node id does not exist.'), Response::HTTP_UNPROCESSABLE_ENTITY);
     }
+
+    // Check for valid content type or not.
+    if ($this->commonUtility->getContentType($nid) == 'level_interactive_content') {
+      return $this->commonUtility->errorResponse($this->t('Comments on lessons is not allowed'), Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
+
     // Check parent id valid or not.
     $commentIds = array_column($this->commentUtility->getComments($nid), 'id');
     if (!in_array($data['parentId'], $commentIds) && $data['parentId'] != 0) {
