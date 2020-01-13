@@ -66,7 +66,9 @@ class ConfirmDeleteForm extends ConfirmFormBase {
    * {@inheritdoc}
    */
   public function getQuestion() {
-    return t('Do you want to delete comment %id?', ['%id' => $this->commentId]);
+    $this->commentUtility = new CommentUtility();
+    $comment_data = $this->commentUtility->validateCommentId($this->commentId, $this->commentLangCode);
+    return t('Do you want to delete comment %body?', ['%body' => $comment_data[0]->comment_body]);
   }
 
 }

@@ -115,6 +115,10 @@ class PostComment extends ResourceBase {
     if ($data['parentId']) {
       $parent_user_id = $this->commentUtility->getParentCommentUserId($data['parentId'], $data['language']);
     }
+    // Check user replying on valid comment of respective language node or not.
+    if ($data['parentId'] && $parent_user_id == NULL) {
+      return $this->commonUtility->errorResponse($this->t('Either comment id or comment language is not valid'), Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
 
     // Check user not replying on existing reply.
     $replyIds = $this->commentUtility->getReplyCommentIds($nid);
