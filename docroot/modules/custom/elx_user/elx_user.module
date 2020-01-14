@@ -5,6 +5,7 @@
  * User module file.
  */
 
+use Drupal\views\ViewExecutable;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\BubbleableMetadata;
 
@@ -182,7 +183,7 @@ function elx_get_user_by_mail($email) {
 /**
  * Implements hook_views_pre_render().
  */
-function elx_user_views_pre_render(\Drupal\views\ViewExecutable $view) {
+function elx_user_views_pre_render(ViewExecutable $view) {
   if ($view->id() == 'user_admin_people') {
     foreach ($view->result as $value) {
       if ($value->_entity->get('access')->value == '0') {

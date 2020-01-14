@@ -154,20 +154,6 @@ function elx_utility_entity_insert(EntityInterface $entity) {
     // Purge Redis data.
     elx_utility_purge_redis_terms_data($type, $tid);
   }
-  elseif ($entity->getEntityTypeId() == 'user') {
-    global $base_url;
-    if ($_SERVER['HTTP_REFERER'] != $base_url . '/admin/people/create' && $entity->get('status')->getValue()[0]['value'] == 1) {
-      _user_mail_notify("register_admin_created", $entity);
-    }
-    $market_id = \Drupal::request()->query->get('userMarket');
-    if (!empty($market_id)) {
-      $entity->set('field_default_market', $market_id);
-      $entity->save();
-    }
-    $uid = $entity->id();
-    // Insert index in elastic_host.
-    // set_user_object_elastic($uid);
-  }
   elseif ($entity->getEntityTypeId() == 'entity_subqueue') {
     // Purge Redis data.
     if ($entity->id() == 'insider_corner_hompage') {
@@ -273,11 +259,6 @@ function elx_utility_entity_update(EntityInterface $entity) {
     }
     // Purge Redis data.
     elx_utility_purge_redis_terms_data($type, $tid);
-  }
-  elseif ($entity->getEntityTypeId() == 'user') {
-    $uid = $entity->id();
-    // Insert index in elastic_host.
-    elx_utility_purge_redis_data($entity);
   }
   elseif ($entity->getEntityTypeId() == 'entity_subqueue') {
     // Purge Redis data.
@@ -425,10 +406,6 @@ function elx_utility_entity_delete(EntityInterface $entity) {
     }
     // Purge Redis data.
     elx_utility_purge_redis_data($entity);
-  }
-  elseif ($entity->getEntityTypeId() == 'user') {
-    // Purge Elastic data.
-    elx_utility_purge_elastic_data($entity);
   }
   elseif ($entity->getEntityTypeId() == 'menu_link_content') {
     if ($entity->getMenuName() == 'privacy-menu' || $entity->getMenuName() == 'social-media' || $entity->getMenuName() == 'header-menu' || $entity->getMenuName() == 'main') {

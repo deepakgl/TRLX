@@ -83,10 +83,16 @@ display:
           description: ''
           columns:
             name: name
+            operations: operations
           info:
             name:
-              sortable: false
+              sortable: true
               default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            operations:
               align: ''
               separator: ''
               empty_column: false
@@ -104,7 +110,7 @@ display:
           group_type: group
           admin_label: ''
           label: S.NO
-          exclude: false
+          exclude: true
           alter:
             alter_text: false
             text: ''
@@ -361,14 +367,27 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          empty: false
+          empty: true
           tokenize: false
           content:
-            value: '<a class="button button--primary form-submit" href="/admin/structure/taxonomy/manage/profanity_list/add?destination=profanity-list">+ Add Term</a>'
+            value: '<a href="/admin/structure/taxonomy/manage/profanity_list/add?destination=profanity-list">+ Add Term</a>'
             format: full_html
           plugin_id: text
       footer: {  }
-      empty: {  }
+      empty:
+        area:
+          id: area
+          table: views
+          field: area
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: true
+          tokenize: false
+          content:
+            value: 'No Content Available'
+            format: full_html
+          plugin_id: text
       relationships: {  }
       arguments: {  }
       display_extenders: {  }
