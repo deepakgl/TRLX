@@ -52,7 +52,7 @@ class CommentUtility {
       ->execute();
 
     // Push data for notification(s).
-    if (!empty($data['tags']) && !empty($result)) {
+    if ((!empty($data['tags']) && !empty($result)) || (!empty($parent_user_id) && !empty($result))) {
       // Update id with real user id.
       $data['tags'] = $this->updateTags($data['tags'], FALSE, TRUE);
       // Prepare notification data.
