@@ -79,7 +79,9 @@
         "drupal/queue_ui": "^2.0",
         "drupal/simpleautologout": "^1.4",
         "drupal/single_user_role":"^1.0",
-        "drupal/entity_submit_redirect":"^1.0"
+        "drupal/entity_submit_redirect":"^1.0",
+        "drupal/devel_entity_updates": "^1.0",
+        "drupal/views_bulk_operations": "^3.3"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
@@ -172,5 +174,7 @@
             "type": "composer",
             "url": "https://packages.drupal.org/8"
         }
-    ]
+    ],
+    "require-dev": {
+    }
 }

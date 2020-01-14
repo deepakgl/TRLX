@@ -1,0 +1,5 @@
+services:
+  trlx_comment_subscriber:
+    class: '\Drupal\trlx_comment\EventSubscriber\TrlxCommentEventSubscriber'
+    tags:
+      - { name: 'event_subscriber' }

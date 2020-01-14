@@ -1,0 +1,5 @@
+services:
+  trlx_audit_log_subscriber:
+    class: '\Drupal\trlx_audit_log\EventSubscriber\TrlxAuditLogEventSubscriber'
+    tags:
+      - { name: 'event_subscriber' }

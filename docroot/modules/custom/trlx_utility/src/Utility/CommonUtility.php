@@ -735,7 +735,7 @@ class CommonUtility {
     // Load node by nid and language code.
     try {
       $node = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
-      if ($node->hasTranslation($language)) {
+      if (!empty($node) && $node->hasTranslation($language)) {
         return $node->getTranslation($language);
       }
     }
@@ -1037,6 +1037,52 @@ class CommonUtility {
     }
 
     return $response;
+  }
+
+  /**
+   * Fetch all active languages.
+   *
+   * @return array
+   *   Active Language Keys
+  */
+  public function getActiveLanguages() {
+    $languages = \Drupal::languageManager()->getLanguages();
+    $config = \Drupal::config('trlx_utility.settings');
+    // Return all site languages.
+    $lang_config = $config->get('site_languages');
+    $options = [];
+    foreach ($languages as $key => $value) {
+      if (in_array($value->getId(), $lang_config)) {
+        $options[$value->getId()] = $value->getName();
+      }
+    }
+    $default_array[""] = '-All-';
+    $options = array_replace($default_array, $options);
+    return $options;
+  }
+
+  /**
+   * Fetch all Content Type.
+   *
+   * @param int $nid
+   *   Node id.
+   *
+   * @return string
+   *   Content Type.
+  */
+  public function getContentType($nid) {
+    try {
+      $query = \Drupal::database();
+      $query = $query->select('node', 'n');
+      $query->addField('n', 'type', 'type');
+      $query->condition('n.nid', $nid, '=');
+      $result = $query->execute()->fetchAssoc();
+
+      return $result['type'];
+    }
+    catch (\Exception $e) {
+      return FALSE;
+    }
   }
 
 }

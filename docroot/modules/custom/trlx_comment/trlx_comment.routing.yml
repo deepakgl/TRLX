@@ -4,5 +4,5 @@ trlx_comment.delete_confirmation_form:
     _form: '\Drupal\trlx_comment\Form\ConfirmDeleteForm'
     _title: 'Confirm Deletion'
   requirements:
-    _permission: 'administer site configuration'
+    _role: 'administrator+el_regional_market_admin+el_nyo_global_education_system_admin+comment_moderator'
     commentId: ^\d+$

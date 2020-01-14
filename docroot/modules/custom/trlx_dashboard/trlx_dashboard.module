@@ -35,7 +35,6 @@ function trlx_dashboard_preprocess_page(&$variables) {
  */
 function trlx_dashboard_user_login($account) {
   $roles = $account->getRoles();
-  // $url = Url::fromRoute('view.dashboard.dashboard_unpublished');
   if (in_array('el_regional_market_admin', $roles)) {
     $response = new RedirectResponse('/dashboard/published');
     $response->send();
@@ -46,18 +45,31 @@ function trlx_dashboard_user_login($account) {
     $response->send();
     return;
   }
+  elseif (in_array('comment_moderator', $roles)) {
+    $response = new RedirectResponse('/dashboard/comment');
+    $response->send();
+    return;
+  }
 }
 
 /**
  * Implements hook_views_post_render().
  */
 function trlx_dashboard_views_post_render(ViewExecutable $view) {
+  $roles = getUserRoles(\Drupal::currentUser()->id());
   if ($view->id() == 'dashboard') {
-    $roles = getUserRoles(\Drupal::currentUser()->id());
     // Set the view title.
     $view->setTitle('Welcome GA User !!');
     if ($roles) {
       $view->setTitle('Welcome MA User !!');
+    }
+  }
+  if ($view->id() == 'comment_dashboard') {
+    if ($roles) {
+      // Set the view title.
+      if (reset($roles) == "comment_moderator") {
+        $view->setTitle('Welcome Comment Moderator User !!');
+      }
     }
   }
 }

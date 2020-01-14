@@ -105,18 +105,34 @@ class PostComment extends ResourceBase {
     if (empty($this->commonUtility->isValidNid($nid))) {
       return $this->commonUtility->errorResponse($this->t('Node id does not exist.'), Response::HTTP_UNPROCESSABLE_ENTITY);
     }
+
+    // Check for valid content type or not.
+    if ($this->commonUtility->getContentType($nid) == 'level_interactive_content') {
+      return $this->commonUtility->errorResponse($this->t('Comments on lessons is not allowed'), Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
+
     // Check parent id valid or not.
     $commentIds = array_column($this->commentUtility->getComments($nid), 'id');
     if (!in_array($data['parentId'], $commentIds) && $data['parentId'] != 0) {
       return $this->commonUtility->errorResponse($this->t('Please add valid parent comment id.'), Response::HTTP_UNPROCESSABLE_ENTITY);
     }
+
+    // Get the userid of parent comment.
+    if ($data['parentId']) {
+      $parent_user_id = $this->commentUtility->getParentCommentUserId($data['parentId'], $data['language']);
+    }
+    // Check user replying on valid comment of respective language node or not.
+    if ($data['parentId'] && $parent_user_id == NULL) {
+      return $this->commonUtility->errorResponse($this->t('Either comment id or comment language is not valid'), Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
+
     // Check user not replying on existing reply.
     $replyIds = $this->commentUtility->getReplyCommentIds($nid);
     if (in_array($data['parentId'], $replyIds)) {
       return $this->commonUtility->errorResponse($this->t('Not allowed to reply on existing reply.'), Response::HTTP_UNPROCESSABLE_ENTITY);
     }
     // Save comment in db.
-    $this->commentUtility->saveComment($data);
+    $this->commentUtility->saveComment($data, $parent_user_id);
     $saved_data = $this->commentUtility->getLatestComment();
 
     // Check for empty result.

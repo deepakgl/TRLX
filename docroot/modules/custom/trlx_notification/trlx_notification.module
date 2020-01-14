@@ -144,6 +144,7 @@ function trlx_notification_brand_story_related_content($node) {
   //   $push_notification_array = trlx_push_notifications_array($userExternalIds, 'BRAND', $notification_heading, $notification_text, NULL, 'brandStory', reset($brand_key), reset($brand_data));
   //   trlx_push_notifications($push_notification_array);
   // }
+
   return ($notification_index);
 }
 
@@ -449,11 +450,10 @@ function trlx_notification_video_related_content($node) {
 /**
  * Notification to system users related to comment tags.
  */
-function trlx_notification_comment_user_tags(int $nid, $language = CommentUtility::DEFAULT_LANGUAGE, $commenTags = []) {
+function trlx_notification_comment_user_tags(int $nid, $language = CommentUtility::DEFAULT_LANGUAGE, $commen_tags = [], $parent_user_id = NULL) {
   $commonUtility = new CommonUtility();
   $config = \Drupal::config('trlx_notification.settings');
   $node = fetch_node_data($nid, $language);
-
   if ($node->hasField('field_brands')) {
     $brand_id[] = $node->get('field_brands')->first()->getValue()['target_id'];
     $brand_key[] = $commonUtility->getBrandKeyByTermId($node->get('field_brands')->first()->getValue()['target_id']);
@@ -463,22 +463,22 @@ function trlx_notification_comment_user_tags(int $nid, $language = CommentUtilit
   }
 
   $notification_index = [];
-  if (!empty($node) && !empty($commenTags)) {
-    $linkType = '';
+  if (!empty($node) && !empty($commen_tags)) {
+    $link_type = '';
     switch ($node->bundle()) {
       // Brand Story.
       case 'brand_story':
-        $linkType = 'brandStory';
+        $link_type = 'brandStory';
         break;
 
       // video.
       case 'tools':
-        $linkType = 'video';
+        $link_type = 'video';
         break;
 
       // Product Detail.
       case 'product_detail':
-        $linkType = 'factsheet';
+        $link_type = 'factsheet';
         break;
 
       // Stories.
@@ -493,22 +493,22 @@ function trlx_notification_comment_user_tags(int $nid, $language = CommentUtilit
           switch ($sectionKey) {
             // Insider Corner.
             case CommonUtility::INSIDER_CORNER:
-              $linkType = CommonUtility::INSIDER_CORNER;
+              $link_type = CommonUtility::INSIDER_CORNER;
               break;
 
             // Trend.
             case CommonUtility::TREND:
-              $linkType = CommonUtility::TREND;
+              $link_type = CommonUtility::TREND;
               break;
 
             // Selling Tips.
             case CommonUtility::SELLING_TIPS:
-              $linkType = CommonUtility::SELLING_TIPS;
+              $link_type = CommonUtility::SELLING_TIPS;
               break;
 
             // Consumer.
             case CommonUtility::CONSUMER:
-              $linkType = CommonUtility::CONSUMER;
+              $link_type = CommonUtility::CONSUMER;
               break;
           }
         }
@@ -516,11 +516,13 @@ function trlx_notification_comment_user_tags(int $nid, $language = CommentUtilit
     }
 
     // Collect internal & external userid.
-    foreach ($commenTags as $tag) {
-      $userIds[$tag['id']] = $tag['id'];
-      $usersExternalIds[$tag['externalUserId']] = $tag['externalUserId'];
+    foreach ($commen_tags as $tag) {
+      $user_ids[$tag['id']] = $tag['id'];
+      // $usersExternalIds[$tag['externalUserId']] = $tag['externalUserId'];
     }
-
+    if ($parent_user_id) {
+      $user_ids[$parent_user_id] = $parent_user_id;
+    }
     // Set variables for notification.
     $notification_type = 'COMMENTTAG';
     $content_language = $node->langcode->value;
@@ -531,18 +533,18 @@ function trlx_notification_comment_user_tags(int $nid, $language = CommentUtilit
     $brand_key = (!empty($brand_key)) ? reset($brand_key) : '';
     $brand_data = (!empty($brand_data)) ? reset($brand_data) : '';
 
-    if (!empty($userIds)) {
-      foreach ($userIds as $id) {
-        $notificationArray[NOTIFICATION_TYPE] = t($notification_type);
-        $notificationArray[NOTIFICATION_USER_ID] = $id;
-        $notificationArray[NOTIFICATION_HEADING] = $notification_heading;
-        $notificationArray[NOTIFICATION_TEXT] = $notification_text;
-        $notificationArray[NOTIFICATION_LINK] = $node_id;
-        $notificationArray[NOTIFICATION_LINK_TYPE] = $linkType;
-        $notificationArray[NOTIFICATION_BRAND_KEY] = $brand_key;
-        $notificationArray[NOTIFICATION_BRAND_NAME] = $brand_data;
-        $notificationArray[NOTIFICATIONS_LANGUAGE] = $content_language;
-        $notification_index[] = process_notification($notificationArray);
+    if (!empty($user_ids)) {
+      foreach ($user_ids as $id) {
+        $notification_array[NOTIFICATION_TYPE] = t($notification_type);
+        $notification_array[NOTIFICATION_USER_ID] = $id;
+        $notification_array[NOTIFICATION_HEADING] = $notification_heading;
+        $notification_array[NOTIFICATION_TEXT] = $notification_text;
+        $notification_array[NOTIFICATION_LINK] = $node_id;
+        $notification_array[NOTIFICATION_LINK_TYPE] = $link_type;
+        $notification_array[NOTIFICATION_BRAND_KEY] = $brand_key;
+        $notification_array[NOTIFICATION_BRAND_NAME] = $brand_data;
+        $notification_array[NOTIFICATIONS_LANGUAGE] = $content_language;
+        $notification_index[] = process_notification($notification_array);
       }
     }
   }
@@ -552,6 +554,7 @@ function trlx_notification_comment_user_tags(int $nid, $language = CommentUtilit
   //   $push_notification_array = trlx_push_notifications_array($usersExternalIds, $notification_type, $notification_heading, $notification_text, $node_id, $linkType, $brand_key, $brand_data);
   //   trlx_push_notifications($push_notification_array);
   // }
+
   return $notification_index;
 }
 

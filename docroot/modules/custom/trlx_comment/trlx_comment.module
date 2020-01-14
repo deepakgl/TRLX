@@ -7,6 +7,8 @@
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\node\Entity\NodeType;
+use Drupal\Core\Database\Query\SelectInterface;
+use Drupal\trlx_utility\Utility\CommonUtility;
 
 /**
  * Implements hook_form_alter().
@@ -20,11 +22,9 @@ function trlx_comment_form_alter(&$form, FormStateInterface $form_state, $form_i
     $form['langcode']['#type'] = 'select';
     // Set the size to NULL.
     $form['langcode']['#size'] = NULL;
-    $config = \Drupal::config('trlx_utility.settings');
     // Return all languages for global admin role.
-    $languages = $config->get('site_languages');
-    $default_array[""] = '-All-';
-    $options = array_replace($default_array, $languages);
+    $commonUtility = new CommonUtility();
+    $options = $commonUtility->getActiveLanguages();
     // Set your custom options on your select filter.
     $form['langcode']['#options'] = $options;
 
@@ -34,11 +34,42 @@ function trlx_comment_form_alter(&$form, FormStateInterface $form_state, $form_i
     $default_array[""] = '-All-';
     $node_types = NodeType::loadMultiple();
     $options = [];
+    $allowed_content_types = [
+      'brand_story',
+      'product_detail',
+      'stories',
+      'tools',
+    ];
     foreach ($node_types as $node_type) {
-      $options[$node_type->id()] = $node_type->label();
+      if (in_array($node_type->id(), $allowed_content_types)) {
+        $options[$node_type->id()] = $node_type->label();
+      }
     }
     $options = array_replace($default_array, $options);
     // Set your custom options on your select filter.
     $form['content_type_filter']['#options'] = $options;
+  }
+}
+
+/**
+ * Implements hook_views_query_alter().
+ */
+function trlx_comment_views_query_alter($view, $query) {
+  if ($view->id() == 'comment_dashboard') {
+    $query->getTableQueue()['node_field_data_trlx_comment']['join']->extra[] = [
+      'field' => 'langcode',
+      'left_table' => 'trlx_comment',
+      'left_field' => 'langcode',
+    ];
+    if (isset($view->query->orderby)) {
+      foreach ($view->query->orderby as $orderby_key => $orderby_value) {
+        if ($orderby_value['field'] == 'unknown') {
+          $view->query->orderby[$orderby_key] = [
+            'field' => 'node_field_data_trlx_comment.title',
+            'direction' => $view->query->orderby[$orderby_key]['direction'],
+          ];
+        }
+      }
+    }
   }
 }

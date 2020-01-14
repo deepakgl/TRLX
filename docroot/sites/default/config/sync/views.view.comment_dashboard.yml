@@ -3,8 +3,13 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.storage.node.field_content_section
     - taxonomy.vocabulary.brands
     - taxonomy.vocabulary.trlx_content_sections
+    - user.role.administrator
+    - user.role.comment_moderator
+    - user.role.el_nyo_global_education_system_admin
+    - user.role.el_regional_market_admin
   content:
     - 'taxonomy_term:trlx_content_sections:038a0d73-0ce3-4cf8-addb-34e6acd08da1'
     - 'taxonomy_term:trlx_content_sections:37b75f67-c2e7-4cdb-9d8c-7f94799543fa'
@@ -14,7 +19,9 @@ dependencies:
     - node
     - taxonomy
     - trlx_utility
+    - user
     - view_custom_table
+    - views_bulk_operations
 id: comment_dashboard
 label: 'Comment dashboard'
 module: views
@@ -30,8 +37,13 @@ display:
     position: 0
     display_options:
       access:
-        type: none
-        options: {  }
+        type: role
+        options:
+          role:
+            administrator: administrator
+            el_regional_market_admin: el_regional_market_admin
+            el_nyo_global_education_system_admin: el_nyo_global_education_system_admin
+            comment_moderator: comment_moderator
       cache:
         type: none
         options: {  }
@@ -39,7 +51,7 @@ display:
         type: views_query
         options:
           disable_sql_rewrite: false
-          distinct: true
+          distinct: false
           replica: false
           query_comment: ''
           query_tags: {  }
@@ -95,10 +107,11 @@ display:
             comment_update_timestamp: comment_update_timestamp
             id: id
             langcode: langcode
+            pid: pid
             nothing: nothing
           info:
             trlx_comment_content_title:
-              sortable: false
+              sortable: true
               default_sort_order: asc
               align: ''
               separator: ''
@@ -133,14 +146,14 @@ display:
               empty_column: false
               responsive: ''
             comment_timestamp:
-              sortable: false
+              sortable: true
               default_sort_order: asc
               align: ''
               separator: ''
               empty_column: false
               responsive: ''
             comment_update_timestamp:
-              sortable: false
+              sortable: true
               default_sort_order: asc
               align: ''
               separator: ''
@@ -160,6 +173,13 @@ display:
               separator: ''
               empty_column: false
               responsive: ''
+            pid:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
             nothing:
               sortable: false
               default_sort_order: asc
@@ -172,6 +192,68 @@ display:
       row:
         type: fields
       fields:
+        views_bulk_operations_bulk_form:
+          id: views_bulk_operations_bulk_form
+          table: views
+          field: views_bulk_operations_bulk_form
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 'Views bulk operations'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          batch: true
+          batch_size: 10
+          form_step: true
+          buttons: false
+          clear_on_exposed: false
+          action_title: Action
+          selected_actions:
+            comment_delete_action: 0
+            views_bulk_operations_delete_comment: views_bulk_operations_delete_comment
+            views_bulk_operations_delete_entity: 0
+          preconfiguration:
+            views_bulk_operations_delete_comment:
+              label_override: ''
+          plugin_id: views_bulk_operations_bulk_form
         trlx_comment_content_title:
           id: trlx_comment_content_title
           table: views
@@ -270,6 +352,69 @@ display:
           empty_zero: false
           hide_alter_empty: false
           plugin_id: trlx_comment_content_type
+        field_content_section:
+          id: field_content_section
+          table: node__field_content_section
+          field: field_content_section
+          relationship: entity_id
+          group_type: group
+          admin_label: ''
+          label: 'Content Section'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_label
+          settings:
+            link: false
+          group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
         comment_body:
           id: comment_body
           table: trlx_comment
@@ -432,7 +577,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          label: 'Posted in'
+          label: 'Created on'
           exclude: false
           alter:
             alter_text: true
@@ -489,7 +634,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          label: Updated
+          label: 'Updated on'
           exclude: false
           alter:
             alter_text: true
@@ -645,6 +790,63 @@ display:
           empty_zero: false
           hide_alter_empty: true
           plugin_id: standard
+        pid:
+          id: pid
+          table: trlx_comment
+          field: pid
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 'Comment Status'
+          exclude: false
+          alter:
+            alter_text: true
+            text: "{% if pid != 0 %}\r\n  Reply\r\n{% else %}\r\n  Comment\r\n{% endif %}"
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          set_precision: false
+          precision: 0
+          decimal: .
+          separator: ''
+          format_plural: false
+          format_plural_string: !!binary MQNAY291bnQ=
+          prefix: ''
+          suffix: ''
+          plugin_id: numeric
         nothing:
           id: nothing
           table: views
@@ -938,12 +1140,23 @@ display:
           order: DESC
           exposed: false
           expose:
-            label: 'Comment timestamp'
+            label: ''
           plugin_id: standard
       title: 'Comment dashboard'
       header: {  }
       footer: {  }
-      empty: {  }
+      empty:
+        area_text_custom:
+          id: area_text_custom
+          table: views
+          field: area_text_custom
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: true
+          tokenize: false
+          content: 'No content available.'
+          plugin_id: text_custom
       relationships:
         entity_id:
           id: entity_id
@@ -962,13 +1175,17 @@ display:
         groups:
           1: AND
     cache_metadata:
-      max-age: -1
+      max-age: 0
       contexts:
+        - 'languages:language_content'
         - 'languages:language_interface'
         - url
         - url.query_args
         - user
-      tags: {  }
+        - user.roles
+      tags:
+        - 'config:field.storage.node.field_content_section'
+        - extensions
   page_1:
     display_plugin: page
     id: page_1
@@ -987,10 +1204,14 @@ display:
         context: '0'
         menu_name: main
     cache_metadata:
-      max-age: -1
+      max-age: 0
       contexts:
+        - 'languages:language_content'
         - 'languages:language_interface'
         - url
         - url.query_args
         - user
-      tags: {  }
+        - user.roles
+      tags:
+        - 'config:field.storage.node.field_content_section'
+        - extensions

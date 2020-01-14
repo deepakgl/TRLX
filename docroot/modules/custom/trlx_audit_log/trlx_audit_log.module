@@ -67,3 +67,13 @@ function trlx_audit_log_entity_delete(EntityInterface $entity) {
     \Drupal::service('logger.stdout')->log(RfcLogLevel::INFO, $message, $context);
   }
 }
+
+
+function trlx_audit_log_response_time($diff, $api_path) {
+    // AuditEventLogger object to access functions.
+    $logger_obj = new AuditEventLogger();
+    $context = [];
+    $message = "[CMS_API_RESPONSE_TIME] Api path: " . $api_path . "Time: " . $diff;
+    // Log the audit log  for insert in ELK.
+    \Drupal::service('logger.stdout')->log(RfcLogLevel::INFO, $message, $context);
+}
