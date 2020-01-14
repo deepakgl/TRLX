@@ -21,10 +21,9 @@ dependencies:
     - user.role.el_nyo_global_education_system_admin
     - user.role.el_regional_market_admin
   content:
-    - 'taxonomy_term:trlx_content_sections:038a0d73-0ce3-4cf8-addb-34e6acd08da1'
-    - 'taxonomy_term:trlx_content_sections:37b75f67-c2e7-4cdb-9d8c-7f94799543fa'
-    - 'taxonomy_term:trlx_content_sections:d28491e7-0868-45c5-91d4-9fccd51436ad'
-    - 'taxonomy_term:trlx_content_sections:dc153e06-46ec-4f05-b4b2-9c75e80d94f0'
+    - 'taxonomy_term:menu_content:131352aa-1675-4094-ad81-2f28cfd6ec4f'
+    - 'taxonomy_term:menu_content:61d8b4b8-0f78-46d4-8db3-d9a9c4c87b90'
+    - 'taxonomy_term:menu_content:d498d770-c968-432c-845e-aa9fe39c865f'
   module:
     - content_translation
     - node
@@ -2583,9 +2582,26 @@ display:
           field_api_classes: false
           plugin_id: field
       pager:
-        type: none
+        type: full
         options:
+          items_per_page: 50
           offset: 0
+          id: 0
+          total_pages: null
+          tags:
+            previous: '‹ Previous'
+            next: 'Next ›'
+            first: '« First'
+            last: 'Last »'
+          expose:
+            items_per_page: false
+            items_per_page_label: 'Items per page'
+            items_per_page_options: '5, 10, 25, 50'
+            items_per_page_options_all: false
+            items_per_page_options_all_label: '- All -'
+            offset: false
+            offset_label: Offset
+          quantity: 9
     cache_metadata:
       max-age: -1
       contexts:
