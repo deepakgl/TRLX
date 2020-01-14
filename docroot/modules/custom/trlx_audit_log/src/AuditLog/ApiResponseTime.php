@@ -22,7 +22,6 @@ class ApiResponseTime implements ApiResponseTimeInterface {
     $logger_obj = new AuditEventLogger();
     $base = \Drupal::service('trlx_audit_log.api_response_time');
     $uid = $base->getUserID();
-    print_r($uid);exit;
     $context = [];
     $context['request_uri'] = $api_path;
    // $context['user'] = $uid;
