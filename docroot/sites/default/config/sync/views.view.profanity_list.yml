@@ -83,10 +83,16 @@ display:
           description: ''
           columns:
             name: name
+            operations: operations
           info:
             name:
-              sortable: false
+              sortable: true
               default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            operations:
               align: ''
               separator: ''
               empty_column: false
