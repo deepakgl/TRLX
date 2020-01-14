@@ -3,3 +3,5 @@ services:
     class: '\Drupal\trlx_audit_log\EventSubscriber\TrlxAuditLogEventSubscriber'
     tags:
       - { name: 'event_subscriber' }
+  trlx_audit_log.api_response_time:
+    class: '\Drupal\trlx_audit_log\AuditLog\ApiResponseTime'

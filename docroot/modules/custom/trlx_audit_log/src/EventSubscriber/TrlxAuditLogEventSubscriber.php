@@ -9,6 +9,7 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
+use Drupal\trlx_audit_log\AuditLog\ApiResponseTime;
 
 /**
  * Event subscriber class.
@@ -47,7 +48,8 @@ class TrlxAuditLogEventSubscriber implements EventSubscriberInterface {
         $requestTime = $request->headers->get('api-request-time');
         $responseTime = microtime(TRUE);
         $diff = $responseTime - $requestTime;
-        trlx_audit_log_response_time($diff, $route_path);
+        $logs = new ApiResponseTime();
+        $logs->logResponseTime($diff, $route_path);
       }
    }
   }
