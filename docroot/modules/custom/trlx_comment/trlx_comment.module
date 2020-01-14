@@ -34,8 +34,16 @@ function trlx_comment_form_alter(&$form, FormStateInterface $form_state, $form_i
     $default_array[""] = '-All-';
     $node_types = NodeType::loadMultiple();
     $options = [];
+    $allowed_content_types = [
+      'brand_story',
+      'product_detail',
+      'stories',
+      'tools',
+    ];
     foreach ($node_types as $node_type) {
-      $options[$node_type->id()] = $node_type->label();
+      if (in_array($node_type->id(), $allowed_content_types)) {
+        $options[$node_type->id()] = $node_type->label();
+      }
     }
     $options = array_replace($default_array, $options);
     // Set your custom options on your select filter.
