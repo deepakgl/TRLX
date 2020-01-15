@@ -129,7 +129,7 @@
                 "string translation": "patches/translation/drupal_core_translatablemarkup.patch",
                 "admin people view": "patches/user/admin_people_view.patch",
                 "content translation": "patches/translation/content_translation_dependency.patch",
-                "content translation temp": "patches/translation/content_translation_temp_update.patch",
+                "content translation temp": "patches/translation/content_translation_temp_new.patch",
                 "seventheme role added": "patches/seven/seven-theme.patch",
                 "Entity edit list Operation": "patches/entity_list_builder/edit_entity_delete_translation.patch",
                 "Hide file size limit": "patches/file/file_help_text_hide.patch"

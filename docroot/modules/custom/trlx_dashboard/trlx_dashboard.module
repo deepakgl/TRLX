@@ -212,8 +212,8 @@ function trlx_dashboard_entity_operation_alter(array &$operations, EntityInterfa
   $roles = $currentAccount->getRoles();
   if ($entityTypeId === 'taxonomy_term') {
     // code...
-    if (($entity->getVocabularyId() == 'badges') || ($entity->getVocabularyId() == 'learning_category') ||
-     ($entity->getVocabularyId() == 'consumer_category')) {
+    if (($entity->bundle() == 'badges') || ($entity->bundle() == 'learning_category') ||
+     ($entity->bundle() == 'consumer_category')) {
       if (in_array('el_regional_market_admin', $roles)) {
         if (!empty($entity->id())) {
           $database = \Drupal::database();
@@ -252,8 +252,8 @@ function trlx_dashboard_entity_insert(EntityInterface $entity) {
     return;
   }
 
-  if (($entity->getVocabularyId() == 'badges') || ($entity->getVocabularyId() == 'learning_category') ||
-    ($entity->getVocabularyId() == 'consumer_category')) {
+  if (($entity->bundle() == 'badges') || ($entity->bundle() == 'learning_category') ||
+    ($entity->bundle() == 'consumer_category')) {
     $currentAccount = \Drupal::currentUser();
     $roles = $currentAccount->getRoles();
     if (in_array('el_regional_market_admin', $roles)) {
@@ -290,7 +290,7 @@ function trlx_dashboard_entity_insert(EntityInterface $entity) {
       $database->insert($table)
         ->fields([
           'tid' => $entity->id(),
-          'vid' => $entity->getVocabularyId(),
+          'vid' => $entity->bundle(),
           'uid' => $currentAccount->id(),
           'role' => $role,
         ])
