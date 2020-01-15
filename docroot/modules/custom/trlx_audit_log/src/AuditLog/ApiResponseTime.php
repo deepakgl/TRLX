@@ -21,14 +21,13 @@ class ApiResponseTime implements ApiResponseTimeInterface {
     // AuditEventLogger object to access functions.
     $logger_obj = new AuditEventLogger();
     $base = \Drupal::service('trlx_audit_log.api_response_time');
+    $uid = 0;
     $uid = $base->getUserID();
     $context = [];
     $context['request_uri'] = $api_path;
    // $context['user'] = $uid;
-    $message = "[CMS_API_RESPONSE_TIME] Api path: " . $api_path . " Time: " . $diff;
-    if ($uid) {
-      $message .= ' UID:' . $uid;
-    }
+    $message = "[CMS_API_RESPONSE_TIME] Endpoint: " . $api_path . " Time: " . $diff;
+    $message .= ' UID:' . $uid;
     // Log the audit log  for insert in ELK.
     \Drupal::service('logger.stdout')->log(RfcLogLevel::INFO, $message, $context);
   }
