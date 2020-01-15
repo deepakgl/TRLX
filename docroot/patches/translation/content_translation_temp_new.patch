@@ -4,7 +4,7 @@
            $source = $metadata->getSource() ?: LanguageInterface::LANGCODE_NOT_SPECIFIED;
            $is_original = $langcode == $original;
            $label = $entity->getTranslation($langcode)->label();
-+          if ($entity->getVocabularyId() == 'static_translation') {
++          if ($entity->bundle() == 'static_translation') {
 +             $label = $entity->getTranslation($langcode)->get('field_translation_key')->value;
 +          }
            $link = isset($links->links[$langcode]['url']) ? $links->links[$langcode] : ['url' => $entity->toUrl()];
