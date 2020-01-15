@@ -37,6 +37,7 @@ class NotificationConfigurationForm extends ConfigFormBase {
   const COMMENT_TAGS_HEADING = 'comment_tags_heading';
   const STAMPS_HEADING = 'stamps_heading';
   const PUSH_NOTIFICATION_URL = 'push_notification_url';
+  const PARENT_COMMENT_HEADING = 'parent_comment_heading';
 
   /**
    * {@inheritdoc}
@@ -197,6 +198,13 @@ class NotificationConfigurationForm extends ConfigFormBase {
       self::HASH_DEFAULT_VALUE => $config->get(self::STAMPS_HEADING),
       self::HASH_REQUIRED => TRUE,
     ];
+    $form[self::PARENT_COMMENT_HEADING] = [
+      self::HASH_TYPE => self::TEXTFIELD,
+      self::HASH_TITLE => $this->t('Parent comment heading.'),
+      self::HASH_DEFAULT_VALUE => $config->get(self::PARENT_COMMENT_HEADING),
+      self::HASH_REQUIRED => TRUE,
+    ];
+
     return parent::buildForm($form, $form_state);
   }
 
