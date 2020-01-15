@@ -17,7 +17,7 @@ class ApiResponseTime implements ApiResponseTimeInterface {
   /**
    * {@inheritdoc}
    */
-  public function logResponseTime($diff, $ApiResponseTimeInterface) {
+  public function logResponseTime($diff, $api_path) {
     // AuditEventLogger object to access functions.
     $logger_obj = new AuditEventLogger();
     $base = \Drupal::service('trlx_audit_log.api_response_time');
