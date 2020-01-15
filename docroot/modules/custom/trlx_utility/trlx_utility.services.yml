@@ -13,3 +13,8 @@ services:
     arguments: ['@logger.log_message_parser', '@request_stack']
     tags:
       - { name: logger }
+  trlx_utility.api_response_time.decorator:
+    public: false
+    class: \Drupal\trlx_utility\AuditLog\ApiResponseTimeDecorator
+    decorates: trlx_audit_log.api_response_time
+    decoration_priority: 5

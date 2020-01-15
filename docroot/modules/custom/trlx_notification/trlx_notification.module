@@ -463,7 +463,7 @@ function trlx_notification_comment_user_tags(int $nid, $language = CommentUtilit
   }
 
   $notification_index = [];
-  if (!empty($node) && !empty($commen_tags)) {
+  if ((!empty($node) && !empty($commen_tags)) || (!empty($node) && !empty($parent_user_id))) {
     $link_type = '';
     switch ($node->bundle()) {
       // Brand Story.
