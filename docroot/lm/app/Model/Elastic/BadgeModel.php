@@ -4,7 +4,6 @@ namespace App\Model\Elastic;
 
 use App\Support\Helper;
 use App\Model\Mysql\ContentModel;
-use Illuminate\Support\Facades\DB;
 
 /**
  * Purpose of this class is to check, fetch and update badges.
@@ -160,49 +159,14 @@ class BadgeModel {
     $response = ElasticUserModel::fetchElasticUserData($badge_info['uid'], $client);
     if (!empty($response['_source']['badge'])) {
       if (!in_array($badge[0], array_keys($response['_source']['badge'][0]))) {
-        $notificationConfig = ContentModel::getNotificationConfigValues();
-        $notificationheading = $notificationConfig['stamps_heading'];
-        $notification_title = ContentModel::getTermByName($notificationheading, 'static_translation', $badge_info['lang']);
-        $notification_title = !empty($notification_title) ? $notification_title[0] : $notificationheading;
-        $indexValues = [
-          'notificationType' => "STAMPS",
-          'userId' => $badge_info['uid'],
-          'notificationHeading' => $notification_title,
-          'notificationText' => $badge[0],
-          'notificationDate' => time(),
-          'notificationLink' => 0,
-          'notificationLinkType' => "stamps",
-          'notificationBrandKey' => 0,
-          'notificationBrandName' => "",
-          'notificationFlag' => 0,
-          'notificationLanguage' => $badge_info['lang'],
-        ];
-        NotificationModel::saveIndexes($indexValues);
-        // $query = DB::table('user_records as ur');
-        // $query->select('ur.uid');
-        // $query->where('ur.id', '=', $badge_info['uid']);
-        // $result = $query->get()->first();
-        // $push_notification_array = [
-        //   "pushNotificationType" => "TRLX",
-        //   "pushNotificationTargetUsers" => $result->uid,
-        //   "pushNotificationBody" => [
-        //     NOTIFICATION_TYPE => "STAMPS",
-        //     NOTIFICATION_HEADING => $notification_title,
-        //     NOTIFICATION_TEXT => $badge[0],
-        //     "notificationDate" => (int) time(),
-        //     NOTIFICATION_LINK => 0,
-        //     NOTIFICATION_LINK_TYPE => "stamps",
-        //     NOTIFICATION_BRAND_KEY => 0,
-        //     NOTIFICATION_BRAND_NAME => "",
-        //   ],
-        // ];
-        // NotificationModel::trlxPushNotifications($push_notification_array);
+        self::setNotification($badge_info, $badge[0]);
       }
       foreach ($response['_source']['badge'] as $key => $value) {
         $response['_source']['badge'] = $value;
       }
     }
     else {
+      self::setNotification($badge_info, $badge[0]);
       $response['_source']['badge'] = [];
     }
     foreach ($badge as $key => $value) {
@@ -220,6 +184,35 @@ class BadgeModel {
     $output = ElasticUserModel::updateElasticUserData($params, $badge_info['uid'], $client);
 
     return TRUE;
+  }
+
+  /**
+   * Set notification index.
+   *
+   * @param mixed $badge_info
+   *   Stamp details.
+   * @param string $badge
+   *   Stamp name.
+   */
+  public static function setNotification($badge_info, $badge) {
+    $notificationConfig = ContentModel::getNotificationConfigValues();
+    $notificationheading = $notificationConfig['stamps_heading'];
+    $notification_title = ContentModel::getTermByName($notificationheading, 'static_translation', $badge_info['lang']);
+    $notification_title = !empty($notification_title) ? $notification_title[0] : $notificationheading;
+    $indexValues = [
+      'notificationType' => "STAMPS",
+      'userId' => $badge_info['uid'],
+      'notificationHeading' => $notification_title,
+      'notificationText' => $badge,
+      'notificationDate' => time(),
+      'notificationLink' => 0,
+      'notificationLinkType' => "stamps",
+      'notificationBrandKey' => 0,
+      'notificationBrandName' => "",
+      'notificationFlag' => 0,
+      'notificationLanguage' => $badge_info['lang'],
+    ];
+    NotificationModel::saveIndexes($indexValues);
   }
 
 }
