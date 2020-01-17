@@ -26,7 +26,7 @@ function elx_user_form_alter(&$form, FormStateInterface $form_state, $form_id) {
     case 'user_register_form':
       if ($form['administer_users']['#value']) {
         // Default to sending user an account creation notification.
-        $form['account']['notify']['#default_value'] = 1;
+        $form['account']['notify']['#access'] = FALSE;
       }
 
     default:
