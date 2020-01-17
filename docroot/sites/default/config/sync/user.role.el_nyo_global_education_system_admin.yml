@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 id: el_nyo_global_education_system_admin
-label: 'TRLX Global Admin'
+label: 'TRU Global Admin'
 weight: 8
 is_admin: null
 permissions:
