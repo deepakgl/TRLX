@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 id: comment_moderator
-label: 'TRLX Comment Moderator'
+label: 'TRU Comment Moderator'
 weight: 9
 is_admin: null
 permissions:

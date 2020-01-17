@@ -27,14 +27,6 @@ function elx_user_form_alter(&$form, FormStateInterface $form_state, $form_id) {
       if ($form['administer_users']['#value']) {
         // Default to sending user an account creation notification.
         $form['account']['notify']['#default_value'] = 1;
-        // Assign random password.
-        $pass = user_password();
-        $form['account']['pass']['#value'] = [
-          'pass1' => $pass,
-          'pass2' => $pass,
-        ];
-        // Hide password fields at the time of user creation.
-        $form['account']['pass']['#access'] = FALSE;
       }
 
     default:
@@ -122,14 +114,6 @@ function elx_is_password_expired($email) {
  *   Message.
  */
 function get_login_error_message($lang) {
-  // Create confirm password link.
-  /* $elx_site_url = rtrim(\Drupal::config('elx_utility.settings')->get('elx_front_end_url'), '/')
-  . "/requestpassword";
-  $url = \Drupal::l(t("Reset Password"), \Drupal\Core\Url::fromUri($elx_site_url));
-  // Set message with reset password link.
-  $message = t('Your password has expired. Please use the link below to reset now! <br/> %reset',
-  ['%reset' => $url]); */
-
   $message = 'Your password has expired. Please click “Request new password” below to reset it now!';
 
   return $message;

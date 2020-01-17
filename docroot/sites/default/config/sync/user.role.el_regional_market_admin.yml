@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 id: el_regional_market_admin
-label: 'TRLX Regional Market Admin'
+label: 'TRU Regional Market Admin'
 weight: 7
 is_admin: null
 permissions:
