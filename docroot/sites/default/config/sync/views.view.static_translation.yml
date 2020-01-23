@@ -487,7 +487,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          operator: word
+          operator: allwords
           value: ''
           group: 1
           exposed: true
@@ -497,6 +497,8 @@ display:
             description: ''
             use_operator: false
             operator: field_translation_key_value_op
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: field_translation_key_value
             required: false
             remember: false
@@ -507,9 +509,8 @@ display:
               administrator: '0'
               el_regional_market_admin: '0'
               el_nyo_global_education_system_admin: '0'
+              comment_moderator: '0'
             placeholder: ''
-            operator_limit_selection: false
-            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
