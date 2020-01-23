@@ -61,7 +61,11 @@ getVersion() {
   fi
 }
 
-
+if [ $rundrush -eq 1 ]
+then
 enable_modules
 clearCache
 getVersion
+else
+getVersion
+fi
