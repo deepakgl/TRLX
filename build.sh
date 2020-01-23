@@ -11,6 +11,7 @@ then
 fi
 
 CODE_PATH=$1
+rundrush=$2
 #DRUSHCMD="$CODE_PATH/../vendor/drush/drush/drush"
 DRUSHCMD="$CODE_PATH/vendor/drush/drush/drush"
 
